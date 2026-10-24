@@ -71,14 +71,19 @@ export class BuildConsole {
   write(text: string, level: string = ''): void {
     // Never print passwords when displaying a tool command or diagnostic.
     const safe = text.replace(/\x1b\[[0-9;]*m/g, '').replace(/(-(?:keyPwd|keystorePwd|userPwd|storePassword|keyPassword)\s+)("[^"]*"|'[^']*'|\S+)/gi, '$1******');
+    const entries: BuildLogEntry[] = [];
     for (const line of safe.replace(/\r\n/g, '\n').split('\n')) {
       if (!line) continue;
       // ArkWeb platform telemetry is retained in the raw native log, outside build diagnostics.
       if (/^\[\.\.\/.*\.(cc|cpp):\d+\]/.test(line)) continue;
       const entry: BuildLogEntry = { id: String(this.started) + '-' + (++this.sequence),
         time: new Date().toTimeString().slice(0, 8), level: level || BuildConsole.classify(line), text: line };
-      this.appendFile(this.output, '[' + entry.time + '] ' + entry.text + '\n');
-      this.appendFile(this.events, JSON.stringify(entry) + '\n');
+      entries.push(entry);
+    }
+    if (entries.length === 0) return;
+    this.appendFile(this.output, entries.map((entry: BuildLogEntry): string => '[' + entry.time + '] ' + entry.text + '\n').join(''));
+    this.appendFile(this.events, entries.map((entry: BuildLogEntry): string => JSON.stringify(entry) + '\n').join(''));
+    for (const entry of entries) {
       hilog.info(0, 'ArkForgeBuild', '%{public}s %{public}s', entry.level, entry.text);
       this.notify(entry);
     }

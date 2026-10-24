@@ -2,6 +2,7 @@ import { ResourceCompiler, BuiltResources } from './ResourceCompiler';
 import { AtomicFiles } from './AtomicFiles';
 import { SourceMapEntry, SourceMapFile } from './SourceMaps';
 import { SDKWebRuntime } from './SDKWebRuntime';
+import { ArkUIWebRuntime } from './ArkUIWebRuntime';
 import { common } from '@kit.AbilityKit';
 import { fileIo, hash } from '@kit.CoreFileKit';
 import { worker, MessageEvents, util } from '@kit.ArkTS';
@@ -145,9 +146,15 @@ export class OfflineProjectBuilder {
     OfflineProjectBuilder.write(root + '/resource-manifest.json', manifestText + '\n' + resourceInputs + '\n' + resourceCompilerSha);
     const resourceManifestSha256 = await hash.hash(root + '/resource-manifest.json', 'sha256');
     let cached: CachedBuild | undefined = undefined;
+    let resourceCached: CachedBuild | undefined = undefined;
     for (const checkpoint of [parent + '/compiled.json', parent + '/latest.json']) {
     try {
       const previous = JSON.parse(fileIo.readTextSync(checkpoint)) as CachedBuild;
+      if (previous.project === project && previous.resourceManifestSha256 === resourceManifestSha256 &&
+        previous.root.startsWith(parent + '/') && !previous.root.includes('..') &&
+        previous.resourceArchive && previous.resourceArchive.startsWith(parent + '/') && !previous.resourceArchive.includes('..') &&
+        previous.resourceSymbols && fileIo.accessSync(previous.resourceArchive) &&
+        await hash.hash(previous.resourceArchive, 'sha256') === previous.resourceArchiveSha256) resourceCached = previous;
       if (previous.project === project && previous.sdkChecked === true && previous.sdkInputKey === sdkInputKey && previous.compilerSha256 === compilerSha256 &&
         previous.resourceManifestSha256 === resourceManifestSha256 && previous.root.startsWith(parent + '/') &&
         !previous.root.includes('..') && previous.sources.length === sources.length &&
@@ -165,8 +172,11 @@ export class OfflineProjectBuilder {
         nativeArchive = project + '/.arkforge/resources.zip';
         if ((await hash.hash(nativeArchive, 'sha256')).toLowerCase() !== manifest.cacheSha256) throw new Error('原生库输入包哈希不一致');
       }
-      const builtResources: BuiltResources = cached ? { archive: cached.resourceArchive || '', symbols: cached.resourceSymbols || {} } :
+      const resourceStarted = Date.now();
+      const reusableResources = cached || resourceCached;
+      const builtResources: BuiltResources = reusableResources ? { archive: reusableResources.resourceArchive || '', symbols: reusableResources.resourceSymbols || {} } :
         await ResourceCompiler.build(context, project, root, plan, report, nativeArchive);
+      report('> ArkForge :resources ' + (reusableResources ? 'UP-TO-DATE' : 'FINISHED') + ' after ' + (Date.now() - resourceStarted) + ' ms');
       manifest.resources = builtResources.symbols;
       const resourceArchive = builtResources.archive;
       if (cached) report('> ArkForge :checkArkTS UP-TO-DATE (官方 SDK、源码、声明和构建配置哈希一致)');
@@ -195,10 +205,12 @@ export class OfflineProjectBuilder {
         for (const path of files) virtualFiles['/project/' + moduleName + '/src/main/ets/' + path] = fileIo.readTextSync(sourceRoot + '/' + path);
         const options: ProjectOptions = { moduleName: moduleName, bundleName: bundleName,
           normalized: true, resources: manifest.resources || {}, files: virtualFiles };
-        await OfflineProjectBuilder.request(thread, { kind: 'configure', source: JSON.stringify(options), bundlePath: '', fileName: '', args: [] });
-        report('> ArkUI batch transform ' + files.length + ' files (共享 SDK 与类型检查上下文)');
-        const batch = await OfflineProjectBuilder.request(thread, { kind: 'transformBatch', bundlePath: bundle,
-          source: '', fileName: '', args: files.map((path: string) => '/project/' + moduleName + '/src/main/ets/' + path) });
+        const transformStarted = Date.now();
+        const webBundle = await ArkUIWebRuntime.stage(context, bundle, compilerSha256);
+        report('> ArkUI batch transform ' + files.length + ' files (official SDK · ArkWeb)');
+        const batch = JSON.parse(await SDKWebRuntime.transform(webBundle, JSON.stringify(options),
+          files.map((path: string) => '/project/' + moduleName + '/src/main/ets/' + path), report)) as WorkerReply;
+        report('> ArkForge :transformArkUI FINISHED after ' + (Date.now() - transformStarted) + ' ms');
         if (!batch.ok || !batch.outputs || batch.outputs.length !== files.length) {
           for (const diagnostic of batch.errors || []) report((batch.error || moduleName) + ':' + diagnostic.line + ':' + diagnostic.column + ': error: ' + diagnostic.message);
           throw new Error('批量 ArkUI 转换失败：' + (batch.error || JSON.stringify(batch.errors)));
@@ -239,8 +251,10 @@ export class OfflineProjectBuilder {
       const args: string[] = ['es2abc', '--merge-abc', '--target-api-version=23', '--opt-level=0',
         '--file-threads=1', '--function-threads=1', '--debug-info', '--output', abc, '@' + inputList];
       report('> ' + args.join(' '));
+      const compileStarted = Date.now();
       const compiled = await OfflineProjectBuilder.request(thread,
         { kind: 'compile', bundlePath: '', source: '', fileName: '', args: args });
+      report('> ArkForge :compileABC FINISHED after ' + (Date.now() - compileStarted) + ' ms');
       if (!compiled.ok || !fileIo.accessSync(abc)) throw new Error('方舟动态编译失败：' + JSON.stringify(compiled));
       }
       for (const item of sources) {
@@ -286,6 +300,7 @@ export class OfflineProjectBuilder {
         hapSha256: reuseSigned ? cached?.hapSha256 : await hash.hash(hap, 'sha256'),
         signedHapSha256: await hash.hash(signedHap, 'sha256') });
       OfflineProjectBuilder.write(root + '/result.json', result);
+      OfflineProjectBuilder.write(parent + '/compiled.json', result);
       if (!install) {
         report('> Prepared build: ' + id);
         return '当前工程编译、打包、签名和验签完成，等待确认安装。';

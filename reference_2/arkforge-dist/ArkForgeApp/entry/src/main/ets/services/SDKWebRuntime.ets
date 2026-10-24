@@ -36,15 +36,24 @@ export class SDKWebRuntime {
   }
 
   static check(bundle: string, input: string, report: (text: string) => void): Promise<string> {
-    if (SDKWebRuntime.pending) return Promise.reject(new Error('SDK checker is already running'));
+    return SDKWebRuntime.run(bundle, 'var __arkforgeOptions=' + input + ';', 'sdk-check.web.js', '__arkforgeCheckResult', report);
+  }
+
+  static transform(bundle: string, options: string, names: string[], report: (text: string) => void): Promise<string> {
+    return SDKWebRuntime.run(bundle, 'var __arkforgeOptions=' + options + ';var __arkforgeBatchFileNames=' + JSON.stringify(names) + ';',
+      'ui-transform.web.js', '__arkforgeTransformResult', report);
+  }
+
+  private static run(bundle: string, inputScript: string, entryScript: string, resultName: string, report: (text: string) => void): Promise<string> {
+    if (SDKWebRuntime.pending) return Promise.reject(new Error('SDK runtime is already running'));
     const directory = bundle.substring(0, bundle.lastIndexOf('/'));
     const id = String(++SDKWebRuntime.sequence);
-    SDKWebRuntime.write(directory + '/input.js', 'var __arkforgeOptions=' + input + ';');
+    SDKWebRuntime.write(directory + '/input.js', inputScript);
     SDKWebRuntime.write(directory + '/check.html', '<!doctype html><meta charset="utf-8">' +
       '<meta http-equiv="Content-Security-Policy" content="default-src \'none\'; script-src \'self\' \'unsafe-inline\' \'unsafe-eval\'; connect-src \'none\'">' +
       '<script>window.onerror=function(message){SdkBridge.complete("' + id + '",JSON.stringify({ok:false,error:String(message)}));};</script>' +
-      '<script src="input.js"></script><script src="sdk-check.web.js"></script>' +
-      '<script>SdkBridge.complete("' + id + '",globalThis.__arkforgeCheckResult || JSON.stringify({ok:false,error:"Missing SDK result"}));</script>');
+      '<script src="input.js"></script><script src="' + entryScript + '"></script>' +
+      '<script>SdkBridge.complete("' + id + '",globalThis.' + resultName + ' || JSON.stringify({ok:false,error:"Missing SDK result"}));</script>');
     return new Promise<string>((resolve) => {
       SDKWebRuntime.pending = resolve;
       SDKWebRuntime.active = id;
