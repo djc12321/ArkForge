@@ -1,0 +1,219 @@
+checker:
+  class_forward_declaration:
+  - ETSAnalyzer
+compiler:
+  class_forward_declaration:
+  - ETSCompiler
+include:
+- '"ir/statement.h"'
+- '"ir/expressions/identifier.h"'
+ir:
+  class_definitions:
+  - extends: public Statement
+    known_macroses:
+    - NO_COPY_SEMANTIC(ContinueStatement);
+    - NO_MOVE_SEMANTIC(ContinueStatement);
+    name: ContinueStatement
+    private: {}
+    public:
+      constructors:
+      - args: []
+        name: ContinueStatement
+        other_initializers:
+        - class_field: Statement
+          init_value: AstNodeType::CONTINUE_STATEMENT
+        raw_declaration: explicit ContinueStatement()
+        return_type:
+          prefix: explicit
+      - args:
+        - initializer_for: ident_
+          name: ident
+          type:
+            name: Identifier
+            ptr_depth: 1
+        name: ContinueStatement
+        other_initializers:
+        - class_field: Statement
+          init_value: AstNodeType::CONTINUE_STATEMENT
+        raw_declaration: explicit ContinueStatement(Identifier *ident)
+        return_type:
+          prefix: explicit
+      destructors:
+      - args: []
+        name: ~ContinueStatement
+        postfix: override = default
+        raw_declaration: ~ContinueStatement() override = default
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Ident
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const Identifier *Ident() const noexcept'
+        return_type:
+          name: Identifier
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Ident
+        postfix: noexcept
+        raw_declaration: Identifier *Ident() noexcept
+        return_type:
+          name: Identifier
+          ptr_depth: 1
+      - args: []
+        name: Target
+        postfix: const
+        raw_declaration: '[[nodiscard]] const ir::AstNode *Target() const'
+        return_type:
+          name: AstNode
+          namespace: ir
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: HasTarget
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool HasTarget() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: set
+        args:
+        - name: target
+          type:
+            name: AstNode
+            namespace: ir
+            other_modifiers: const
+            ptr_depth: 1
+        name: SetTarget
+        postfix: noexcept
+        raw_declaration: void SetTarget(ir::AstNode const *target) noexcept
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: NodeTransformer
+            prefix: const
+            ref_depth: 1
+        - name: transformationName
+          type:
+            name: string_view
+            namespace: std
+        name: TransformChildren
+        postfix: override
+        raw_declaration: void TransformChildren(const NodeTransformer &cb, std::string_view
+          transformationName) override
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: NodeTraverser
+            prefix: const
+            ref_depth: 1
+        name: Iterate
+        postfix: const override
+        raw_declaration: void Iterate(const NodeTraverser &cb) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: AstDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::AstDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: SrcDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::SrcDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: pg
+          type:
+            name: PandaGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::PandaGen *pg) const override
+        return_type:
+          name: void
+      - args:
+        - name: etsg
+          type:
+            name: ETSGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::ETSGen *etsg) const override
+        return_type:
+          name: void
+      - args:
+        - name: checker
+          type:
+            name: TSChecker
+            namespace: checker
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::Type *Check(checker::TSChecker *checker) override
+        return_type:
+          name: Type
+          namespace: checker
+          ptr_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            namespace: checker
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::VerifiedType Check(checker::ETSChecker *checker)
+          override
+        return_type:
+          name: VerifiedType
+          namespace: checker
+      - args:
+        - name: v
+          type:
+            name: ASTVisitorT
+            ptr_depth: 1
+        name: Accept
+        postfix: override
+        raw_declaration: void Accept(ASTVisitorT *v) override
+        return_type:
+          name: void
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: parent
+          type:
+            name: AstNode
+            ptr_depth: 1
+        name: Clone
+        postfix: override
+        raw_declaration: '[[nodiscard]] ContinueStatement *Clone(ArenaAllocator *allocator,
+          AstNode *parent) override'
+        return_type:
+          name: ContinueStatement
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+macros:
+- name: ES2PANDA_IR_STATEMENT_H_CONTINUE_STATEMENT_H

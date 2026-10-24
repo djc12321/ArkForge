@@ -1,0 +1,440 @@
+checker:
+  class_definitions:
+  - extends: public Type
+    name: ETSUnionType
+    private: {}
+    public:
+      constructors:
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            ptr_depth: 1
+        - name: constituentTypes
+          type:
+            name: ArenaVector
+            ref_depth: 2
+            template_args:
+            - type:
+                name: Type
+                ptr_depth: 1
+        - default_value: nullptr
+          name: normalizedType
+          type:
+            name: Type
+            ptr_depth: 1
+        name: ETSUnionType
+        raw_declaration: explicit ETSUnionType(ETSChecker *checker, ArenaVector<Type
+          *> &&constituentTypes, Type *normalizedType = nullptr)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: ConstituentTypes
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const ArenaVector<Type *> &ConstituentTypes()
+          const noexcept'
+        return_type:
+          name: ArenaVector
+          prefix: '[[nodiscard]] const'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: Type
+              ptr_depth: 1
+      - args:
+        - name: func
+          type:
+            name: TypeTraverser
+            prefix: const
+            ref_depth: 1
+        name: Iterate
+        postfix: const override
+        raw_declaration: void Iterate(const TypeTraverser &func) const override
+        return_type:
+          name: void
+      - args:
+        - name: ss
+          type:
+            name: stringstream
+            namespace: std
+            ref_depth: 1
+        - name: precise
+          type:
+            name: bool
+        name: ToString
+        postfix: const override
+        raw_declaration: void ToString(std::stringstream &ss, bool precise) const
+          override
+        return_type:
+          name: void
+      - args:
+        - name: ss
+          type:
+            name: stringstream
+            namespace: std
+            ref_depth: 1
+        name: ToAssemblerType
+        postfix: const override
+        raw_declaration: void ToAssemblerType(std::stringstream &ss) const override
+        return_type:
+          name: void
+      - args:
+        - name: ss
+          type:
+            name: stringstream
+            namespace: std
+            ref_depth: 1
+        name: ToDebugInfoType
+        postfix: const override
+        raw_declaration: void ToDebugInfoType(std::stringstream &ss) const override
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: other
+          type:
+            name: Type
+            ptr_depth: 1
+        name: Identical
+        postfix: override
+        raw_declaration: void Identical(TypeRelation *relation, Type *other) override
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: source
+          type:
+            name: Type
+            ptr_depth: 1
+        name: AssignmentTarget
+        postfix: override
+        raw_declaration: void AssignmentTarget(TypeRelation *relation, Type *source)
+          override
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: target
+          type:
+            name: Type
+            ptr_depth: 1
+        name: AssignmentSource
+        postfix: override
+        raw_declaration: bool AssignmentSource(TypeRelation *relation, Type *target)
+          override
+        return_type:
+          name: bool
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: globalTypes
+          type:
+            name: GlobalTypesHolder
+            ptr_depth: 1
+        name: Instantiate
+        postfix: override
+        raw_declaration: Type *Instantiate(ArenaAllocator *allocator, TypeRelation
+          *relation, GlobalTypesHolder *globalTypes) override
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: substitution
+          type:
+            name: Substitution
+            prefix: const
+            ptr_depth: 1
+        name: Substitute
+        postfix: override
+        raw_declaration: Type *Substitute(TypeRelation *relation, const Substitution
+          *substitution) override
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: target
+          type:
+            name: Type
+            ptr_depth: 1
+        name: Cast
+        postfix: override
+        raw_declaration: void Cast(TypeRelation *relation, Type *target) override
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: source
+          type:
+            name: Type
+            ptr_depth: 1
+        name: CastTarget
+        postfix: override
+        raw_declaration: void CastTarget(TypeRelation *relation, Type *source) override
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: source
+          type:
+            name: Type
+            ptr_depth: 1
+        name: IsSupertypeOf
+        postfix: override
+        raw_declaration: void IsSupertypeOf(TypeRelation *relation, Type *source)
+          override
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: target
+          type:
+            name: Type
+            ptr_depth: 1
+        name: IsSubtypeOf
+        postfix: override
+        raw_declaration: void IsSubtypeOf(TypeRelation *relation, Type *target) override
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: varianceFlag
+          type:
+            name: VarianceFlag
+        name: CheckVarianceRecursively
+        postfix: override
+        raw_declaration: void CheckVarianceRecursively(TypeRelation *relation, VarianceFlag
+          varianceFlag) override
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: types
+          type:
+            name: ArenaVector
+            ref_depth: 1
+            template_args:
+            - type:
+                name: Type
+                ptr_depth: 1
+        - name: needSubtypeReduction
+          type:
+            name: bool
+        name: LinearizeAndEraseIdentical
+        raw_declaration: "static void LinearizeAndEraseIdentical(TypeRelation *relation,\
+          \ ArenaVector<Type *> &types,\n                                        \
+          \   bool needSubtypeReduction)"
+        return_type:
+          name: void
+          prefix: static
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: type
+          type:
+            name: Type
+            other_modifiers: const
+            ptr_depth: 1
+        name: IsOverlapWith
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsOverlapWith(TypeRelation *relation,
+          Type const *type) const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: types
+          type:
+            name: ArenaVector
+            ref_depth: 1
+            template_args:
+            - type:
+                name: Type
+                ptr_depth: 1
+        name: NormalizeTypes
+        raw_declaration: static void NormalizeTypes(TypeRelation *relation, ArenaVector<Type
+          *> &types)
+        return_type:
+          name: void
+          prefix: static
+      - additional_attributes: get
+        args: []
+        name: GetAssemblerType
+        postfix: const
+        raw_declaration: const util::StringView &GetAssemblerType() const
+        return_type:
+          name: StringView
+          namespace: util
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: get
+        args:
+        - name: p
+          type:
+            name: UnaryPredicate
+        name: AllOfConstituentTypes
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool AllOfConstituentTypes(UnaryPredicate
+          p) const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+        template: class UnaryPredicate
+      - additional_attributes: get
+        args:
+        - name: p
+          type:
+            name: UnaryPredicate
+        name: AnyOfConstituentTypes
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool AnyOfConstituentTypes(UnaryPredicate
+          p) const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+        template: class UnaryPredicate
+      - args:
+        - name: p
+          type:
+            name: UnaryPredicate
+        name: FindSpecificType
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] Type *FindSpecificType(UnaryPredicate p) const
+          noexcept'
+        return_type:
+          name: Type
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+        template: class UnaryPredicate
+      - additional_attributes: get
+        args:
+        - name: p
+          type:
+            name: UnaryPredicate
+        name: HasSpecificType
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool HasSpecificType(UnaryPredicate p) const
+          noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+        template: class UnaryPredicate
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            ptr_depth: 1
+        - name: sourceType
+          type:
+            name: Type
+            namespace: checker
+            ptr_depth: 1
+        - name: value
+          type:
+            name: optional
+            namespace: std
+            template_args:
+            - type:
+                name: double
+        name: GetAssignableType
+        postfix: const
+        raw_declaration: "[[nodiscard]] checker::Type *GetAssignableType(ETSChecker\
+          \ *checker, checker::Type *sourceType,\n                               \
+          \                    std::optional<double> value) const"
+        return_type:
+          name: Type
+          namespace: checker
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            ptr_depth: 1
+        - name: sourceType
+          type:
+            name: Type
+            ptr_depth: 1
+        name: GetComplimentaryType
+        raw_declaration: '[[nodiscard]] std::pair<Type *, Type *> GetComplimentaryType(ETSChecker
+          *checker, Type *sourceType)'
+        return_type:
+          name: pair
+          namespace: std
+          prefix: '[[nodiscard]]'
+          template_args:
+          - type:
+              name: Type
+              ptr_depth: 1
+          - type:
+              name: Type
+              ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: NormalizedType
+        postfix: const
+        raw_declaration: '[[nodiscard]] Type *NormalizedType() const'
+        return_type:
+          name: Type
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: IsNormalizedUnion
+        postfix: const
+        raw_declaration: '[[nodiscard]] bool IsNormalizedUnion() const'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+  class_forward_declaration:
+  - GlobalTypesHolder
+include:
+- '"checker/types/type.h"'
+- '"checker/types/ets/etsObjectType.h"'
+macros:
+- name: ES2PANDA_COMPILER_CHECKER_TYPES_ETS_UNION_TYPE_H

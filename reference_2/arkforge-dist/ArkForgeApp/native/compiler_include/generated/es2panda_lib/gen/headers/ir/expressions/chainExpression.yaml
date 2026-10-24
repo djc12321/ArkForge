@@ -1,0 +1,211 @@
+checker:
+  class_forward_declaration:
+  - TSAnalyzer
+include:
+- '"ir/expression.h"'
+- '"ir/irnode.h"'
+ir:
+  class_definitions:
+  - extends: public Expression
+    friends:
+    - checker::TSAnalyzer
+    known_macroses:
+    - NO_COPY_SEMANTIC(ChainExpression);
+    - NO_MOVE_SEMANTIC(ChainExpression);
+    name: ChainExpression
+    private: {}
+    public:
+      constructors:
+      - args: []
+        name: ChainExpression
+        postfix: = delete
+        raw_declaration: ChainExpression() = delete
+      - args:
+        - initializer_for: expression_
+          name: expression
+          type:
+            name: Expression
+            ptr_depth: 1
+        name: ChainExpression
+        other_initializers:
+        - class_field: Expression
+          init_value: AstNodeType::CHAIN_EXPRESSION
+        raw_declaration: explicit ChainExpression(Expression *expression)
+        return_type:
+          prefix: explicit
+      destructors:
+      - args: []
+        name: ~ChainExpression
+        postfix: override = default
+        raw_declaration: ~ChainExpression() override = default
+      methods:
+      - additional_attributes: get
+        args: []
+        name: GetExpression
+        postfix: const noexcept
+        raw_declaration: const Expression *GetExpression() const noexcept
+        return_type:
+          name: Expression
+          prefix: const
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: GetExpression
+        postfix: noexcept
+        raw_declaration: Expression *GetExpression() noexcept
+        return_type:
+          name: Expression
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: expression
+          type:
+            name: Expression
+            ptr_depth: 1
+        name: SetExpression
+        raw_declaration: void SetExpression(Expression *expression)
+        return_type:
+          name: void
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: parent
+          type:
+            name: AstNode
+            ptr_depth: 1
+        name: Clone
+        postfix: override
+        raw_declaration: '[[nodiscard]] ChainExpression *Clone(ArenaAllocator *allocator,
+          AstNode *parent) override'
+        return_type:
+          name: ChainExpression
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - args:
+        - name: cb
+          type:
+            name: NodeTransformer
+            prefix: const
+            ref_depth: 1
+        - name: transformationName
+          type:
+            name: string_view
+            namespace: std
+        name: TransformChildren
+        postfix: override
+        raw_declaration: void TransformChildren(const NodeTransformer &cb, std::string_view
+          transformationName) override
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: NodeTraverser
+            prefix: const
+            ref_depth: 1
+        name: Iterate
+        postfix: const override
+        raw_declaration: void Iterate(const NodeTraverser &cb) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: AstDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::AstDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: SrcDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::SrcDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: pg
+          type:
+            name: PandaGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::PandaGen *pg) const override
+        return_type:
+          name: void
+      - args:
+        - name: etsg
+          type:
+            name: ETSGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::ETSGen *etsg) const override
+        return_type:
+          name: void
+      - args:
+        - name: pg
+          type:
+            name: PandaGen
+            namespace: compiler
+            ptr_depth: 1
+        - name: objReg
+          type:
+            name: VReg
+            namespace: compiler
+            ref_depth: 1
+        name: CompileToReg
+        postfix: const
+        raw_declaration: void CompileToReg(compiler::PandaGen *pg, compiler::VReg
+          &objReg) const
+        return_type:
+          name: void
+      - args:
+        - name: checker
+          type:
+            name: TSChecker
+            namespace: checker
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::Type *Check(checker::TSChecker *checker) override
+        return_type:
+          name: Type
+          namespace: checker
+          ptr_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            namespace: checker
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::VerifiedType Check(checker::ETSChecker *checker)
+          override
+        return_type:
+          name: VerifiedType
+          namespace: checker
+      - args:
+        - name: v
+          type:
+            name: ASTVisitorT
+            ptr_depth: 1
+        name: Accept
+        postfix: override
+        raw_declaration: void Accept(ASTVisitorT *v) override
+        return_type:
+          name: void
+macros:
+- name: ES2PANDA_IR_EXPRESSION_CHAIN_EXPRESSION_H

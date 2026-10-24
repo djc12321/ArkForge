@@ -1,0 +1,337 @@
+es2panda:
+  class_definitions:
+  - known_macroses:
+    - NO_COPY_SEMANTIC(Compiler);
+    - NO_MOVE_SEMANTIC(Compiler);
+    name: Compiler
+    private: {}
+    public:
+      constructors:
+      - args:
+        - name: ext
+          type:
+            name: ScriptExtension
+        name: Compiler
+        raw_declaration: explicit Compiler(ScriptExtension ext)
+        return_type:
+          prefix: explicit
+      - args:
+        - name: ext
+          type:
+            name: ScriptExtension
+        - name: threadCount
+          type:
+            name: size_t
+        name: Compiler
+        raw_declaration: explicit Compiler(ScriptExtension ext, size_t threadCount)
+        return_type:
+          prefix: explicit
+      - args:
+        - name: ext
+          type:
+            name: ScriptExtension
+        - name: threadCount
+          type:
+            name: size_t
+        - name: plugins
+          type:
+            name: vector
+            namespace: std
+            ref_depth: 2
+            template_args:
+            - type:
+                name: Plugin
+                namespace: util
+        name: Compiler
+        raw_declaration: explicit Compiler(ScriptExtension ext, size_t threadCount,
+          std::vector<util::Plugin> &&plugins)
+        return_type:
+          prefix: explicit
+      destructors:
+      - args: []
+        name: ~Compiler
+        raw_declaration: ~Compiler()
+      methods:
+      - args:
+        - name: input
+          type:
+            name: SourceFile
+            prefix: const
+            ref_depth: 1
+        - name: options
+          type:
+            name: Options
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        - name: diagnosticEngine
+          type:
+            name: DiagnosticEngine
+            namespace: util
+            ref_depth: 1
+        - default_value: '0'
+          name: parseStatus
+          type:
+            name: uint32_t
+        name: Compile
+        raw_declaration: "std::unordered_map<std::string, std::unique_ptr<pandasm::Program>>\
+          \ Compile(const SourceFile &input,\n                                   \
+          \                                            const util::Options &options,\n\
+          \                                                                      \
+          \         util::DiagnosticEngine &diagnosticEngine,\n                  \
+          \                                                             uint32_t parseStatus\
+          \ = 0)"
+        return_type:
+          name: unordered_map
+          namespace: std
+          template_args:
+          - type:
+              name: string
+              namespace: std
+          - type:
+              name: unique_ptr
+              namespace: std
+              template_args:
+              - type:
+                  name: Program
+                  namespace: pandasm
+      - args:
+        - name: prog
+          type:
+            name: Program
+            namespace: pandasm
+            prefix: const
+            ptr_depth: 1
+        name: DumpAsm
+        raw_declaration: static void DumpAsm(const pandasm::Program *prog)
+        return_type:
+          name: void
+          prefix: static
+      - additional_attributes: get
+        args: []
+        name: GetError
+        postfix: const noexcept
+        raw_declaration: const util::ThrowableDiagnostic &GetError() const noexcept
+        return_type:
+          name: ThrowableDiagnostic
+          namespace: util
+          prefix: const
+          ref_depth: 1
+      - args: []
+        name: GetPhasesList
+        postfix: const
+        raw_declaration: std::string GetPhasesList() const
+        return_type:
+          name: string
+          namespace: std
+      - additional_attributes: get
+        args: []
+        name: Plugins
+        raw_declaration: std::vector<util::Plugin> const &Plugins()
+        return_type:
+          name: vector
+          namespace: std
+          other_modifiers: const
+          ref_depth: 1
+          template_args:
+          - type:
+              name: Plugin
+              namespace: util
+  compiler:
+    class_forward_declaration:
+    - CompilerImpl
+  enums:
+  - flags:
+    - GEN_STD_LIB
+    - PROJECT
+    - SINGLE_FILE
+    - SIMULTANEOUS
+    - SIMULTANEOUS_INCREMENTAL
+    kind: simple
+    name: CompilationMode
+    namespace: es2panda
+  functions:
+  - args:
+    - name: ext
+      type:
+        name: ScriptExtension
+    name: ToLanguage
+    raw_declaration: inline Language ToLanguage(ScriptExtension ext)
+    return_type:
+      name: Language
+      prefix: inline
+  parser:
+    class_forward_declaration:
+    - ParserImpl
+  structs:
+  - members:
+    - args:
+      - name: fn
+        type:
+          name: string_view
+          namespace: std
+      - name: s
+        type:
+          name: string_view
+          namespace: std
+      name: SourceFile
+      raw_declaration: SourceFile(std::string_view fn, std::string_view s)
+    - args:
+      - name: fn
+        type:
+          name: string_view
+          namespace: std
+      - name: s
+        type:
+          name: string_view
+          namespace: std
+      - name: m
+        type:
+          name: bool
+      name: SourceFile
+      raw_declaration: SourceFile(std::string_view fn, std::string_view s, bool m)
+    - args:
+      - name: fn
+        type:
+          name: string_view
+          namespace: std
+      - name: s
+        type:
+          name: string_view
+          namespace: std
+      - name: m
+        type:
+          name: bool
+      - name: d
+        type:
+          name: string_view
+          namespace: std
+      name: SourceFile
+      raw_declaration: SourceFile(std::string_view fn, std::string_view s, bool m,
+        std::string_view d)
+    - args:
+      - name: fn
+        type:
+          name: string_view
+          namespace: std
+      - name: s
+        type:
+          name: string_view
+          namespace: std
+      - name: rp
+        type:
+          name: string_view
+          namespace: std
+      - name: m
+        type:
+          name: bool
+      - name: d
+        type:
+          name: bool
+      name: SourceFile
+      raw_declaration: SourceFile(std::string_view fn, std::string_view s, std::string_view
+        rp, bool m, bool d)
+    - default_constructor: ''
+      name: filePath
+      type:
+        name: string_view
+        namespace: std
+    - default_constructor: ''
+      name: fileFolder
+      type:
+        name: string_view
+        namespace: std
+    - default_constructor: ''
+      name: source
+      type:
+        name: string_view
+        namespace: std
+    - default_constructor: ''
+      name: resolvedPath
+      type:
+        name: string_view
+        namespace: std
+    - default_constructor: ''
+      name: isModule
+      type:
+        name: bool
+    - default_constructor: ''
+      name: isDeclForDynamicStaticInterop
+      type:
+        name: bool
+    - default_constructor: ''
+      name: dest
+      type:
+        name: string_view
+        namespace: std
+    name: SourceFile
+  usings:
+  - name: ETSWarnings
+    type:
+      name: Enum
+      namespace: util::gen::ets_warnings
+  - name: EvalMode
+    type:
+      name: Enum
+      namespace: util::gen::eval_mode
+  - name: ScriptExtension
+    type:
+      name: Enum
+      namespace: util::gen::extension
+  util:
+    class_forward_declaration:
+    - Options
+    - DiagnosticEngine
+  varbinder:
+    class_forward_declaration:
+    - VarBinder
+  vars:
+  - default_value: '"0.1"'
+    name: ES2PANDA_VERSION
+    type:
+      name: string_view
+      namespace: std
+      prefix: constexpr
+  - default_value: '"*ERROR_LITERAL*"'
+    name: ERROR_LITERAL[]
+    type:
+      name: char
+      other_modifiers: const
+      postfix: const
+      prefix: inline constexpr
+  - default_value: '"*ERROR_TYPE*"'
+    name: ERROR_TYPE[]
+    type:
+      name: char
+      other_modifiers: const
+      postfix: const
+      prefix: inline constexpr
+  - default_value: '"..."'
+    name: INVALID_EXPRESSION[]
+    type:
+      name: char
+      other_modifiers: const
+      postfix: const
+      prefix: inline constexpr
+  - name: g_diagnosticEngine
+    type:
+      name: DiagnosticEngine
+      namespace: util
+      prefix: extern
+      ptr_depth: 1
+include:
+- '"util/es2pandaMacros.h"'
+- '"util/plugin.h"'
+- '"util/diagnostic.h"'
+- '"generated/options.h"'
+- '"util/language.h"'
+ir:
+  class_forward_declaration:
+  - AstNode
+  - Identifier
+  - BlockStatement
+macros:
+- name: ES2PANDA_PUBLIC_H
+pandasm:
+  structs:
+  - name: Program

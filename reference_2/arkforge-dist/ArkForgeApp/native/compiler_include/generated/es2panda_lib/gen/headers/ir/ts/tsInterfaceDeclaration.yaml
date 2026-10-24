@@ -1,0 +1,548 @@
+include:
+- '"varbinder/scope.h"'
+- '"ir/annotationAllowed.h"'
+- '"ir/statement.h"'
+- '"ir/statements/annotationUsage.h"'
+ir:
+  class_definitions:
+  - extends: public AnnotationAllowed<TypedStatement>
+    name: TSInterfaceDeclaration
+    private: {}
+    public:
+      constructors:
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        - name: extends
+          type:
+            name: ArenaVector
+            ref_depth: 2
+            template_args:
+            - type:
+                name: TSInterfaceHeritage
+                ptr_depth: 1
+        - name: data
+          type:
+            name: ConstructorData
+            ref_depth: 2
+        name: TSInterfaceDeclaration
+        other_initializers:
+        - class_field: AnnotationAllowed<TypedStatement>
+          init_value: AstNodeType::TS_INTERFACE_DECLARATION, allocator
+        - class_field: id_
+          init_value: data.id
+        - class_field: typeParams_
+          init_value: data.typeParams
+        - class_field: body_
+          init_value: data.body
+        - class_field: extends_
+          init_value: std::move(extends)
+        - class_field: isStatic_
+          init_value: data.isStatic
+        - class_field: isExternal_
+          init_value: data.isExternal
+        - class_field: lang_
+          init_value: data.lang
+        raw_declaration: "explicit TSInterfaceDeclaration([[maybe_unused]] ArenaAllocator\
+          \ *allocator,\n                                    ArenaVector<TSInterfaceHeritage\
+          \ *> &&extends, ConstructorData &&data)"
+        return_type:
+          prefix: explicit
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        - name: extends
+          type:
+            name: ArenaVector
+            ref_depth: 2
+            template_args:
+            - type:
+                name: TSInterfaceHeritage
+                ptr_depth: 1
+        - name: data
+          type:
+            name: ConstructorData
+            ref_depth: 2
+        - name: history
+          type:
+            name: AstNodeHistory
+            ptr_depth: 1
+        name: TSInterfaceDeclaration
+        other_initializers:
+        - class_field: AnnotationAllowed<TypedStatement>
+          init_value: AstNodeType::TS_INTERFACE_DECLARATION, allocator
+        - class_field: id_
+          init_value: data.id
+        - class_field: typeParams_
+          init_value: data.typeParams
+        - class_field: body_
+          init_value: data.body
+        - class_field: extends_
+          init_value: std::move(extends)
+        - class_field: isStatic_
+          init_value: data.isStatic
+        - class_field: isExternal_
+          init_value: data.isExternal
+        - class_field: lang_
+          init_value: data.lang
+        raw_declaration: "explicit TSInterfaceDeclaration([[maybe_unused]] ArenaAllocator\
+          \ *allocator,\n                                    ArenaVector<TSInterfaceHeritage\
+          \ *> &&extends, ConstructorData &&data,\n                              \
+          \      AstNodeHistory *history)"
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: IsScopeBearer
+        postfix: const noexcept override
+        raw_declaration: '[[nodiscard]] bool IsScopeBearer() const noexcept override'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: Scope
+        postfix: const noexcept override
+        raw_declaration: '[[nodiscard]] varbinder::LocalScope *Scope() const noexcept
+          override'
+        return_type:
+          name: LocalScope
+          namespace: varbinder
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: scope
+          type:
+            name: LocalScope
+            namespace: varbinder
+            ptr_depth: 1
+        name: SetScope
+        raw_declaration: void SetScope(varbinder::LocalScope *scope)
+        return_type:
+          name: void
+      - args: []
+        name: ClearScope
+        postfix: noexcept override
+        raw_declaration: void ClearScope() noexcept override
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Body
+        raw_declaration: TSInterfaceBody *Body()
+        return_type:
+          name: TSInterfaceBody
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Body
+        postfix: const
+        raw_declaration: const TSInterfaceBody *Body() const
+        return_type:
+          name: TSInterfaceBody
+          prefix: const
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: body
+          type:
+            name: TSInterfaceBody
+            ptr_depth: 1
+        name: SetBody
+        raw_declaration: void SetBody(TSInterfaceBody *body)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Id
+        raw_declaration: Identifier *Id()
+        return_type:
+          name: Identifier
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Id
+        postfix: const
+        raw_declaration: const Identifier *Id() const
+        return_type:
+          name: Identifier
+          prefix: const
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: id
+          type:
+            name: Identifier
+            ptr_depth: 1
+        name: SetId
+        raw_declaration: void SetId(Identifier *id)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: InternalName
+        postfix: const
+        raw_declaration: const util::StringView &InternalName() const
+        return_type:
+          name: StringView
+          namespace: util
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: set
+        args:
+        - name: internalName
+          type:
+            name: StringView
+            namespace: util
+        name: SetInternalName
+        raw_declaration: void SetInternalName(util::StringView internalName)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: IsStatic
+        postfix: const
+        raw_declaration: bool IsStatic() const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args: []
+        name: IsFromExternal
+        postfix: const
+        raw_declaration: bool IsFromExternal() const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args: []
+        name: TypeParams
+        postfix: const
+        raw_declaration: const TSTypeParameterDeclaration *TypeParams() const
+        return_type:
+          name: TSTypeParameterDeclaration
+          prefix: const
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: TypeParams
+        raw_declaration: TSTypeParameterDeclaration *TypeParams()
+        return_type:
+          name: TSTypeParameterDeclaration
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: typeParams
+          type:
+            name: TSTypeParameterDeclaration
+            ptr_depth: 1
+        name: SetTypeParams
+        raw_declaration: void SetTypeParams(TSTypeParameterDeclaration *typeParams)
+        return_type:
+          name: void
+      - args: []
+        name: Extends
+        raw_declaration: '[[nodiscard]] const ArenaVector<TSInterfaceHeritage *> &Extends()'
+        return_type:
+          name: ArenaVector
+          prefix: '[[nodiscard]] const'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: TSInterfaceHeritage
+              ptr_depth: 1
+      - args: []
+        name: ExtendsForUpdate
+        raw_declaration: '[[nodiscard]] ArenaVector<TSInterfaceHeritage *> &ExtendsForUpdate()'
+        return_type:
+          name: ArenaVector
+          prefix: '[[nodiscard]]'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: TSInterfaceHeritage
+              ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Extends
+        postfix: const
+        raw_declaration: const ArenaVector<TSInterfaceHeritage *> &Extends() const
+        return_type:
+          name: ArenaVector
+          prefix: const
+          ref_depth: 1
+          template_args:
+          - type:
+              name: TSInterfaceHeritage
+              ptr_depth: 1
+      - args:
+        - name: cb
+          type:
+            name: NodeTransformer
+            prefix: const
+            ref_depth: 1
+        - name: transformationName
+          type:
+            name: string_view
+            namespace: std
+        name: TransformChildren
+        postfix: override
+        raw_declaration: void TransformChildren(const NodeTransformer &cb, std::string_view
+          transformationName) override
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Language
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] es2panda::Language Language() const noexcept'
+        return_type:
+          name: Language
+          namespace: es2panda
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: GetAnonClass
+        postfix: noexcept
+        raw_declaration: ClassDeclaration *GetAnonClass() noexcept
+        return_type:
+          name: ClassDeclaration
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: GetAnonClass
+        postfix: const noexcept
+        raw_declaration: ClassDeclaration *GetAnonClass() const noexcept
+        return_type:
+          name: ClassDeclaration
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: anonClass
+          type:
+            name: ClassDeclaration
+            ptr_depth: 1
+        name: SetAnonClass
+        raw_declaration: void SetAnonClass(ClassDeclaration *anonClass)
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: NodeTraverser
+            prefix: const
+            ref_depth: 1
+        name: Iterate
+        postfix: const override
+        raw_declaration: void Iterate(const NodeTraverser &cb) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: AstDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::AstDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: SrcDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::SrcDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: pg
+          type:
+            name: PandaGen
+            namespace: compiler
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile([[maybe_unused]] compiler::PandaGen *pg) const
+          override
+        return_type:
+          name: void
+      - args:
+        - name: etsg
+          type:
+            name: ETSGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::ETSGen *etsg) const override
+        return_type:
+          name: void
+      - args:
+        - name: checker
+          type:
+            name: TSChecker
+            namespace: checker
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::Type *Check([[maybe_unused]] checker::TSChecker
+          *checker) override
+        return_type:
+          name: Type
+          namespace: checker
+          ptr_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            namespace: checker
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::VerifiedType Check([[maybe_unused]] checker::ETSChecker
+          *checker) override
+        return_type:
+          name: VerifiedType
+          namespace: checker
+      - args:
+        - name: checker
+          type:
+            name: TSChecker
+            namespace: checker
+            ptr_depth: 1
+        - name: bindingVar
+          type:
+            name: Variable
+            namespace: varbinder
+            ptr_depth: 1
+        name: InferType
+        postfix: const
+        raw_declaration: checker::Type *InferType(checker::TSChecker *checker, varbinder::Variable
+          *bindingVar) const
+        return_type:
+          name: Type
+          namespace: checker
+          ptr_depth: 1
+      - args:
+        - name: v
+          type:
+            name: ASTVisitorT
+            ptr_depth: 1
+        name: Accept
+        postfix: override
+        raw_declaration: void Accept(ASTVisitorT *v) override
+        return_type:
+          name: void
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        name: Construct
+        postfix: override
+        raw_declaration: TSInterfaceDeclaration *Construct(ArenaAllocator *allocator)
+          override
+        return_type:
+          name: TSInterfaceDeclaration
+          ptr_depth: 1
+      - args:
+        - name: other
+          type:
+            name: AstNode
+            ptr_depth: 1
+        name: CopyTo
+        postfix: const override
+        raw_declaration: void CopyTo(AstNode *other) const override
+        return_type:
+          name: void
+      - args:
+        - name: extends
+          type:
+            name: TSInterfaceHeritage
+            ptr_depth: 1
+        name: EmplaceExtends
+        raw_declaration: void EmplaceExtends(TSInterfaceHeritage *extends)
+        return_type:
+          name: void
+      - args: []
+        name: ClearExtends
+        raw_declaration: void ClearExtends()
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: extends
+          type:
+            name: TSInterfaceHeritage
+            ptr_depth: 1
+        - name: index
+          type:
+            name: size_t
+        name: SetValueExtends
+        raw_declaration: void SetValueExtends(TSInterfaceHeritage *extends, size_t
+          index)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: extendsList
+          type:
+            name: ArenaVector
+            ref_depth: 2
+            template_args:
+            - type:
+                name: TSInterfaceHeritage
+                ptr_depth: 1
+        name: SetExtends
+        raw_declaration: void SetExtends(ArenaVector<TSInterfaceHeritage *> &&extendsList)
+        return_type:
+          name: void
+    structs:
+    - members:
+      - name: id
+        type:
+          name: Identifier
+          ptr_depth: 1
+      - name: typeParams
+        type:
+          name: TSTypeParameterDeclaration
+          ptr_depth: 1
+      - name: body
+        type:
+          name: TSInterfaceBody
+          ptr_depth: 1
+      - name: isStatic
+        type:
+          name: bool
+      - name: isExternal
+        type:
+          name: bool
+      - name: lang
+        type:
+          name: Language
+          namespace: es2panda
+      name: ConstructorData
+  class_forward_declaration:
+  - Identifier
+  - TSInterfaceBody
+  - TSInterfaceHeritage
+  - TSTypeParameterDeclaration
+macros:
+- name: ES2PANDA_IR_TS_INTERFACE_DECLARATION_H
+varbinder:
+  class_forward_declaration:
+  - Variable

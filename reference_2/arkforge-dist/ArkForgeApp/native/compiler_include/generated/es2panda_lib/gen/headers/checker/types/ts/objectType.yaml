@@ -1,0 +1,419 @@
+checker:
+  class_definitions:
+  - enums:
+    - flags:
+      - LITERAL
+      - CLASS
+      - INTERFACE
+      - TUPLE
+      - FUNCTION
+      kind: simple
+      name: ObjectTypeKind
+      namespace: checker
+      parent_class_name: ObjectType
+    extends: public Type
+    known_macroses:
+    - OBJECT_TYPE_MAPPING(OBJECT_TYPE_IS_CHECKS)
+    - OBJECT_TYPE_MAPPING(OBJECT_TYPE_AS_CASTS)
+    macros:
+    - arguments: object_kind, type_name
+      name: OBJECT_TYPE_IS_CHECKS
+    - arguments: objectKind, typeName
+      name: OBJECT_TYPE_AS_CASTS
+    name: ObjectType
+    protected: {}
+    public:
+      constructors:
+      - args:
+        - initializer_for: kind_
+          name: kind
+          type:
+            name: ObjectTypeKind
+            namespace: ObjectType
+        name: ObjectType
+        other_initializers:
+        - class_field: Type
+          init_value: TypeFlag::OBJECT
+        - class_field: objFlag_
+          init_value: ObjectFlags::NO_OPTS
+        raw_declaration: explicit ObjectType(ObjectType::ObjectTypeKind kind)
+        return_type:
+          prefix: explicit
+      - args:
+        - initializer_for: kind_
+          name: kind
+          type:
+            name: ObjectTypeKind
+            namespace: ObjectType
+        - initializer_for: desc_
+          name: desc
+          type:
+            name: ObjectDescriptor
+            ptr_depth: 1
+        name: ObjectType
+        other_initializers:
+        - class_field: Type
+          init_value: TypeFlag::OBJECT
+        - class_field: objFlag_
+          init_value: ObjectFlags::NO_OPTS
+        raw_declaration: ObjectType(ObjectType::ObjectTypeKind kind, ObjectDescriptor
+          *desc)
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Kind
+        postfix: const
+        raw_declaration: ObjectType::ObjectTypeKind Kind() const
+        return_type:
+          name: ObjectTypeKind
+          namespace: ObjectType
+      - additional_attributes: get
+        args: []
+        name: CallSignatures
+        raw_declaration: virtual ArenaVector<Signature *> CallSignatures()
+        return_type:
+          name: ArenaVector
+          prefix: virtual
+          template_args:
+          - type:
+              name: Signature
+              ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: ConstructSignatures
+        raw_declaration: virtual ArenaVector<Signature *> ConstructSignatures()
+        return_type:
+          name: ArenaVector
+          prefix: virtual
+          template_args:
+          - type:
+              name: Signature
+              ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: StringIndexInfo
+        postfix: const
+        raw_declaration: virtual const IndexInfo *StringIndexInfo() const
+        return_type:
+          name: IndexInfo
+          prefix: virtual const
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: NumberIndexInfo
+        postfix: const
+        raw_declaration: virtual const IndexInfo *NumberIndexInfo() const
+        return_type:
+          name: IndexInfo
+          prefix: virtual const
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: StringIndexInfo
+        raw_declaration: virtual IndexInfo *StringIndexInfo()
+        return_type:
+          name: IndexInfo
+          prefix: virtual
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: NumberIndexInfo
+        raw_declaration: virtual IndexInfo *NumberIndexInfo()
+        return_type:
+          name: IndexInfo
+          prefix: virtual
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Properties
+        raw_declaration: virtual ArenaVector<varbinder::LocalVariable *> Properties()
+        return_type:
+          name: ArenaVector
+          prefix: virtual
+          template_args:
+          - type:
+              name: LocalVariable
+              namespace: varbinder
+              ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Desc
+        raw_declaration: ObjectDescriptor *Desc()
+        return_type:
+          name: ObjectDescriptor
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Desc
+        postfix: const
+        raw_declaration: const ObjectDescriptor *Desc() const
+        return_type:
+          name: ObjectDescriptor
+          prefix: const
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: prop
+          type:
+            name: LocalVariable
+            namespace: varbinder
+            ptr_depth: 1
+        name: AddProperty
+        raw_declaration: void AddProperty(varbinder::LocalVariable *prop)
+        return_type:
+          name: void
+      - args:
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        - name: searchInBase
+          type:
+            name: bool
+            prefix: '[[maybe_unused]]'
+        name: GetProperty
+        postfix: const
+        raw_declaration: "virtual varbinder::LocalVariable *GetProperty(const util::StringView\
+          \ &name,\n                                                  [[maybe_unused]]\
+          \ bool searchInBase) const"
+        return_type:
+          name: LocalVariable
+          namespace: varbinder
+          prefix: virtual
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: signature
+          type:
+            name: Signature
+            ptr_depth: 1
+        name: AddCallSignature
+        raw_declaration: void AddCallSignature(Signature *signature)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: signature
+          type:
+            name: Signature
+            ptr_depth: 1
+        name: AddConstructSignature
+        raw_declaration: void AddConstructSignature(Signature *signature)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: flag
+          type:
+            name: ObjectFlags
+        name: AddObjectFlag
+        raw_declaration: void AddObjectFlag(ObjectFlags flag)
+        return_type:
+          name: void
+      - args:
+        - name: flag
+          type:
+            name: ObjectFlags
+        name: RemoveObjectFlag
+        raw_declaration: void RemoveObjectFlag(ObjectFlags flag)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - name: flag
+          type:
+            name: ObjectFlags
+        name: HasObjectFlag
+        postfix: const
+        raw_declaration: bool HasObjectFlag(ObjectFlags flag) const
+        return_type:
+          name: bool
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: sourceSignature
+          type:
+            name: Signature
+            ptr_depth: 1
+        - name: targetSignatures
+          type:
+            name: ArenaVector
+            ptr_depth: 1
+            template_args:
+            - type:
+                name: Signature
+                ptr_depth: 1
+        name: SignatureRelatedToSomeSignature
+        raw_declaration: "static bool SignatureRelatedToSomeSignature(TypeRelation\
+          \ *relation, Signature *sourceSignature,\n                             \
+          \                   ArenaVector<Signature *> *targetSignatures)"
+        return_type:
+          name: bool
+          prefix: static
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: sourceSignatures
+          type:
+            name: ArenaVector
+            prefix: const
+            ref_depth: 1
+            template_args:
+            - type:
+                name: Signature
+                ptr_depth: 1
+        - name: targetSignatures
+          type:
+            name: ArenaVector
+            prefix: const
+            ref_depth: 1
+            template_args:
+            - type:
+                name: Signature
+                ptr_depth: 1
+        name: EachSignatureRelatedToSomeSignature
+        raw_declaration: "static bool EachSignatureRelatedToSomeSignature(TypeRelation\
+          \ *relation,\n                                                    const\
+          \ ArenaVector<Signature *> &sourceSignatures,\n                        \
+          \                            const ArenaVector<Signature *> &targetSignatures)"
+        return_type:
+          name: bool
+          prefix: static
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: otherObj
+          type:
+            name: ObjectType
+            ptr_depth: 1
+        name: FindPropertyAndCheckIdentical
+        raw_declaration: bool FindPropertyAndCheckIdentical(TypeRelation *relation,
+          ObjectType *otherObj)
+        return_type:
+          name: bool
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: otherObj
+          type:
+            name: ObjectType
+            ptr_depth: 1
+        name: IdenticalPropertiesHelper
+        raw_declaration: bool IdenticalPropertiesHelper(TypeRelation *relation, ObjectType
+          *otherObj)
+        return_type:
+          name: bool
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: other
+          type:
+            name: Type
+            ptr_depth: 1
+        name: Identical
+        postfix: override
+        raw_declaration: void Identical(TypeRelation *relation, Type *other) override
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: source
+          type:
+            name: Type
+            ptr_depth: 1
+        name: AssignmentTarget
+        postfix: override
+        raw_declaration: void AssignmentTarget(TypeRelation *relation, Type *source)
+          override
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: source
+          type:
+            name: ObjectType
+            ptr_depth: 1
+        name: CheckExcessProperties
+        raw_declaration: void CheckExcessProperties(TypeRelation *relation, ObjectType
+          *source)
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: source
+          type:
+            name: ObjectType
+            ptr_depth: 1
+        name: AssignProperties
+        raw_declaration: void AssignProperties(TypeRelation *relation, ObjectType
+          *source)
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: source
+          type:
+            name: ObjectType
+            ptr_depth: 1
+        - default_value: 'true'
+          name: assignCallSignatures
+          type:
+            name: bool
+        name: AssignSignatures
+        raw_declaration: void AssignSignatures(TypeRelation *relation, ObjectType
+          *source, bool assignCallSignatures = true)
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: source
+          type:
+            name: ObjectType
+            ptr_depth: 1
+        - default_value: 'true'
+          name: assignNumberInfo
+          type:
+            name: bool
+        name: AssignIndexInfo
+        raw_declaration: void AssignIndexInfo(TypeRelation *relation, ObjectType *source,
+          bool assignNumberInfo = true)
+        return_type:
+          name: void
+include:
+- '"checker/types/type.h"'
+- '"checker/types/ts/objectDescriptor.h"'
+- '"varbinder/variable.h"'
+- '"util/ustring.h"'
+- '"util/enumbitops.h"'
+macros:
+- name: ES2PANDA_COMPILER_CHECKER_TYPES_TS_OBJECT_TYPE_H
+structs:
+- members: []
+  name: enumbitops::IsAllowedType<ark::es2panda::checker::ObjectFlags>

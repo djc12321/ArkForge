@@ -1,0 +1,18 @@
+{
+  "upstream": "https://github.com/microsoft/vscode",
+  "commit": "eeedb17b5b859c64729f99497de55df609c267c5",
+  "version": "1.144.0",
+  "sha256": "28cb9f0eed47a1bd66c8790c427bd681edbe1b07ed4f9a149248486daf0491b3",
+  "files": 2064,
+  "builtinExtensions": 62,
+  "bytes": 29004087,
+  "license": "MIT",
+  "target": "web",
+  "hostRuntimeRequired": false,
+  "sourcePatches": [
+    "terminal-default-profile.patch: create the sole contributed terminal profile directly from New Terminal",
+    "welcome-guide.patch: expose the native Help menu for the first-row ArkForge guide",
+    "accounts-context.patch: expose MenuId.AccountsContext and supply a validated public GitHub profile to the existing avatar renderer; no layout/CSS changes",
+    "chat-primary-action.patch: open ArkForge Agent from the chat bubble primary action; avoid duplicate split-button touch activation, enable workspace touch search and outside-pointer dismissal, and preserve layout"
+  ]
+}

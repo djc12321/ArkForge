@@ -1,0 +1,315 @@
+checker:
+  class_definitions:
+  - extends: public Type
+    name: UnionType
+    private: {}
+    public:
+      constructors:
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: types
+          type:
+            name: initializer_list
+            namespace: std
+            template_args:
+            - type:
+                name: Type
+                ptr_depth: 1
+        name: UnionType
+        other_initializers:
+        - class_field: Type
+          init_value: TypeFlag::UNION
+        - class_field: constituentTypes_
+          init_value: allocator->Adapter()
+        - class_field: cachedSyntheticProperties_
+          init_value: allocator->Adapter()
+        raw_declaration: UnionType(ArenaAllocator *allocator, std::initializer_list<Type
+          *> types)
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: constituentTypes
+          type:
+            name: ArenaVector
+            ref_depth: 2
+            template_args:
+            - type:
+                name: Type
+                ptr_depth: 1
+        name: UnionType
+        other_initializers:
+        - class_field: Type
+          init_value: TypeFlag::UNION
+        - class_field: constituentTypes_
+          init_value: std::move(constituentTypes)
+        - class_field: cachedSyntheticProperties_
+          init_value: allocator->Adapter()
+        raw_declaration: explicit UnionType(ArenaAllocator *allocator, ArenaVector<Type
+          *> &&constituentTypes)
+        return_type:
+          prefix: explicit
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - initializer_for: constituentTypes_
+          name: constituentTypes
+          type:
+            name: ArenaVector
+            ref_depth: 1
+            template_args:
+            - type:
+                name: Type
+                ptr_depth: 1
+        name: UnionType
+        other_initializers:
+        - class_field: Type
+          init_value: TypeFlag::UNION
+        - class_field: cachedSyntheticProperties_
+          init_value: allocator->Adapter()
+        raw_declaration: explicit UnionType(ArenaAllocator *allocator, ArenaVector<Type
+          *> &constituentTypes)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: ConstituentTypes
+        postfix: const
+        raw_declaration: const ArenaVector<Type *> &ConstituentTypes() const
+        return_type:
+          name: ArenaVector
+          prefix: const
+          ref_depth: 1
+          template_args:
+          - type:
+              name: Type
+              ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: ConstituentTypes
+        raw_declaration: ArenaVector<Type *> &ConstituentTypes()
+        return_type:
+          name: ArenaVector
+          ref_depth: 1
+          template_args:
+          - type:
+              name: Type
+              ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: type
+          type:
+            name: Type
+            ptr_depth: 1
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        name: AddConstituentType
+        raw_declaration: void AddConstituentType(Type *type, TypeRelation *relation)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: flag
+          type:
+            name: TypeFlag
+        name: AddConstituentFlag
+        raw_declaration: void AddConstituentFlag(TypeFlag flag)
+        return_type:
+          name: void
+      - args:
+        - name: flag
+          type:
+            name: TypeFlag
+        name: RemoveConstituentFlag
+        raw_declaration: void RemoveConstituentFlag(TypeFlag flag)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - name: flag
+          type:
+            name: TypeFlag
+        name: HasConstituentFlag
+        postfix: const
+        raw_declaration: bool HasConstituentFlag(TypeFlag flag) const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args: []
+        name: CachedSyntheticProperties
+        raw_declaration: ArenaUnorderedMap<util::StringView, varbinder::Variable *>
+          &CachedSyntheticProperties()
+        return_type:
+          name: ArenaUnorderedMap
+          ref_depth: 1
+          template_args:
+          - type:
+              name: StringView
+              namespace: util
+          - type:
+              name: Variable
+              namespace: varbinder
+              ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: MergedObjectType
+        raw_declaration: ObjectType *MergedObjectType()
+        return_type:
+          name: ObjectType
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: type
+          type:
+            name: ObjectType
+            ptr_depth: 1
+        name: SetMergedObjectType
+        raw_declaration: void SetMergedObjectType(ObjectType *type)
+        return_type:
+          name: void
+      - args:
+        - name: ss
+          type:
+            name: stringstream
+            namespace: std
+            ref_depth: 1
+        - name: precise
+          type:
+            name: bool
+        name: ToString
+        postfix: const override
+        raw_declaration: void ToString(std::stringstream &ss, bool precise) const
+          override
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: other
+          type:
+            name: Type
+            ptr_depth: 1
+        name: Identical
+        postfix: override
+        raw_declaration: void Identical(TypeRelation *relation, Type *other) override
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: source
+          type:
+            name: Type
+            ptr_depth: 1
+        name: AssignmentTarget
+        postfix: override
+        raw_declaration: void AssignmentTarget(TypeRelation *relation, Type *source)
+          override
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: target
+          type:
+            name: Type
+            ptr_depth: 1
+        name: AssignmentSource
+        postfix: override
+        raw_declaration: bool AssignmentSource(TypeRelation *relation, Type *target)
+          override
+        return_type:
+          name: bool
+      - args: []
+        name: GetTypeFacts
+        postfix: const override
+        raw_declaration: TypeFacts GetTypeFacts() const override
+        return_type:
+          name: TypeFacts
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: globalTypes
+          type:
+            name: GlobalTypesHolder
+            ptr_depth: 1
+        name: Instantiate
+        postfix: override
+        raw_declaration: Type *Instantiate(ArenaAllocator *allocator, TypeRelation
+          *relation, GlobalTypesHolder *globalTypes) override
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: constituentTypes
+          type:
+            name: ArenaVector
+            ref_depth: 1
+            template_args:
+            - type:
+                name: Type
+                ptr_depth: 1
+        name: RemoveDuplicatedTypes
+        raw_declaration: static void RemoveDuplicatedTypes(TypeRelation *relation,
+          ArenaVector<Type *> &constituentTypes)
+        return_type:
+          name: void
+          prefix: static
+      - args:
+        - name: unionType
+          type:
+            name: UnionType
+            ptr_depth: 1
+        - name: globalTypesHolder
+          type:
+            name: GlobalTypesHolder
+            ptr_depth: 1
+        name: HandleUnionType
+        raw_declaration: static Type *HandleUnionType(UnionType *unionType, GlobalTypesHolder
+          *globalTypesHolder)
+        return_type:
+          name: Type
+          prefix: static
+          ptr_depth: 1
+      - args:
+        - name: type
+          type:
+            name: UnionType
+            ptr_depth: 1
+        name: RemoveRedundantLiteralTypesFromUnion
+        raw_declaration: static void RemoveRedundantLiteralTypesFromUnion(UnionType
+          *type)
+        return_type:
+          name: void
+          prefix: static
+  class_forward_declaration:
+  - GlobalTypesHolder
+include:
+- '"checker/types/type.h"'
+macros:
+- name: ES2PANDA_COMPILER_CHECKER_TYPES_TS_UNION_TYPE_H

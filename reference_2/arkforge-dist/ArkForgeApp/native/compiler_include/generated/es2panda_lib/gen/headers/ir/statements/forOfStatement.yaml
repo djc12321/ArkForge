@@ -1,0 +1,306 @@
+checker:
+  class_forward_declaration:
+  - ETSAnalyzer
+  - ETSObjectType
+  - ETSUnionType
+include:
+- '"checker/types/signature.h"'
+- '"ir/statements/loopStatement.h"'
+ir:
+  class_definitions:
+  - extends: public LoopStatement
+    friends:
+    - checker::ETSAnalyzer
+    known_macroses:
+    - NO_COPY_SEMANTIC(ForOfStatement);
+    - NO_MOVE_SEMANTIC(ForOfStatement);
+    name: ForOfStatement
+    private: {}
+    protected: {}
+    public:
+      constructors:
+      - args: []
+        name: ForOfStatement
+        postfix: = delete
+        raw_declaration: ForOfStatement() = delete
+      - args:
+        - initializer_for: left_
+          name: left
+          type:
+            name: AstNode
+            ptr_depth: 1
+        - initializer_for: right_
+          name: right
+          type:
+            name: Expression
+            ptr_depth: 1
+        - initializer_for: body_
+          name: body
+          type:
+            name: Statement
+            ptr_depth: 1
+        - initializer_for: isAwait_
+          name: isAwait
+          type:
+            name: bool
+            other_modifiers: const
+            postfix: const
+        name: ForOfStatement
+        other_initializers:
+        - class_field: LoopStatement
+          init_value: AstNodeType::FOR_OF_STATEMENT
+        raw_declaration: explicit ForOfStatement(AstNode *left, Expression *right,
+          Statement *body, bool const isAwait)
+        return_type:
+          prefix: explicit
+      destructors:
+      - args: []
+        name: ~ForOfStatement
+        postfix: override = default
+        raw_declaration: ~ForOfStatement() override = default
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Left
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] AstNode *Left() noexcept'
+        return_type:
+          name: AstNode
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Left
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const AstNode *Left() const noexcept'
+        return_type:
+          name: AstNode
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: left
+          type:
+            name: AstNode
+            ptr_depth: 1
+        name: SetLeft
+        raw_declaration: void SetLeft(AstNode *left)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Right
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] Expression *Right() noexcept'
+        return_type:
+          name: Expression
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Right
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const Expression *Right() const noexcept'
+        return_type:
+          name: Expression
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: right
+          type:
+            name: Expression
+            ptr_depth: 1
+        name: SetRight
+        raw_declaration: void SetRight(Expression *right)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Body
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] Statement *Body() noexcept'
+        return_type:
+          name: Statement
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Body
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const Statement *Body() const noexcept'
+        return_type:
+          name: Statement
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: body
+          type:
+            name: Statement
+            ptr_depth: 1
+        name: SetBody
+        raw_declaration: void SetBody(Statement *body)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: IsAwait
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsAwait() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: parent
+          type:
+            name: AstNode
+            ptr_depth: 1
+        name: Clone
+        postfix: override
+        raw_declaration: '[[nodiscard]] ForOfStatement *Clone(ArenaAllocator *allocator,
+          AstNode *parent) override'
+        return_type:
+          name: ForOfStatement
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - args:
+        - name: cb
+          type:
+            name: NodeTransformer
+            prefix: const
+            ref_depth: 1
+        - name: transformationName
+          type:
+            name: string_view
+            namespace: std
+        name: TransformChildren
+        postfix: override
+        raw_declaration: void TransformChildren(const NodeTransformer &cb, std::string_view
+          transformationName) override
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: NodeTraverser
+            prefix: const
+            ref_depth: 1
+        name: Iterate
+        postfix: const override
+        raw_declaration: void Iterate(const NodeTraverser &cb) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: AstDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::AstDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: SrcDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::SrcDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: pg
+          type:
+            name: PandaGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::PandaGen *pg) const override
+        return_type:
+          name: void
+      - args:
+        - name: etsg
+          type:
+            name: ETSGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::ETSGen *etsg) const override
+        return_type:
+          name: void
+      - args:
+        - name: checker
+          type:
+            name: TSChecker
+            namespace: checker
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::Type *Check(checker::TSChecker *checker) override
+        return_type:
+          name: Type
+          namespace: checker
+          ptr_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            namespace: checker
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::VerifiedType Check(checker::ETSChecker *checker)
+          override
+        return_type:
+          name: VerifiedType
+          namespace: checker
+      - args:
+        - name: v
+          type:
+            name: ASTVisitorT
+            ptr_depth: 1
+        name: Accept
+        postfix: override
+        raw_declaration: void Accept(ASTVisitorT *v) override
+        return_type:
+          name: void
+  class_forward_declaration:
+  - Expression
+  vars:
+  - default_value: '"Iterator"'
+    name: ITERATOR_INTERFACE_NAME[]
+    type:
+      name: char
+      other_modifiers: const
+      postfix: const
+      prefix: inline constexpr
+  - default_value: '"next"'
+    name: ITERATOR_INTERFACE_METHOD[]
+    type:
+      name: char
+      other_modifiers: const
+      postfix: const
+      prefix: inline constexpr
+  - default_value: '"IteratorResult"'
+    name: ITERATOR_RESULT_NAME[]
+    type:
+      name: char
+      other_modifiers: const
+      postfix: const
+      prefix: inline constexpr
+macros:
+- name: ES2PANDA_IR_STATEMENT_FOR_OF_STATEMENT_H
+varbinder:
+  class_forward_declaration:
+  - LoopScope

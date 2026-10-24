@@ -1,0 +1,24 @@
+{
+  "upstream": "https://www.kernel.org/pub/software/scm/git/git-2.55.0.tar.xz",
+  "version": "2.55.0",
+  "sourceSha256": "457fdb04dc8728e007d4688695e6912e6f680727920f2a40bf11eacc17505357",
+  "sourceChanges": [],
+  "platformAdapter": "native/git_exec_bridge.c linked with --wrap=execve,--wrap=execvp; private Unix process broker provides clean single-threaded CLI processes; wraps fork, execve, execvp, exit and atexit",
+  "adapterSha256": "be75d138f1fb65e900a9a0aad067be05d96a353eca16b7219ee7c9ffaa107895",
+  "processBrokerSha256": "a8fe69d4ffbd67cc3fe5e68c771ec3d06178c871f9ee955e12d824789967f43d",
+  "protocolSha256": "5606f35d1f667dd2daaf6ef5cc485795c54c4aa39c02d0e6cee18d8fc3e59017",
+  "launcherSha256": "57dbd35ac293b5d63cdd73421a8803f18fdc1adc5abd3749d11b4776a8c9132b",
+  "libraries": {
+    "libgit_exec.so": "1b608b25716713bc4bbc5317319e123082fc7191cd9debdfb3958075ba64cf69",
+    "libgit_remote_http.so": "0d76b9d562f6f08590cc05dc723e5c7454f1886b668366e2b41dd98c36524eee"
+  },
+  "curl": {
+    "version": "8.23.0",
+    "source": "https://curl.se/download/curl-8.23.0.tar.xz",
+    "sourceSha256": "8dadd7d2536a314f982ad05a651b713f426bf7d02cc2c76cffb9796f2218e6c5"
+  },
+  "caBundleSha256": "796f1389bfea13c0ed78f663b765baaff54a508e5483786bd6ece73c5e3e3cbe",
+  "license": "GPL-2.0",
+  "buildScript": "native/build_git_https.sh",
+  "validation": "WEB-W00: private GitHub HTTPS ls-remote, clone, fsck, fetch, pull and authorized empty-commit push verified 2026-10-23"
+}

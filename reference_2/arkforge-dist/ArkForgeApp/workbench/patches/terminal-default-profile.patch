@@ -1,0 +1,17 @@
+diff --git a/src/vs/workbench/contrib/terminal/browser/terminalActions.ts b/src/vs/workbench/contrib/terminal/browser/terminalActions.ts
+index c422bf0b..63301532 100644
+--- a/src/vs/workbench/contrib/terminal/browser/terminalActions.ts
++++ b/src/vs/workbench/contrib/terminal/browser/terminalActions.ts
+@@ -1258,7 +1258,11 @@ export function registerTerminalActions() {
+ 				c.service.setActiveInstance(instance);
+ 				await focusActiveTerminal(instance, c);
+ 			} else {
+-				if (c.profileService.contributedProfiles.length > 0) {
++				if (c.profileService.contributedProfiles.length === 1) {
++					const profile = c.profileService.contributedProfiles[0];
++					await c.service.createContributedTerminalProfile(profile.extensionIdentifier, profile.id, { location: TerminalLocation.Panel });
++					await c.groupService.showPanel(true);
++				} else if (c.profileService.contributedProfiles.length > 0) {
+ 					commandService.executeCommand(TerminalCommandId.NewWithProfile);
+ 				} else {
+ 					commandService.executeCommand(TerminalCommandId.Toggle);

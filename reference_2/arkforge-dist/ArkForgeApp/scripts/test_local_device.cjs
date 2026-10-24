@@ -1,0 +1,40 @@
+'use strict';
+const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
+const ts=require('C:/Program Files/Huawei/DevEco Studio/sdk/default/openharmony/ets/build-tools/ets-loader/node_modules/typescript');
+let targets=[],commands=[],waits=[];
+const hdc={hdcStartServer(){},hdcRun(command,directory,callback){
+ commands.push(command);
+ if(command==='hdc list targets')return callback(targets.shift()||'[Empty]');
+ if(command.endsWith('bm get --udid'))return callback('udid of current device is :\n'+'A'.repeat(64));
+ if(command.includes('aa start -b'))return callback('start ability successfully.');
+ if(command.includes('aa attach -b'))return callback('attach application successfully.');
+ if(command.includes('ARKFORGE_PID='))return callback('0\n1\nARKFORGE_PID=1234\n');
+ callback('Connect OK');
+}};
+const sandbox={exports:{},setTimeout(fn,ms){waits.push(ms);fn();},require(name){
+ if(name==='libhdc_z.so')return {default:hdc};
+ if(name==='libarkforge_script.so')return {default:{inspectLibrary:()=> 'loaded'}};
+ if(name.includes('AtomicFiles'))return {AtomicFiles:{write(){}}};
+ if(name.includes('CoreFileKit'))return {fileIo:{accessSync:()=>true}};
+ if(name.includes('PerformanceAnalysisKit'))return {hilog:{info(){}}};
+ return {};
+}};
+vm.runInNewContext(ts.transpileModule(fs.readFileSync('entry/src/main/ets/services/LocalDevice.ets','utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020}}).outputText,sandbox);
+const service=sandbox.exports.LocalDevice,context={tempDir:'/tmp/test',applicationInfo:{name:'com.test.ide'}};
+(async()=>{
+ targets=['[Empty]','127.0.0.1:8710 Unauthorized','127.0.0.1:8710'];
+ assert.equal(await service.signingUdid(context),'A'.repeat(64));
+ assert.equal(commands.filter(x=>x==='hdc list targets').length,3);
+ assert.equal(waits.filter(x=>x===1000).length,2);
+ commands=[];waits=[];targets=['127.0.0.1:8710'];
+ await service.connect(context);assert.equal(commands.length,2);assert.equal(waits.length,0);
+ commands=[];targets=['127.0.0.1:8710'];
+ assert.equal(await service.prepareDebugger(context,'com.test.target','EntryAbility'),'1234');
+ assert(!commands.some(x=>x.includes('aa start -D')),'must not block target startup before returning to editor');
+ assert(commands.findIndex(x=>x.includes('aa start -b com.example.harmonyplayground'))<commands.findIndex(x=>x.includes('aa attach -b')));
+ commands=[];waits=[];targets=[];
+ await assert.rejects(()=>service.connect(context),/尚未授权/);
+ assert.equal(commands.filter(x=>x==='hdc list targets').length,11);
+ assert.equal(waits.length,10);
+ console.log('PASS: first local HDC handshake waits for registration/authorization, ready targets return immediately, missing targets stop after a bounded wait.');
+})().catch(error=>{console.error(error);process.exitCode=1;});

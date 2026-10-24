@@ -1,0 +1,202 @@
+include:
+- '"ir/expression.h"'
+- '"generated/tokenType.h"'
+ir:
+  class_definitions:
+  - extends: public Expression
+    name: TSParameterProperty
+    private: {}
+    public:
+      constructors:
+      - args:
+        - initializer_for: accessibility_
+          name: accessibility
+          type:
+            name: AccessibilityOption
+        - initializer_for: parameter_
+          name: parameter
+          type:
+            name: Expression
+            ptr_depth: 1
+        - initializer_for: readonly_
+          name: readonly
+          type:
+            name: bool
+        - initializer_for: static_
+          name: isStatic
+          type:
+            name: bool
+        - initializer_for: export_
+          name: isExport
+          type:
+            name: bool
+        name: TSParameterProperty
+        other_initializers:
+        - class_field: Expression
+          init_value: AstNodeType::TS_PARAMETER_PROPERTY
+        raw_declaration: "explicit TSParameterProperty(AccessibilityOption accessibility,\
+          \ Expression *parameter, bool readonly, bool isStatic,\n               \
+          \                  bool isExport)"
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Accessibility
+        postfix: const
+        raw_declaration: AccessibilityOption Accessibility() const
+        return_type:
+          name: AccessibilityOption
+      - additional_attributes: get
+        args: []
+        name: Readonly
+        postfix: const
+        raw_declaration: bool Readonly() const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args: []
+        name: IsStatic
+        postfix: const
+        raw_declaration: bool IsStatic() const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args: []
+        name: IsExport
+        postfix: const
+        raw_declaration: bool IsExport() const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args: []
+        name: Parameter
+        postfix: const
+        raw_declaration: const Expression *Parameter() const
+        return_type:
+          name: Expression
+          prefix: const
+          ptr_depth: 1
+      - args:
+        - name: cb
+          type:
+            name: NodeTransformer
+            prefix: const
+            ref_depth: 1
+        - name: transformationName
+          type:
+            name: string_view
+            namespace: std
+        name: TransformChildren
+        postfix: override
+        raw_declaration: void TransformChildren(const NodeTransformer &cb, std::string_view
+          transformationName) override
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: NodeTraverser
+            prefix: const
+            ref_depth: 1
+        name: Iterate
+        postfix: const override
+        raw_declaration: void Iterate(const NodeTraverser &cb) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: AstDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::AstDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: SrcDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::SrcDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: pg
+          type:
+            name: PandaGen
+            namespace: compiler
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile([[maybe_unused]] compiler::PandaGen *pg) const
+          override
+        return_type:
+          name: void
+      - args:
+        - name: etsg
+          type:
+            name: ETSGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::ETSGen *etsg) const override
+        return_type:
+          name: void
+      - args:
+        - name: checker
+          type:
+            name: TSChecker
+            namespace: checker
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::Type *Check([[maybe_unused]] checker::TSChecker
+          *checker) override
+        return_type:
+          name: Type
+          namespace: checker
+          ptr_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            namespace: checker
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::VerifiedType Check([[maybe_unused]] checker::ETSChecker
+          *checker) override
+        return_type:
+          name: VerifiedType
+          namespace: checker
+      - args:
+        - name: v
+          type:
+            name: ASTVisitorT
+            ptr_depth: 1
+        name: Accept
+        postfix: override
+        raw_declaration: void Accept(ASTVisitorT *v) override
+        return_type:
+          name: void
+  enums:
+  - flags:
+    - NO_OPTS
+    - PUBLIC
+    - PRIVATE
+    - PROTECTED
+    kind: simple
+    name: AccessibilityOption
+    namespace: ir
+macros:
+- name: ES2PANDA_IR_TS_PARAMETER_PROPERTY_H

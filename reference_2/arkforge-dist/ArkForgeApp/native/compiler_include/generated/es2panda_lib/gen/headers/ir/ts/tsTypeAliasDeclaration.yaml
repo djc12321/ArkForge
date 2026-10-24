@@ -1,0 +1,352 @@
+include:
+- '"ir/typed.h"'
+- '"ir/annotationAllowed.h"'
+ir:
+  class_definitions:
+  - extends: public AnnotationAllowed<AnnotatedStatement>
+    known_macroses:
+    - NO_COPY_SEMANTIC(TSTypeAliasDeclaration);
+    - NO_MOVE_SEMANTIC(TSTypeAliasDeclaration);
+    name: TSTypeAliasDeclaration
+    private: {}
+    public:
+      constructors:
+      - args: []
+        name: TSTypeAliasDeclaration
+        postfix: = delete
+        raw_declaration: TSTypeAliasDeclaration() = delete
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        - initializer_for: id_
+          name: id
+          type:
+            name: Identifier
+            ptr_depth: 1
+        - initializer_for: typeParams_
+          name: typeParams
+          type:
+            name: TSTypeParameterDeclaration
+            ptr_depth: 1
+        - name: typeAnnotation
+          type:
+            name: TypeNode
+            ptr_depth: 1
+        name: TSTypeAliasDeclaration
+        other_initializers:
+        - class_field: AnnotationAllowed<AnnotatedStatement>
+          init_value: AstNodeType::TS_TYPE_ALIAS_DECLARATION, typeAnnotation, allocator
+        - class_field: typeParamTypes_
+          init_value: allocator->Adapter()
+        raw_declaration: "explicit TSTypeAliasDeclaration([[maybe_unused]] ArenaAllocator\
+          \ *allocator, Identifier *id,\n                                    TSTypeParameterDeclaration\
+          \ *typeParams, TypeNode *typeAnnotation)"
+        return_type:
+          prefix: explicit
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        - initializer_for: id_
+          name: id
+          type:
+            name: Identifier
+            ptr_depth: 1
+        name: TSTypeAliasDeclaration
+        other_initializers:
+        - class_field: AnnotationAllowed<AnnotatedStatement>
+          init_value: AstNodeType::TS_TYPE_ALIAS_DECLARATION, allocator
+        - class_field: typeParams_
+          init_value: nullptr
+        - class_field: typeParamTypes_
+          init_value: allocator->Adapter()
+        raw_declaration: explicit TSTypeAliasDeclaration([[maybe_unused]] ArenaAllocator
+          *allocator, Identifier *id)
+        return_type:
+          prefix: explicit
+      destructors:
+      - args: []
+        name: ~TSTypeAliasDeclaration
+        postfix: override = default
+        raw_declaration: ~TSTypeAliasDeclaration() override = default
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Id
+        raw_declaration: Identifier *Id()
+        return_type:
+          name: Identifier
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Id
+        postfix: const
+        raw_declaration: const Identifier *Id() const
+        return_type:
+          name: Identifier
+          prefix: const
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: id
+          type:
+            name: Identifier
+            ptr_depth: 1
+        name: SetId
+        raw_declaration: void SetId(Identifier *id)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: TypeParams
+        postfix: const
+        raw_declaration: TSTypeParameterDeclaration *TypeParams() const
+        return_type:
+          name: TSTypeParameterDeclaration
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: typeParams
+          type:
+            name: TSTypeParameterDeclaration
+            namespace: ir
+            ptr_depth: 1
+        name: SetTypeParameters
+        raw_declaration: void SetTypeParameters(ir::TSTypeParameterDeclaration *typeParams)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: typeParamTypes
+          type:
+            name: ArenaVector
+            ref_depth: 2
+            template_args:
+            - type:
+                name: Type
+                namespace: checker
+                ptr_depth: 1
+        name: SetTypeParameterTypes
+        raw_declaration: void SetTypeParameterTypes(ArenaVector<checker::Type *> &&typeParamTypes)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: TypeParameterTypes
+        postfix: const
+        raw_declaration: ArenaVector<checker::Type *> const &TypeParameterTypes()
+          const
+        return_type:
+          name: ArenaVector
+          other_modifiers: const
+          ref_depth: 1
+          template_args:
+          - type:
+              name: Type
+              namespace: checker
+              ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: typeAnnotation
+          type:
+            name: TypeNode
+            ptr_depth: 1
+        name: SetTypeAnnotation
+        raw_declaration: void SetTypeAnnotation(TypeNode *typeAnnotation)
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: NodeTransformer
+            prefix: const
+            ref_depth: 1
+        - name: transformationName
+          type:
+            name: string_view
+            namespace: std
+        name: TransformChildren
+        postfix: override
+        raw_declaration: void TransformChildren(const NodeTransformer &cb, std::string_view
+          transformationName) override
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: NodeTraverser
+            prefix: const
+            ref_depth: 1
+        name: Iterate
+        postfix: const override
+        raw_declaration: void Iterate(const NodeTraverser &cb) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: AstDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::AstDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: SrcDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::SrcDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: pg
+          type:
+            name: PandaGen
+            namespace: compiler
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile([[maybe_unused]] compiler::PandaGen *pg) const
+          override
+        return_type:
+          name: void
+      - args:
+        - name: etsg
+          type:
+            name: ETSGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::ETSGen *etsg) const override
+        return_type:
+          name: void
+      - args:
+        - name: checker
+          type:
+            name: TSChecker
+            namespace: checker
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::Type *Check([[maybe_unused]] checker::TSChecker
+          *checker) override
+        return_type:
+          name: Type
+          namespace: checker
+          ptr_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            namespace: checker
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::VerifiedType Check([[maybe_unused]] checker::ETSChecker
+          *checker) override
+        return_type:
+          name: VerifiedType
+          namespace: checker
+      - args:
+        - name: v
+          type:
+            name: ASTVisitorT
+            ptr_depth: 1
+        name: Accept
+        postfix: override
+        raw_declaration: void Accept(ASTVisitorT *v) override
+        return_type:
+          name: void
+      - args: []
+        name: CleanUp
+        postfix: override
+        raw_declaration: void CleanUp() override
+        return_type:
+          name: void
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        name: Construct
+        postfix: override
+        raw_declaration: TSTypeAliasDeclaration *Construct(ArenaAllocator *allocator)
+          override
+        return_type:
+          name: TSTypeAliasDeclaration
+          ptr_depth: 1
+      - args:
+        - name: other
+          type:
+            name: AstNode
+            ptr_depth: 1
+        name: CopyTo
+        postfix: const override
+        raw_declaration: void CopyTo(AstNode *other) const override
+        return_type:
+          name: void
+      - args:
+        - name: typeParamTypes
+          type:
+            name: Type
+            namespace: checker
+            ptr_depth: 1
+        name: EmplaceTypeParamterTypes
+        raw_declaration: void EmplaceTypeParamterTypes(checker::Type *typeParamTypes)
+        return_type:
+          name: void
+      - args: []
+        name: ClearTypeParamterTypes
+        raw_declaration: void ClearTypeParamterTypes()
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: typeParamTypes
+          type:
+            name: Type
+            namespace: checker
+            ptr_depth: 1
+        - name: index
+          type:
+            name: size_t
+        name: SetValueTypeParamterTypes
+        raw_declaration: void SetValueTypeParamterTypes(checker::Type *typeParamTypes,
+          size_t index)
+        return_type:
+          name: void
+      - args: []
+        name: TypeParamterTypesForUpdate
+        raw_declaration: '[[nodiscard]] ArenaVector<checker::Type *> &TypeParamterTypesForUpdate()'
+        return_type:
+          name: ArenaVector
+          prefix: '[[nodiscard]]'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: Type
+              namespace: checker
+              ptr_depth: 1
+  class_forward_declaration:
+  - Identifier
+  - TSTypeParameterDeclaration
+macros:
+- name: ES2PANDA_IR_TS_TYPE_ALIAS_DECLARATION_H
+varbinder:
+  class_forward_declaration:
+  - Variable

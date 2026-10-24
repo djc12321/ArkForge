@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>ArkForge Editor (Monaco)</title>
+  <style>
+    html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #1e1e1e; }
+    #container { width: 100vw; height: 100vh; }
+    /* 隐藏 ArkWeb 默认长按菜单干扰 */
+    * { -webkit-tap-highlight-color: transparent; }
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+
+  <script>
+    // ---- 离线 Worker 引导：不依赖 CDN，base 取自当前页 URL 下的 vs/ ----
+    var base = new URL('vs/', document.baseURI).href;
+    self.MonacoEnvironment = {
+      getWorkerUrl: function (moduleId, label) {
+        var workerMain = base + 'base/worker/workerMain.js';
+        var code = "self.MonacoEnvironment={baseUrl:'" + base + "'};importScripts('" + workerMain + "');";
+        return URL.createObjectURL(new Blob([code], { type: 'text/javascript' }));
+      }
+    };
+  </script>
+  <script src="./vs/loader.js"></script>
+  <script>
+    // ---- 把 .ets / ArkTS 当作 TypeScript 着色（ArkTS ⊂ TS 超集，高亮效果良好）----
+    var currentModel = null;
+
+    require.config({ paths: { vs: './vs' } });
+    require(['vs/editor/editor.main'], function () {
+      monaco.languages.register({ id: 'arkts' });
+      
+
+      window.editor = monaco.editor.create(document.getElementById('container'), {
+        value: '',
+        language: 'typescript',
+        theme: 'vs-dark',
+        automaticLayout: true,
+        fontSize: 16,
+        minimap: { enabled: false },
+        largeFileOptimizations: true,
+        wordWrap: 'off',
+        scrollBeyondLastLine: false,
+        tabSize: 2,
+        renderWhitespace: 'selection',
+      });
+
+      var applying = false;
+      var timer;
+      window.editor.onDidChangeModelContent(function () {
+        if (applying) return;
+        clearTimeout(timer);
+        if (window.editorBridge) window.editorBridge.changed(window.editor.getValue());
+      });
+      window.editor.onDidChangeCursorPosition(function(e) {
+        if (window.editorBridge) window.editorBridge.selected(e.position.lineNumber);
+      });
+      window.setEditorContent = function(text, path) {
+        applying = true;
+        clearTimeout(timer);
+        if (window.editor.getValue() !== text) window.editor.setValue(text);
+        monaco.editor.setModelLanguage(window.editor.getModel(), /\.(ets|ts)$/.test(path || '') ? 'typescript' : /\.json5?$/.test(path || '') ? 'json' : /\.(cpp|h|c)$/.test(path || '') ? 'cpp' : 'plaintext');
+        applying = false;
+      };
+      window.revealLine = function(line) {
+        window.editor.revealLineInCenter(line);
+        window.editor.setPosition({lineNumber:line,column:1});
+        window.editor.focus();
+      };
+      window.getEditorContent = function () { return window.editor.getValue(); };
+      window.setEditorLanguage = function (lang) { monaco.editor.setModelLanguage(window.editor.getModel(), lang || 'typescript'); };
+
+      // Ctrl/Cmd+S 主动保存：把内容推回原生侧写文件
+      window.addEventListener('keydown', function (e) {
+        if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S')) {
+          e.preventDefault();
+          if (window.editorBridge && window.editorBridge.saveContent) {
+            window.editorBridge.saveContent(window.editor.getValue());
+          }
+        }
+      });
+
+      monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({noSemanticValidation:true,noSyntaxValidation:true});
+      console.log('[monaco] ready');
+      if (window.editorBridge && window.editorBridge.onReady) window.editorBridge.onReady();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,159 @@
+checker:
+  class_definitions:
+  - extends: public Type
+    name: ByteType
+    private: {}
+    public:
+      constructors:
+      - args: []
+        name: ByteType
+        other_initializers:
+        - class_field: Type
+          init_value: TypeFlag::BYTE
+        raw_declaration: ByteType()
+      - args:
+        - initializer_for: value_
+          name: value
+          type:
+            name: UType
+        name: ByteType
+        other_initializers:
+        - class_field: Type
+          init_value: TypeFlag::BYTE | TypeFlag::CONSTANT
+        raw_declaration: explicit ByteType(UType value)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: GetValue
+        postfix: const
+        raw_declaration: UType GetValue() const
+        return_type:
+          name: UType
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: other
+          type:
+            name: Type
+            ptr_depth: 1
+        name: Identical
+        postfix: override
+        raw_declaration: void Identical(TypeRelation *relation, Type *other) override
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: source
+          type:
+            name: Type
+            ptr_depth: 1
+        name: AssignmentTarget
+        postfix: override
+        raw_declaration: void AssignmentTarget(TypeRelation *relation, Type *source)
+          override
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        - name: target
+          type:
+            name: Type
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: AssignmentSource
+        postfix: override
+        raw_declaration: bool AssignmentSource([[maybe_unused]] TypeRelation *relation,
+          [[maybe_unused]] Type *target) override
+        return_type:
+          name: bool
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: target
+          type:
+            name: Type
+            ptr_depth: 1
+        name: Cast
+        postfix: override
+        raw_declaration: void Cast(TypeRelation *relation, Type *target) override
+        return_type:
+          name: void
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: globalTypes
+          type:
+            name: GlobalTypesHolder
+            ptr_depth: 1
+        name: Instantiate
+        postfix: override
+        raw_declaration: Type *Instantiate(ArenaAllocator *allocator, TypeRelation
+          *relation, GlobalTypesHolder *globalTypes) override
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args:
+        - name: ss
+          type:
+            name: stringstream
+            namespace: std
+            ref_depth: 1
+        - name: precise
+          type:
+            name: bool
+            prefix: '[[maybe_unused]]'
+        name: ToString
+        postfix: const override
+        raw_declaration: void ToString(std::stringstream &ss, [[maybe_unused]] bool
+          precise) const override
+        return_type:
+          name: void
+      - args:
+        - name: ss
+          type:
+            name: stringstream
+            namespace: std
+            ref_depth: 1
+        name: ToAssemblerType
+        postfix: const override
+        raw_declaration: void ToAssemblerType(std::stringstream &ss) const override
+        return_type:
+          name: void
+      - args:
+        - name: ss
+          type:
+            name: stringstream
+            namespace: std
+            ref_depth: 1
+        name: ToDebugInfoType
+        postfix: const override
+        raw_declaration: void ToDebugInfoType(std::stringstream &ss) const override
+        return_type:
+          name: void
+      usings:
+      - name: UType
+        type:
+          name: int8_t
+include:
+- '"checker/types/type.h"'
+macros:
+- name: ES2PANDA_COMPILER_CHECKER_TYPES_ETS_BYTE_TYPE_H

@@ -1,0 +1,43 @@
+{
+  "title": "JSON schema for definedIds.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "record": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "media",
+              "profile",
+              "integer",
+              "string",
+              "strarray",
+              "intarray",
+              "color",
+              "plural",
+              "boolean",
+              "pattern",
+              "theme",
+              "float",
+              "symbol"
+            ]
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "id": {
+            "type": "string",
+            "pattern": "^0x(0[1-689a-fA-F][0-9a-fA-F]{6}|[1-9a-fA-F][0-9a-fA-F]{7})$"
+          }
+        },
+        "required": ["type", "name", "id"],
+        "additionalProperties": false
+      }
+    }
+  }
+}

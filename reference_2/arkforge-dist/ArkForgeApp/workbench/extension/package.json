@@ -1,0 +1,754 @@
+{
+  "name": "arkforge-device",
+  "publisher": "arkforge",
+  "version": "0.1.0",
+  "displayName": "ArkForge 平板开发工具",
+  "engines": {
+    "vscode": "^1.100.0"
+  },
+  "browser": "./extension.js",
+  "extensionKind": [
+    "workspace"
+  ],
+  "activationEvents": [
+    "onFileSystem:arkforge",
+    "onStartupFinished",
+    "onChatParticipant:arkforge.agent"
+  ],
+  "capabilities": {
+    "virtualWorkspaces": true,
+    "untrustedWorkspaces": {
+      "supported": true
+    }
+  },
+  "contributes": {
+    "terminal": {
+      "profiles": [
+        {
+          "id": "arkforge.gitTerminal",
+          "title": "ArkForge 终端",
+          "icon": "git-branch"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "arkforge.usageGuide",
+        "title": "ArkForge 使用介绍与操作指南",
+        "category": "ArkForge",
+        "icon": "$(book)"
+      },
+      {
+        "command": "arkforge.gitGuide",
+        "title": "Git 使用教程",
+        "category": "ArkForge",
+        "icon": "$(source-control)"
+      },
+      {
+        "command": "arkforge.debug",
+        "title": "本机调试…",
+        "category": "ArkForge",
+        "icon": "$(debug-alt)"
+      },
+      {
+        "command": "arkforge.verifyGitHub",
+        "title": "GitHub：核对登录状态",
+        "category": "ArkForge"
+      },
+      {
+        "command": "arkforge.signOutGitHub",
+        "title": "退出 GitHub",
+        "category": "ArkForge"
+      },
+      {
+        "command": "arkforge.benchmarkSDKStaging",
+        "title": "测量 SDK 暂存性能",
+        "category": "ArkForge"
+      },
+      {
+        "command": "arkforge.openGitTerminal",
+        "title": "打开本机终端",
+        "category": "ArkForge",
+        "icon": "$(terminal)"
+      },
+      {
+        "command": "arkforge.openProject",
+        "title": "打开 HarmonyOS 工程 ZIP",
+        "category": "ArkForge",
+        "icon": "$(folder-opened)"
+      },
+      {
+        "command": "arkforge.build",
+        "title": "手动编译安装…",
+        "category": "ArkForge",
+        "icon": "$(run-all)"
+      },
+      {
+        "command": "arkforge.run",
+        "title": "编译当前工程",
+        "category": "ArkForge",
+        "icon": "$(play)"
+      },
+      {
+        "command": "arkforge.launch",
+        "title": "运行最近安装的应用",
+        "category": "ArkForge"
+      },
+      {
+        "command": "arkforge.logs",
+        "title": "读取应用运行日志",
+        "category": "ArkForge"
+      },
+      {
+        "command": "arkforge.importSigning",
+        "title": "导入工程签名包",
+        "category": "ArkForge"
+      },
+      {
+        "command": "arkforge.checkSDK",
+        "title": "检查平板 SDK 工具链",
+        "category": "ArkForge"
+      },
+      {
+        "command": "arkforge.configureAgent",
+        "title": "配置 DeepSeek / 模型 API",
+        "category": "ArkForge",
+        "icon": "$(settings-gear)"
+      },
+      {
+        "command": "arkforge.openChat",
+        "title": "打开本机 Agent",
+        "category": "ArkForge",
+        "icon": "$(comment-discussion)"
+      },
+      {
+        "command": "arkforge.testBuildWorkflow",
+        "title": "构建操作流程测试",
+        "category": "ArkForge",
+        "icon": "$(beaker)"
+      },
+      {
+        "command": "arkforge.buildGuide",
+        "title": "构建方法说明",
+        "category": "ArkForge",
+        "icon": "$(book)"
+      },
+      {
+        "command": "arkforge.exportProject",
+        "title": "导出当前 HarmonyOS 工程 ZIP",
+        "category": "ArkForge",
+        "icon": "$(export)"
+      },
+      {
+        "command": "arkforge.developerSetup",
+        "title": "开发环境配置…",
+        "category": "ArkForge",
+        "icon": "$(settings-gear)"
+      },
+      {
+        "command": "arkforge.configureGit",
+        "title": "配置 Git 与 GitHub…",
+        "category": "ArkForge",
+        "icon": "$(github)"
+      },
+      {
+        "command": "arkforge.signInGitHub",
+        "title": "登录 GitHub…",
+        "category": "ArkForge",
+        "icon": "$(github)"
+      },
+      {
+        "command": "arkforge.configureSigning",
+        "title": "配置当前工程开发签名…",
+        "category": "ArkForge",
+        "icon": "$(key)"
+      }
+    ],
+    "menus": {
+      "menubar/debug": [
+        {
+          "command": "arkforge.debug",
+          "group": "1_debug@0"
+        }
+      ],
+      "accounts/context": [
+        {
+          "command": "arkforge.signInGitHub",
+          "when": "!arkforge.githubSignedIn",
+          "group": "1_arkforge@1"
+        },
+        {
+          "command": "arkforge.verifyGitHub",
+          "when": "arkforge.githubSignedIn",
+          "group": "1_arkforge@1"
+        },
+        {
+          "command": "arkforge.signOutGitHub",
+          "when": "arkforge.githubSignedIn",
+          "group": "1_arkforge@2"
+        },
+        {
+          "command": "arkforge.configureGit",
+          "group": "2_arkforge@1"
+        },
+        {
+          "command": "arkforge.configureSigning",
+          "group": "2_arkforge@2"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "arkforge.build",
+          "group": "navigation"
+        },
+        {
+          "command": "arkforge.run",
+          "group": "navigation"
+        },
+        {
+          "command": "arkforge.testBuildWorkflow",
+          "group": "navigation@3"
+        },
+        {
+          "command": "arkforge.buildGuide",
+          "group": "navigation@4"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "arkforge.build",
+          "when": "view == workbench.panel.chat.view.copilot",
+          "group": "navigation@0"
+        },
+        {
+          "command": "arkforge.configureAgent",
+          "when": "view == workbench.panel.chat.view.copilot",
+          "group": "navigation@1"
+        },
+        {
+          "command": "arkforge.testBuildWorkflow",
+          "when": "view == workbench.panel.chat.view.copilot",
+          "group": "navigation@2"
+        },
+        {
+          "command": "arkforge.buildGuide",
+          "when": "view == workbench.panel.chat.view.copilot",
+          "group": "navigation@3"
+        },
+        {
+          "command": "arkforge.openProject",
+          "when": "view == workbench.explorer.fileView",
+          "group": "navigation@0"
+        },
+        {
+          "command": "arkforge.exportProject",
+          "when": "view == workbench.explorer.fileView",
+          "group": "navigation@1"
+        },
+        {
+          "command": "arkforge.developerSetup",
+          "when": "view == workbench.explorer.fileView",
+          "group": "navigation@2"
+        }
+      ],
+      "commandPalette": [],
+      "menubar/help": [
+        {
+          "command": "arkforge.usageGuide",
+          "group": "0_arkforge@0"
+        }
+      ]
+    },
+    "chatParticipants": [
+      {
+        "id": "arkforge.agent",
+        "name": "arkforge",
+        "fullName": "ArkForge",
+        "description": "在平板本机读写工程、编译、签名、安装和调试",
+        "isDefault": true,
+        "modes": [
+          "ask",
+          "edit",
+          "agent"
+        ],
+        "commands": [
+          {
+            "name": "build",
+            "description": "本机构建、签名并安装当前工程"
+          },
+          {
+            "name": "logs",
+            "description": "读取应用本机日志"
+          },
+          {
+            "name": "test",
+            "description": "验证完整构建操作流程"
+          },
+          {
+            "name": "guide",
+            "description": "查看构建方法说明"
+          },
+          {
+            "name": "setup",
+            "description": "配置 DeepSeek 或其他模型 API"
+          },
+          {
+            "name": "file",
+            "description": "读取当前正在编辑的真实工程文件"
+          }
+        ]
+      }
+    ],
+    "languageModelChatProviders": [
+      {
+        "vendor": "arkforge-deepseek",
+        "displayName": "DeepSeek（平板直连）",
+        "managementCommand": "arkforge.configureAgent",
+        "icon": "$(tools)"
+      }
+    ],
+    "languageModelTools": [
+      {
+        "name": "arkforge_read_file",
+        "displayName": "读取工程文件",
+        "modelDescription": "按行读取源码并返回文件版本；默认前 200 行。",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "start_line": {
+              "type": "integer"
+            },
+            "end_line": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "path"
+          ],
+          "additionalProperties": false
+        }
+      },
+      {
+        "name": "arkforge_write_file",
+        "displayName": "保存工程文件",
+        "modelDescription": "保存源码。必须先读取文件版本；新文件 expected_version 为 0。",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "content": {
+              "type": "string"
+            },
+            "expected_version": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "path",
+            "content",
+            "expected_version"
+          ],
+          "additionalProperties": false
+        }
+      },
+      {
+        "name": "arkforge_replace_text",
+        "displayName": "修改源码",
+        "modelDescription": "精确替换文件中唯一匹配的文本，使用读取时的文件版本。",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "old_text": {
+              "type": "string"
+            },
+            "new_text": {
+              "type": "string"
+            },
+            "expected_version": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "path",
+            "old_text",
+            "new_text",
+            "expected_version"
+          ],
+          "additionalProperties": false
+        }
+      },
+      {
+        "name": "arkforge_list_dir",
+        "displayName": "查看工程目录",
+        "modelDescription": "列出当前平板工程目录。",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string"
+            }
+          },
+          "required": [],
+          "additionalProperties": false
+        }
+      },
+      {
+        "name": "arkforge_search_text",
+        "displayName": "搜索工程源码",
+        "modelDescription": "在当前平板工程源码中搜索文本。",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "query"
+          ],
+          "additionalProperties": false
+        }
+      },
+      {
+        "name": "arkforge_compile_project",
+        "displayName": "本机构建并验签（不安装）",
+        "modelDescription": "保存当前工程并执行官方 SDK 检查、编译、打包、签名和验签，仅生成待安装 HAP，不安装或启动应用。用户只要求构建、检查或明确不要安装时使用此工具。",
+        "inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": [],
+          "additionalProperties": false
+        }
+      },
+      {
+        "name": "arkforge_build_project",
+        "displayName": "本机构建、签名并安装",
+        "modelDescription": "在当前平板本机保存、检查、编译、签名并安装真实 HarmonyOS 工程。失败后读取错误并修复。",
+        "inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": [],
+          "additionalProperties": false
+        }
+      },
+      {
+        "name": "arkforge_read_logs",
+        "displayName": "读取运行日志",
+        "modelDescription": "读取最近安装应用的真实本机运行日志。",
+        "inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": [],
+          "additionalProperties": false
+        }
+      },
+      {
+        "name": "arkforge_get_open_file",
+        "displayName": "读取当前编辑文件",
+        "modelDescription": "获取当前编辑器中的文件、版本和内容。",
+        "inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": [],
+          "additionalProperties": false
+        }
+      },
+      {
+        "name": "arkforge_debug_action",
+        "displayName": "执行调试操作",
+        "modelDescription": "本机调试操作：start、stop、Debugger.resume、Debugger.pause、Debugger.stepOver、Debugger.stepInto、Debugger.stepOut。",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "action": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "action"
+          ],
+          "additionalProperties": false
+        }
+      },
+      {
+        "name": "arkforge_debug_state",
+        "displayName": "查看调试状态",
+        "modelDescription": "读取实际调试连接状态、调用栈和变量。",
+        "inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": [],
+          "additionalProperties": false
+        }
+      }
+    ],
+    "walkthroughs": [
+      {
+        "id": "arkforge.welcome",
+        "title": "欢迎使用 ArkForge · 使用介绍与操作指南",
+        "description": "从打开工程开始，逐步完成配置、编辑、构建安装和调试。点击步骤查看详细说明，使用按钮进入对应功能。",
+        "steps": [
+          {
+            "id": "welcome",
+            "title": "欢迎使用 ArkForge",
+            "description": "在平板上完成 HarmonyOS 工程的编辑、构建、签名、安装和调试。\n\n首次使用建议按顺序阅读本指南，再按自己的开发目标选择操作。\n\n1. 准备工程 ZIP，打开项目。\n2. 配置 GitHub、开发签名和模型 API。\n3. 修改源码，点击三角按钮构建安装。\n4. 运行应用、查看日志、调试，再继续修改。\n\n阅读方法：点击步骤标题展开说明。每一步末尾的按钮可以直接打开对应功能。以后可从“帮助 → ArkForge 使用介绍与操作指南”再次查看。",
+            "media": {
+              "image": "guide/workflow.svg",
+              "altText": "ArkForge 开发流程：打开工程、编辑保存、构建安装、运行调试"
+            },
+            "completionEvents": [
+              "stepSelected"
+            ]
+          },
+          {
+            "id": "workspace",
+            "title": "1. 认识界面与搜索入口",
+            "description": "1. 左侧资源管理器展示工程目录，点击目录前的小箭头展开，点击文件进入编辑器。\n2. 中间区域编辑代码，点击顶部文件标签切换文件。\n3. 点击顶部 workspace，输入文件名后选择结果；输入 > 后可搜索并执行命令。\n4. 点击搜索框外的编辑区或侧栏即可收起搜索。\n5. 顶部聊天气泡打开 Agent；右侧下拉箭头展开聊天菜单。\n6. 底部“输出”查看构建日志，“问题”查看代码诊断，“终端”执行 Git。\n7. 左下角头像进入账户菜单，齿轮进入编辑器设置。\n\n[搜索文件与命令](command:workbench.action.quickOpen)",
+            "media": {
+              "image": "guide/workflow.svg",
+              "altText": "ArkForge 开发流程：打开工程、编辑保存、构建安装、运行调试"
+            },
+            "completionEvents": [
+              "onCommand:workbench.action.quickOpen"
+            ]
+          },
+          {
+            "id": "project",
+            "title": "2. 打开与导出 HarmonyOS 工程",
+            "description": "1. 将工程根目录打包为 ZIP，根目录包含 build-profile.json5、AppScope、oh-package.json5 和 entry 等实际模块。\n2. 将 ZIP 保存到平板“文件管理”中容易查找的位置。\n3. 点击下方“打开 HarmonyOS 工程 ZIP”，在系统文件选择器中选中 ZIP。\n4. 等待导入完成，在左侧资源管理器确认目录和源码。\n5. 常用入口文件为 entry/src/main/ets/entryability/EntryAbility.ets，页面通常位于 entry/src/main/ets/pages。\n6. 完成开发后，运行“ArkForge: 导出当前 HarmonyOS 工程 ZIP”，选择保存位置进行备份或分享。\n\n[打开 HarmonyOS 工程 ZIP](command:arkforge.openProject)",
+            "media": {
+              "image": "guide/workflow.svg",
+              "altText": "ArkForge 开发流程：打开工程、编辑保存、构建安装、运行调试"
+            },
+            "completionEvents": [
+              "onCommand:arkforge.openProject"
+            ]
+          },
+          {
+            "id": "editing",
+            "title": "3. 编辑、保存与管理文件",
+            "description": "1. 在资源管理器展开目录并打开 .ets、.json5 等文件。\n2. 点击代码区域开始编辑，使用高亮、行号和滚动定位代码。\n3. 使用“文件 → 保存”或 Ctrl+S 保存当前文件；“文件 → 全部保存”保存多个编辑文件。\n4. 长按或右键点击资源管理器中的文件、目录，选择新建、重命名或删除等操作。\n5. 左侧搜索图标用于查找工程中的文本；点击搜索结果定位对应源码。\n6. 构建前会保存已打开文件，建议先核对本次修改再点击三角按钮。\n\n[保存全部文件](command:workbench.action.files.saveAll)",
+            "media": {
+              "image": "guide/workflow.svg",
+              "altText": "ArkForge 开发流程：打开工程、编辑保存、构建安装、运行调试"
+            },
+            "completionEvents": [
+              "onCommand:workbench.action.files.saveAll"
+            ]
+          },
+          {
+            "id": "api",
+            "title": "4. 配置 DeepSeek 与模型 API",
+            "description": "1. 点击下方配置按钮，依次填写 API 地址、模型名称和 API Key，每一步按回车确认。\n2. DeepSeek 的 API 地址填写 https://api.deepseek.com。\n3. 模型名称填写模型服务提供的准确模型 ID，可参考输入框中的当前配置。\n4. API Key 粘贴服务商提供的密钥，输入框以密码形式显示。\n5. 出现“模型配置已保存”后，打开聊天气泡即可使用 Agent。\n6. 密钥保存在鸿蒙系统加密资产库；以后修改模型时，密钥留空会沿用已保存的值。\n7. 聊天输入 /setup 并发送，也可再次打开配置。\n\n[配置 DeepSeek / 模型 API](command:arkforge.configureAgent)",
+            "media": {
+              "image": "guide/workflow.svg",
+              "altText": "ArkForge 开发流程：打开工程、编辑保存、构建安装、运行调试"
+            },
+            "completionEvents": [
+              "onCommand:arkforge.configureAgent"
+            ]
+          },
+          {
+            "id": "agent",
+            "title": "5. 使用 Agent 修改与验证代码",
+            "description": "1. 点击顶部聊天气泡，在聊天底部确认 Agent 模式及模型名称。\n2. 描述目标、涉及页面、期望行为和验收方法，例如：“请在应用首次进入首页时展示欢迎弹窗，点击确定后继续使用；完成后编译检查。”\n3. Agent 会读取工程文件、修改代码，并在聊天中展示工具执行过程。\n4. 查看源码差异，结合工具输出确认修改内容。\n5. 需要构建检查时，明确输入“编译检查当前工程”；需要安装验证时，输入“编译并安装当前工程”。\n6. 出现编译诊断时，可让 Agent 根据具体文件、行号和错误继续修复，再次构建验证。\n7. /build 执行构建安装，/test 验证构建流程，/guide 查看构建方法，/setup 配置 API。\n\n[打开 Agent](command:arkforge.openChat)",
+            "media": {
+              "image": "guide/workflow.svg",
+              "altText": "ArkForge 开发流程：打开工程、编辑保存、构建安装、运行调试"
+            },
+            "completionEvents": [
+              "onCommand:arkforge.openChat"
+            ]
+          },
+          {
+            "id": "github",
+            "title": "6. 登录 GitHub 与配置提交身份",
+            "description": "1. 点击左下角头像，选择“登录 GitHub…”，也可使用下方配置按钮。\n2. ArkForge 会复制设备代码并打开 GitHub 官方授权页。\n3. 在浏览器按页面提示粘贴代码、登录并授权，随后返回 ArkForge。\n4. 看到登录成功提示及账户头像后，可从头像菜单核对账户状态。\n5. 运行“配置 Git 与 GitHub… → 设置 Git 提交身份”，填写姓名和邮箱，用于 Git 提交记录。\n6. 个人访问令牌也可在该配置页录入，验证后保存在系统加密资产库。\n7. 访问私有仓库时，使用当前账户已获授权的仓库 HTTPS 地址；组织仓库可在 GitHub 官方授权管理页核对访问权限。\n\n[配置 Git 与 GitHub](command:arkforge.configureGit)",
+            "media": {
+              "image": "guide/workflow.svg",
+              "altText": "ArkForge 开发流程：打开工程、编辑保存、构建安装、运行调试"
+            },
+            "completionEvents": [
+              "onCommand:arkforge.configureGit"
+            ]
+          },
+          {
+            "id": "terminal",
+            "title": "7. 终端基础操作",
+            "description": "1. 点击下方按钮打开原生终端面板，输入区域显示 /workspace 提示符。初始目录对应当前工程根目录。\n\n2. 输入 git --version 查看官方 Git 版本，git --help 查看官方 Git 的常用命令说明。\n\n3. pwd 查看当前工程内位置，ls 查看文件列表，cd 目录名 进入目录，cd .. 返回上级目录，cd /workspace 返回当前工程根目录。以上目录操作通过 ArkForge 文件接口处理。\n\n4. 使用 git clone、git status、git add、git commit、git fetch、git pull、git push 管理仓库，参数和输出由平板本机的官方 Git 处理。\n\n5. 每次输入一条命令并按回车执行。上下方向键选择历史命令，clear 清空显示。\n\n6. 点击“打开 Git 完整使用教程”，按顺序完成登录、配置、克隆、提交和同步。\n\n[打开本机终端](command:arkforge.openGitTerminal)\n[打开 Git 完整使用教程](command:arkforge.gitGuide)",
+            "media": {
+              "image": "guide/workflow.svg",
+              "altText": "ArkForge 开发流程"
+            },
+            "completionEvents": [
+              "onCommand:arkforge.openGitTerminal"
+            ]
+          },
+          {
+            "id": "git",
+            "title": "8. 在终端执行 Git",
+            "description": "按“登录账户 → 设置提交身份 → 克隆仓库 → 新建分支 → 编辑提交 → 拉取推送”的顺序完成第一次 Git 开发。\n\n详细教程逐步说明界面入口、官方命令、命令执行后的结果，以及私有仓库授权和冲突处理方法。\n\n[打开 Git 完整使用教程](command:arkforge.gitGuide)\n[配置 Git 与 GitHub](command:arkforge.configureGit)\n[打开本机终端](command:arkforge.openGitTerminal)",
+            "media": {
+              "image": "guide/workflow.svg",
+              "altText": "ArkForge 开发流程：打开工程、编辑保存、构建安装、运行调试"
+            },
+            "completionEvents": [
+              "onCommand:arkforge.gitGuide"
+            ]
+          },
+          {
+            "id": "signing",
+            "title": "9. 配置华为开发签名",
+            "description": "1. 点击下方按钮，选择“华为账号自动签名…”。\n2. 在华为官方页面登录并授权，按系统提示返回 ArkForge。\n3. 选择开发者团队，核对应用包名和设备 UDID，再确认申请。\n4. ArkForge 在平板生成私钥，申请调试证书并配置 Profile，完成后提示“华为自动签名已配置”。\n5. 后续构建会复用当前工程的有效签名。私钥密码保存在系统加密资产库。\n6. 手动配置时，依次填写密钥别名、密钥库密码、私钥密码和签名算法，再选择 .p12、.cer、.p7b 文件。Profile 需匹配包名并包含当前设备。\n7. 证书达到配额时，进入“管理华为调试证书…”，核对闲置证书并确认撤销，再申请新证书。撤销后该证书永久失效，对应调试应用需重新签名。\n\n[配置当前工程开发签名](command:arkforge.configureSigning)",
+            "media": {
+              "image": "guide/workflow.svg",
+              "altText": "ArkForge 开发流程：打开工程、编辑保存、构建安装、运行调试"
+            },
+            "completionEvents": [
+              "onCommand:arkforge.configureSigning"
+            ]
+          },
+          {
+            "id": "build",
+            "title": "10. 手动构建、安装与运行",
+            "description": "1. 确认资源管理器中是本次要开发的 HarmonyOS 工程，保存源码并完成签名配置。\n2. 点击编辑器右上角三角按钮，或底部“编译当前工程”。\n3. 在“输出 → ArkForge Build”查看工程检查、资源编译、官方 SDK 检查、ArkUI 编译、ABC、HAP 打包、签名和验签进度。\n4. 构建成功后，弹窗中选择“安装并运行”或“仅安装”，按系统安装提示确认。\n5. 安装完成后运行应用，检查页面和交互。\n6. 通过系统返回手势或应用内返回入口回到 ArkForge，继续编辑并再次构建。\n7. “手动编译安装…”菜单可进入签名配置、构建方法和构建流程测试。\n\n[打开手动编译安装](command:arkforge.build)",
+            "media": {
+              "image": "guide/workflow.svg",
+              "altText": "ArkForge 开发流程：打开工程、编辑保存、构建安装、运行调试"
+            },
+            "completionEvents": [
+              "onCommand:arkforge.build"
+            ]
+          },
+          {
+            "id": "diagnostics",
+            "title": "11. 根据构建信息修复代码",
+            "description": "1. 点击底部“输出”，选择 ArkForge Build，按阶段阅读完整构建信息。\n2. 打开“问题”面板，选择诊断条目，编辑器会定位对应文件和行号。\n3. 按诊断中的类型、变量、导入或 ArkUI 规则说明修改代码并保存。\n4. 再次点击三角按钮构建，查看本次诊断和构建结果。\n5. 需要 Agent 协助时，描述错误现象及期望效果，让 Agent 读取构建信息、修复并重新编译。\n6. 检查工具链时，可运行“检查平板 SDK 工具链”；整体流程验收可运行“构建操作流程测试”。\n\n[查看问题](command:workbench.actions.view.problems)",
+            "media": {
+              "image": "guide/workflow.svg",
+              "altText": "ArkForge 开发流程：打开工程、编辑保存、构建安装、运行调试"
+            },
+            "completionEvents": [
+              "onCommand:workbench.actions.view.problems"
+            ]
+          },
+          {
+            "id": "debug",
+            "title": "12. 运行日志与本机调试",
+            "description": "1. 构建并安装当前工程，打开应用重现需要检查的行为。\n2. 运行“读取应用运行日志”，在输出区域查看设备上的应用日志。\n3. 点击下方“本机调试”按钮，选择启动并连接当前应用。\n4. 连接后再次打开调试菜单，选择暂停、继续、单步进入、单步跳过或单步跳出。\n5. 使用菜单查看调用栈和变量，结果显示在“输出 → ArkForge Debug”。\n6. 检查结束后选择停止调试，再回到编辑器修改源码、保存和重新构建。\n\n[打开本机调试](command:arkforge.debug)",
+            "media": {
+              "image": "guide/workflow.svg",
+              "altText": "ArkForge 开发流程：打开工程、编辑保存、构建安装、运行调试"
+            },
+            "completionEvents": [
+              "onCommand:arkforge.debug"
+            ]
+          },
+          {
+            "id": "backup",
+            "title": "13. 导出工程、日常设置与再次查看指南",
+            "description": "1. 运行“ArkForge: 导出当前 HarmonyOS 工程 ZIP”，选择平板中的保存位置。\n2. 使用文件管理分享 ZIP，或将备份复制到常用存储位置。\n3. 点击左下角齿轮进入设置，按使用习惯调整主题、字号和编辑器选项。\n4. 点击左下角头像查看 GitHub 账户、配置 Git 或开发签名。\n5. 通过“帮助 → ArkForge 使用介绍与操作指南”随时回到本指南。\n6. 日常开发循环：打开工程 → 编辑保存 → 构建安装 → 运行调试 → 回到编辑器继续修改。\n\n[导出当前工程 ZIP](command:arkforge.exportProject)",
+            "media": {
+              "image": "guide/workflow.svg",
+              "altText": "ArkForge 开发流程：打开工程、编辑保存、构建安装、运行调试"
+            },
+            "completionEvents": [
+              "onCommand:arkforge.exportProject"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "arkforge.gitGuide",
+        "title": "Git 使用教程 · 从登录到推送",
+        "description": "按步骤完成账户授权、提交身份、私有仓库克隆、分支开发、提交、同步和问题处理。命令采用官方 Git 语法。",
+        "steps": [
+          {
+            "id": "account",
+            "title": "1. 登录 GitHub，准备私有仓库访问",
+            "description": "目标：让平板获得你所选 GitHub 账户的仓库访问权限。\n\n1. 点击左下角头像 → “登录 GitHub…”，或点击下方登录按钮。\n2. ArkForge 自动复制设备代码并打开 GitHub 官方网页。在网页的设备代码输入框中粘贴代码，按提示登录并授权，然后返回 ArkForge。\n3. 看到登录成功提示与自己的头像后，从头像菜单选择“GitHub：核对登录状态”，确认账户名称。\n4. 打开 GitHub 仓库网页，确认当前账户可以查看目标私有仓库；进入 Code → HTTPS，复制以 https://github.com/ 开头的克隆地址。\n5. 组织仓库按组织要求完成应用审批或 SSO 授权。个人访问令牌用户可在“配置 Git 与 GitHub… → 使用个人访问令牌”中录入，令牌的仓库范围应包含目标仓库。\n6. 登录凭据保存在鸿蒙系统加密资产库；访问 GitHub HTTPS 仓库时由本机 Git 自动使用。\n\n[登录 GitHub](command:arkforge.signInGitHub)\n[核对登录状态](command:arkforge.verifyGitHub)",
+            "media": {
+              "image": "guide/workflow.svg",
+              "altText": "ArkForge 开发流程"
+            },
+            "completionEvents": []
+          },
+          {
+            "id": "identity",
+            "title": "2. 设置提交者姓名与邮箱",
+            "description": "目标：让每次提交记录正确的作者信息。GitHub 登录负责仓库访问，Git 提交身份负责提交署名。\n\n1. 点击“配置 Git 与 GitHub… → 设置 Git 提交身份”。\n2. 输入提交者姓名，再输入邮箱。邮箱可填写 GitHub Settings → Emails 中的已验证邮箱或 noreply 邮箱。\n3. 看到“Git 提交身份已保存”后，在本机终端逐条输入以下官方命令，按回车执行：\n\ngit config --global --get user.name\n\ngit config --global --get user.email\n\n两条命令分别输出已保存的姓名和邮箱。\n\n[配置 Git 与 GitHub](command:arkforge.configureGit)",
+            "media": {
+              "image": "guide/workflow.svg",
+              "altText": "ArkForge 开发流程"
+            },
+            "completionEvents": []
+          },
+          {
+            "id": "clone",
+            "title": "3. 打开终端并克隆仓库",
+            "description": "目标：把远程仓库下载到平板，进入实际工作目录。\n\n1. 点击下方“打开本机终端”。终端初始目录是当前打开的工程目录。用 pwd 查看位置，决定仓库的保存位置。\n2. 输入 git --version 查看 Git 版本。\n3. 将下面命令中的账户、仓库替换成从 GitHub 复制的 HTTPS 地址；repo 是本地目录名，可自行修改：\n\ngit clone https://github.com/账户/仓库.git repo\n\n4. 克隆结束后输入 cd repo，再输入 git status。看到当前分支和工作区状态，说明已进入仓库。\n5. 输入 git remote -v 核对 origin 地址；输入 git branch --show-current 查看当前分支名称。\n6. 私有仓库使用第 1 步登录账户的权限。遇到认证提示时，从头像菜单核对登录账户、仓库 HTTPS 地址及组织授权。\n\n终端的 cd 改变此终端的目录。编辑器与三角构建按钮以资源管理器当前打开的 HarmonyOS 工程为目标；新工程通过“打开 HarmonyOS 工程 ZIP”导入后进行构建。\n\n[打开本机终端](command:arkforge.openGitTerminal)\n[打开 HarmonyOS 工程 ZIP](command:arkforge.openProject)",
+            "media": {
+              "image": "guide/workflow.svg",
+              "altText": "ArkForge 开发流程"
+            },
+            "completionEvents": []
+          },
+          {
+            "id": "branch",
+            "title": "4. 新建分支，检查并保存修改",
+            "description": "目标：在独立分支上开发，并核对准备提交的内容。\n\n1. 在仓库目录执行 git status，确认当前状态。\n2. 执行 git switch -c feature/startup-dialog，创建并切换到开发分支。feature/startup-dialog 可换成自己的分支名。\n3. 在资源管理器中打开要修改的工程文件，编辑后保存。\n4. 执行 git diff 查看尚未暂存的修改，执行 git status --short 查看变更文件列表。\n5. 核对当前终端仓库目录和编辑器打开的文件属于同一个工程。\n6. 查看历史可执行 git log --oneline -5；查看已有分支可执行 git branch。\n\n本页分支名和后续文件路径是填写示范，按实际开发任务替换。",
+            "media": {
+              "image": "guide/workflow.svg",
+              "altText": "ArkForge 开发流程"
+            },
+            "completionEvents": []
+          },
+          {
+            "id": "commit",
+            "title": "5. 暂存并创建本地提交",
+            "description": "目标：把核对完成的修改保存为一条本地提交。\n\n1. 在仓库目录执行 git status，找到本次修改的文件路径。\n2. 逐个暂存，例如：\n\ngit add entry/src/main/ets/pages/Index.ets\n\n3. 执行 git diff --cached，查看本次暂存的实际改动。\n4. 执行 git commit -m \"增加启动弹窗\"，提交说明改为本次工作的内容。\n5. 执行 git log -1 --oneline 查看新提交，执行 git status 核对剩余改动。\n\ncommit 将提交保存在平板的本地仓库；下一步 push 将提交上传到 GitHub。",
+            "media": {
+              "image": "guide/workflow.svg",
+              "altText": "ArkForge 开发流程"
+            },
+            "completionEvents": []
+          },
+          {
+            "id": "sync",
+            "title": "6. 获取远程更新并推送分支",
+            "description": "目标：将本地提交同步到 GitHub，并核对上传结果。\n\n1. 执行 git remote -v 和 git branch --show-current，确认仓库与当前分支。\n2. 执行 git fetch origin，获取远程分支信息；本地文件保持当前内容。\n3. 当前分支已设置上游时，执行 git pull --ff-only。成功后本地分支前移到远程最新提交。\n4. 第一次推送本页示范分支时，执行：\n\ngit push -u origin feature/startup-dialog\n\n5. 以后在同一分支提交后执行 git push。GitHub 仓库网页切换到此分支，即可核对最新提交和文件。\n6. 若工作分支使用其他名称，把命令中的分支名替换为第 1 步输出的名称。\n7. 遇到写入权限或分支保护提示，按团队规则推送自己的开发分支，并在 GitHub 创建 Pull Request。\n\n[Git 官方 push 文档](https://git-scm.com/docs/git-push)",
+            "media": {
+              "image": "guide/workflow.svg",
+              "altText": "ArkForge 开发流程"
+            },
+            "completionEvents": []
+          },
+          {
+            "id": "resolve",
+            "title": "7. 根据 Git 提示继续处理",
+            "description": "目标：读懂常见提示，完成同步与日常开发。\n\n• “Author identity unknown”：回到“设置 Git 提交身份”，填写姓名与邮箱后再次提交。\n• “Repository not found”或认证错误：核对 HTTPS 地址、当前登录账户、仓库成员权限和组织 SSO 授权，再重新执行原命令。\n• “not a git repository”：用 pwd 核对位置，再 cd 到克隆得到的仓库目录。\n• “nothing to commit”：用 git status 和 git diff 检查已保存的修改与当前分支。\n• “non-fast-forward”或“Not possible to fast-forward”：先保存并提交本地改动，执行 git fetch origin，使用 git log --oneline --graph --all -15 查看分支历史。与团队确认后，执行 git merge origin/当前分支名 合并远程分支。\n• 出现冲突时：执行 git status 找到冲突文件，在编辑器逐处整合 <<<<<<<、=======、>>>>>>> 标记之间的内容并移除标记；保存后执行 git add 文件路径，再执行 git commit 完成合并，最后 git push。\n\n日常顺序：核对分支 → 拉取更新 → 编辑保存 → 查看差异 → 暂存提交 → 推送 → 核对 GitHub 页面。\n\n[Git 官方命令文档](https://git-scm.com/docs)\n[Git 官方 clone 文档](https://git-scm.com/docs/git-clone)\n[Git 官方 pull 文档](https://git-scm.com/docs/git-pull)\n[返回 ArkForge 使用介绍](command:arkforge.usageGuide)",
+            "media": {
+              "image": "guide/workflow.svg",
+              "altText": "ArkForge 开发流程"
+            },
+            "completionEvents": []
+          }
+        ]
+      }
+    ]
+  },
+  "enabledApiProposals": [
+    "defaultChatParticipant",
+    "chatProvider",
+    "fileSearchProvider",
+    "textSearchProvider"
+  ]
+}

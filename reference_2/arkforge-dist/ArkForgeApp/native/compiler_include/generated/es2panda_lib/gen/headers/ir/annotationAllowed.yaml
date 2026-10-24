@@ -1,0 +1,155 @@
+include:
+- '"ir/statements/annotationUsage.h"'
+ir:
+  class_definitions:
+  - extends: public T
+    known_macroses:
+    - NO_COPY_OPERATOR(AnnotationAllowed);
+    - NO_MOVE_SEMANTIC(AnnotationAllowed);
+    name: AnnotationAllowed
+    private: {}
+    protected: {}
+    public:
+      constructors:
+      - args: []
+        name: AnnotationAllowed
+        postfix: = delete
+        raw_declaration: AnnotationAllowed() = delete
+      destructors:
+      - args: []
+        name: ~AnnotationAllowed
+        postfix: override = default
+        raw_declaration: ~AnnotationAllowed() override = default
+      methods:
+      - args: []
+        name: HasAnnotations
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool HasAnnotations() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - args:
+        - name: source
+          type:
+            name: AnnotationUsage
+            ptr_depth: 1
+        name: EmplaceAnnotation
+        raw_declaration: void EmplaceAnnotation(AnnotationUsage *source)
+        return_type:
+          name: void
+      - args: []
+        name: ClearAnnotations
+        raw_declaration: void ClearAnnotations()
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: NodeTransformer
+            prefix: const
+            ref_depth: 1
+        - name: transformationName
+          type:
+            name: string_view
+            namespace: std
+            other_modifiers: const
+            postfix: const
+        name: TransformAnnotations
+        raw_declaration: void TransformAnnotations(const NodeTransformer &cb, std::string_view
+          const transformationName)
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: NodeTraverser
+            prefix: const
+            ref_depth: 1
+        name: IterateAnnotations
+        postfix: const
+        raw_declaration: void IterateAnnotations(const NodeTraverser &cb) const
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: SrcDumper
+            namespace: ir
+            ptr_depth: 1
+        name: DumpAnnotations
+        postfix: const
+        raw_declaration: void DumpAnnotations(ir::SrcDumper *dumper) const
+        return_type:
+          name: void
+      - args: []
+        name: AnnotationsForUpdate
+        raw_declaration: '[[nodiscard]] ArenaVector<ir::AnnotationUsage *> &AnnotationsForUpdate()'
+        return_type:
+          name: ArenaVector
+          prefix: '[[nodiscard]]'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: AnnotationUsage
+              namespace: ir
+              ptr_depth: 1
+      - args: []
+        name: Annotations
+        raw_declaration: '[[nodiscard]] ArenaVector<ir::AnnotationUsage *> &Annotations()'
+        return_type:
+          name: ArenaVector
+          prefix: '[[nodiscard]]'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: AnnotationUsage
+              namespace: ir
+              ptr_depth: 1
+      - args: []
+        name: Annotations
+        postfix: const
+        raw_declaration: '[[nodiscard]] ArenaVector<ir::AnnotationUsage *> const &Annotations()
+          const'
+        return_type:
+          name: ArenaVector
+          other_modifiers: const
+          prefix: '[[nodiscard]]'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: AnnotationUsage
+              namespace: ir
+              ptr_depth: 1
+      - args:
+        - name: annotationList
+          type:
+            name: ArenaVector
+            ref_depth: 2
+            template_args:
+            - type:
+                name: AnnotationUsage
+                namespace: ir
+                ptr_depth: 1
+        name: SetAnnotations
+        raw_declaration: void SetAnnotations(ArenaVector<ir::AnnotationUsage *> &&annotationList)
+        return_type:
+          name: void
+      - args:
+        - name: annotationList
+          type:
+            name: ArenaVector
+            other_modifiers: const
+            ref_depth: 1
+            template_args:
+            - type:
+                name: AnnotationUsage
+                namespace: ir
+                ptr_depth: 1
+        name: SetAnnotations
+        raw_declaration: void SetAnnotations(ArenaVector<ir::AnnotationUsage *> const
+          &annotationList)
+        return_type:
+          name: void
+    template: typename T
+macros:
+- name: ES2PANDA_IR_ANNOTATION_ALLOWED_H

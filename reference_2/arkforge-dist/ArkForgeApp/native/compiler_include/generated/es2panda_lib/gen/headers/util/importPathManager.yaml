@@ -1,0 +1,795 @@
+es2panda:
+  class_forward_declaration:
+  - ArkTsConfig
+include:
+- '"language.h"'
+- '"util/ustring.h"'
+- '"util/enumbitops.h"'
+- '"util/options.h"'
+- '"util/diagnosticEngine.h"'
+- '"parser/program/ImportCache.h"'
+- '"libarkfile/metadata_accessor.h"'
+- <unordered_set>
+- <functional>
+- <memory>
+- <optional>
+- <unordered_map>
+ir:
+  class_forward_declaration:
+  - StringLiteral
+macros:
+- name: ES2PANDA_UTIL_IMPORT_PATH_MANAGER_H
+- name: USE_UNIX_SYSCALL
+panda_file:
+  class_forward_declaration:
+  - File
+parser:
+  class_forward_declaration:
+  - ProgramAdapter
+  - Program
+  - NonPackageProgram
+  usings:
+  - name: PackageProgram
+    template: util::ModuleKind KIND
+    type:
+      name: ProgramAdapter
+      template_args:
+      - type:
+          name: PACKAGE
+          namespace: util::ModuleKind
+  - name: SourceProgram
+    type:
+      name: ProgramAdapter
+      template_args:
+      - type:
+          name: MODULE
+          namespace: util::ModuleKind
+  - name: SourceDeclarationProgram
+    type:
+      name: ProgramAdapter
+      template_args:
+      - type:
+          name: SOURCE_DECL
+          namespace: util::ModuleKind
+  - name: MetadataBasedProgram
+    type:
+      name: ProgramAdapter
+      template_args:
+      - type:
+          name: METADATA_DECL
+          namespace: util::ModuleKind
+  - name: LowDeclarationProgram
+    type:
+      name: ProgramAdapter
+      template_args:
+      - type:
+          name: ETSCACHE_DECL
+          namespace: util::ModuleKind
+util:
+  class_definitions:
+  - extends: public parser::CacheReference<>
+    known_macroses:
+    - NO_MOVE_SEMANTIC(ImportInfo);
+    name: ImportInfo
+    private: {}
+    public:
+      constructors:
+      - args:
+        - name: ipm
+          type:
+            name: ImportPathManager
+            prefix: const
+            ref_depth: 1
+        - name: resolvedSource
+          type:
+            name: string_view
+            namespace: std
+        - default_value: Language::Id::ETS
+          name: lang
+          type:
+            name: Id
+            namespace: Language
+        - default_value: 'false'
+          name: isExternalModule
+          type:
+            name: bool
+        name: ImportInfo
+        raw_declaration: "ImportInfo(const ImportPathManager &ipm, std::string_view\
+          \ resolvedSource, Language::Id lang = Language::Id::ETS,\n             \
+          \  bool isExternalModule = false)"
+      - args: []
+        name: ImportInfo
+        postfix: = default
+        raw_declaration: ImportInfo() = default
+      - args:
+        - name: other
+          type:
+            name: ImportInfo
+            prefix: const
+            ref_depth: 1
+        name: ImportInfo
+        raw_declaration: ImportInfo(const ImportInfo &other)
+      destructors:
+      - args: []
+        name: ~ImportInfo
+        postfix: = default
+        raw_declaration: ~ImportInfo() = default
+      fields:
+      - default_value: (const ImportInfo &other)
+        name: operator
+        type:
+          name: ImportInfo
+          prefix: const
+          ref_depth: 1
+      - default_value: '"dummy_path"'
+        name: DUMMY_PATH
+        type:
+          name: auto
+          prefix: static constexpr
+      - name: ImportPathManager
+        type:
+          name: friend
+      methods:
+      - additional_attributes: get
+        args: []
+        name: ResolvedSource
+        postfix: const
+        raw_declaration: std::string_view ResolvedSource() const
+        return_type:
+          name: string_view
+          namespace: std
+      - additional_attributes: get
+        args: []
+        name: ModuleName
+        postfix: const
+        raw_declaration: std::string_view ModuleName() const
+        return_type:
+          name: string_view
+          namespace: std
+      - args: []
+        name: OhmUrl
+        postfix: const
+        raw_declaration: std::string_view OhmUrl() const
+        return_type:
+          name: string_view
+          namespace: std
+      - args: []
+        name: PointsToPackage
+        postfix: const
+        raw_declaration: bool PointsToPackage() const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args: []
+        name: ReferencesABC
+        postfix: const
+        raw_declaration: bool ReferencesABC() const
+        return_type:
+          name: bool
+      - args: []
+        name: AbcPath
+        postfix: const
+        raw_declaration: const std::string &AbcPath() const
+        return_type:
+          name: string
+          namespace: std
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Data
+        postfix: const
+        raw_declaration: const parser::CacheReference<parser::AnyCacheType> &Data()
+          const
+        return_type:
+          name: CacheReference
+          namespace: parser
+          prefix: const
+          ref_depth: 1
+          template_args:
+          - type:
+              name: AnyCacheType
+              namespace: parser
+      - args: []
+        name: IsValid
+        postfix: const
+        raw_declaration: bool IsValid() const
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - name: textSource
+          type:
+            name: string
+            namespace: std
+        - name: contents
+          type:
+            name: string
+            namespace: std
+            ref_depth: 2
+        name: UpdateTextForLSPIncremental
+        raw_declaration: void UpdateTextForLSPIncremental(std::string textSource,
+          std::string &&contents)
+        return_type:
+          name: void
+      - args: []
+        name: DeclPath
+        postfix: const
+        raw_declaration: std::string_view DeclPath() const
+        return_type:
+          name: string_view
+          namespace: std
+      - args: []
+        name: HasSpecifiedDeclPath
+        postfix: const
+        raw_declaration: bool HasSpecifiedDeclPath() const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args: []
+        name: Lang
+        postfix: const
+        raw_declaration: auto Lang() const
+        return_type:
+          name: auto
+  - known_macroses:
+    - NO_COPY_SEMANTIC(ImportPathManager);
+    - NO_MOVE_SEMANTIC(ImportPathManager);
+    name: ImportPathManager
+    private: {}
+    public:
+      constructors:
+      - args:
+        - name: context
+          type:
+            name: Context
+            namespace: public_lib
+            ptr_depth: 1
+        name: ImportPathManager
+        raw_declaration: explicit ImportPathManager(public_lib::Context *context)
+        return_type:
+          prefix: explicit
+      - args: []
+        name: ImportPathManager
+        postfix: = delete
+        raw_declaration: ImportPathManager() = delete
+      destructors:
+      - args: []
+        name: ~ImportPathManager
+        raw_declaration: ~ImportPathManager()
+      fields:
+      - default_value: "\n        \"Larkruntime/annotation/ModuleDeclaration;\""
+        name: ANNOTATION_MODULE_DECLARATION
+        type:
+          name: string_view
+          namespace: std
+          prefix: static constexpr
+      - default_value: ImportInfo::ABC_SUFFIX
+        name: ABC_SUFFIX
+        type:
+          name: string_view
+          namespace: std
+          prefix: static constexpr
+      - default_value: '".ets"'
+        name: ETS_SUFFIX
+        type:
+          name: string_view
+          namespace: std
+          prefix: static constexpr
+      - default_value: '".d.ets"'
+        name: D_ETS_SUFFIX
+        type:
+          name: string_view
+          namespace: std
+          prefix: static constexpr
+      - default_value: '".etscache"'
+        name: CACHE_SUFFIX
+        type:
+          name: string_view
+          namespace: std
+          prefix: static constexpr
+      - default_value: '"etsstdlib.abc"'
+        name: ETSSTDLIB_ABC_SUFFIX
+        type:
+          name: string_view
+          namespace: std
+          prefix: static constexpr
+      - default_value: '9'
+        name: extensionsSize
+        type:
+          name: size_t
+          prefix: static constexpr
+      - default_value: "{\n        ETS_SUFFIX, D_ETS_SUFFIX, CACHE_SUFFIX, \".sts\"\
+          , \".d.sts\", \".ts\", \".d.ts\", \".js\"}"
+        name: supportedExtensions
+        type:
+          name: array
+          namespace: std
+          prefix: static constexpr
+          template_args:
+          - type:
+              name: string_view
+              namespace: std
+          - type:
+              name: extensionsSize
+      - default_value: "{\n        D_ETS_SUFFIX, ETS_SUFFIX, CACHE_SUFFIX, \".d.sts\"\
+          , \".sts\", \".d.ts\", \".ts\", \".js\"}"
+        name: supportedExtensionsInversed
+        type:
+          name: array
+          namespace: std
+          prefix: static constexpr
+          template_args:
+          - type:
+              name: string_view
+              namespace: std
+          - type:
+              name: extensionsSize
+      methods:
+      - additional_attributes: get
+        args: []
+        name: GetParseQueue
+        postfix: const
+        raw_declaration: '[[nodiscard]] const ArenaVector<ParseInfo> &GetParseQueue()
+          const'
+        return_type:
+          name: ArenaVector
+          prefix: '[[nodiscard]] const'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: ParseInfo
+      - additional_attributes: get
+        args: []
+        name: GetParseQueue
+        raw_declaration: '[[nodiscard]] ArenaVector<ParseInfo> &GetParseQueue()'
+        return_type:
+          name: ArenaVector
+          prefix: '[[nodiscard]]'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: ParseInfo
+      - args: []
+        name: ClearParseList
+        raw_declaration: void ClearParseList()
+        return_type:
+          name: void
+      - args:
+        - name: importer
+          type:
+            name: Program
+            namespace: parser
+            ptr_depth: 1
+        - name: importPath
+          type:
+            name: StringLiteral
+            namespace: ir
+            ptr_depth: 1
+        name: GatherImportInfo
+        raw_declaration: parser::Program *GatherImportInfo(parser::Program *importer,
+          ir::StringLiteral *importPath)
+        return_type:
+          name: Program
+          namespace: parser
+          ptr_depth: 1
+      - args:
+        - name: fraction
+          type:
+            name: Program
+            namespace: parser
+            ptr_depth: 1
+        - name: packageDecl
+          type:
+            name: ETSPackageDeclaration
+            namespace: ir
+            ptr_depth: 1
+        name: EnsurePackageIsRegisteredByPackageFraction
+        raw_declaration: "parser::Program *EnsurePackageIsRegisteredByPackageFraction(parser::Program\
+          \ *fraction,\n                                                         \
+          \       ir::ETSPackageDeclaration *packageDecl)"
+        return_type:
+          name: Program
+          namespace: parser
+          ptr_depth: 1
+      - args:
+        - name: importer
+          type:
+            name: Program
+            namespace: parser
+            ptr_depth: 1
+        - name: importPath
+          type:
+            name: StringLiteral
+            namespace: ir
+            ptr_depth: 1
+        name: ResolvePathAPI
+        postfix: const
+        raw_declaration: util::StringView ResolvePathAPI(parser::Program *importer,
+          ir::StringLiteral *importPath) const
+        return_type:
+          name: StringView
+          namespace: util
+      - args: []
+        name: ArkTSConfig
+        postfix: const
+        raw_declaration: const ArkTsConfig &ArkTSConfig() const
+        return_type:
+          name: ArkTsConfig
+          prefix: const
+          ref_depth: 1
+      - args: []
+        name: InitParseQueueForSimult
+        raw_declaration: void InitParseQueueForSimult()
+        return_type:
+          name: void
+      - args:
+        - name: program
+          type:
+            name: Program
+            namespace: parser
+            ptr_depth: 1
+        name: PrepareParseQueueForProgram
+        raw_declaration: void PrepareParseQueueForProgram(parser::Program *program)
+        return_type:
+          name: void
+      - args: []
+        name: IntroduceMainProgramForSimult
+        raw_declaration: void IntroduceMainProgramForSimult()
+        return_type:
+          name: void
+      - additional_attributes: set
+        args: []
+        name: SetupGlobalProgram
+        raw_declaration: void SetupGlobalProgram()
+        return_type:
+          name: void
+      - args:
+        - name: contents
+          type:
+            name: string
+            namespace: std
+            ref_depth: 2
+        name: IntroduceStdlibImportProgram
+        raw_declaration: parser::Program *IntroduceStdlibImportProgram(std::string
+          &&contents)
+        return_type:
+          name: Program
+          namespace: parser
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: sourceFilePath
+          type:
+            name: string_view
+            namespace: std
+        - name: moduleName
+          type:
+            name: string_view
+            namespace: std
+        name: SetupProgramForDebugInfoPlugin
+        raw_declaration: parser::Program *SetupProgramForDebugInfoPlugin(std::string_view
+          sourceFilePath, std::string_view moduleName)
+        return_type:
+          name: Program
+          namespace: parser
+          ptr_depth: 1
+      - args:
+        - name: importInfo
+          type:
+            name: ImportInfo
+            prefix: const
+            ref_depth: 1
+        name: SearchResolved
+        postfix: const
+        raw_declaration: parser::Program *SearchResolved(const ImportInfo &importInfo)
+          const
+        return_type:
+          name: Program
+          namespace: parser
+          ptr_depth: 1
+      - args:
+        - name: importInfo
+          type:
+            name: ImportInfo
+            prefix: const
+            ref_depth: 1
+        name: SearchResolvedExact
+        postfix: const
+        raw_declaration: parser::Program *SearchResolvedExact(const ImportInfo &importInfo)
+          const
+        return_type:
+          name: Program
+          namespace: parser
+          ptr_depth: 1
+      - args:
+        - name: program
+          type:
+            name: Program
+            namespace: parser
+            prefix: const
+            ptr_depth: 1
+        name: IsReplacedExactSource
+        postfix: const
+        raw_declaration: bool IsReplacedExactSource(const parser::Program *program)
+          const
+        return_type:
+          name: bool
+      - args:
+        - name: filename
+          type:
+            name: ArenaString
+            prefix: const
+            ref_depth: 1
+        name: RemoveProgramFromResolvedSources
+        raw_declaration: void RemoveProgramFromResolvedSources(const ArenaString &filename)
+        return_type:
+          name: void
+      - args:
+        - name: absolutePath
+          type:
+            name: string_view
+            namespace: std
+        name: FindOrIntroduceProgramForIncremental
+        raw_declaration: parser::Program *FindOrIntroduceProgramForIncremental(std::string_view
+          absolutePath)
+        return_type:
+          name: Program
+          namespace: parser
+          ptr_depth: 1
+      - args:
+        - name: absolutePath
+          type:
+            name: string_view
+            namespace: std
+        name: FindOrIntroduceProgram
+        raw_declaration: parser::Program *FindOrIntroduceProgram(std::string_view
+          absolutePath)
+        return_type:
+          name: Program
+          namespace: parser
+          ptr_depth: 1
+        template: bool ATTACH_TO_GLOBAL_EXTERNAL_SOURCES = true
+      - args:
+        - name: moduleName
+          type:
+            name: string
+            namespace: std
+        - name: cacheDir
+          type:
+            name: string
+            namespace: std
+            prefix: const
+            ref_depth: 1
+        name: FormEtscacheFilePath
+        raw_declaration: static std::string FormEtscacheFilePath(std::string moduleName,
+          const std::string &cacheDir)
+        return_type:
+          name: string
+          namespace: std
+          prefix: static
+      - args:
+        - name: pf
+          type:
+            name: File
+            namespace: panda_file
+            prefix: const
+            ref_depth: 1
+        - name: abcPath
+          type:
+            name: string
+            namespace: std
+            prefix: const
+            ref_depth: 1
+        - name: cacheDir
+          type:
+            name: string
+            namespace: std
+            prefix: const
+            ref_depth: 1
+        name: ExtractEtscacheToFile
+        raw_declaration: "static void ExtractEtscacheToFile(const panda_file::File\
+          \ &pf, const std::string &abcPath,\n                                   \
+          \   const std::string &cacheDir)"
+        return_type:
+          name: void
+          prefix: static
+      - args:
+        - name: imd
+          type:
+            name: ImportInfo
+            prefix: const
+            ref_depth: 1
+        name: FormAbcFilePath
+        postfix: const
+        raw_declaration: std::string FormAbcFilePath(const ImportInfo &imd) const
+        return_type:
+          name: string
+          namespace: std
+      - additional_attributes: get
+        args: []
+        name: Context
+        postfix: const
+        raw_declaration: auto *Context() const
+        return_type:
+          name: auto
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: SrcPos
+        postfix: const
+        raw_declaration: const auto &SrcPos() const
+        return_type:
+          name: auto
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: get
+        args: []
+        name: GetFileDependencies
+        postfix: const
+        raw_declaration: const auto &GetFileDependencies() const
+        return_type:
+          name: auto
+          prefix: const
+          ref_depth: 1
+      - args:
+        - name: root
+          type:
+            name: string_view
+            namespace: std
+        name: CollectReverseDependencies
+        postfix: const
+        raw_declaration: std::unordered_set<std::string> CollectReverseDependencies(std::string_view
+          root) const
+        return_type:
+          name: unordered_set
+          namespace: std
+          template_args:
+          - type:
+              name: string
+              namespace: std
+      - args:
+        - name: file
+          type:
+            name: string_view
+            namespace: std
+        name: RemoveFileDependencies
+        raw_declaration: void RemoveFileDependencies(std::string_view file)
+        return_type:
+          name: void
+      - args:
+        - name: files
+          type:
+            name: unordered_set
+            namespace: std
+            prefix: const
+            ref_depth: 1
+            template_args:
+            - type:
+                name: string
+                namespace: std
+        name: RemoveProgramsFromFileDependencies
+        raw_declaration: void RemoveProgramsFromFileDependencies(const std::unordered_set<std::string>
+          &files)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: file
+          type:
+            name: string_view
+            namespace: std
+        - name: depFile
+          type:
+            name: string_view
+            namespace: std
+        name: AddFileDependencies
+        raw_declaration: void AddFileDependencies(std::string_view file, std::string_view
+          depFile)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: GetOutputMatching
+        postfix: const
+        raw_declaration: const auto &GetOutputMatching() const
+        return_type:
+          name: auto
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: set
+        args:
+        - name: file
+          type:
+            name: string_view
+            namespace: std
+        - name: outPath
+          type:
+            name: string_view
+            namespace: std
+        name: AddOutputMatching
+        raw_declaration: void AddOutputMatching(std::string_view file, std::string_view
+          outPath)
+        return_type:
+          name: void
+      - args: []
+        name: ClearResolutionCaches
+        raw_declaration: void ClearResolutionCaches()
+        return_type:
+          name: void
+      usings:
+      - name: FileDependenciesMap
+        type:
+          name: ArenaUnorderedMap
+          template_args:
+          - type:
+              name: ArenaString
+          - type:
+              name: ArenaUnorderedSet
+              template_args:
+              - type:
+                  name: ArenaString
+      - name: FileOutputMatching
+        type:
+          name: ArenaUnorderedMap
+          template_args:
+          - type:
+              name: ArenaString
+          - type:
+              name: ArenaString
+    structs:
+    - members:
+      - default_constructor: ''
+        name: isParsed
+        type:
+          name: bool
+      - default_constructor: nullptr
+        name: program
+        type:
+          name: Program
+          namespace: parser
+          ptr_depth: 1
+      name: ParseInfo
+  class_forward_declaration:
+  - ImportPathManager
+  functions:
+  - args:
+    - name: path
+      type:
+        name: string
+        namespace: std
+        prefix: const
+        ref_depth: 1
+    name: IsAbsolute
+    raw_declaration: inline bool IsAbsolute(const std::string &path)
+    return_type:
+      name: bool
+      prefix: inline
+  structs:
+  - members:
+    - default_constructor: ''
+      name: moduleName
+      type:
+        name: ArenaString
+    - default_constructor: ''
+      name: modulePrefix
+      type:
+        name: ArenaString
+    - default_constructor: ''
+      name: kind
+      type:
+        name: ModuleKind
+    - default_constructor: ''
+      name: isDeclForDynamicStaticInterop
+      type:
+        name: bool
+    - args:
+      - type:
+          name: ETS
+          namespace: Language::Id
+      name: Language
+      raw_declaration: Language lang = Language(Language::Id::ETS)
+      return_type:
+        name: Language
+        postfix: lang =
+    name: ModuleInfo

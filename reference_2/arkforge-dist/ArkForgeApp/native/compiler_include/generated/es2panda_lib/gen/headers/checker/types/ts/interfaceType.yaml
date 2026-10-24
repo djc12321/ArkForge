@@ -1,0 +1,380 @@
+checker:
+  class_definitions:
+  - extends: public ObjectType
+    name: InterfaceType
+    private: {}
+    public:
+      constructors:
+      - args:
+        - initializer_for: allocator_
+          name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - initializer_for: name_
+          name: name
+          type:
+            name: StringView
+            namespace: util
+        - name: desc
+          type:
+            name: ObjectDescriptor
+            ptr_depth: 1
+        name: InterfaceType
+        other_initializers:
+        - class_field: ObjectType
+          init_value: ObjectType::ObjectTypeKind::INTERFACE, desc
+        - class_field: bases_
+          init_value: allocator->Adapter()
+        raw_declaration: InterfaceType(ArenaAllocator *allocator, util::StringView
+          name, ObjectDescriptor *desc)
+      methods:
+      - additional_attributes: set
+        args:
+        - name: base
+          type:
+            name: ObjectType
+            ptr_depth: 1
+        name: AddBase
+        raw_declaration: void AddBase(ObjectType *base)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Bases
+        raw_declaration: ArenaVector<ObjectType *> &Bases()
+        return_type:
+          name: ArenaVector
+          ref_depth: 1
+          template_args:
+          - type:
+              name: ObjectType
+              ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Name
+        postfix: const
+        raw_declaration: const util::StringView &Name() const
+        return_type:
+          name: StringView
+          namespace: util
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: set
+        args:
+        - name: mergedTypeParams
+          type:
+            name: pair
+            namespace: std
+            ref_depth: 2
+            template_args:
+            - type:
+                name: vector
+                namespace: std
+                template_args:
+                - type:
+                    name: Variable
+                    namespace: varbinder
+                    ptr_depth: 1
+            - type:
+                name: size_t
+        name: SetMergedTypeParams
+        raw_declaration: void SetMergedTypeParams(std::pair<std::vector<varbinder::Variable
+          *>, size_t> &&mergedTypeParams)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: GetMergedTypeParams
+        postfix: const
+        raw_declaration: const std::pair<std::vector<varbinder::Variable *>, size_t>
+          &GetMergedTypeParams() const
+        return_type:
+          name: pair
+          namespace: std
+          prefix: const
+          ref_depth: 1
+          template_args:
+          - type:
+              name: vector
+              namespace: std
+              template_args:
+              - type:
+                  name: Variable
+                  namespace: varbinder
+                  ptr_depth: 1
+          - type:
+              name: size_t
+      - additional_attributes: set
+        args:
+        - name: typeParamTypes
+          type:
+            name: vector
+            namespace: std
+            ref_depth: 2
+            template_args:
+            - type:
+                name: Type
+                ptr_depth: 1
+        name: SetTypeParamTypes
+        raw_declaration: void SetTypeParamTypes(std::vector<Type *> &&typeParamTypes)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: GetTypeParamTypes
+        postfix: const
+        raw_declaration: const std::vector<Type *> &GetTypeParamTypes() const
+        return_type:
+          name: vector
+          namespace: std
+          prefix: const
+          ref_depth: 1
+          template_args:
+          - type:
+              name: Type
+              ptr_depth: 1
+      - args:
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        - name: searchInBase
+          type:
+            name: bool
+            prefix: '[[maybe_unused]]'
+        name: GetProperty
+        postfix: const override
+        raw_declaration: "varbinder::LocalVariable *GetProperty(const util::StringView\
+          \ &name,\n                                          [[maybe_unused]] bool\
+          \ searchInBase) const override"
+        return_type:
+          name: LocalVariable
+          namespace: varbinder
+          ptr_depth: 1
+      - args: []
+        name: CallSignatures
+        postfix: override
+        raw_declaration: ArenaVector<Signature *> CallSignatures() override
+        return_type:
+          name: ArenaVector
+          template_args:
+          - type:
+              name: Signature
+              ptr_depth: 1
+      - args: []
+        name: ConstructSignatures
+        postfix: override
+        raw_declaration: ArenaVector<Signature *> ConstructSignatures() override
+        return_type:
+          name: ArenaVector
+          template_args:
+          - type:
+              name: Signature
+              ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: StringIndexInfo
+        postfix: const override
+        raw_declaration: const IndexInfo *StringIndexInfo() const override
+        return_type:
+          name: IndexInfo
+          prefix: const
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: NumberIndexInfo
+        postfix: const override
+        raw_declaration: const IndexInfo *NumberIndexInfo() const override
+        return_type:
+          name: IndexInfo
+          prefix: const
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: StringIndexInfo
+        postfix: override
+        raw_declaration: IndexInfo *StringIndexInfo() override
+        return_type:
+          name: IndexInfo
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: NumberIndexInfo
+        postfix: override
+        raw_declaration: IndexInfo *NumberIndexInfo() override
+        return_type:
+          name: IndexInfo
+          ptr_depth: 1
+      - args: []
+        name: Properties
+        postfix: override
+        raw_declaration: ArenaVector<varbinder::LocalVariable *> Properties() override
+        return_type:
+          name: ArenaVector
+          template_args:
+          - type:
+              name: LocalVariable
+              namespace: varbinder
+              ptr_depth: 1
+      - args:
+        - name: ss
+          type:
+            name: stringstream
+            namespace: std
+            ref_depth: 1
+        - name: precise
+          type:
+            name: bool
+            prefix: '[[maybe_unused]]'
+        name: ToString
+        postfix: const override
+        raw_declaration: void ToString(std::stringstream &ss, [[maybe_unused]] bool
+          precise) const override
+        return_type:
+          name: void
+      - args: []
+        name: GetTypeFacts
+        postfix: const override
+        raw_declaration: TypeFacts GetTypeFacts() const override
+        return_type:
+          name: TypeFacts
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: otherInterface
+          type:
+            name: InterfaceType
+            ptr_depth: 1
+        name: CheckStringInfo
+        raw_declaration: void CheckStringInfo(TypeRelation *relation, InterfaceType
+          *otherInterface)
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: targetProperties
+          type:
+            name: ArenaVector
+            prefix: const
+            ref_depth: 1
+            template_args:
+            - type:
+                name: LocalVariable
+                namespace: varbinder
+                ptr_depth: 1
+        - name: sourceProperties
+          type:
+            name: ArenaVector
+            prefix: const
+            ref_depth: 1
+            template_args:
+            - type:
+                name: LocalVariable
+                namespace: varbinder
+                ptr_depth: 1
+        name: CheckVarType
+        raw_declaration: "bool CheckVarType(TypeRelation *relation, const ArenaVector<varbinder::LocalVariable\
+          \ *> &targetProperties,\n                      const ArenaVector<varbinder::LocalVariable\
+          \ *> &sourceProperties)"
+        return_type:
+          name: bool
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: other
+          type:
+            name: Type
+            ptr_depth: 1
+        name: Identical
+        postfix: override
+        raw_declaration: void Identical(TypeRelation *relation, Type *other) override
+        return_type:
+          name: void
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: globalTypes
+          type:
+            name: GlobalTypesHolder
+            ptr_depth: 1
+        name: Instantiate
+        postfix: override
+        raw_declaration: Type *Instantiate(ArenaAllocator *allocator, TypeRelation
+          *relation, GlobalTypesHolder *globalTypes) override
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args:
+        - name: collectedSignatures
+          type:
+            name: ArenaVector
+            ptr_depth: 1
+            template_args:
+            - type:
+                name: Signature
+                ptr_depth: 1
+        - name: collectCallSignatures
+          type:
+            name: bool
+        name: CollectSignatures
+        postfix: const
+        raw_declaration: void CollectSignatures(ArenaVector<Signature *> *collectedSignatures,
+          bool collectCallSignatures) const
+        return_type:
+          name: void
+      - args:
+        - name: collectedProperties
+          type:
+            name: ArenaVector
+            ptr_depth: 1
+            template_args:
+            - type:
+                name: LocalVariable
+                namespace: varbinder
+                ptr_depth: 1
+        name: CollectProperties
+        postfix: const
+        raw_declaration: void CollectProperties(ArenaVector<varbinder::LocalVariable
+          *> *collectedProperties) const
+        return_type:
+          name: void
+      - args:
+        - name: findNumberInfo
+          type:
+            name: bool
+        name: FindIndexInfo
+        postfix: const
+        raw_declaration: const IndexInfo *FindIndexInfo(bool findNumberInfo) const
+        return_type:
+          name: IndexInfo
+          prefix: const
+          ptr_depth: 1
+      - args:
+        - name: findNumberInfo
+          type:
+            name: bool
+        name: FindIndexInfo
+        raw_declaration: IndexInfo *FindIndexInfo(bool findNumberInfo)
+        return_type:
+          name: IndexInfo
+          ptr_depth: 1
+include:
+- '"objectType.h"'
+macros:
+- name: ES2PANDA_COMPILER_CHECKER_TYPES_TS_INTERFACE_TYPE_H

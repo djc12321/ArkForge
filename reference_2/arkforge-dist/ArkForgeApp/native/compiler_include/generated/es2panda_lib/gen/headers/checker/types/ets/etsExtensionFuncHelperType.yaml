@@ -1,0 +1,73 @@
+checker:
+  class_definitions:
+  - extends: public Type
+    name: ETSExtensionFuncHelperType
+    private: {}
+    public:
+      constructors:
+      - args:
+        - initializer_for: classMethodType_
+          name: classMethodType
+          type:
+            name: ETSFunctionType
+            ptr_depth: 1
+        - initializer_for: extensionFunctionType_
+          name: extensionFunctionType
+          type:
+            name: ETSFunctionType
+            ptr_depth: 1
+        name: ETSExtensionFuncHelperType
+        other_initializers:
+        - class_field: Type
+          init_value: TypeFlag::ETS_EXTENSION_FUNC_HELPER
+        raw_declaration: ETSExtensionFuncHelperType(ETSFunctionType *classMethodType,
+          ETSFunctionType *extensionFunctionType)
+      methods:
+      - additional_attributes: get
+        args: []
+        name: ClassMethodType
+        raw_declaration: ETSFunctionType *ClassMethodType()
+        return_type:
+          name: ETSFunctionType
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: ExtensionMethodType
+        raw_declaration: ETSFunctionType *ExtensionMethodType()
+        return_type:
+          name: ETSFunctionType
+          ptr_depth: 1
+      - args:
+        - name: ss
+          type:
+            name: stringstream
+            namespace: std
+            ref_depth: 1
+        - name: precise
+          type:
+            name: bool
+        name: ToString
+        postfix: const override
+        raw_declaration: void ToString(std::stringstream &ss, bool precise) const
+          override
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: source
+          type:
+            name: Type
+            ptr_depth: 1
+        name: AssignmentTarget
+        postfix: override
+        raw_declaration: void AssignmentTarget(TypeRelation *relation, Type *source)
+          override
+        return_type:
+          name: void
+include:
+- '"checker/types/type.h"'
+macros:
+- name: ES2PANDA_COMPILER_CHECKER_TYPES_ETS_EXTENSION_FUNC_HELPER_TYPE_H

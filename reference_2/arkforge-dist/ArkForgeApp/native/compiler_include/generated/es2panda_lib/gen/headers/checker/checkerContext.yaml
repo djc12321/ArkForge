@@ -1,0 +1,806 @@
+checker:
+  class_definitions:
+  - friends:
+    - SavedCheckerContextStatus
+    known_macroses:
+    - DEFAULT_COPY_SEMANTIC(CheckerContext);
+    - DEFAULT_MOVE_SEMANTIC(CheckerContext);
+    name: CheckerContext
+    private: {}
+    public:
+      constructors:
+      - args:
+        - name: checker
+          type:
+            name: Checker
+            ptr_depth: 1
+        - name: newStatus
+          type:
+            name: CheckerStatus
+        name: CheckerContext
+        other_initializers:
+        - class_field: CheckerContext
+          init_value: checker, newStatus, nullptr
+        raw_declaration: explicit CheckerContext(Checker *checker, CheckerStatus newStatus)
+        return_type:
+          prefix: explicit
+      - args:
+        - name: checker
+          type:
+            name: Checker
+            ptr_depth: 1
+        - name: newStatus
+          type:
+            name: CheckerStatus
+        - name: containingClass
+          type:
+            name: ETSObjectType
+            prefix: const
+            ptr_depth: 1
+        name: CheckerContext
+        other_initializers:
+        - class_field: CheckerContext
+          init_value: checker, newStatus, containingClass, nullptr
+        raw_declaration: explicit CheckerContext(Checker *checker, CheckerStatus newStatus,
+          const ETSObjectType *containingClass)
+        return_type:
+          prefix: explicit
+      - args:
+        - name: checker
+          type:
+            name: Checker
+            ptr_depth: 1
+        - name: newStatus
+          type:
+            name: CheckerStatus
+        - name: containingClass
+          type:
+            name: ETSObjectType
+            prefix: const
+            ptr_depth: 1
+        - name: containingSignature
+          type:
+            name: Signature
+            ptr_depth: 1
+        name: CheckerContext
+        raw_declaration: "explicit CheckerContext(Checker *checker, CheckerStatus\
+          \ newStatus, const ETSObjectType *containingClass,\n                   \
+          \         Signature *containingSignature)"
+        return_type:
+          prefix: explicit
+      - args: []
+        name: CheckerContext
+        postfix: = delete
+        raw_declaration: CheckerContext() = delete
+      destructors:
+      - args: []
+        name: ~CheckerContext
+        postfix: = default
+        raw_declaration: ~CheckerContext() = default
+      methods:
+      - additional_attributes: get
+        args: []
+        name: CapturedVars
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const CapturedVarsMap &CapturedVars() const
+          noexcept'
+        return_type:
+          name: CapturedVarsMap
+          prefix: '[[nodiscard]] const'
+          ref_depth: 1
+      - additional_attributes: get
+        args: []
+        name: CapturedVars
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] CapturedVarsMap &CapturedVars() noexcept'
+        return_type:
+          name: CapturedVarsMap
+          prefix: '[[nodiscard]]'
+          ref_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Status
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const CheckerStatus &Status() const noexcept'
+        return_type:
+          name: CheckerStatus
+          prefix: '[[nodiscard]] const'
+          ref_depth: 1
+      - additional_attributes: get
+        args: []
+        name: ContainingClass
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] ETSObjectType *ContainingClass() const noexcept'
+        return_type:
+          name: ETSObjectType
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: ContainingSignature
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] Signature *ContainingSignature() const noexcept'
+        return_type:
+          name: Signature
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Status
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] CheckerStatus &Status() noexcept'
+        return_type:
+          name: CheckerStatus
+          prefix: '[[nodiscard]]'
+          ref_depth: 1
+      - additional_attributes: get
+        args: []
+        name: ContainingOverloadDeclaration
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] varbinder::Variable *ContainingOverloadDeclaration()
+          noexcept'
+        return_type:
+          name: Variable
+          namespace: varbinder
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: containingSignature
+          type:
+            name: Signature
+            ptr_depth: 1
+        name: SetContainingSignature
+        postfix: noexcept
+        raw_declaration: void SetContainingSignature(Signature *containingSignature)
+          noexcept
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: containingClass
+          type:
+            name: ETSObjectType
+            ptr_depth: 1
+        name: SetContainingClass
+        postfix: noexcept
+        raw_declaration: void SetContainingClass(ETSObjectType *containingClass) noexcept
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: containingOverloadDeclaration
+          type:
+            name: Variable
+            namespace: varbinder
+            ptr_depth: 1
+        name: SetContainingOverloadDeclaration
+        postfix: noexcept
+        raw_declaration: void SetContainingOverloadDeclaration(varbinder::Variable
+          *containingOverloadDeclaration) noexcept
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: var
+          type:
+            name: Variable
+            namespace: varbinder
+            ptr_depth: 1
+        - name: pos
+          type:
+            name: SourcePosition
+            namespace: lexer
+            prefix: const
+            ref_depth: 1
+        name: AddCapturedVar
+        raw_declaration: void AddCapturedVar(varbinder::Variable *var, const lexer::SourcePosition
+          &pos)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: ContainingLambda
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] ir::ArrowFunctionExpression *ContainingLambda()
+          const noexcept'
+        return_type:
+          name: ArrowFunctionExpression
+          namespace: ir
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: containingLambda
+          type:
+            name: ArrowFunctionExpression
+            namespace: ir
+            ptr_depth: 1
+        name: SetContainingLambda
+        postfix: noexcept
+        raw_declaration: void SetContainingLambda(ir::ArrowFunctionExpression *containingLambda)
+          noexcept
+        return_type:
+          name: void
+      - args: []
+        name: ClearSmartCasts
+        postfix: noexcept
+        raw_declaration: void ClearSmartCasts() noexcept
+        return_type:
+          name: void
+      - args:
+        - name: variable
+          type:
+            name: Variable
+            namespace: varbinder
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        name: RemoveSmartCast
+        postfix: noexcept
+        raw_declaration: void RemoveSmartCast(varbinder::Variable const *const variable)
+          noexcept
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: variable
+          type:
+            name: Variable
+            namespace: varbinder
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        - name: smartType
+          type:
+            name: Type
+            namespace: checker
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        name: SetSmartCast
+        postfix: noexcept
+        raw_declaration: void SetSmartCast(varbinder::Variable const *const variable,
+          checker::Type *const smartType) noexcept
+        return_type:
+          name: void
+      - args:
+        - name: variable
+          type:
+            name: Variable
+            namespace: varbinder
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        name: GetSmartCast
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] checker::Type *GetSmartCast(varbinder::Variable
+          const *const variable) const noexcept'
+        return_type:
+          name: Type
+          namespace: checker
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - args:
+        - default_value: 'false'
+          name: clearData
+          type:
+            name: bool
+        name: CloneSmartCasts
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] SmartCastArray CloneSmartCasts(bool clearData
+          = false) noexcept'
+        return_type:
+          name: SmartCastArray
+          prefix: '[[nodiscard]]'
+      - args:
+        - name: otherSmartCasts
+          type:
+            name: SmartCastArray
+            other_modifiers: const
+            ref_depth: 1
+        name: RestoreSmartCasts
+        raw_declaration: void RestoreSmartCasts(SmartCastArray const &otherSmartCasts)
+        return_type:
+          name: void
+      - args:
+        - name: otherSmartCasts
+          type:
+            name: SmartCastArray
+            other_modifiers: const
+            ref_depth: 1
+        name: CombineSmartCasts
+        raw_declaration: void CombineSmartCasts(SmartCastArray const &otherSmartCasts)
+        return_type:
+          name: void
+      - args: []
+        name: EnterTestExpression
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] SmartCastArray EnterTestExpression() noexcept'
+        return_type:
+          name: SmartCastArray
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsInTestExpression
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsInTestExpression() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - args: []
+        name: ExitTestExpression
+        raw_declaration: SmartCastTypes ExitTestExpression()
+        return_type:
+          name: SmartCastTypes
+      - args:
+        - name: loop
+          type:
+            name: LoopStatement
+            namespace: ir
+            prefix: const
+            ref_depth: 1
+        - name: loopConditionSmartCasts
+          type:
+            name: SmartCastTypes
+            prefix: const
+            ref_depth: 1
+        name: EnterLoop
+        postfix: noexcept
+        raw_declaration: "[[nodiscard]] std::pair<SmartCastArray, bool> EnterLoop(const\
+          \ ir::LoopStatement &loop,\n                                           \
+          \                 const SmartCastTypes &loopConditionSmartCasts) noexcept"
+        return_type:
+          name: pair
+          namespace: std
+          prefix: '[[nodiscard]]'
+          template_args:
+          - type:
+              name: SmartCastArray
+          - type:
+              name: bool
+      - args:
+        - name: loop
+          type:
+            name: LoopStatement
+            namespace: ir
+            prefix: const
+            ref_depth: 1
+        - name: loopConditionSmartCasts
+          type:
+            name: SmartCastTypes
+            prefix: const
+            ref_depth: 1
+        name: InvalidateSmartCastsForLoopHeader
+        postfix: noexcept
+        raw_declaration: "void InvalidateSmartCastsForLoopHeader(const ir::LoopStatement\
+          \ &loop,\n                                           const SmartCastTypes\
+          \ &loopConditionSmartCasts) noexcept"
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: IsInLoop
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsInLoop() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - args:
+        - name: prevSmartCasts
+          type:
+            name: SmartCastArray
+            ref_depth: 1
+        - name: clearFlag
+          type:
+            name: bool
+        - name: loopStatement
+          type:
+            name: LoopStatement
+            namespace: ir
+            ptr_depth: 1
+        name: ExitLoop
+        postfix: noexcept
+        raw_declaration: void ExitLoop(SmartCastArray &prevSmartCasts, bool clearFlag,
+          ir::LoopStatement *loopStatement) noexcept
+        return_type:
+          name: void
+      - args: []
+        name: EnterPath
+        postfix: noexcept
+        raw_declaration: void EnterPath() noexcept
+        return_type:
+          name: void
+      - args: []
+        name: ExitPath
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] bool ExitPath() noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - args:
+        - name: tryBlock
+          type:
+            name: BlockStatement
+            namespace: ir
+            other_modifiers: const
+            ref_depth: 1
+        name: CheckTryBlock
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] SmartCastArray CheckTryBlock(ir::BlockStatement
+          const &tryBlock) noexcept'
+        return_type:
+          name: SmartCastArray
+          prefix: '[[nodiscard]]'
+      - args:
+        - name: type1
+          type:
+            name: Type
+            namespace: checker
+            ptr_depth: 1
+        - name: type2
+          type:
+            name: Type
+            namespace: checker
+            ptr_depth: 1
+        name: GetIntersectionOfTypes
+        postfix: const noexcept
+        raw_declaration: checker::Type *GetIntersectionOfTypes(checker::Type *type1,
+          checker::Type *type2) const noexcept
+        return_type:
+          name: Type
+          namespace: checker
+          ptr_depth: 1
+      - args:
+        - name: type1
+          type:
+            name: Type
+            namespace: checker
+            ptr_depth: 1
+        - name: type2
+          type:
+            name: Type
+            namespace: checker
+            ptr_depth: 1
+        name: GetUnionOfTypes
+        postfix: const noexcept
+        raw_declaration: checker::Type *GetUnionOfTypes(checker::Type *type1, checker::Type
+          *type2) const noexcept
+        return_type:
+          name: Type
+          namespace: checker
+          ptr_depth: 1
+      - args:
+        - name: newSmartCastTypes
+          type:
+            name: SmartCastTuple
+            ref_depth: 1
+        name: MergeSmartTypesForLogicalAnd
+        raw_declaration: void MergeSmartTypesForLogicalAnd(SmartCastTuple &newSmartCastTypes)
+        return_type:
+          name: void
+      - args:
+        - name: newSmartCastTypes
+          type:
+            name: optional
+            namespace: std
+            ref_depth: 1
+            template_args:
+            - type:
+                name: SmartCastTuple
+        name: InvalidateNecessarySmartCastsInLogicalAnd
+        raw_declaration: void InvalidateNecessarySmartCastsInLogicalAnd(std::optional<SmartCastTuple>
+          &newSmartCastTypes)
+        return_type:
+          name: void
+      - args:
+        - name: node
+          type:
+            name: AstNode
+            namespace: ir
+            prefix: const
+            ptr_depth: 1
+        name: GetReassignedVariablesInNode
+        postfix: const
+        raw_declaration: ReassignedVariableMap GetReassignedVariablesInNode(const
+          ir::AstNode *node) const
+        return_type:
+          name: ReassignedVariableMap
+      - args:
+        - name: operatorType
+          type:
+            name: TokenType
+            namespace: lexer
+        name: CheckTestSmartCastCondition
+        raw_declaration: void CheckTestSmartCastCondition(lexer::TokenType operatorType)
+        return_type:
+          name: void
+      - args:
+        - name: identifier
+          type:
+            name: Identifier
+            namespace: ir
+            other_modifiers: const
+            ptr_depth: 1
+        name: CheckIdentifierSmartCastCondition
+        postfix: noexcept
+        raw_declaration: void CheckIdentifierSmartCastCondition(ir::Identifier const
+          *identifier) noexcept
+        return_type:
+          name: void
+      - args:
+        - name: unaryExpression
+          type:
+            name: UnaryExpression
+            namespace: ir
+            other_modifiers: const
+            ptr_depth: 1
+        name: CheckUnarySmartCastCondition
+        postfix: noexcept
+        raw_declaration: void CheckUnarySmartCastCondition(ir::UnaryExpression const
+          *unaryExpression) noexcept
+        return_type:
+          name: void
+      - args:
+        - name: binaryExpression
+          type:
+            name: BinaryExpression
+            namespace: ir
+            ptr_depth: 1
+        name: CheckBinarySmartCastCondition
+        postfix: noexcept
+        raw_declaration: void CheckBinarySmartCastCondition(ir::BinaryExpression *binaryExpression)
+          noexcept
+        return_type:
+          name: void
+      - args:
+        - name: breakStatement
+          type:
+            name: BreakStatement
+            namespace: ir
+            other_modifiers: const
+            ptr_depth: 1
+        name: OnBreakStatement
+        raw_declaration: void OnBreakStatement(ir::BreakStatement const *breakStatement)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: targetStatement
+          type:
+            name: Statement
+            namespace: ir
+            other_modifiers: const
+            ptr_depth: 1
+        - name: smartCasts
+          type:
+            name: SmartCastArray
+            ref_depth: 2
+        name: AddBreakSmartCasts
+        raw_declaration: void AddBreakSmartCasts(ir::Statement const *targetStatement,
+          SmartCastArray &&smartCasts)
+        return_type:
+          name: void
+      - args:
+        - name: targetStatement
+          type:
+            name: Statement
+            namespace: ir
+            other_modifiers: const
+            ptr_depth: 1
+        name: CombineBreakSmartCasts
+        raw_declaration: void CombineBreakSmartCasts(ir::Statement const *targetStatement)
+        return_type:
+          name: void
+  - known_macroses:
+    - NO_COPY_SEMANTIC(SavedCheckerContextStatus);
+    - DEFAULT_MOVE_SEMANTIC(SavedCheckerContextStatus);
+    name: SavedCheckerContextStatus
+    private: {}
+    public:
+      constructors:
+      - args:
+        - initializer_for: context_
+          name: context
+          type:
+            name: CheckerContext
+            ptr_depth: 1
+        - name: status
+          type:
+            name: CheckerStatus
+            other_modifiers: const
+            postfix: const
+        name: SavedCheckerContextStatus
+        other_initializers:
+        - class_field: preStatus_
+          init_value: context_->status_
+        raw_declaration: explicit SavedCheckerContextStatus(CheckerContext *context,
+          CheckerStatus const status)
+        return_type:
+          prefix: explicit
+      destructors:
+      - args: []
+        name: ~SavedCheckerContextStatus
+        raw_declaration: ~SavedCheckerContextStatus()
+  structs:
+  - members:
+    - args: []
+      name: SmartCastCondition
+      postfix: = default
+      raw_declaration: SmartCastCondition() = default
+    - args: []
+      name: ~SmartCastCondition
+      postfix: = default
+      raw_declaration: ~SmartCastCondition() = default
+    - default_value: nullptr
+      name: variable
+      type:
+        name: Variable
+        namespace: varbinder
+        other_modifiers: const
+        ptr_depth: 1
+    - default_value: nullptr
+      name: testedType
+      type:
+        name: Type
+        namespace: checker
+        ptr_depth: 1
+    - default_value: 'false'
+      name: negate
+      type:
+        name: bool
+    - default_value: 'true'
+      name: strict
+      type:
+        name: bool
+    name: SmartCastCondition
+  usings:
+  - name: CapturedVarsMap
+    type:
+      name: ArenaUnorderedMap
+      template_args:
+      - type:
+          name: Variable
+          namespace: varbinder
+          ptr_depth: 1
+      - type:
+          name: SourcePosition
+          namespace: lexer
+  - name: SmartCastMap
+    type:
+      name: ArenaMap
+      other_modifiers: const
+      template_args:
+      - type:
+          name: Variable
+          namespace: varbinder
+          other_modifiers: const
+          ptr_depth: 1
+      - type:
+          name: Type
+          namespace: checker
+          ptr_depth: 1
+  - name: SmartCastArray
+    type:
+      name: vector
+      namespace: std
+      other_modifiers: const
+      template_args:
+      - type:
+          name: pair
+          namespace: std
+          other_modifiers: const
+          template_args:
+          - type:
+              name: Variable
+              namespace: varbinder
+              other_modifiers: const
+              ptr_depth: 1
+          - type:
+              name: Type
+              namespace: checker
+              ptr_depth: 1
+  - name: SmartCastTestMap
+    type:
+      name: ArenaMap
+      other_modifiers: const
+      template_args:
+      - type:
+          name: Variable
+          namespace: varbinder
+          other_modifiers: const
+          ptr_depth: 1
+      - type:
+          name: pair
+          namespace: std
+          template_args:
+          - type:
+              name: Type
+              namespace: checker
+              ptr_depth: 1
+          - type:
+              name: Type
+              namespace: checker
+              ptr_depth: 1
+  - name: SmartCastTuple
+    type:
+      name: tuple
+      namespace: std
+      other_modifiers: const
+      template_args:
+      - type:
+          name: Variable
+          namespace: varbinder
+          other_modifiers: const
+          ptr_depth: 1
+      - type:
+          name: Type
+          namespace: checker
+          ptr_depth: 1
+      - type:
+          name: Type
+          namespace: checker
+          ptr_depth: 1
+  - name: SmartCastTestArray
+    type:
+      name: vector
+      namespace: std
+      template_args:
+      - type:
+          name: SmartCastTuple
+  - name: PreservedSmartCastsMap
+    type:
+      name: ArenaMultiMap
+      other_modifiers: const
+      template_args:
+      - type:
+          name: AstNode
+          namespace: ir
+          other_modifiers: const
+          ptr_depth: 1
+      - type:
+          name: SmartCastArray
+  - name: ReassignedVariableMap
+    type:
+      name: unordered_map
+      namespace: std
+      other_modifiers: const
+      template_args:
+      - type:
+          name: Variable
+          namespace: varbinder
+          other_modifiers: const
+          ptr_depth: 1
+      - type:
+          name: bool
+  - name: SmartCastTypes
+    type:
+      name: optional
+      namespace: std
+      template_args:
+      - type:
+          name: SmartCastTestArray
+include:
+- '"es2panda.h"'
+- '"generated/tokenType.h"'
+- '"lexer/token/sourceLocation.h"'
+- '"util/enumbitops.h"'
+ir:
+  class_forward_declaration:
+  - ArrowFunctionExpression
+  - AstNode
+  - LoopStatement
+  - BlockStatement
+  - Identifier
+  - UnaryExpression
+  - BreakStatement
+  - Statement
+  - BinaryExpression
+macros:
+- name: ES2PANDA_CHECKER_CHECKER_CONTEXT_H
+structs:
+- members: []
+  name: enumbitops::IsAllowedType<ark::es2panda::checker::CheckerStatus>
+varbinder:
+  class_forward_declaration:
+  - Variable

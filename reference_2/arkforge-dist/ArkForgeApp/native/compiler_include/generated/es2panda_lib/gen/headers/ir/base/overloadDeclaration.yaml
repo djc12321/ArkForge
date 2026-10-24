@@ -1,0 +1,315 @@
+enumbitops:
+  structs:
+  - members: []
+    name: IsAllowedType<ark::es2panda::ir::OverloadDeclFlags>
+include:
+- '"classDefinition.h"'
+- '"ir/typeNode.h"'
+- '"methodDefinition.h"'
+ir:
+  class_definitions:
+  - extends: public ClassElement
+    known_macroses:
+    - NO_COPY_SEMANTIC(OverloadDeclaration);
+    - NO_MOVE_SEMANTIC(OverloadDeclaration);
+    name: OverloadDeclaration
+    private: {}
+    protected: {}
+    public:
+      constructors:
+      - args: []
+        name: OverloadDeclaration
+        postfix: = delete
+        raw_declaration: OverloadDeclaration() = delete
+      - args:
+        - name: key
+          type:
+            name: Expression
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        - name: modifiers
+          type:
+            name: ModifierFlags
+            other_modifiers: const
+            postfix: const
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            other_modifiers: const
+            postfix: const
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: OverloadDeclaration
+        other_initializers:
+        - class_field: ClassElement
+          init_value: AstNodeType::OVERLOAD_DECLARATION, key, nullptr, modifiers,
+            allocator, false
+        - class_field: overloadedList_
+          init_value: allocator->Adapter()
+        - class_field: overloadFlags_
+          init_value: OverloadDeclFlags::NONE
+        raw_declaration: "explicit OverloadDeclaration(Expression *const key, ModifierFlags\
+          \ const modifiers,\n                                 [[maybe_unused]] ArenaAllocator\
+          \ *const allocator)"
+        return_type:
+          prefix: explicit
+      destructors:
+      - args: []
+        name: ~OverloadDeclaration
+        postfix: override = default
+        raw_declaration: ~OverloadDeclaration() override = default
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Flag
+        postfix: const
+        raw_declaration: OverloadDeclFlags Flag() const
+        return_type:
+          name: OverloadDeclFlags
+      - additional_attributes: get
+        args: []
+        name: OverloadedList
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] ArenaVector<ir::Expression *> &OverloadedList()
+          noexcept'
+        return_type:
+          name: ArenaVector
+          prefix: '[[nodiscard]]'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: Expression
+              namespace: ir
+              ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: OverloadedList
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const ArenaVector<ir::Expression *> &OverloadedList()
+          const noexcept'
+        return_type:
+          name: ArenaVector
+          prefix: '[[nodiscard]] const'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: Expression
+              namespace: ir
+              ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: overloadedList
+          type:
+            name: ArenaVector
+            template_args:
+            - type:
+                name: Expression
+                ptr_depth: 1
+        name: SetOverloadedList
+        raw_declaration: void SetOverloadedList(ArenaVector<Expression *> overloadedList)
+        return_type:
+          name: void
+      - args:
+        - name: overloadedExpression
+          type:
+            name: Identifier
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        name: PushFront
+        raw_declaration: void PushFront(Identifier *const overloadedExpression)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: overloadFlag
+          type:
+            name: OverloadDeclFlags
+        name: AddOverloadDeclFlag
+        raw_declaration: void AddOverloadDeclFlag(OverloadDeclFlags overloadFlag)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - name: overloadFlag
+          type:
+            name: OverloadDeclFlags
+        name: HasOverloadDeclFlag
+        postfix: const
+        raw_declaration: '[[nodiscard]] bool HasOverloadDeclFlag(OverloadDeclFlags
+          overloadFlag) const'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsConstructorOverloadDeclaration
+        raw_declaration: '[[nodiscard]] bool IsConstructorOverloadDeclaration()'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsFunctionOverloadDeclaration
+        raw_declaration: '[[nodiscard]] bool IsFunctionOverloadDeclaration()'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsClassMethodOverloadDeclaration
+        raw_declaration: '[[nodiscard]] bool IsClassMethodOverloadDeclaration()'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsInterfaceMethodOverloadDeclaration
+        raw_declaration: '[[nodiscard]] bool IsInterfaceMethodOverloadDeclaration()'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - args:
+        - name: cb
+          type:
+            name: NodeTraverser
+            prefix: const
+            ref_depth: 1
+        name: ResolveReferences
+        postfix: const
+        raw_declaration: void ResolveReferences(const NodeTraverser &cb) const
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Name
+        postfix: const
+        raw_declaration: util::StringView Name() const
+        return_type:
+          name: StringView
+          namespace: util
+      - args:
+        - name: isStatic
+          type:
+            name: bool
+        name: ToPrivateFieldKind
+        postfix: const override
+        raw_declaration: PrivateFieldKind ToPrivateFieldKind(bool isStatic) const
+          override
+        return_type:
+          name: PrivateFieldKind
+      - args:
+        - name: cb
+          type:
+            name: NodeTransformer
+            prefix: const
+            ref_depth: 1
+        - name: transformationName
+          type:
+            name: string_view
+            namespace: std
+        name: TransformChildren
+        postfix: override
+        raw_declaration: void TransformChildren(const NodeTransformer &cb, std::string_view
+          transformationName) override
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: NodeTraverser
+            prefix: const
+            ref_depth: 1
+        name: Iterate
+        postfix: const override
+        raw_declaration: void Iterate(const NodeTraverser &cb) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: AstDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::AstDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: SrcDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::SrcDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: SrcDumper
+            namespace: ir
+            ptr_depth: 1
+        name: DumpModifier
+        postfix: const
+        raw_declaration: void DumpModifier(ir::SrcDumper *dumper) const
+        return_type:
+          name: void
+      - args:
+        - name: pg
+          type:
+            name: PandaGen
+            namespace: compiler
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile([[maybe_unused]] compiler::PandaGen *pg) const
+          override
+        return_type:
+          name: void
+      - args:
+        - name: checker
+          type:
+            name: TSChecker
+            namespace: checker
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::Type *Check([[maybe_unused]] checker::TSChecker
+          *checker) override
+        return_type:
+          name: Type
+          namespace: checker
+          ptr_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            namespace: checker
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::VerifiedType Check([[maybe_unused]] checker::ETSChecker
+          *checker) override
+        return_type:
+          name: VerifiedType
+          namespace: checker
+      - args:
+        - name: v
+          type:
+            name: ASTVisitorT
+            ptr_depth: 1
+        name: Accept
+        postfix: override
+        raw_declaration: void Accept(ASTVisitorT *v) override
+        return_type:
+          name: void
+macros:
+- name: ES2PANDA_IR_OVERLOAD_DEFINITION_H

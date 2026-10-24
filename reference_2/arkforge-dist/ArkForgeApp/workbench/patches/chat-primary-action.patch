@@ -1,0 +1,109 @@
+diff --git a/src/vs/platform/actions/browser/dropdownWithPrimaryActionViewItem.ts b/src/vs/platform/actions/browser/dropdownWithPrimaryActionViewItem.ts
+index a3b33454..dcad0f19 100644
+--- a/src/vs/platform/actions/browser/dropdownWithPrimaryActionViewItem.ts
++++ b/src/vs/platform/actions/browser/dropdownWithPrimaryActionViewItem.ts
+@@ -130,6 +130,10 @@ export class DropdownWithPrimaryActionViewItem extends BaseActionViewItem {
+ 		this.updateEnabled();
+ 	}
+ 
++	// Both child buttons handle activation. A touch tap is also dispatched to this
++	// ancestor by Gesture, and must not run the primary action after opening the menu.
++	override onClick(): void { }
++
+ 	override focus(fromRight?: boolean): void {
+ 		if (fromRight) {
+ 			this._dropdown.focus();
+diff --git a/src/vs/platform/quickinput/browser/quickInputController.ts b/src/vs/platform/quickinput/browser/quickInputController.ts
+index cb673cd1..64a22419 100644
+--- a/src/vs/platform/quickinput/browser/quickInputController.ts
++++ b/src/vs/platform/quickinput/browser/quickInputController.ts
+@@ -330,6 +330,14 @@ export class QuickInputController extends Disposable {
+ 		}));
+ 		this._register(tree.tree.onDidChangeContentHeight(() => this.updateLayout()));
+ 
++		// Touching a non-focusable workbench surface may not blur the input in WebViews.
++		// Dismiss on outside pointer input as well, while honoring persistent quick picks.
++		this._register(dom.addDisposableListener(dom.getWindow(container).document, dom.EventType.POINTER_DOWN, (e: PointerEvent) => {
++			if (this.controller && !container.contains(e.target as Node) && !this.getUI().ignoreFocusOut && !this.options.ignoreFocusOut()) {
++				this.hide(QuickInputHideReason.Blur);
++			}
++		}, true));
++
+ 		const focusTracker = dom.trackFocus(container);
+ 		this._register(focusTracker);
+ 		this._register(dom.addDisposableListener(container, dom.EventType.FOCUS, e => {
+diff --git a/src/vs/workbench/contrib/chat/browser/agentSessions/experiments/agentTitleBarStatusWidget.ts b/src/vs/workbench/contrib/chat/browser/agentSessions/experiments/agentTitleBarStatusWidget.ts
+index 87da3369..9c0cd86a 100644
+--- a/src/vs/workbench/contrib/chat/browser/agentSessions/experiments/agentTitleBarStatusWidget.ts
++++ b/src/vs/workbench/contrib/chat/browser/agentSessions/experiments/agentTitleBarStatusWidget.ts
+@@ -5,6 +5,7 @@
+ 
+ import './media/agenttitlebarstatuswidget.css';
+ import { $, addDisposableListener, EventType, getWindow, isHTMLElement, reset } from '../../../../../../base/browser/dom.js';
++import { EventType as TouchEventType, Gesture } from '../../../../../../base/browser/touch.js';
+ import { renderIcon } from '../../../../../../base/browser/ui/iconLabel/iconLabels.js';
+ import { Disposable, DisposableStore } from '../../../../../../base/common/lifecycle.js';
+ import { Codicon } from '../../../../../../base/common/codicons.js';
+@@ -72,7 +73,6 @@ type AgentStatusClickClassification = {
+ };
+ 
+ // Action IDs
+-const TOGGLE_CHAT_ACTION_ID = 'workbench.action.chat.toggle';
+ const QUICK_OPEN_ACTION_ID = 'workbench.action.quickOpenWithModes';
+ 
+ // Storage key for filter state
+@@ -598,8 +598,9 @@ export class AgentTitleBarStatusWidget extends BaseActionViewItem {
+ 				: localize('askTooltip2', "Open Quick Access");
+ 		}));
+ 
+-		// Click handler - always open quick access in compact mode (attention sessions are handled by the badge)
+-		disposables.add(addDisposableListener(inputArea, EventType.CLICK, (e) => {
++		// Touch gestures suppress synthetic mouse clicks, so register both input paths.
++		disposables.add(Gesture.addTarget(inputArea));
++		const openQuickAccess = (e: Event) => {
+ 			e.preventDefault();
+ 			e.stopPropagation();
+ 			this.telemetryService.publicLog2<AgentStatusClickEvent, AgentStatusClickClassification>('agentStatusWidget.click', {
+@@ -608,7 +609,9 @@ export class AgentTitleBarStatusWidget extends BaseActionViewItem {
+ 			});
+ 			const useUnifiedQuickAccess = this.configurationService.getValue<boolean>(ChatConfiguration.UnifiedAgentsBar) === true;
+ 			this.commandService.executeCommand(useUnifiedQuickAccess ? UNIFIED_QUICK_ACCESS_ACTION_ID : QUICK_OPEN_ACTION_ID);
+-		}));
++		};
++		disposables.add(addDisposableListener(inputArea, EventType.CLICK, openQuickAccess));
++		disposables.add(addDisposableListener(inputArea, TouchEventType.Tap, openQuickAccess));
+ 
+ 		// Keyboard handler
+ 		disposables.add(addDisposableListener(inputArea, EventType.KEY_DOWN, (e) => {
+@@ -866,7 +869,7 @@ export class AgentTitleBarStatusWidget extends BaseActionViewItem {
+ 			getActions: (): IAction[] => Separator.join(...this._chatTitleBarMenu.getActions({ shouldForwardArgs: true }).map(([, actions]) => actions))
+ 		};
+ 
+-		const primaryActionId = TOGGLE_CHAT_ACTION_ID;
++		const primaryActionId = 'arkforge.openChat';
+ 		const primaryActionTitle = localize('toggleChat', "Toggle Chat");
+ 		const primaryActionIcon = Codicon.chatSparkle;
+ 
+@@ -891,7 +894,8 @@ export class AgentTitleBarStatusWidget extends BaseActionViewItem {
+ 			dropdownAction,
+ 			menuActionsProvider,
+ 			'agent-status-sparkle-dropdown',
+-			{ skipTelemetry: true, menuClassName: WORKBENCH_MENU_MOTION_CLASS, closeAnimation: workbenchMenuCloseAnimation }
++			// Keep the popup outside the clipped title-bar button on embedded WebViews.
++			{ skipTelemetry: true, menuAsChild: false, menuClassName: WORKBENCH_MENU_MOTION_CLASS, closeAnimation: workbenchMenuCloseAnimation }
+ 		);
+ 		sparkleDropdown.render(sparkleContainer);
+ 		disposables.add(sparkleDropdown);
+@@ -913,8 +917,11 @@ export class AgentTitleBarStatusWidget extends BaseActionViewItem {
+ 			}
+ 		}, true /* useCapture */));
+ 
+-		// Add keyboard handler for Enter/Space on the sparkle container
++		// Child buttons handle their own keys; only activate the container when it has focus.
+ 		disposables.add(addDisposableListener(sparkleContainer, EventType.KEY_DOWN, (e) => {
++			if (e.target !== sparkleContainer) {
++				return;
++			}
+ 			if (e.key === 'Enter' || e.key === ' ') {
+ 				e.preventDefault();
+ 				e.stopPropagation();

@@ -1,0 +1,499 @@
+include:
+- '"ir/astNode.h"'
+- '"lexer/token/sourceLocation.h"'
+- '"generated/tokenType.h"'
+- '"lexer/token/number.h"'
+- '"util/ustring.h"'
+- <sstream>
+- <variant>
+ir:
+  class_definitions:
+  - class_definitions:
+    - name: Nullish
+      private: {}
+      public:
+        methods:
+        - args:
+          - initializer_for: node_
+            name: node
+            type:
+              name: AstNode
+              namespace: ir
+              prefix: const
+              ptr_depth: 1
+          name: Nullish
+          raw_declaration: explicit Nullish(const ir::AstNode *node)
+          return_type:
+            prefix: explicit
+        - additional_attributes: get
+          args: []
+          name: Node
+          postfix: const
+          raw_declaration: const ir::AstNode *Node() const
+          return_type:
+            name: AstNode
+            namespace: ir
+            prefix: const
+            ptr_depth: 1
+    - name: Optional
+      private: {}
+      public:
+        methods:
+        - args:
+          - initializer_for: value_
+            name: node
+            type:
+              name: AstNode
+              namespace: ir
+              prefix: const
+              ptr_depth: 1
+          name: Optional
+          raw_declaration: explicit Optional(const ir::AstNode *node)
+          return_type:
+            prefix: explicit
+        - args:
+          - name: string
+            type:
+              name: char
+              prefix: const
+              ptr_depth: 1
+          name: Optional
+          other_initializers:
+          - class_field: value_
+            init_value: const_cast<char *>(string)
+          raw_declaration: explicit Optional(const char *string)
+          return_type:
+            prefix: explicit
+        - args:
+          - initializer_for: value_
+            name: boolean
+            type:
+              name: bool
+          name: Optional
+          raw_declaration: explicit Optional(bool boolean)
+          return_type:
+            prefix: explicit
+        - args:
+          - name: array
+            type:
+              name: ArenaVector
+              prefix: const
+              ref_depth: 1
+              template_args:
+              - type:
+                  name: T
+          name: Optional
+          raw_declaration: explicit Optional(const ArenaVector<T> &array)
+          return_type:
+            prefix: explicit
+          template: typename T
+        - additional_attributes: get
+          args: []
+          name: Value
+          postfix: const
+          raw_declaration: const Val &Value() const
+          return_type:
+            name: Val
+            prefix: const
+            ref_depth: 1
+        usings:
+        - name: Val
+          type:
+            name: variant
+            namespace: std
+            other_modifiers: const
+            template_args:
+            - type:
+                name: char
+                prefix: const
+                ptr_depth: 1
+            - type:
+                name: AstNode
+                prefix: const
+                ptr_depth: 1
+            - type:
+                name: bool
+            - type:
+                name: vector
+                namespace: std
+                other_modifiers: const
+                template_args:
+                - type:
+                    name: AstNode
+                    prefix: const
+                    ptr_depth: 1
+    - class_definitions:
+      - name: Ignore
+        public:
+          methods:
+          - args: []
+            name: Ignore
+            postfix: = default
+            raw_declaration: Ignore() = default
+      enums:
+      - flags:
+        - PROP_NULL
+        - PROP_UNDEFINED
+        - EMPTY_ARRAY
+        kind: simple
+        name: Constant
+        namespace: ir
+        parent_class_name: AstDumper::Property
+      name: Property
+      private: {}
+      public:
+        methods:
+        - args:
+          - initializer_for: key_
+            name: key
+            type:
+              name: char
+              prefix: const
+              ptr_depth: 1
+          - initializer_for: value_
+            name: string
+            type:
+              name: char
+              prefix: const
+              ptr_depth: 1
+          name: Property
+          raw_declaration: Property(const char *key, const char *string)
+        - args:
+          - initializer_for: key_
+            name: key
+            type:
+              name: char
+              prefix: const
+              ptr_depth: 1
+          - initializer_for: value_
+            name: str
+            type:
+              name: StringView
+              namespace: util
+          name: Property
+          raw_declaration: Property(const char *key, util::StringView str)
+        - args:
+          - initializer_for: key_
+            name: key
+            type:
+              name: char
+              prefix: const
+              ptr_depth: 1
+          - initializer_for: value_
+            name: boolean
+            type:
+              name: bool
+          name: Property
+          raw_declaration: Property(const char *key, bool boolean)
+        - args:
+          - initializer_for: key_
+            name: key
+            type:
+              name: char
+              prefix: const
+              ptr_depth: 1
+          - initializer_for: value_
+            name: c16
+            type:
+              name: char16_t
+          name: Property
+          raw_declaration: Property(const char *key, char16_t c16)
+        - args:
+          - initializer_for: key_
+            name: key
+            type:
+              name: char
+              prefix: const
+              ptr_depth: 1
+          - initializer_for: value_
+            name: number
+            type:
+              name: Number
+              namespace: lexer
+          name: Property
+          raw_declaration: Property(const char *key, lexer::Number number)
+        - args:
+          - initializer_for: key_
+            name: key
+            type:
+              name: char
+              prefix: const
+              ptr_depth: 1
+          - initializer_for: value_
+            name: token
+            type:
+              name: TokenType
+              namespace: lexer
+          name: Property
+          raw_declaration: Property(const char *key, lexer::TokenType token)
+        - args:
+          - initializer_for: key_
+            name: key
+            type:
+              name: char
+              prefix: const
+              ptr_depth: 1
+          - initializer_for: value_
+            name: props
+            type:
+              name: initializer_list
+              namespace: std
+              template_args:
+              - type:
+                  name: Property
+          name: Property
+          raw_declaration: Property(const char *key, std::initializer_list<Property>
+            props)
+        - args:
+          - initializer_for: key_
+            name: key
+            type:
+              name: char
+              prefix: const
+              ptr_depth: 1
+          - name: node
+            type:
+              name: AstNode
+              namespace: ir
+              prefix: const
+              ptr_depth: 1
+          name: Property
+          other_initializers:
+          - class_field: value_
+            init_value: const_cast<ir::AstNode *>(node)
+          raw_declaration: Property(const char *key, const ir::AstNode *node)
+        - args:
+          - initializer_for: key_
+            name: key
+            type:
+              name: char
+              prefix: const
+              ptr_depth: 1
+          - initializer_for: value_
+            name: constant
+            type:
+              name: Constant
+          name: Property
+          raw_declaration: Property(const char *key, Constant constant)
+        - args:
+          - initializer_for: key_
+            name: key
+            type:
+              name: char
+              prefix: const
+              ptr_depth: 1
+          - name: nullish
+            type:
+              name: Nullish
+          name: Property
+          raw_declaration: Property(const char *key, Nullish nullish)
+        - args:
+          - initializer_for: key_
+            name: key
+            type:
+              name: char
+              prefix: const
+              ptr_depth: 1
+          - name: optional
+            type:
+              name: Optional
+              prefix: const
+              ref_depth: 1
+          name: Property
+          raw_declaration: Property(const char *key, const Optional &optional)
+        - args:
+          - initializer_for: key_
+            name: key
+            type:
+              name: char
+              prefix: const
+              ptr_depth: 1
+          - name: array
+            type:
+              name: ArenaVector
+              prefix: const
+              ref_depth: 1
+              template_args:
+              - type:
+                  name: T
+          name: Property
+          raw_declaration: Property(const char *key, const ArenaVector<T> &array)
+          template: typename T
+        - args:
+          - initializer_for: key_
+            name: key
+            type:
+              name: char
+              prefix: const
+              ptr_depth: 1
+          - name: array
+            type:
+              name: ArenaVector
+              prefix: const
+              ref_depth: 1
+              template_args:
+              - type:
+                  name: T
+          - name: filter
+            type:
+              name: function
+              namespace: std
+              prefix: const
+              ref_depth: 1
+              template_args:
+              - type:
+                  cast_from:
+                  - type:
+                      name: AstNode
+                      ptr_depth: 1
+                  name: bool
+          name: Property
+          raw_declaration: Property(const char *key, const ArenaVector<T> &array,
+            const std::function<bool(AstNode *)> &filter)
+          template: typename T
+        - additional_attributes: get
+          args: []
+          name: Key
+          postfix: const
+          raw_declaration: const char *Key() const
+          return_type:
+            name: char
+            prefix: const
+            ptr_depth: 1
+        - additional_attributes: get
+          args: []
+          name: Value
+          postfix: const
+          raw_declaration: const Val &Value() const
+          return_type:
+            name: Val
+            prefix: const
+            ref_depth: 1
+        usings:
+        - name: Val
+          type:
+            name: variant
+            namespace: std
+            other_modifiers: const
+            template_args:
+            - type:
+                name: char
+                prefix: const
+                ptr_depth: 1
+            - type:
+                name: TokenType
+                namespace: lexer
+            - type:
+                name: initializer_list
+                namespace: std
+                template_args:
+                - type:
+                    name: Property
+            - type:
+                name: StringView
+                namespace: util
+            - type:
+                name: bool
+            - type:
+                name: char16_t
+            - type:
+                name: Number
+                namespace: lexer
+            - type:
+                name: AstNode
+                namespace: ir
+                prefix: const
+                ptr_depth: 1
+            - type:
+                name: vector
+                namespace: std
+                other_modifiers: const
+                template_args:
+                - type:
+                    name: AstNode
+                    namespace: ir
+                    prefix: const
+                    ptr_depth: 1
+            - type:
+                name: Constant
+            - type:
+                name: Nullish
+            - type:
+                name: Ignore
+    name: AstDumper
+    private: {}
+    public:
+      constructors:
+      - args:
+        - name: node
+          type:
+            name: AstNode
+            namespace: ir
+            prefix: const
+            ptr_depth: 1
+        - default_value: '""'
+          name: sourceCode
+          type:
+            name: StringView
+            namespace: util
+        name: AstDumper
+        raw_declaration: explicit AstDumper(const ir::AstNode *node, util::StringView
+          sourceCode = "")
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: set
+        args:
+        - name: props
+          type:
+            name: initializer_list
+            namespace: std
+            template_args:
+            - type:
+                name: Property
+        name: Add
+        raw_declaration: void Add(std::initializer_list<Property> props)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: prop
+          type:
+            name: Property
+            namespace: AstDumper
+            prefix: const
+            ref_depth: 1
+        name: Add
+        raw_declaration: void Add(const AstDumper::Property &prop)
+        return_type:
+          name: void
+      - args:
+        - name: flags
+          type:
+            name: ModifierFlags
+        name: ModifierToString
+        raw_declaration: static const char *ModifierToString(ModifierFlags flags)
+        return_type:
+          name: char
+          prefix: static const
+          ptr_depth: 1
+      - args:
+        - name: operatorType
+          type:
+            name: TSOperatorType
+        name: TypeOperatorToString
+        raw_declaration: static const char *TypeOperatorToString(TSOperatorType operatorType)
+        return_type:
+          name: char
+          prefix: static const
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Str
+        postfix: const
+        raw_declaration: std::string Str() const
+        return_type:
+          name: string
+          namespace: std
+macros:
+- name: ES2PANDA_IR_AST_DUMP_H

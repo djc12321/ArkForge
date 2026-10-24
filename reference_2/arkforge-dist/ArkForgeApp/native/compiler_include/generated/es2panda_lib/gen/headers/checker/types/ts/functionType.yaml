@@ -1,0 +1,66 @@
+checker:
+  class_definitions:
+  - extends: public ObjectType
+    name: FunctionType
+    public:
+      constructors:
+      - args:
+        - name: desc
+          type:
+            name: ObjectDescriptor
+            ptr_depth: 1
+        name: FunctionType
+        other_initializers:
+        - class_field: ObjectType
+          init_value: ObjectType::ObjectTypeKind::FUNCTION, desc
+        raw_declaration: explicit FunctionType(ObjectDescriptor *desc)
+        return_type:
+          prefix: explicit
+      methods:
+      - args:
+        - name: ss
+          type:
+            name: stringstream
+            namespace: std
+            ref_depth: 1
+        - name: precise
+          type:
+            name: bool
+            prefix: '[[maybe_unused]]'
+        name: ToString
+        postfix: const override
+        raw_declaration: void ToString(std::stringstream &ss, [[maybe_unused]] bool
+          precise) const override
+        return_type:
+          name: void
+      - args: []
+        name: GetTypeFacts
+        postfix: const override
+        raw_declaration: TypeFacts GetTypeFacts() const override
+        return_type:
+          name: TypeFacts
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: globalTypes
+          type:
+            name: GlobalTypesHolder
+            ptr_depth: 1
+        name: Instantiate
+        postfix: override
+        raw_declaration: Type *Instantiate(ArenaAllocator *allocator, TypeRelation
+          *relation, GlobalTypesHolder *globalTypes) override
+        return_type:
+          name: Type
+          ptr_depth: 1
+include:
+- <unordered_set>
+- '"objectType.h"'
+macros:
+- name: ES2PANDA_COMPILER_CHECKER_TYPES_TS_FUNCTION_TYPE_H

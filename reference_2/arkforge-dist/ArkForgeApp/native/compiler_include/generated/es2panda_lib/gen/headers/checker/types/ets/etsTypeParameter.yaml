@@ -1,0 +1,354 @@
+checker:
+  class_definitions:
+  - extends: public Type
+    name: ETSTypeParameter
+    private: {}
+    public:
+      constructors:
+      - args: []
+        name: ETSTypeParameter
+        other_initializers:
+        - class_field: Type
+          init_value: TypeFlag::ETS_TYPE_PARAMETER
+        raw_declaration: explicit ETSTypeParameter()
+        return_type:
+          prefix: explicit
+      - args:
+        - initializer_for: default_
+          name: defaultType
+          type:
+            name: Type
+            ptr_depth: 1
+        - initializer_for: constraint_
+          name: constraintType
+          type:
+            name: Type
+            ptr_depth: 1
+        name: ETSTypeParameter
+        other_initializers:
+        - class_field: Type
+          init_value: TypeFlag::ETS_TYPE_PARAMETER
+        raw_declaration: explicit ETSTypeParameter(Type *defaultType, Type *constraintType)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: set
+        args:
+        - name: decl
+          type:
+            name: TSTypeParameter
+            namespace: ir
+            ptr_depth: 1
+        name: SetDeclNode
+        postfix: noexcept
+        raw_declaration: void SetDeclNode(ir::TSTypeParameter *decl) noexcept
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: GetDeclNode
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] ir::TSTypeParameter *GetDeclNode() const noexcept'
+        return_type:
+          name: TSTypeParameter
+          namespace: ir
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - args: []
+        name: GetOriginal
+        postfix: const
+        raw_declaration: '[[nodiscard]] ETSTypeParameter *GetOriginal() const'
+        return_type:
+          name: ETSTypeParameter
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - args: []
+        name: Name
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] util::StringView const &Name() const noexcept'
+        return_type:
+          name: StringView
+          namespace: util
+          other_modifiers: const
+          prefix: '[[nodiscard]]'
+          ref_depth: 1
+      - additional_attributes: set
+        args:
+        - name: type
+          type:
+            name: Type
+            ptr_depth: 1
+        name: SetDefaultType
+        postfix: noexcept
+        raw_declaration: void SetDefaultType(Type *type) noexcept
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: GetDefaultType
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] Type *GetDefaultType() const noexcept'
+        return_type:
+          name: Type
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: type
+          type:
+            name: Type
+            ptr_depth: 1
+        name: SetConstraintType
+        postfix: noexcept
+        raw_declaration: void SetConstraintType(Type *type) noexcept
+        return_type:
+          name: void
+      - args: []
+        name: GetConstraintType
+        postfix: const
+        raw_declaration: '[[nodiscard]] Type *GetConstraintType() const'
+        return_type:
+          name: Type
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: bool
+            prefix: const
+        name: SetAllowUnsafeVariance
+        raw_declaration: void SetAllowUnsafeVariance(const bool value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: DoAllowUnsafeVariance
+        postfix: const
+        raw_declaration: '[[nodiscard]] bool DoAllowUnsafeVariance() const'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: set
+        args:
+        - default_value: 'true'
+          name: val
+          type:
+            name: bool
+        name: SetUnderInference
+        raw_declaration: void SetUnderInference(bool val = true)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: UnderInference
+        postfix: const
+        raw_declaration: '[[nodiscard]] bool UnderInference() const'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - args:
+        - name: func
+          type:
+            name: TypeTraverser
+            prefix: const
+            ref_depth: 1
+        name: Iterate
+        postfix: const override
+        raw_declaration: void Iterate(const TypeTraverser &func) const override
+        return_type:
+          name: void
+      - args:
+        - name: ss
+          type:
+            name: stringstream
+            namespace: std
+            ref_depth: 1
+        - name: precise
+          type:
+            name: bool
+        name: ToString
+        postfix: const override
+        raw_declaration: void ToString(std::stringstream &ss, bool precise) const
+          override
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: other
+          type:
+            name: Type
+            ptr_depth: 1
+        name: Identical
+        postfix: override
+        raw_declaration: void Identical(TypeRelation *relation, Type *other) override
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: source
+          type:
+            name: Type
+            ptr_depth: 1
+        name: AssignmentTarget
+        postfix: override
+        raw_declaration: void AssignmentTarget(TypeRelation *relation, Type *source)
+          override
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: target
+          type:
+            name: Type
+            ptr_depth: 1
+        name: AssignmentSource
+        postfix: override
+        raw_declaration: bool AssignmentSource(TypeRelation *relation, Type *target)
+          override
+        return_type:
+          name: bool
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: target
+          type:
+            name: Type
+            ptr_depth: 1
+        name: Cast
+        postfix: override
+        raw_declaration: void Cast(TypeRelation *relation, Type *target) override
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: source
+          type:
+            name: Type
+            ptr_depth: 1
+        name: CastTarget
+        postfix: override
+        raw_declaration: void CastTarget(TypeRelation *relation, Type *source) override
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: source
+          type:
+            name: Type
+            ptr_depth: 1
+        name: IsSupertypeOf
+        postfix: override
+        raw_declaration: void IsSupertypeOf(TypeRelation *relation, Type *source)
+          override
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: target
+          type:
+            name: Type
+            ptr_depth: 1
+        name: IsSubtypeOf
+        postfix: override
+        raw_declaration: void IsSubtypeOf(TypeRelation *relation, Type *target) override
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: varianceFlag
+          type:
+            name: VarianceFlag
+        name: CheckVarianceRecursively
+        postfix: override
+        raw_declaration: void CheckVarianceRecursively(TypeRelation *relation, VarianceFlag
+          varianceFlag) override
+        return_type:
+          name: void
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: globalTypes
+          type:
+            name: GlobalTypesHolder
+            ptr_depth: 1
+        name: Instantiate
+        postfix: override
+        raw_declaration: Type *Instantiate(ArenaAllocator *allocator, TypeRelation
+          *relation, GlobalTypesHolder *globalTypes) override
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: substitution
+          type:
+            name: Substitution
+            prefix: const
+            ptr_depth: 1
+        name: Substitute
+        postfix: override
+        raw_declaration: Type *Substitute(TypeRelation *relation, const Substitution
+          *substitution) override
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args:
+        - name: ss
+          type:
+            name: stringstream
+            namespace: std
+            ref_depth: 1
+        name: ToAssemblerType
+        postfix: const override
+        raw_declaration: void ToAssemblerType(std::stringstream &ss) const override
+        return_type:
+          name: void
+      - args:
+        - name: ss
+          type:
+            name: stringstream
+            namespace: std
+            ref_depth: 1
+        name: ToDebugInfoType
+        postfix: const override
+        raw_declaration: void ToDebugInfoType(std::stringstream &ss) const override
+        return_type:
+          name: void
+include:
+- '"checker/types/type.h"'
+- '"ir/astNode.h"'
+macros:
+- name: ES2PANDA_COMPILER_CHECKER_TYPES_ETS_TYPE_PARAMETER_TYPE_H

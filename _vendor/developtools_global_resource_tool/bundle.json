@@ -1,0 +1,37 @@
+{
+    "name": "@ohos/global_resource_tool",
+    "description": "OpenHarmony resource compile.",
+    "version": "4.0",
+    "license": "Apache License 2.0",
+    "pubiishAs": "code-segment",
+    "segment": {
+      "destPath": "developtools/global_resource_tool"
+    },
+    "dirs": {},
+    "scripts": {},
+    "component": {
+      "name": "global_resource_tool",
+      "subsystem": "developtools",
+      "syscap": [],
+      "feature": [],
+      "adapted_system_type": [ "mini", "small", "standard" ],
+      "rom": "0KB",
+      "ram": "0KB",
+      "deps": {
+        "components": [
+          "zlib"
+        ],
+        "third_party": [
+          "bounds_checking_function",
+          "cJSON",
+          "libpng"
+        ]
+      },
+      "build": {
+        "sub_component": [ "//developtools/global_resource_tool:restool" ],
+        "inner_kits": [],
+        "test": []
+      }
+    }
+  }
+  

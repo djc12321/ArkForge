@@ -1,0 +1,85 @@
+diff --git a/src/vs/workbench/browser/parts/globalCompositeBar.ts b/src/vs/workbench/browser/parts/globalCompositeBar.ts
+index d0f5bd1b..88ce3dc2 100644
+--- a/src/vs/workbench/browser/parts/globalCompositeBar.ts
++++ b/src/vs/workbench/browser/parts/globalCompositeBar.ts
+@@ -20,6 +20,7 @@ import { registerIcon } from '../../../platform/theme/common/iconRegistry.js';
+ import { Action, IAction, Separator, SubmenuAction, toAction } from '../../../base/common/actions.js';
+ import { Emitter } from '../../../base/common/event.js';
+ import { IMenu, IMenuService, MenuId } from '../../../platform/actions/common/actions.js';
++import { CommandsRegistry } from '../../../platform/commands/common/commands.js';
+ import { addDisposableListener, EventType, append, clearNode, hide, show, EventHelper, $, runWhenWindowIdle, getWindow } from '../../../base/browser/dom.js';
+ import { StandardKeyboardEvent } from '../../../base/browser/keyboardEvent.js';
+ import { StandardMouseEvent } from '../../../base/browser/mouseEvent.js';
+@@ -52,6 +53,21 @@ import { IDefaultAccountService } from '../../../platform/defaultAccount/common/
+ import { WORKBENCH_MENU_MOTION_CLASS, workbenchMenuCloseAnimation } from '../actions/menuMotion.js';
+ import { createCodexAccountMenuActions, ICodexAccountService, shouldShowCodexAccount } from '../../services/agentHost/browser/codexAccountService.js';
+ 
++// Native credentials stay on the HarmonyOS side. Only public profile data is supplied here.
++interface ArkForgeAccountProfile { login: string; avatar?: string; }
++let arkforgeAccountProfile: ArkForgeAccountProfile | undefined;
++const arkforgeAccountProfileChanged = new Emitter<void>();
++CommandsRegistry.registerCommand('_arkforge.setAccountProfile', (_accessor, profile?: ArkForgeAccountProfile) => {
++	if (profile && (typeof profile.login !== 'string' || !/^[a-zA-Z0-9-]{1,39}$/.test(profile.login))) {
++		throw new Error('Invalid GitHub account profile');
++	}
++	if (profile?.avatar && !/^https:\/\/avatars\.githubusercontent\.com\/u\/\d+(?:\?[^#]*)?$/.test(profile.avatar)) {
++		throw new Error('Invalid GitHub avatar URL');
++	}
++	arkforgeAccountProfile = profile;
++	arkforgeAccountProfileChanged.fire();
++});
++
+ export class GlobalCompositeBar extends Disposable {
+ 
+ 	private static readonly ACCOUNTS_ACTION_INDEX = 0;
+@@ -319,6 +335,7 @@ export class AccountsActivityActionViewItem extends AbstractGlobalActivityAction
+ 	}
+ 
+ 	private registerListeners(): void {
++		this._register(arkforgeAccountProfileChanged.event(() => this.updateAvatar()));
+ 		this._register(this.authenticationService.onDidRegisterAuthenticationProvider(async (e) => {
+ 			await this.addAccountsFromProvider(e.id);
+ 			this.updateAvatar();
+@@ -415,8 +432,12 @@ export class AccountsActivityActionViewItem extends AbstractGlobalActivityAction
+ 			return;
+ 		}
+ 
+-		let avatarIcon: URI | undefined;
+-		if (this.configurationService.getValue<boolean>(ACCOUNTS_AVATAR_SETTING)) {
++		const accountTitle = this.computeTitle();
++		for (const element of [this.container, this.label, this.badge]) {
++			element.setAttribute('aria-label', accountTitle);
++		}
++		let avatarIcon: URI | undefined = arkforgeAccountProfile?.avatar ? URI.parse(arkforgeAccountProfile.avatar) : undefined;
++		if (!arkforgeAccountProfile && this.configurationService.getValue<boolean>(ACCOUNTS_AVATAR_SETTING)) {
+ 			avatarIcon = this.getDefaultAccountAvatarIcon();
+ 			if (!avatarIcon) {
+ 				for (const accounts of this.groupedAccounts.values()) {
+@@ -444,6 +465,10 @@ export class AccountsActivityActionViewItem extends AbstractGlobalActivityAction
+ 		}
+ 	}
+ 
++	protected override computeTitle(): string {
++		return arkforgeAccountProfile ? `${arkforgeAccountProfile.login} (GitHub)` : super.computeTitle();
++	}
++
+ 	private getDefaultAccountAvatarIcon(): URI | undefined {
+ 		const currentDefaultAccount = this.defaultAccountService.currentDefaultAccount;
+ 		if (!currentDefaultAccount) {
+diff --git a/src/vs/workbench/services/actions/common/menusExtensionPoint.ts b/src/vs/workbench/services/actions/common/menusExtensionPoint.ts
+index e6c222d4..18cd4859 100644
+--- a/src/vs/workbench/services/actions/common/menusExtensionPoint.ts
++++ b/src/vs/workbench/services/actions/common/menusExtensionPoint.ts
+@@ -35,6 +35,12 @@ interface IAPIMenu {
+ }
+ 
+ const apiMenus: IAPIMenu[] = [
++	{
++		key: 'accounts/context',
++		id: MenuId.AccountsContext,
++		description: 'ArkForge account actions in the native Accounts menu',
++		supportsSubmenus: false
++	},
+ 	{
+ 		key: 'commandPalette',
+ 		id: MenuId.CommandPalette,

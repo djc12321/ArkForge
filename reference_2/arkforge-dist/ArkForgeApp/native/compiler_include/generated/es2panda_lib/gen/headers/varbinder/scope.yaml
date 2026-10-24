@@ -1,0 +1,2380 @@
+compiler:
+  class_forward_declaration:
+  - IRNode
+enumbitops:
+  structs:
+  - members: []
+    name: IsAllowedType<ark::es2panda::varbinder::GlobalScope::InsertBindingFlags>
+include:
+- '"es2panda.h"'
+- '"varbinder/declaration.h"'
+- '"varbinder/variable.h"'
+ir:
+  class_forward_declaration:
+  - AstNode
+  - Expression
+  - Identifier
+macros:
+- name: ES2PANDA_COMPILER_SCOPES_SCOPE_H
+public_lib:
+  structs:
+  - name: Context
+varbinder:
+  class_definitions:
+  - name: ScopeFindResultT
+    public:
+      constructors:
+      - args: []
+        name: ScopeFindResultT
+        postfix: = default
+        raw_declaration: ScopeFindResultT() = default
+      - args:
+        - name: n
+          type:
+            name: StringView
+            namespace: util
+        - name: s
+          type:
+            name: ScopeT
+        - name: l
+          type:
+            name: uint32_t
+        - name: v
+          type:
+            name: Variable
+            ptr_depth: 1
+        name: ScopeFindResultT
+        other_initializers:
+        - class_field: ScopeFindResultT
+          init_value: n, s, l, l, v
+        raw_declaration: ScopeFindResultT(util::StringView n, ScopeT s, uint32_t l,
+          Variable *v)
+      - args:
+        - initializer_for: scope
+          name: s
+          type:
+            name: ScopeT
+        - initializer_for: level
+          name: l
+          type:
+            name: uint32_t
+        - initializer_for: lexLevel
+          name: ll
+          type:
+            name: uint32_t
+        - initializer_for: variable
+          name: v
+          type:
+            name: Variable
+            ptr_depth: 1
+        name: ScopeFindResultT
+        raw_declaration: ScopeFindResultT(ScopeT s, uint32_t l, uint32_t ll, Variable
+          *v)
+      - args:
+        - initializer_for: name
+          name: n
+          type:
+            name: StringView
+            namespace: util
+        - initializer_for: scope
+          name: s
+          type:
+            name: ScopeT
+        - initializer_for: level
+          name: l
+          type:
+            name: uint32_t
+        - initializer_for: lexLevel
+          name: ll
+          type:
+            name: uint32_t
+        - initializer_for: variable
+          name: v
+          type:
+            name: Variable
+            ptr_depth: 1
+        name: ScopeFindResultT
+        raw_declaration: ScopeFindResultT(util::StringView n, ScopeT s, uint32_t l,
+          uint32_t ll, Variable *v)
+      fields:
+      - default_constructor: ''
+        name: name
+        type:
+          name: StringView
+          namespace: util
+      - default_constructor: ''
+        name: scope
+        type:
+          name: ScopeT
+      - default_constructor: ''
+        name: level
+        type:
+          name: uint32_t
+      - default_constructor: ''
+        name: lexLevel
+        type:
+          name: uint32_t
+      - default_constructor: ''
+        name: variable
+        type:
+          name: Variable
+          ptr_depth: 1
+    template: "typename ScopeT,\n          std::enable_if_t<std::is_pointer_v<ScopeT>\
+      \ && std::is_base_of_v<Scope, std::remove_pointer_t<ScopeT>>, bool> =\n    \
+      \          true"
+  - known_macroses:
+    - NO_COPY_SEMANTIC(Scope);
+    - NO_MOVE_SEMANTIC(Scope);
+    - SCOPE_TYPES(DECLARE_CHECKS_CASTS)
+    macros:
+    - arguments: scopeType, className
+      name: DECLARE_CHECKS_CASTS
+    name: Scope
+    private: {}
+    protected: {}
+    public:
+      constructors:
+      - args: []
+        name: Scope
+        postfix: = delete
+        raw_declaration: Scope() = delete
+      destructors:
+      - args: []
+        name: ~Scope
+        postfix: = default
+        raw_declaration: virtual ~Scope() = default
+        return_type:
+          prefix: virtual
+      methods:
+      - args: []
+        name: Type
+        postfix: const = 0
+        raw_declaration: virtual ScopeType Type() const = 0
+        return_type:
+          name: ScopeType
+          prefix: virtual
+      - additional_attributes: get
+        args: []
+        name: IsVariableScope
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsVariableScope() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsFunctionVariableScope
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsFunctionVariableScope() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - args: []
+        name: AsFunctionVariableScope
+        raw_declaration: '[[nodiscard]] FunctionScope *AsFunctionVariableScope()'
+        return_type:
+          name: FunctionScope
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - args: []
+        name: AsFunctionVariableScope
+        postfix: const
+        raw_declaration: '[[nodiscard]] const FunctionScope *AsFunctionVariableScope()
+          const'
+        return_type:
+          name: FunctionScope
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - args: []
+        name: AsVariableScope
+        raw_declaration: '[[nodiscard]] VariableScope *AsVariableScope()'
+        return_type:
+          name: VariableScope
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - args: []
+        name: AsVariableScope
+        postfix: const
+        raw_declaration: '[[nodiscard]] const VariableScope *AsVariableScope() const'
+        return_type:
+          name: VariableScope
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - args: []
+        name: EnclosingVariableScope
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] VariableScope *EnclosingVariableScope() noexcept'
+        return_type:
+          name: VariableScope
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - args: []
+        name: EnclosingVariableScope
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const VariableScope *EnclosingVariableScope()
+          const noexcept'
+        return_type:
+          name: VariableScope
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: flag
+          type:
+            name: ScopeFlags
+        name: AddFlag
+        postfix: noexcept
+        raw_declaration: void AddFlag(ScopeFlags flag) noexcept
+        return_type:
+          name: void
+      - args:
+        - name: flag
+          type:
+            name: ScopeFlags
+        name: ClearFlag
+        postfix: noexcept
+        raw_declaration: void ClearFlag(ScopeFlags flag) noexcept
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - name: flag
+          type:
+            name: ScopeFlags
+        name: HasFlag
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool HasFlag(ScopeFlags flag) const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: Decls
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] ArenaVector<Decl *> &Decls() noexcept'
+        return_type:
+          name: ArenaVector
+          prefix: '[[nodiscard]]'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: Decl
+              ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Decls
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const ArenaVector<Decl *> &Decls() const noexcept'
+        return_type:
+          name: ArenaVector
+          prefix: '[[nodiscard]] const'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: Decl
+              ptr_depth: 1
+      - args:
+        - name: parent
+          type:
+            name: Scope
+            ptr_depth: 1
+        name: SetParent
+        postfix: noexcept
+        raw_declaration: void SetParent(Scope *parent) noexcept
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Parent
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] Scope *Parent() noexcept'
+        return_type:
+          name: Scope
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Parent
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const Scope *Parent() const noexcept'
+        return_type:
+          name: Scope
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Node
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] ir::AstNode *Node() noexcept'
+        return_type:
+          name: AstNode
+          namespace: ir
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Node
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const ir::AstNode *Node() const noexcept'
+        return_type:
+          name: AstNode
+          namespace: ir
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - args:
+        - name: node
+          type:
+            name: AstNode
+            namespace: ir
+            ptr_depth: 1
+        name: BindNode
+        postfix: noexcept
+        raw_declaration: void BindNode(ir::AstNode *node) noexcept
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: decl
+          type:
+            name: Decl
+            ptr_depth: 1
+        - name: extension
+          type:
+            name: ScriptExtension
+        name: AddDecl
+        raw_declaration: Variable *AddDecl(ArenaAllocator *allocator, Decl *decl,
+          ScriptExtension extension)
+        return_type:
+          name: Variable
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: decl
+          type:
+            name: Decl
+            ptr_depth: 1
+        - name: extension
+          type:
+            name: ScriptExtension
+        name: AddTsDecl
+        raw_declaration: Variable *AddTsDecl(ArenaAllocator *allocator, Decl *decl,
+          ScriptExtension extension)
+        return_type:
+          name: Variable
+          ptr_depth: 1
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: '...args'
+          type:
+            name: Args
+            ref_depth: 2
+        name: NewDecl
+        raw_declaration: T *NewDecl(ArenaAllocator *allocator, Args &&...args)
+        return_type:
+          name: T
+          ptr_depth: 1
+        template: typename T, typename... Args
+      - additional_attributes: set
+        args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+        - name: flags
+          type:
+            name: VariableFlags
+        name: AddDecl
+        raw_declaration: "std::pair<varbinder::Variable *, bool> AddDecl(ArenaAllocator\
+          \ *allocator, util::StringView name,\n                                 \
+          \                  VariableFlags flags)"
+        return_type:
+          name: pair
+          namespace: std
+          template_args:
+          - type:
+              name: Variable
+              namespace: varbinder
+              ptr_depth: 1
+          - type:
+              name: bool
+        template: typename DeclType, typename VariableType
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+        - name: flags
+          type:
+            name: VariableFlags
+        - name: node
+          type:
+            name: AstNode
+            namespace: ir
+            ptr_depth: 1
+        name: CreateVar
+        raw_declaration: "static VariableType *CreateVar(ArenaAllocator *allocator,\
+          \ util::StringView name, VariableFlags flags,\n                        \
+          \           ir::AstNode *node)"
+        return_type:
+          name: VariableType
+          prefix: static
+          ptr_depth: 1
+        template: typename DeclType = varbinder::LetDecl, typename VariableType =
+          varbinder::LocalVariable
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+        - name: '...args'
+          type:
+            name: Args
+            ref_depth: 2
+        name: PropagateBinding
+        raw_declaration: Variable *PropagateBinding(ArenaAllocator *allocator, util::StringView
+          name, Args &&...args)
+        return_type:
+          name: Variable
+          ptr_depth: 1
+        template: typename T, typename... Args
+      - args:
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        - name: var
+          type:
+            name: Variable
+            ptr_depth: 1
+        name: InsertBinding
+        raw_declaration: virtual InsertResult InsertBinding(const util::StringView
+          &name, Variable *var)
+        return_type:
+          name: InsertResult
+          prefix: virtual
+      - args:
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        - name: var
+          type:
+            name: Variable
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        name: InsertOrAssignBinding
+        raw_declaration: virtual InsertResult InsertOrAssignBinding(const util::StringView
+          &name, Variable *const var)
+        return_type:
+          name: InsertResult
+          prefix: virtual
+      - args:
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        - name: var
+          type:
+            name: Variable
+            ptr_depth: 1
+        name: TryInsertBinding
+        raw_declaration: virtual InsertResult TryInsertBinding(const util::StringView
+          &name, Variable *var)
+        return_type:
+          name: InsertResult
+          prefix: virtual
+      - args:
+        - name: bindings
+          type:
+            name: VariableMap
+            other_modifiers: const
+            ref_depth: 1
+        name: MergeBindings
+        raw_declaration: virtual void MergeBindings(VariableMap const &bindings)
+        return_type:
+          name: void
+          prefix: virtual
+      - args:
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        name: EraseBinding
+        raw_declaration: virtual VariableMap::size_type EraseBinding(const util::StringView
+          &name)
+        return_type:
+          name: size_type
+          namespace: VariableMap
+          prefix: virtual
+      - args:
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        - name: builtinVar
+          type:
+            name: Variable
+            ptr_depth: 1
+        - name: redefinedVar
+          type:
+            name: Variable
+            ptr_depth: 1
+        name: CorrectForeignBinding
+        raw_declaration: virtual bool CorrectForeignBinding(const util::StringView
+          &name, Variable *builtinVar, Variable *redefinedVar)
+        return_type:
+          name: bool
+          prefix: virtual
+      - additional_attributes: get
+        args: []
+        name: Bindings
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const VariableMap &Bindings() const noexcept'
+        return_type:
+          name: VariableMap
+          prefix: '[[nodiscard]] const'
+          ref_depth: 1
+      - args: []
+        name: CodegenOrderedBindings
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] std::map<util::StringView, Variable *> CodegenOrderedBindings()
+          const noexcept'
+        return_type:
+          name: map
+          namespace: std
+          prefix: '[[nodiscard]]'
+          template_args:
+          - type:
+              name: StringView
+              namespace: util
+          - type:
+              name: Variable
+              ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: currentVariable
+          type:
+            name: Variable
+            ptr_depth: 1
+        - name: newDecl
+          type:
+            name: Decl
+            ptr_depth: 1
+        - name: extension
+          type:
+            name: ScriptExtension
+            prefix: '[[maybe_unused]]'
+        name: AddBinding
+        postfix: = 0
+        raw_declaration: "virtual Variable *AddBinding(ArenaAllocator *allocator,\
+          \ Variable *currentVariable, Decl *newDecl,\n                          \
+          \       [[maybe_unused]] ScriptExtension extension) = 0"
+        return_type:
+          name: Variable
+          prefix: virtual
+          ptr_depth: 1
+      - args:
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        - name: options
+          type:
+            name: ResolveBindingOptions
+        name: FindLocal
+        postfix: const
+        raw_declaration: virtual Variable *FindLocal(const util::StringView &name,
+          ResolveBindingOptions options) const
+        return_type:
+          name: Variable
+          prefix: virtual
+          ptr_depth: 1
+      - args:
+        - name: subscope
+          type:
+            name: Scope
+            namespace: varbinder
+            prefix: const
+            ptr_depth: 1
+        name: IsSuperscopeOf
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsSuperscopeOf(const varbinder::Scope
+          *subscope) const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - args:
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        - default_value: ResolveBindingOptions::BINDINGS
+          name: options
+          type:
+            name: ResolveBindingOptions
+        name: Find
+        postfix: const
+        raw_declaration: "ConstScopeFindResult Find(const util::StringView &name,\n\
+          \                              ResolveBindingOptions options = ResolveBindingOptions::BINDINGS)\
+          \ const"
+        return_type:
+          name: ConstScopeFindResult
+      - args:
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        - default_value: ResolveBindingOptions::BINDINGS
+          name: options
+          type:
+            name: ResolveBindingOptions
+        name: Find
+        raw_declaration: ScopeFindResult Find(const util::StringView &name, ResolveBindingOptions
+          options = ResolveBindingOptions::BINDINGS)
+        return_type:
+          name: ScopeFindResult
+      - args:
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        - default_value: ResolveBindingOptions::BINDINGS
+          name: options
+          type:
+            name: ResolveBindingOptions
+        name: FindInGlobal
+        postfix: const
+        raw_declaration: "ConstScopeFindResult FindInGlobal(const util::StringView\
+          \ &name,\n                                      ResolveBindingOptions options\
+          \ = ResolveBindingOptions::BINDINGS) const"
+        return_type:
+          name: ConstScopeFindResult
+      - args:
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        - default_value: ResolveBindingOptions::BINDINGS
+          name: options
+          type:
+            name: ResolveBindingOptions
+        name: FindInFunctionScope
+        postfix: const
+        raw_declaration: "ConstScopeFindResult FindInFunctionScope(const util::StringView\
+          \ &name,\n                                             ResolveBindingOptions\
+          \ options = ResolveBindingOptions::BINDINGS) const"
+        return_type:
+          name: ConstScopeFindResult
+      - args:
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        name: FindDecl
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] Decl *FindDecl(const util::StringView &name)
+          const noexcept'
+        return_type:
+          name: Decl
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      usings:
+      - name: VariableMap
+        type:
+          name: ArenaUnorderedMap
+          template_args:
+          - type:
+              name: StringView
+              namespace: util
+          - type:
+              name: Variable
+              ptr_depth: 1
+      - name: InsertResult
+        type:
+          name: pair
+          namespace: std
+          other_modifiers: const
+          template_args:
+          - type:
+              name: const_iterator
+              namespace: VariableMap
+          - type:
+              name: bool
+  - extends: public Scope
+    known_macroses:
+    - NO_COPY_SEMANTIC(VariableScope);
+    - NO_MOVE_SEMANTIC(VariableScope);
+    name: VariableScope
+    protected: {}
+    public:
+      destructors:
+      - args: []
+        name: ~VariableScope
+        postfix: override = default
+        raw_declaration: ~VariableScope() override = default
+      methods:
+      - additional_attributes: get
+        args: []
+        name: NextSlot
+        raw_declaration: uint32_t NextSlot()
+        return_type:
+          name: uint32_t
+      - additional_attributes: get
+        args: []
+        name: LexicalSlots
+        postfix: const
+        raw_declaration: uint32_t LexicalSlots() const
+        return_type:
+          name: uint32_t
+      - additional_attributes: get
+        args: []
+        name: NeedLexEnv
+        postfix: const
+        raw_declaration: bool NeedLexEnv() const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args: []
+        name: EvalBindings
+        postfix: const
+        raw_declaration: uint32_t EvalBindings() const
+        return_type:
+          name: uint32_t
+      - args:
+        - name: context
+          type:
+            name: Context
+            namespace: public_lib
+            ptr_depth: 1
+        name: CheckDirectEval
+        raw_declaration: void CheckDirectEval(public_lib::Context *context)
+        return_type:
+          name: void
+  - extends: public Scope
+    name: ParamScope
+    protected: {}
+    public:
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Type
+        postfix: const override
+        raw_declaration: ScopeType Type() const override
+        return_type:
+          name: ScopeType
+      - additional_attributes: get
+        args: []
+        name: Params
+        raw_declaration: ArenaVector<LocalVariable *> &Params()
+        return_type:
+          name: ArenaVector
+          ref_depth: 1
+          template_args:
+          - type:
+              name: LocalVariable
+              ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Params
+        postfix: const
+        raw_declaration: const ArenaVector<LocalVariable *> &Params() const
+        return_type:
+          name: ArenaVector
+          prefix: const
+          ref_depth: 1
+          template_args:
+          - type:
+              name: LocalVariable
+              ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: vb
+          type:
+            name: VarBinder
+            namespace: varbinder
+            ptr_depth: 1
+        - name: parameter
+          type:
+            name: Expression
+            namespace: ir
+            ptr_depth: 1
+        name: AddParamDecl
+        raw_declaration: "std::tuple<Variable *, ir::Expression *> AddParamDecl(ArenaAllocator\
+          \ *allocator, varbinder::VarBinder *vb,\n                              \
+          \                            ir::Expression *parameter)"
+        return_type:
+          name: tuple
+          namespace: std
+          template_args:
+          - type:
+              name: Variable
+              ptr_depth: 1
+          - type:
+              name: Expression
+              namespace: ir
+              ptr_depth: 1
+  - extends: public ParamScope
+    friends:
+    - FunctionScope
+    - ScopeWithParamScope
+    name: FunctionParamScope
+    private: {}
+    public:
+      constructors:
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: parent
+          type:
+            name: Scope
+            ptr_depth: 1
+        name: FunctionParamScope
+        other_initializers:
+        - class_field: ParamScope
+          init_value: allocator, parent
+        raw_declaration: explicit FunctionParamScope(ArenaAllocator *allocator, Scope
+          *parent)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: GetFunctionScope
+        postfix: const
+        raw_declaration: FunctionScope *GetFunctionScope() const
+        return_type:
+          name: FunctionScope
+          ptr_depth: 1
+      - args:
+        - name: funcScope
+          type:
+            name: FunctionScope
+            ptr_depth: 1
+        name: BindFunctionScope
+        raw_declaration: void BindFunctionScope(FunctionScope *funcScope)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: NameVar
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] LocalVariable *NameVar() const noexcept'
+        return_type:
+          name: LocalVariable
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+        name: BindName
+        raw_declaration: void BindName(ArenaAllocator *allocator, util::StringView
+          name)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Type
+        postfix: const override
+        raw_declaration: ScopeType Type() const override
+        return_type:
+          name: ScopeType
+      - additional_attributes: set
+        args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: currentVariable
+          type:
+            name: Variable
+            ptr_depth: 1
+        - name: newDecl
+          type:
+            name: Decl
+            ptr_depth: 1
+        - name: extension
+          type:
+            name: ScriptExtension
+            prefix: '[[maybe_unused]]'
+        name: AddBinding
+        postfix: override
+        raw_declaration: "Variable *AddBinding(ArenaAllocator *allocator, Variable\
+          \ *currentVariable, Decl *newDecl,\n                         [[maybe_unused]]\
+          \ ScriptExtension extension) override"
+        return_type:
+          name: Variable
+          ptr_depth: 1
+  - extends: public E
+    name: ScopeWithParamScope
+    protected: {}
+    public:
+      constructors:
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: parent
+          type:
+            name: Scope
+            ptr_depth: 1
+        name: ScopeWithParamScope
+        other_initializers:
+        - class_field: E
+          init_value: allocator, parent
+        - class_field: paramScope_
+          init_value: nullptr
+        raw_declaration: explicit ScopeWithParamScope(ArenaAllocator *allocator, Scope
+          *parent)
+        return_type:
+          prefix: explicit
+      methods:
+      - args:
+        - name: paramScope
+          type:
+            name: T
+            ptr_depth: 1
+        name: BindParamScope
+        raw_declaration: void BindParamScope(T *paramScope)
+        return_type:
+          name: void
+      - args:
+        - name: paramScope
+          type:
+            name: T
+            ptr_depth: 1
+        name: AssignParamScope
+        raw_declaration: void AssignParamScope(T *paramScope)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: ParamScope
+        raw_declaration: T *ParamScope()
+        return_type:
+          name: T
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: ParamScope
+        postfix: const
+        raw_declaration: const T *ParamScope() const
+        return_type:
+          name: T
+          prefix: const
+          ptr_depth: 1
+    template: typename E, typename T
+  - extends: public Scope
+    name: LocalScope
+    public:
+      constructors:
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: parent
+          type:
+            name: Scope
+            ptr_depth: 1
+        name: LocalScope
+        other_initializers:
+        - class_field: Scope
+          init_value: allocator, parent
+        raw_declaration: explicit LocalScope(ArenaAllocator *allocator, Scope *parent)
+        return_type:
+          prefix: explicit
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: parent
+          type:
+            name: Scope
+            ptr_depth: 1
+        - name: flags
+          type:
+            name: ScopeFlags
+        name: LocalScope
+        other_initializers:
+        - class_field: Scope
+          init_value: allocator, parent, flags
+        raw_declaration: explicit LocalScope(ArenaAllocator *allocator, Scope *parent,
+          ScopeFlags flags)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Type
+        postfix: const override
+        raw_declaration: ScopeType Type() const override
+        return_type:
+          name: ScopeType
+      - additional_attributes: set
+        args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: currentVariable
+          type:
+            name: Variable
+            ptr_depth: 1
+        - name: newDecl
+          type:
+            name: Decl
+            ptr_depth: 1
+        - name: extension
+          type:
+            name: ScriptExtension
+            prefix: '[[maybe_unused]]'
+        name: AddBinding
+        postfix: override
+        raw_declaration: "Variable *AddBinding(ArenaAllocator *allocator, Variable\
+          \ *currentVariable, Decl *newDecl,\n                         [[maybe_unused]]\
+          \ ScriptExtension extension) override"
+        return_type:
+          name: Variable
+          ptr_depth: 1
+  - extends: public ScopeWithParamScope<VariableScope, FunctionParamScope>
+    name: FunctionScope
+    private: {}
+    public:
+      constructors:
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: parent
+          type:
+            name: Scope
+            ptr_depth: 1
+        name: FunctionScope
+        other_initializers:
+        - class_field: ScopeWithParamScope
+          init_value: allocator, parent
+        raw_declaration: explicit FunctionScope(ArenaAllocator *allocator, Scope *parent)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Type
+        postfix: const override
+        raw_declaration: ScopeType Type() const override
+        return_type:
+          name: ScopeType
+      - args:
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+        name: BindName
+        raw_declaration: void BindName(util::StringView name)
+        return_type:
+          name: void
+      - args:
+        - name: internalName
+          type:
+            name: StringView
+            namespace: util
+        name: BindInternalName
+        raw_declaration: void BindInternalName(util::StringView internalName)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Name
+        postfix: const
+        raw_declaration: const util::StringView &Name() const
+        return_type:
+          name: StringView
+          namespace: util
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: get
+        args: []
+        name: InternalName
+        postfix: const
+        raw_declaration: const util::StringView &InternalName() const
+        return_type:
+          name: StringView
+          namespace: util
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: set
+        args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: currentVariable
+          type:
+            name: Variable
+            ptr_depth: 1
+        - name: newDecl
+          type:
+            name: Decl
+            ptr_depth: 1
+        - name: extension
+          type:
+            name: ScriptExtension
+            prefix: '[[maybe_unused]]'
+        name: AddBinding
+        postfix: override
+        raw_declaration: "Variable *AddBinding(ArenaAllocator *allocator, Variable\
+          \ *currentVariable, Decl *newDecl,\n                         [[maybe_unused]]\
+          \ ScriptExtension extension) override"
+        return_type:
+          name: Variable
+          ptr_depth: 1
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: currentVariable
+          type:
+            name: Variable
+            ptr_depth: 1
+        - name: newDecl
+          type:
+            name: Decl
+            ptr_depth: 1
+        - name: flag
+          type:
+            name: VariableFlags
+        name: InsertBindingIfAbsentInScope
+        raw_declaration: "Variable *InsertBindingIfAbsentInScope(ArenaAllocator *allocator,\
+          \ Variable *currentVariable, Decl *newDecl,\n                          \
+          \                 VariableFlags flag)"
+        return_type:
+          name: Variable
+          ptr_depth: 1
+  - class_definitions:
+    - name: BindingProps
+      private: {}
+      public:
+        methods:
+        - args: []
+          name: BindingProps
+          postfix: = default
+          raw_declaration: BindingProps() = default
+        - additional_attributes: set
+          args:
+          - name: flagsType
+            type:
+              name: VariableFlags
+          name: SetFlagsType
+          raw_declaration: void SetFlagsType(VariableFlags flagsType)
+          return_type:
+            name: void
+        - additional_attributes: set
+          args:
+          - name: flags
+            type:
+              name: VariableFlags
+          - name: ident
+            type:
+              name: Identifier
+              namespace: ir
+              ptr_depth: 1
+          - name: targetScope
+            type:
+              name: LocalScope
+              ptr_depth: 1
+          name: SetBindingProps
+          raw_declaration: void SetBindingProps(VariableFlags flags, ir::Identifier
+            *ident, LocalScope *targetScope)
+          return_type:
+            name: void
+        - additional_attributes: get
+          args: []
+          name: GetFlags
+          postfix: const
+          raw_declaration: VariableFlags GetFlags() const
+          return_type:
+            name: VariableFlags
+        - additional_attributes: get
+          args: []
+          name: GetIdent
+          raw_declaration: ir::Identifier *GetIdent()
+          return_type:
+            name: Identifier
+            namespace: ir
+            ptr_depth: 1
+        - additional_attributes: get
+          args: []
+          name: GetTargetScope
+          raw_declaration: LocalScope *GetTargetScope()
+          return_type:
+            name: LocalScope
+            ptr_depth: 1
+    extends: public LocalScope
+    name: ClassScope
+    private: {}
+    public:
+      constructors:
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: parent
+          type:
+            name: Scope
+            ptr_depth: 1
+        name: ClassScope
+        other_initializers:
+        - class_field: LocalScope
+          init_value: allocator, parent
+        - class_field: typeAliasScope_
+          init_value: allocator->New<LocalScope>(allocator, this, ScopeFlags::TYPE_ALIAS)
+        - class_field: staticDeclScope_
+          init_value: allocator->New<LocalScope>(allocator, typeAliasScope_, ScopeFlags::STATIC_DECL_SCOPE)
+        - class_field: staticFieldScope_
+          init_value: allocator->New<LocalScope>(allocator, staticDeclScope_, ScopeFlags::STATIC_FIELD_SCOPE)
+        - class_field: staticMethodScope_
+          init_value: allocator->New<LocalScope>(allocator, staticFieldScope_, ScopeFlags::STATIC_METHOD_SCOPE)
+        - class_field: instanceDeclScope_
+          init_value: allocator->New<LocalScope>(allocator, staticMethodScope_, ScopeFlags::DECL_SCOPE)
+        - class_field: instanceFieldScope_
+          init_value: allocator->New<LocalScope>(allocator, instanceDeclScope_, ScopeFlags::FIELD_SCOPE)
+        - class_field: instanceMethodScope_
+          init_value: allocator->New<LocalScope>(allocator, instanceFieldScope_, ScopeFlags::METHOD_SCOPE)
+        raw_declaration: explicit ClassScope(ArenaAllocator *allocator, Scope *parent)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Type
+        postfix: const override
+        raw_declaration: ScopeType Type() const override
+        return_type:
+          name: ScopeType
+      - additional_attributes: get
+        args: []
+        name: TypeAliasScope
+        raw_declaration: LocalScope *TypeAliasScope()
+        return_type:
+          name: LocalScope
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: TypeAliasScope
+        postfix: const
+        raw_declaration: const LocalScope *TypeAliasScope() const
+        return_type:
+          name: LocalScope
+          prefix: const
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: StaticDeclScope
+        raw_declaration: LocalScope *StaticDeclScope()
+        return_type:
+          name: LocalScope
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: StaticDeclScope
+        postfix: const
+        raw_declaration: const LocalScope *StaticDeclScope() const
+        return_type:
+          name: LocalScope
+          prefix: const
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: StaticFieldScope
+        raw_declaration: LocalScope *StaticFieldScope()
+        return_type:
+          name: LocalScope
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: StaticFieldScope
+        postfix: const
+        raw_declaration: const LocalScope *StaticFieldScope() const
+        return_type:
+          name: LocalScope
+          prefix: const
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: StaticMethodScope
+        raw_declaration: LocalScope *StaticMethodScope()
+        return_type:
+          name: LocalScope
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: StaticMethodScope
+        postfix: const
+        raw_declaration: const LocalScope *StaticMethodScope() const
+        return_type:
+          name: LocalScope
+          prefix: const
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: InstanceFieldScope
+        raw_declaration: LocalScope *InstanceFieldScope()
+        return_type:
+          name: LocalScope
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: InstanceFieldScope
+        postfix: const
+        raw_declaration: const LocalScope *InstanceFieldScope() const
+        return_type:
+          name: LocalScope
+          prefix: const
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: InstanceMethodScope
+        raw_declaration: LocalScope *InstanceMethodScope()
+        return_type:
+          name: LocalScope
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: InstanceMethodScope
+        postfix: const
+        raw_declaration: const LocalScope *InstanceMethodScope() const
+        return_type:
+          name: LocalScope
+          prefix: const
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: InstanceDeclScope
+        raw_declaration: LocalScope *InstanceDeclScope()
+        return_type:
+          name: LocalScope
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: InstanceDeclScope
+        postfix: const
+        raw_declaration: const LocalScope *InstanceDeclScope() const
+        return_type:
+          name: LocalScope
+          prefix: const
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: GetAndIncrementAnonymousClassIdx
+        postfix: const
+        raw_declaration: uint32_t GetAndIncrementAnonymousClassIdx() const
+        return_type:
+          name: uint32_t
+      - args:
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        - name: options
+          type:
+            name: ResolveBindingOptions
+        name: FindLocal
+        postfix: const override
+        raw_declaration: Variable *FindLocal(const util::StringView &name, ResolveBindingOptions
+          options) const override
+        return_type:
+          name: Variable
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: currentVariable
+          type:
+            name: Variable
+            ptr_depth: 1
+        - name: newDecl
+          type:
+            name: Decl
+            ptr_depth: 1
+        - name: extension
+          type:
+            name: ScriptExtension
+            prefix: '[[maybe_unused]]'
+        name: AddBinding
+        postfix: override
+        raw_declaration: "Variable *AddBinding(ArenaAllocator *allocator, Variable\
+          \ *currentVariable, Decl *newDecl,\n                         [[maybe_unused]]\
+          \ ScriptExtension extension) override"
+        return_type:
+          name: Variable
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: newDecl
+          type:
+            name: Decl
+            ptr_depth: 1
+        - name: props
+          type:
+            name: BindingProps
+            ptr_depth: 1
+        - name: isStatic
+          type:
+            name: bool
+        name: SetBindingProps
+        raw_declaration: void SetBindingProps(Decl *newDecl, BindingProps *props,
+          bool isStatic)
+        return_type:
+          name: void
+  - extends: public ClassScope
+    name: AnnotationScope
+    public:
+      constructors:
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: parent
+          type:
+            name: Scope
+            ptr_depth: 1
+        name: AnnotationScope
+        other_initializers:
+        - class_field: ClassScope
+          init_value: allocator, parent
+        raw_declaration: explicit AnnotationScope(ArenaAllocator *allocator, Scope
+          *parent)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Type
+        postfix: const override
+        raw_declaration: ScopeType Type() const override
+        return_type:
+          name: ScopeType
+  - extends: public ParamScope
+    name: AnnotationParamScope
+    public:
+      constructors:
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: parent
+          type:
+            name: Scope
+            ptr_depth: 1
+        name: AnnotationParamScope
+        other_initializers:
+        - class_field: ParamScope
+          init_value: allocator, parent
+        raw_declaration: explicit AnnotationParamScope(ArenaAllocator *allocator,
+          Scope *parent)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Type
+        postfix: const override
+        raw_declaration: ScopeType Type() const override
+        return_type:
+          name: ScopeType
+      - additional_attributes: set
+        args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: currentVariable
+          type:
+            name: Variable
+            ptr_depth: 1
+        - name: newDecl
+          type:
+            name: Decl
+            ptr_depth: 1
+        - name: extension
+          type:
+            name: ScriptExtension
+            prefix: '[[maybe_unused]]'
+        name: AddBinding
+        postfix: override
+        raw_declaration: "Variable *AddBinding(ArenaAllocator *allocator, Variable\
+          \ *currentVariable, Decl *newDecl,\n                         [[maybe_unused]]\
+          \ ScriptExtension extension) override"
+        return_type:
+          name: Variable
+          ptr_depth: 1
+  - extends: public ParamScope
+    friends:
+    - CatchScope
+    name: CatchParamScope
+    public:
+      constructors:
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: parent
+          type:
+            name: Scope
+            ptr_depth: 1
+        name: CatchParamScope
+        other_initializers:
+        - class_field: ParamScope
+          init_value: allocator, parent
+        raw_declaration: explicit CatchParamScope(ArenaAllocator *allocator, Scope
+          *parent)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Type
+        postfix: const override
+        raw_declaration: ScopeType Type() const override
+        return_type:
+          name: ScopeType
+      - additional_attributes: set
+        args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: currentVariable
+          type:
+            name: Variable
+            ptr_depth: 1
+        - name: newDecl
+          type:
+            name: Decl
+            ptr_depth: 1
+        - name: extension
+          type:
+            name: ScriptExtension
+            prefix: '[[maybe_unused]]'
+        name: AddBinding
+        postfix: override
+        raw_declaration: "Variable *AddBinding(ArenaAllocator *allocator, Variable\
+          \ *currentVariable, Decl *newDecl,\n                         [[maybe_unused]]\
+          \ ScriptExtension extension) override"
+        return_type:
+          name: Variable
+          ptr_depth: 1
+  - extends: public ScopeWithParamScope<LocalScope, CatchParamScope>
+    name: CatchScope
+    public:
+      constructors:
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: parent
+          type:
+            name: Scope
+            ptr_depth: 1
+        name: CatchScope
+        other_initializers:
+        - class_field: ScopeWithParamScope
+          init_value: allocator, parent
+        raw_declaration: explicit CatchScope(ArenaAllocator *allocator, Scope *parent)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Type
+        postfix: const override
+        raw_declaration: ScopeType Type() const override
+        return_type:
+          name: ScopeType
+      - additional_attributes: set
+        args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: currentVariable
+          type:
+            name: Variable
+            ptr_depth: 1
+        - name: newDecl
+          type:
+            name: Decl
+            ptr_depth: 1
+        - name: extension
+          type:
+            name: ScriptExtension
+            prefix: '[[maybe_unused]]'
+        name: AddBinding
+        postfix: override
+        raw_declaration: "Variable *AddBinding(ArenaAllocator *allocator, Variable\
+          \ *currentVariable, Decl *newDecl,\n                         [[maybe_unused]]\
+          \ ScriptExtension extension) override"
+        return_type:
+          name: Variable
+          ptr_depth: 1
+      - args:
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        - name: options
+          type:
+            name: ResolveBindingOptions
+        name: FindLocal
+        postfix: const override
+        raw_declaration: Variable *FindLocal(const util::StringView &name, ResolveBindingOptions
+          options) const override
+        return_type:
+          name: Variable
+          ptr_depth: 1
+  - extends: public VariableScope
+    name: LoopDeclarationScope
+    private: {}
+    public:
+      constructors:
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: parent
+          type:
+            name: Scope
+            ptr_depth: 1
+        name: LoopDeclarationScope
+        other_initializers:
+        - class_field: VariableScope
+          init_value: allocator, parent
+        raw_declaration: explicit LoopDeclarationScope(ArenaAllocator *allocator,
+          Scope *parent)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Type
+        postfix: const override
+        raw_declaration: ScopeType Type() const override
+        return_type:
+          name: ScopeType
+      - additional_attributes: get
+        args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: currentVariable
+          type:
+            name: Variable
+            ptr_depth: 1
+        - name: newDecl
+          type:
+            name: Decl
+            ptr_depth: 1
+        - name: extension
+          type:
+            name: ScriptExtension
+            prefix: '[[maybe_unused]]'
+        name: AddBinding
+        postfix: override
+        raw_declaration: "Variable *AddBinding(ArenaAllocator *allocator, Variable\
+          \ *currentVariable, Decl *newDecl,\n                         [[maybe_unused]]\
+          \ ScriptExtension extension) override"
+        return_type:
+          name: Variable
+          ptr_depth: 1
+      - args: []
+        name: InitScope
+        raw_declaration: Scope *InitScope()
+        return_type:
+          name: Scope
+          ptr_depth: 1
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        name: ConvertToVariableScope
+        raw_declaration: void ConvertToVariableScope(ArenaAllocator *allocator)
+        return_type:
+          name: void
+  - extends: public VariableScope
+    name: LoopScope
+    protected: {}
+    public:
+      constructors:
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: parent
+          type:
+            name: Scope
+            ptr_depth: 1
+        name: LoopScope
+        other_initializers:
+        - class_field: VariableScope
+          init_value: allocator, parent
+        raw_declaration: explicit LoopScope(ArenaAllocator *allocator, Scope *parent)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: DeclScope
+        raw_declaration: LoopDeclarationScope *DeclScope()
+        return_type:
+          name: LoopDeclarationScope
+          ptr_depth: 1
+      - args:
+        - name: declScope
+          type:
+            name: LoopDeclarationScope
+            ptr_depth: 1
+        name: BindDecls
+        raw_declaration: void BindDecls(LoopDeclarationScope *declScope)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Type
+        postfix: const override
+        raw_declaration: ScopeType Type() const override
+        return_type:
+          name: ScopeType
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        name: ConvertToVariableScope
+        raw_declaration: void ConvertToVariableScope(ArenaAllocator *allocator)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: currentVariable
+          type:
+            name: Variable
+            ptr_depth: 1
+        - name: newDecl
+          type:
+            name: Decl
+            ptr_depth: 1
+        - name: extension
+          type:
+            name: ScriptExtension
+            prefix: '[[maybe_unused]]'
+        name: AddBinding
+        postfix: override
+        raw_declaration: "Variable *AddBinding(ArenaAllocator *allocator, Variable\
+          \ *currentVariable, Decl *newDecl,\n                         [[maybe_unused]]\
+          \ ScriptExtension extension) override"
+        return_type:
+          name: Variable
+          ptr_depth: 1
+  - extends: public FunctionScope
+    name: GlobalScope
+    private: {}
+    public:
+      constructors:
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        name: GlobalScope
+        other_initializers:
+        - class_field: FunctionScope
+          init_value: allocator, nullptr
+        - class_field: foreignBindings_
+          init_value: allocator->Adapter()
+        - class_field: mergedSharedForeign_
+          init_value: allocator->Adapter()
+        raw_declaration: explicit GlobalScope(ArenaAllocator *allocator)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Type
+        postfix: const override
+        raw_declaration: ScopeType Type() const override
+        return_type:
+          name: ScopeType
+      - additional_attributes: set
+        args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: currentVariable
+          type:
+            name: Variable
+            ptr_depth: 1
+        - name: newDecl
+          type:
+            name: Decl
+            ptr_depth: 1
+        - name: extension
+          type:
+            name: ScriptExtension
+            prefix: '[[maybe_unused]]'
+        name: AddBinding
+        postfix: override
+        raw_declaration: "Variable *AddBinding(ArenaAllocator *allocator, Variable\
+          \ *currentVariable, Decl *newDecl,\n                         [[maybe_unused]]\
+          \ ScriptExtension extension) override"
+        return_type:
+          name: Variable
+          ptr_depth: 1
+      - args:
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        - name: var
+          type:
+            name: Variable
+            ptr_depth: 1
+        name: InsertBinding
+        postfix: override
+        raw_declaration: InsertResult InsertBinding(const util::StringView &name,
+          Variable *var) override
+        return_type:
+          name: InsertResult
+      - args:
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        - name: var
+          type:
+            name: Variable
+            ptr_depth: 1
+        name: TryInsertBinding
+        postfix: override
+        raw_declaration: InsertResult TryInsertBinding(const util::StringView &name,
+          Variable *var) override
+        return_type:
+          name: InsertResult
+      - args:
+        - name: bindings
+          type:
+            name: VariableMap
+            other_modifiers: const
+            ref_depth: 1
+        name: MergeBindings
+        postfix: override
+        raw_declaration: void MergeBindings(VariableMap const &bindings) override
+        return_type:
+          name: void
+      - args:
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        name: EraseBinding
+        postfix: override
+        raw_declaration: VariableMap::size_type EraseBinding(const util::StringView
+          &name) override
+        return_type:
+          name: size_type
+          namespace: VariableMap
+      - args:
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        - name: var
+          type:
+            name: Variable
+            ptr_depth: 1
+        name: InsertForeignBinding
+        raw_declaration: InsertResult InsertForeignBinding(const util::StringView
+          &name, Variable *var)
+        return_type:
+          name: InsertResult
+      - args:
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        - name: var
+          type:
+            name: Variable
+            ptr_depth: 1
+        name: InsertOrAssignForeignBinding
+        raw_declaration: InsertResult InsertOrAssignForeignBinding(const util::StringView
+          &name, Variable *var)
+        return_type:
+          name: InsertResult
+      - args:
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        name: IsForeignBinding
+        postfix: const
+        raw_declaration: '[[nodiscard]] bool IsForeignBinding(const util::StringView
+          &name) const'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - args:
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        - name: var
+          type:
+            name: Variable
+            ptr_depth: 1
+        name: InsertDynamicBinding
+        raw_declaration: InsertResult InsertDynamicBinding(const util::StringView
+          &name, Variable *var)
+        return_type:
+          name: InsertResult
+      - args:
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        - name: builtinVar
+          type:
+            name: Variable
+            ptr_depth: 1
+        - name: redefinedVar
+          type:
+            name: Variable
+            ptr_depth: 1
+        name: CorrectForeignBinding
+        postfix: override
+        raw_declaration: bool CorrectForeignBinding(const util::StringView &name,
+          Variable *builtinVar, Variable *redefinedVar) override
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - name: exportMap
+          type:
+            name: VariableMap
+            prefix: const
+            ptr_depth: 1
+        name: AddSharedForeign
+        raw_declaration: void AddSharedForeign(const VariableMap *exportMap)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: SharedForeign
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const VariableMap &SharedForeign() const noexcept'
+        return_type:
+          name: VariableMap
+          prefix: '[[nodiscard]] const'
+          ref_depth: 1
+      - args:
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        - name: options
+          type:
+            name: ResolveBindingOptions
+        name: FindLocal
+        postfix: const override
+        raw_declaration: Variable *FindLocal(const util::StringView &name, ResolveBindingOptions
+          options) const override
+        return_type:
+          name: Variable
+          ptr_depth: 1
+  - extends: public GlobalScope
+    name: ModuleScope
+    private: {}
+    public:
+      constructors:
+      - args:
+        - initializer_for: allocator_
+          name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        name: ModuleScope
+        other_initializers:
+        - class_field: imports_
+          init_value: allocator_->Adapter()
+        - class_field: exports_
+          init_value: allocator_->Adapter()
+        - class_field: localExports_
+          init_value: allocator_->Adapter()
+        raw_declaration: explicit ModuleScope(ArenaAllocator *allocator)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Type
+        postfix: const override
+        raw_declaration: ScopeType Type() const override
+        return_type:
+          name: ScopeType
+      - additional_attributes: get
+        args: []
+        name: Imports
+        postfix: const
+        raw_declaration: const ModuleEntry<ir::ImportDeclaration *, ImportDeclList>
+          &Imports() const
+        return_type:
+          name: ModuleEntry
+          prefix: const
+          ref_depth: 1
+          template_args:
+          - type:
+              name: ImportDeclaration
+              namespace: ir
+              ptr_depth: 1
+          - type:
+              name: ImportDeclList
+      - additional_attributes: get
+        args: []
+        name: Exports
+        postfix: const
+        raw_declaration: const ModuleEntry<ir::AstNode *, ExportDeclList> &Exports()
+          const
+        return_type:
+          name: ModuleEntry
+          prefix: const
+          ref_depth: 1
+          template_args:
+          - type:
+              name: AstNode
+              namespace: ir
+              ptr_depth: 1
+          - type:
+              name: ExportDeclList
+      - additional_attributes: get
+        args: []
+        name: LocalExports
+        postfix: const
+        raw_declaration: const LocalExportNameMap &LocalExports() const
+        return_type:
+          name: LocalExportNameMap
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: set
+        args:
+        - name: importDecl
+          type:
+            name: ImportDeclaration
+            namespace: ir
+            ptr_depth: 1
+        - name: decls
+          type:
+            name: ImportDeclList
+            ref_depth: 2
+        name: AddImportDecl
+        raw_declaration: void AddImportDecl(ir::ImportDeclaration *importDecl, ImportDeclList
+          &&decls)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: exportDecl
+          type:
+            name: AstNode
+            namespace: ir
+            ptr_depth: 1
+        - name: decl
+          type:
+            name: ExportDecl
+            ptr_depth: 1
+        name: AddExportDecl
+        raw_declaration: void AddExportDecl(ir::AstNode *exportDecl, ExportDecl *decl)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: exportDecl
+          type:
+            name: AstNode
+            namespace: ir
+            ptr_depth: 1
+        - name: decls
+          type:
+            name: ExportDeclList
+            ref_depth: 2
+        name: AddExportDecl
+        raw_declaration: void AddExportDecl(ir::AstNode *exportDecl, ExportDeclList
+          &&decls)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: currentVariable
+          type:
+            name: Variable
+            ptr_depth: 1
+        - name: newDecl
+          type:
+            name: Decl
+            ptr_depth: 1
+        - name: extension
+          type:
+            name: ScriptExtension
+            prefix: '[[maybe_unused]]'
+        name: AddBinding
+        postfix: override
+        raw_declaration: "Variable *AddBinding(ArenaAllocator *allocator, Variable\
+          \ *currentVariable, Decl *newDecl,\n                         [[maybe_unused]]\
+          \ ScriptExtension extension) override"
+        return_type:
+          name: Variable
+          ptr_depth: 1
+      - args: []
+        name: ExportAnalysis
+        raw_declaration: bool ExportAnalysis()
+        return_type:
+          name: bool
+      usings:
+      - name: ModuleEntry
+        template: typename K, typename V
+        type:
+          name: ArenaVector
+          template_args:
+          - type:
+              name: pair
+              namespace: std
+              template_args:
+              - type:
+                  name: K
+              - type:
+                  name: V
+      - name: ImportDeclList
+        type:
+          name: ArenaVector
+          template_args:
+          - type:
+              name: ImportDecl
+              ptr_depth: 1
+      - name: ExportDeclList
+        type:
+          name: ArenaVector
+          template_args:
+          - type:
+              name: ExportDecl
+              ptr_depth: 1
+      - name: LocalExportNameMap
+        type:
+          name: ArenaMultiMap
+          template_args:
+          - type:
+              name: Variable
+              namespace: varbinder
+              ptr_depth: 1
+          - type:
+              name: StringView
+              namespace: util
+  class_forward_declaration:
+  - FunctionScope
+  - LoopScope
+  functions:
+  - args:
+    - name: allocator
+      type:
+        name: ArenaAllocator
+        ptr_depth: 1
+    - name: '...args'
+      type:
+        name: Args
+        ref_depth: 2
+    name: Scope::NewDecl
+    raw_declaration: T *Scope::NewDecl(ArenaAllocator *allocator, Args &&...args)
+    return_type:
+      name: T
+      ptr_depth: 1
+    template: typename T, typename... Args
+  - args:
+    - name: allocator
+      type:
+        name: ArenaAllocator
+        ptr_depth: 1
+    - name: name
+      type:
+        name: StringView
+        namespace: util
+    - name: flags
+      type:
+        name: VariableFlags
+    name: Scope::AddDecl
+    raw_declaration: "std::pair<varbinder::Variable *, bool> Scope::AddDecl(ArenaAllocator\
+      \ *allocator, util::StringView name,\n                                     \
+      \                 VariableFlags flags)"
+    return_type:
+      name: pair
+      namespace: std
+      template_args:
+      - type:
+          name: Variable
+          namespace: varbinder
+          ptr_depth: 1
+      - type:
+          name: bool
+    template: typename DeclType, typename VariableType
+  - args:
+    - name: allocator
+      type:
+        name: ArenaAllocator
+        ptr_depth: 1
+    - name: name
+      type:
+        name: StringView
+        namespace: util
+    - name: flags
+      type:
+        name: VariableFlags
+    - name: node
+      type:
+        name: AstNode
+        namespace: ir
+        ptr_depth: 1
+    name: Scope::CreateVar
+    raw_declaration: VariableType *Scope::CreateVar(ArenaAllocator *allocator, util::StringView
+      name, VariableFlags flags, ir::AstNode *node)
+    return_type:
+      name: VariableType
+      ptr_depth: 1
+    template: typename DeclType, typename VariableType
+  known_macroses:
+  - SCOPE_TYPES(DECLARE_CLASSES)
+  macros:
+  - arguments: type, className
+    body: class className;
+    name: DECLARE_CLASSES
+  usings:
+  - name: ConstScopeFindResult
+    type:
+      name: ScopeFindResultT
+      other_modifiers: const
+      template_args:
+      - type:
+          name: Scope
+          prefix: const
+          ptr_depth: 1
+  - name: ScopeFindResult
+    type:
+      name: ScopeFindResultT
+      template_args:
+      - type:
+          name: Scope
+          ptr_depth: 1

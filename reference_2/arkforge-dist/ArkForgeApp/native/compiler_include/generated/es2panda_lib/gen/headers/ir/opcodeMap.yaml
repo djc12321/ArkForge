@@ -1,0 +1,19 @@
+debuginfo:
+  functions:
+  - args:
+    - name: ins
+      type:
+        name: Ins
+        namespace: ark::pandasm
+        prefix: const
+        ref_depth: 1
+    name: PandaInsToString
+    raw_declaration: const char *PandaInsToString(const ark::pandasm::Ins &ins)
+    return_type:
+      name: char
+      prefix: const
+      ptr_depth: 1
+include:
+- <assembly-ins.h>
+macros:
+- name: ES2PANDA_COMPILER_GEN_OPCODE_MAP_H

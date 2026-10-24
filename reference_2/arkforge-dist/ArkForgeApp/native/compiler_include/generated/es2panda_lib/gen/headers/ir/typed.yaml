@@ -1,0 +1,215 @@
+checker:
+  functions:
+  - args:
+    - name: tp
+      type:
+        name: Type
+        other_modifiers: const
+        ptr_depth: 1
+    name: IsTypeError
+    raw_declaration: bool IsTypeError(Type const *tp)
+    return_type:
+      name: bool
+  - args:
+    - name: type
+      type:
+        name: Type
+        other_modifiers: const
+        ptr_depth: 1
+    name: ContainsTypeError
+    raw_declaration: bool ContainsTypeError(Type const *type)
+    return_type:
+      name: bool
+include:
+- '"ir/astNode.h"'
+- '"ir/statement.h"'
+ir:
+  class_definitions:
+  - extends: public T
+    known_macroses:
+    - NO_COPY_OPERATOR(Typed);
+    - NO_MOVE_SEMANTIC(Typed);
+    name: Typed
+    private: {}
+    protected: {}
+    public:
+      constructors:
+      - args: []
+        name: Typed
+        postfix: = delete
+        raw_declaration: Typed() = delete
+      destructors:
+      - args: []
+        name: ~Typed
+        postfix: override = default
+        raw_declaration: ~Typed() override = default
+      methods:
+      - additional_attributes: get
+        args: []
+        name: TsType
+        postfix: const
+        raw_declaration: '[[nodiscard]] checker::Type const *TsType() const'
+        return_type:
+          name: Type
+          namespace: checker
+          other_modifiers: const
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: TsType
+        raw_declaration: '[[nodiscard]] checker::Type *TsType()'
+        return_type:
+          name: Type
+          namespace: checker
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: tsType
+          type:
+            name: Type
+            namespace: checker
+            ptr_depth: 1
+        name: SetTsType
+        postfix: noexcept
+        raw_declaration: checker::Type *SetTsType(checker::Type *tsType) noexcept
+        return_type:
+          name: Type
+          namespace: checker
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: PreferredType
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] checker::Type *PreferredType() const noexcept'
+        return_type:
+          name: Type
+          namespace: checker
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: get
+        args:
+        - name: type
+          type:
+            name: Type
+            namespace: checker
+            ptr_depth: 1
+        name: SetPreferredType
+        postfix: noexcept
+        raw_declaration: checker::Type *SetPreferredType(checker::Type *type) noexcept
+        return_type:
+          name: Type
+          namespace: checker
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: IsTyped
+        postfix: const override
+        raw_declaration: bool IsTyped() const override
+        return_type:
+          name: bool
+    template: typename T
+  - extends: public Typed<AstNode>
+    known_macroses:
+    - NO_COPY_OPERATOR(TypedAstNode);
+    - NO_MOVE_SEMANTIC(TypedAstNode);
+    name: TypedAstNode
+    protected: {}
+    public:
+      constructors:
+      - args: []
+        name: TypedAstNode
+        postfix: = delete
+        raw_declaration: TypedAstNode() = delete
+      destructors:
+      - args: []
+        name: ~TypedAstNode
+        postfix: override = default
+        raw_declaration: ~TypedAstNode() override = default
+      methods:
+      - args:
+        - name: other
+          type:
+            name: AstNode
+            ptr_depth: 1
+        name: CopyTo
+        postfix: const override
+        raw_declaration: void CopyTo(AstNode *other) const override
+        return_type:
+          name: void
+  - extends: public Annotated<AstNode>
+    known_macroses:
+    - NO_COPY_OPERATOR(AnnotatedAstNode);
+    - NO_MOVE_SEMANTIC(AnnotatedAstNode);
+    name: AnnotatedAstNode
+    protected: {}
+    public:
+      constructors:
+      - args: []
+        name: AnnotatedAstNode
+        postfix: = delete
+        raw_declaration: AnnotatedAstNode() = delete
+      destructors:
+      - args: []
+        name: ~AnnotatedAstNode
+        postfix: override = default
+        raw_declaration: ~AnnotatedAstNode() override = default
+  - extends: public Typed<Statement>
+    known_macroses:
+    - NO_COPY_OPERATOR(TypedStatement);
+    - NO_MOVE_SEMANTIC(TypedStatement);
+    name: TypedStatement
+    protected: {}
+    public:
+      constructors:
+      - args: []
+        name: TypedStatement
+        postfix: = delete
+        raw_declaration: TypedStatement() = delete
+      destructors:
+      - args: []
+        name: ~TypedStatement
+        postfix: override = default
+        raw_declaration: ~TypedStatement() override = default
+      methods:
+      - args:
+        - name: other
+          type:
+            name: AstNode
+            ptr_depth: 1
+        name: CopyTo
+        postfix: const override
+        raw_declaration: void CopyTo(AstNode *other) const override
+        return_type:
+          name: void
+  - extends: public Annotated<Statement>
+    known_macroses:
+    - NO_COPY_OPERATOR(AnnotatedStatement);
+    - NO_MOVE_SEMANTIC(AnnotatedStatement);
+    name: AnnotatedStatement
+    protected: {}
+    public:
+      constructors:
+      - args: []
+        name: AnnotatedStatement
+        postfix: = delete
+        raw_declaration: AnnotatedStatement() = delete
+      destructors:
+      - args: []
+        name: ~AnnotatedStatement
+        postfix: override = default
+        raw_declaration: ~AnnotatedStatement() override = default
+      methods:
+      - args:
+        - name: other
+          type:
+            name: AstNode
+            ptr_depth: 1
+        name: CopyTo
+        postfix: const override
+        raw_declaration: void CopyTo(AstNode *other) const override
+        return_type:
+          name: void
+macros:
+- name: ES2PANDA_IR_TYPED_H

@@ -1,0 +1,150 @@
+include:
+- '"ir/statements/classDeclaration.h"'
+ir:
+  class_definitions:
+  - extends: public ClassDeclaration
+    known_macroses:
+    - NO_COPY_SEMANTIC(ETSStructDeclaration);
+    - NO_MOVE_SEMANTIC(ETSStructDeclaration);
+    name: ETSStructDeclaration
+    public:
+      constructors:
+      - args: []
+        name: ETSStructDeclaration
+        postfix: = delete
+        raw_declaration: ETSStructDeclaration() = delete
+      - args:
+        - name: def
+          type:
+            name: ClassDefinition
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        name: ETSStructDeclaration
+        other_initializers:
+        - class_field: ClassDeclaration
+          init_value: AstNodeType::STRUCT_DECLARATION, def, allocator
+        raw_declaration: explicit ETSStructDeclaration(ClassDefinition *const def,
+          ArenaAllocator *const allocator)
+        return_type:
+          prefix: explicit
+      - args:
+        - name: def
+          type:
+            name: ClassDefinition
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        - name: history
+          type:
+            name: AstNodeHistory
+            ptr_depth: 1
+        name: ETSStructDeclaration
+        other_initializers:
+        - class_field: ClassDeclaration
+          init_value: AstNodeType::STRUCT_DECLARATION, def, allocator
+        raw_declaration: explicit ETSStructDeclaration(ClassDefinition *const def,
+          ArenaAllocator *const allocator, AstNodeHistory *history)
+        return_type:
+          prefix: explicit
+      destructors:
+      - args: []
+        name: ~ETSStructDeclaration
+        postfix: override = default
+        raw_declaration: ~ETSStructDeclaration() override = default
+      methods:
+      - args:
+        - name: dumper
+          type:
+            name: AstDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::AstDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: SrcDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::SrcDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: checker
+          type:
+            name: TSChecker
+            namespace: checker
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::Type *Check(checker::TSChecker *checker) override
+        return_type:
+          name: Type
+          namespace: checker
+          ptr_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            namespace: checker
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::VerifiedType Check(checker::ETSChecker *checker)
+          override
+        return_type:
+          name: VerifiedType
+          namespace: checker
+      - args:
+        - name: v
+          type:
+            name: ASTVisitorT
+            ptr_depth: 1
+        name: Accept
+        postfix: override
+        raw_declaration: void Accept(ASTVisitorT *v) override
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        name: Construct
+        postfix: override
+        raw_declaration: ETSStructDeclaration *Construct(ArenaAllocator *allocator)
+          override
+        return_type:
+          name: ETSStructDeclaration
+          ptr_depth: 1
+      - args:
+        - name: other
+          type:
+            name: AstNode
+            ptr_depth: 1
+        name: CopyTo
+        postfix: const override
+        raw_declaration: void CopyTo(AstNode *other) const override
+        return_type:
+          name: void
+macros:
+- name: ES2PANDA_IR_ETS_STRUCT_DECLARATION_H

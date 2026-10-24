@@ -1,0 +1,995 @@
+checker:
+  class_forward_declaration:
+  - Checker
+compiler:
+  class_forward_declaration:
+  - CFG
+include:
+- <optional>
+- '"util/es2pandaMacros.h"'
+- '"util/ustring.h"'
+- '"util/path.h"'
+- '"util/importPathManager.h"'
+- '"util/enumbitops.h"'
+- '"ir/statements/blockStatement.h"'
+- '"lexer/token/sourceLocation.h"'
+- '"varbinder/varbinder.h"'
+- '"varbinder/recordTable.h"'
+- '"libarkbase/mem/pool_manager.h"'
+- '"libarkbase/os/filesystem.h"'
+- <memory>
+- <set>
+ir:
+  class_forward_declaration:
+  - BlockStatement
+macros:
+- name: ES2PANDA_PARSER_INCLUDE_PROGRAM_H
+parser:
+  class_definitions:
+  - name: RecordTableHolder
+    private: {}
+    public:
+      methods:
+      - additional_attributes: set
+        args:
+        - name: recordTable
+          type:
+            name: RecordTable
+            namespace: varbinder
+            ptr_depth: 1
+        name: SetRecordTable
+        raw_declaration: void SetRecordTable(varbinder::RecordTable *recordTable)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: GetRecordTable
+        postfix: const
+        raw_declaration: auto *GetRecordTable() const
+        return_type:
+          name: auto
+          ptr_depth: 1
+    template: util::ModuleKind KIND
+  - name: ExternalProgramsImpl
+    private: {}
+    public:
+      constructors:
+      - args: []
+        name: ExternalProgramsImpl
+        other_initializers:
+        - class_field: transitiveExternals_
+          init_value: ProgramsSubmap<KINDS>()...
+        raw_declaration: explicit ExternalProgramsImpl()
+        return_type:
+          prefix: explicit
+      fields:
+      - default_value: std::is_invocable_v<ProgVisitor, ProgramAdapter<SUBMAP_KIND>
+          *>
+        name: INVOCABLE
+        template: typename ProgVisitor, util::ModuleKind SUBMAP_KIND
+        type:
+          name: bool
+          prefix: static constexpr
+      methods:
+      - args: []
+        name: GetModuleKindFromSubmapType
+        raw_declaration: static constexpr auto GetModuleKindFromSubmapType()
+        return_type:
+          name: auto
+          prefix: static constexpr
+        template: typename SubmapT
+      - args: []
+        name: Empty
+        postfix: const
+        raw_declaration: bool Empty() const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args: []
+        name: Get
+        postfix: const
+        raw_declaration: const auto &Get() const
+        return_type:
+          name: auto
+          prefix: const
+          ref_depth: 1
+        template: util::ModuleKind KIND
+      - additional_attributes: get
+        args: []
+        name: Get
+        raw_declaration: auto &Get()
+        return_type:
+          name: auto
+          ref_depth: 1
+        template: util::ModuleKind KIND
+      - args:
+        - name: cb
+          type:
+            name: ProgramVisitor
+            prefix: const
+            ref_depth: 1
+        name: Visit
+        raw_declaration: void Visit(const ProgramVisitor &cb)
+        return_type:
+          name: void
+        template: bool SHOULD_UNPACK_PACKAGE = true, util::ModuleKind... KINDS_TO_VISIT,
+          typename ProgramVisitor
+      - additional_attributes: set
+        args:
+        - name: progToInsert
+          type:
+            name: Program
+            ptr_depth: 1
+        name: Add
+        raw_declaration: void Add(Program *progToInsert)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Direct
+        raw_declaration: auto &Direct()
+        return_type:
+          name: auto
+          ref_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Direct
+        postfix: const
+        raw_declaration: const auto &Direct() const
+        return_type:
+          name: auto
+          prefix: const
+          ref_depth: 1
+      usings:
+      - name: ProgramsSubmap
+        template: util::ModuleKind KIND
+        type:
+          name: ArenaVector
+          template_args:
+          - type:
+              name: ProgramAdapter
+              ptr_depth: 1
+              template_args:
+              - type:
+                  name: KIND
+      - name: TransitiveExternals
+        type:
+          name: tuple
+          namespace: std
+          template_args:
+          - type:
+              name: ProgramsSubmap
+              postfix: '...'
+              template_args:
+              - type:
+                  name: KINDS
+    template: util::ModuleKind... KINDS
+  - extends: public RecordTableHolder
+    known_macroses:
+    - NO_COPY_SEMANTIC(Program);
+    - NO_MOVE_SEMANTIC(Program);
+    name: Program
+    private: {}
+    protected: {}
+    public:
+      destructors:
+      - args: []
+        name: ~Program
+        raw_declaration: virtual ~Program()
+        return_type:
+          prefix: virtual
+      methods:
+      - args:
+        - name: importInfo
+          type:
+            name: ImportInfo
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        - name: context
+          type:
+            name: Context
+            namespace: public_lib
+            ptr_depth: 1
+        name: New
+        raw_declaration: static ProgramAdapter<KIND> *New(const util::ImportInfo &importInfo,
+          public_lib::Context *context)
+        return_type:
+          name: ProgramAdapter
+          prefix: static
+          ptr_depth: 1
+          template_args:
+          - type:
+              name: KIND
+        template: util::ModuleKind KIND = util::ModuleKind::MODULE, typename VarBinderT
+          = void
+      - additional_attributes: get
+        args: []
+        name: Allocator
+        postfix: const
+        raw_declaration: ArenaAllocator *Allocator() const
+        return_type:
+          name: ArenaAllocator
+          ptr_depth: 1
+      - args:
+        - name: varbinder
+          type:
+            name: VarBinder
+            namespace: varbinder
+            ptr_depth: 1
+        name: PushVarBinder
+        raw_declaration: void PushVarBinder(varbinder::VarBinder *varbinder)
+        return_type:
+          name: void
+      - args: []
+        name: VarBinder
+        postfix: const
+        raw_declaration: const varbinder::VarBinder *VarBinder() const
+        return_type:
+          name: VarBinder
+          namespace: varbinder
+          prefix: const
+          ptr_depth: 1
+      - args: []
+        name: VarBinder
+        raw_declaration: varbinder::VarBinder *VarBinder()
+        return_type:
+          name: VarBinder
+          namespace: varbinder
+          ptr_depth: 1
+      - args: []
+        name: Checker
+        raw_declaration: checker::Checker *Checker()
+        return_type:
+          name: Checker
+          namespace: checker
+          ptr_depth: 1
+      - args: []
+        name: Checker
+        postfix: const
+        raw_declaration: const checker::Checker *Checker() const
+        return_type:
+          name: Checker
+          namespace: checker
+          prefix: const
+          ptr_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: Checker
+            namespace: checker
+            ptr_depth: 1
+        name: PushChecker
+        raw_declaration: void PushChecker(checker::Checker *checker)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: GetImportInfo
+        postfix: const
+        raw_declaration: const util::ImportInfo &GetImportInfo() const
+        return_type:
+          name: ImportInfo
+          namespace: util
+          prefix: const
+          ref_depth: 1
+      - args:
+        - name: cb
+          type:
+            name: CB
+            prefix: const
+            ref_depth: 1
+        name: MaybeIteratePackage
+        raw_declaration: void MaybeIteratePackage(const CB &cb)
+        return_type:
+          name: void
+        template: typename CB
+      - additional_attributes: get
+        args: []
+        name: Extension
+        postfix: const
+        raw_declaration: ScriptExtension Extension() const
+        return_type:
+          name: ScriptExtension
+      - additional_attributes: get
+        args: []
+        name: SourceCode
+        postfix: const
+        raw_declaration: std::string_view SourceCode() const
+        return_type:
+          name: string_view
+          namespace: std
+      - args: []
+        name: GetLineIndex
+        postfix: const
+        raw_declaration: const lexer::LineIndex &GetLineIndex() const
+        return_type:
+          name: LineIndex
+          namespace: lexer
+          prefix: const
+          ref_depth: 1
+      - args: []
+        name: ResetLineIndexCache
+        postfix: const
+        raw_declaration: void ResetLineIndexCache() const
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: SourceFilePath
+        postfix: const
+        raw_declaration: util::StringView SourceFilePath() const
+        return_type:
+          name: StringView
+          namespace: util
+      - additional_attributes: get
+        args: []
+        name: SourceFile
+        postfix: const
+        raw_declaration: const util::Path &SourceFile() const
+        return_type:
+          name: Path
+          namespace: util
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: get
+        args: []
+        name: FileName
+        postfix: const
+        raw_declaration: util::StringView FileName() const
+        return_type:
+          name: StringView
+          namespace: util
+      - additional_attributes: get
+        args: []
+        name: FileNameWithExtension
+        postfix: const
+        raw_declaration: util::StringView FileNameWithExtension() const
+        return_type:
+          name: StringView
+          namespace: util
+      - additional_attributes: get
+        args: []
+        name: AbsoluteName
+        postfix: const
+        raw_declaration: util::StringView AbsoluteName() const
+        return_type:
+          name: StringView
+          namespace: util
+      - args:
+        - name: context
+          type:
+            name: Context
+            namespace: public_lib
+            prefix: const
+            ptr_depth: 1
+        name: RelativeFilePath
+        postfix: const
+        raw_declaration: std::string RelativeFilePath(const public_lib::Context *context)
+          const
+        return_type:
+          name: string
+          namespace: std
+      - args:
+        - name: context
+          type:
+            name: Context
+            namespace: public_lib
+            prefix: const
+            ptr_depth: 1
+        name: TryRelativeFilePathViaArkTsPaths
+        postfix: const
+        raw_declaration: std::optional<std::string> TryRelativeFilePathViaArkTsPaths(const
+          public_lib::Context *context) const
+        return_type:
+          name: optional
+          namespace: std
+          template_args:
+          - type:
+              name: string
+              namespace: std
+      - args:
+        - name: context
+          type:
+            name: Context
+            namespace: public_lib
+            prefix: const
+            ptr_depth: 1
+        name: GetCachedRelativeFilePath
+        postfix: const
+        raw_declaration: std::string_view GetCachedRelativeFilePath(const public_lib::Context
+          *context) const
+        return_type:
+          name: string_view
+          namespace: std
+      - additional_attributes: get
+        args: []
+        name: Ast
+        raw_declaration: ir::BlockStatement *Ast()
+        return_type:
+          name: BlockStatement
+          namespace: ir
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Ast
+        postfix: const
+        raw_declaration: const ir::BlockStatement *Ast() const
+        return_type:
+          name: BlockStatement
+          namespace: ir
+          prefix: const
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: ast
+          type:
+            name: BlockStatement
+            namespace: ir
+            ptr_depth: 1
+        name: SetAst
+        raw_declaration: void SetAst(ir::BlockStatement *ast)
+        return_type:
+          name: void
+      - args: []
+        name: GlobalClass
+        raw_declaration: ir::ClassDefinition *GlobalClass()
+        return_type:
+          name: ClassDefinition
+          namespace: ir
+          ptr_depth: 1
+      - args: []
+        name: GlobalClass
+        postfix: const
+        raw_declaration: const ir::ClassDefinition *GlobalClass() const
+        return_type:
+          name: ClassDefinition
+          namespace: ir
+          prefix: const
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: globalClass
+          type:
+            name: ClassDefinition
+            namespace: ir
+            ptr_depth: 1
+        name: SetGlobalClass
+        raw_declaration: void SetGlobalClass(ir::ClassDefinition *globalClass)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: GetExternalPrograms
+        raw_declaration: ExternalPrograms *GetExternalPrograms()
+        return_type:
+          name: ExternalPrograms
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: GetExternalPrograms
+        postfix: const
+        raw_declaration: const ExternalPrograms *GetExternalPrograms() const
+        return_type:
+          name: ExternalPrograms
+          prefix: const
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: CompilableFunctionScopes
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const ArenaVector<varbinder::FunctionScope
+          *> &CompilableFunctionScopes() const noexcept'
+        return_type:
+          name: ArenaVector
+          prefix: '[[nodiscard]] const'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: FunctionScope
+              namespace: varbinder
+              ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: scope
+          type:
+            name: FunctionScope
+            namespace: varbinder
+            ptr_depth: 1
+        name: AddCompilableFunctionScope
+        raw_declaration: void AddCompilableFunctionScope(varbinder::FunctionScope
+          *scope)
+        return_type:
+          name: void
+      - args: []
+        name: ClearCompilableFunctionScopes
+        postfix: noexcept
+        raw_declaration: void ClearCompilableFunctionScopes() noexcept
+        return_type:
+          name: void
+      - args:
+        - name: ctx
+          type:
+            name: Context
+            namespace: public_lib
+            ptr_depth: 1
+        name: PromoteToMainProgram
+        raw_declaration: void PromoteToMainProgram(public_lib::Context *ctx)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: PackageStart
+        postfix: const
+        raw_declaration: const lexer::SourcePosition &PackageStart() const
+        return_type:
+          name: SourcePosition
+          namespace: lexer
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: set
+        args:
+        - name: start
+          type:
+            name: SourcePosition
+            namespace: lexer
+            prefix: const
+            ref_depth: 1
+        name: SetPackageStart
+        raw_declaration: void SetPackageStart(const lexer::SourcePosition &start)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: sourceFile
+          type:
+            name: SourceFile
+            namespace: ark::es2panda
+            prefix: const
+            ref_depth: 1
+        name: SetSource
+        raw_declaration: void SetSource(const ark::es2panda::SourceFile &sourceFile)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: mname
+          type:
+            name: string_view
+            namespace: std
+        - name: kind
+          type:
+            name: ModuleKind
+            namespace: util
+        name: SetPackageInfo
+        raw_declaration: void SetPackageInfo(std::string_view mname, util::ModuleKind
+          kind)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: TargetApiVersion
+        postfix: const
+        raw_declaration: uint8_t TargetApiVersion() const
+        return_type:
+          name: uint8_t
+      - additional_attributes: set
+        args:
+        - name: version
+          type:
+            name: uint8_t
+        name: SetTargetApiVersion
+        raw_declaration: void SetTargetApiVersion(uint8_t version)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: ModuleInfo
+        postfix: const
+        raw_declaration: const util::ModuleInfo &ModuleInfo() const
+        return_type:
+          name: ModuleInfo
+          namespace: util
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: get
+        args: []
+        name: ModuleName
+        postfix: const
+        raw_declaration: std::string_view ModuleName() const
+        return_type:
+          name: string_view
+          namespace: std
+      - additional_attributes: get
+        args: []
+        name: ModulePrefix
+        postfix: const
+        raw_declaration: std::string_view ModulePrefix() const
+        return_type:
+          name: string_view
+          namespace: std
+      - additional_attributes: get
+        args: []
+        name: GetModuleKind
+        postfix: const
+        raw_declaration: virtual util::ModuleKind GetModuleKind() const
+        return_type:
+          name: ModuleKind
+          namespace: util
+          prefix: virtual
+      - additional_attributes: get
+        args: []
+        name: Is
+        postfix: const
+        raw_declaration: bool Is() const
+        return_type:
+          name: bool
+        template: util::ModuleKind KIND
+      - args: []
+        name: As
+        raw_declaration: ProgramAdapter<KIND> *As()
+        return_type:
+          name: ProgramAdapter
+          ptr_depth: 1
+          template_args:
+          - type:
+              name: KIND
+        template: util::ModuleKind KIND
+      - args: []
+        name: As
+        postfix: const
+        raw_declaration: const ProgramAdapter<KIND> *As() const
+        return_type:
+          name: ProgramAdapter
+          prefix: const
+          ptr_depth: 1
+          template_args:
+          - type:
+              name: KIND
+        template: util::ModuleKind KIND
+      - additional_attributes: get
+        args: []
+        name: IsDeclForDynamicStaticInterop
+        postfix: const
+        raw_declaration: bool IsDeclForDynamicStaticInterop() const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args: []
+        name: IsDeclarationModule
+        postfix: const
+        raw_declaration: bool IsDeclarationModule() const
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args: []
+        name: SetASTChecked
+        raw_declaration: void SetASTChecked()
+        return_type:
+          name: void
+      - args: []
+        name: RemoveAstChecked
+        raw_declaration: void RemoveAstChecked()
+        return_type:
+          name: void
+      - args: []
+        name: IsASTChecked
+        raw_declaration: bool IsASTChecked()
+        return_type:
+          name: bool
+      - args: []
+        name: MarkASTAsLowered
+        raw_declaration: void MarkASTAsLowered()
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: IsASTLowered
+        postfix: const
+        raw_declaration: bool IsASTLowered() const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args: []
+        name: IsMetadataLoadedIfApplicable
+        postfix: const
+        raw_declaration: bool IsMetadataLoadedIfApplicable() const
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - name: isModified
+          type:
+            name: bool
+        name: SetProgramModified
+        raw_declaration: void SetProgramModified(bool isModified)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: IsProgramModified
+        postfix: const
+        raw_declaration: bool IsProgramModified() const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args: []
+        name: IsStdLib
+        postfix: const
+        raw_declaration: bool IsStdLib() const
+        return_type:
+          name: bool
+      - args: []
+        name: IsBuiltSimultaneously
+        postfix: const
+        raw_declaration: bool IsBuiltSimultaneously() const
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - default_value: 'true'
+          name: flag
+          type:
+            name: bool
+        name: SetIsBuiltSimultaneously
+        raw_declaration: void SetIsBuiltSimultaneously(bool flag = true)
+        return_type:
+          name: void
+      - args: []
+        name: GlobalClassScope
+        raw_declaration: varbinder::ClassScope *GlobalClassScope()
+        return_type:
+          name: ClassScope
+          namespace: varbinder
+          ptr_depth: 1
+      - args: []
+        name: GlobalClassScope
+        postfix: const
+        raw_declaration: const varbinder::ClassScope *GlobalClassScope() const
+        return_type:
+          name: ClassScope
+          namespace: varbinder
+          prefix: const
+          ptr_depth: 1
+      - args: []
+        name: GlobalScope
+        raw_declaration: varbinder::GlobalScope *GlobalScope()
+        return_type:
+          name: GlobalScope
+          namespace: varbinder
+          ptr_depth: 1
+      - args: []
+        name: GlobalScope
+        postfix: const
+        raw_declaration: const varbinder::GlobalScope *GlobalScope() const
+        return_type:
+          name: GlobalScope
+          namespace: varbinder
+          prefix: const
+          ptr_depth: 1
+      - args: []
+        name: Dump
+        postfix: const
+        raw_declaration: std::string Dump() const
+        return_type:
+          name: string
+          namespace: std
+      - args: []
+        name: DumpSilent
+        postfix: const
+        raw_declaration: void DumpSilent() const
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: node
+          type:
+            name: AstNode
+            namespace: ir
+            prefix: const
+            ptr_depth: 1
+        - name: warningsCollection
+          type:
+            name: set
+            namespace: std
+            prefix: const
+            ref_depth: 1
+            template_args:
+            - type:
+                name: ETSWarnings
+        name: AddNodeToETSNolintCollection
+        raw_declaration: void AddNodeToETSNolintCollection(const ir::AstNode *node,
+          const std::set<ETSWarnings> &warningsCollection)
+        return_type:
+          name: void
+      - args:
+        - name: node
+          type:
+            name: AstNode
+            namespace: ir
+            prefix: const
+            ptr_depth: 1
+        - name: warning
+          type:
+            name: ETSWarnings
+        name: NodeContainsETSNolint
+        raw_declaration: bool NodeContainsETSNolint(const ir::AstNode *node, ETSWarnings
+          warning)
+        return_type:
+          name: bool
+      - args: []
+        name: IsDied
+        postfix: const
+        raw_declaration: bool IsDied() const
+        return_type:
+          name: bool
+      - args: []
+        name: GetCFG
+        raw_declaration: compiler::CFG *GetCFG()
+        return_type:
+          name: CFG
+          namespace: compiler
+          ptr_depth: 1
+      - args: []
+        name: GetCFG
+        postfix: const
+        raw_declaration: const compiler::CFG *GetCFG() const
+        return_type:
+          name: CFG
+          namespace: compiler
+          prefix: const
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: VarBinders
+        raw_declaration: ArenaMap<int32_t, varbinder::VarBinder *> &VarBinders()
+        return_type:
+          name: ArenaMap
+          ref_depth: 1
+          template_args:
+          - type:
+              name: int32_t
+          - type:
+              name: VarBinder
+              namespace: varbinder
+              ptr_depth: 1
+      - args: []
+        name: Clear
+        raw_declaration: void Clear()
+        return_type:
+          name: void
+      usings:
+      - name: ModuleKind
+        type:
+          name: ModuleKind
+          namespace: util
+      - name: ExternalPrograms
+        type:
+          name: ExternalProgramsImpl
+          template_args:
+          - type:
+              name: MODULE
+              namespace: ModuleKind
+          - type:
+              name: SOURCE_DECL
+              namespace: ModuleKind
+          - type:
+              name: PACKAGE
+              namespace: ModuleKind
+          - type:
+              name: ETSCACHE_DECL
+              namespace: ModuleKind
+          - type:
+              name: METADATA_DECL
+              namespace: ModuleKind
+      - name: ETSNolintsCollectionMap
+        type:
+          name: ArenaUnorderedMap
+          other_modifiers: const
+          template_args:
+          - type:
+              name: AstNode
+              namespace: ir
+              prefix: const
+              ptr_depth: 1
+          - type:
+              name: ArenaSet
+              template_args:
+              - type:
+                  name: ETSWarnings
+  - extends: public Program
+    name: NonPackageProgram
+    public:
+      usings:
+      - name: Program::Program
+  - extends: public NonPackageProgram
+    name: ProgramAdapter
+    public:
+      fields:
+      - default_value: KIND
+        name: MODULE_KIND
+        type:
+          name: auto
+          prefix: static constexpr
+      methods:
+      - additional_attributes: get
+        args: []
+        name: GetModuleKind
+        postfix: const override
+        raw_declaration: util::ModuleKind GetModuleKind() const override
+        return_type:
+          name: ModuleKind
+          namespace: util
+      usings:
+      - name: NonPackageProgram::NonPackageProgram
+    template: util::ModuleKind KIND
+  - extends: ':ModuleKind::PACKAGE> final : public Program'
+    name: ProgramAdapter<util
+    private: {}
+    public:
+      fields:
+      - default_value: util::ModuleKind::PACKAGE
+        name: MODULE_KIND
+        type:
+          name: auto
+          prefix: static constexpr
+      methods:
+      - additional_attributes: get
+        args: []
+        name: GetModuleKind
+        postfix: const override
+        raw_declaration: util::ModuleKind GetModuleKind() const override
+        return_type:
+          name: ModuleKind
+          namespace: util
+      - args:
+        - name: fraction
+          type:
+            name: SourceProgram
+            ptr_depth: 1
+        name: AppendFraction
+        raw_declaration: void AppendFraction(SourceProgram *fraction)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: GetUnmergedPackagePrograms
+        raw_declaration: auto &GetUnmergedPackagePrograms()
+        return_type:
+          name: auto
+          ref_depth: 1
+      - additional_attributes: get
+        args: []
+        name: GetUnmergedPackagePrograms
+        postfix: const
+        raw_declaration: const auto &GetUnmergedPackagePrograms() const
+        return_type:
+          name: auto
+          prefix: const
+          ref_depth: 1
+      usings:
+      - name: Program::Program
+  class_forward_declaration:
+  - ProgramAdapter
+  functions:
+  - args:
+    - name: cb
+      type:
+        name: CB
+        prefix: const
+        ref_depth: 1
+    name: Program::MaybeIteratePackage
+    raw_declaration: void Program::MaybeIteratePackage(const CB &cb)
+    return_type:
+      name: void
+    template: typename CB
+  vars:
+  - default_constructor: '0x12346789'
+    name: POISON_VALUE
+    type:
+      name: uint32_t
+      prefix: constexpr
+varbinder:
+  class_forward_declaration:
+  - VarBinder
+  - FunctionScope

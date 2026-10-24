@@ -1,0 +1,148 @@
+include:
+- '"AstVisitor.h"'
+- '"ir/brokenTypeNode.h"'
+- '"ir/expressions/literals/undefinedLiteral.h"'
+- '"ir/expressions/blockExpression.h"'
+- '"ir/ets/etsIntrinsicNode.h"'
+- '"ir/ets/etsUnionType.h"'
+- '"ir/ets/etsDestructuring.h"'
+- '"ir/ets/etsStringLiteralType.h"'
+- '"ir/ets/etsTuple.h"'
+- '"ir/ets/etsNeverType.h"'
+- '"ir/ets/etsNullishTypes.h"'
+- '"ir/statements/functionDeclaration.h"'
+- '"ir/expressions/functionExpression.h"'
+- '"ir/base/scriptFunction.h"'
+- '"ir/base/methodDefinition.h"'
+- '"ir/base/classProperty.h"'
+- '"ir/expressions/identifier.h"'
+- '"ir/expressions/dummyNode.h"'
+- '"ir/ets/etsReExportDeclaration.h"'
+- '"ir/statements/annotationDeclaration.h"'
+- '"ir/statements/variableDeclaration.h"'
+- '"ir/statements/variableDeclarator.h"'
+macros:
+- name: ES2PANDA_COMPILER_CORE_ITERATE_AST_VISITOR_H
+visitor:
+  class_definitions:
+  - extends: public detail::DefaultBehaviourAstVisitor
+    name: IterateAstVisitor
+    public:
+      constructors:
+      - args: []
+        name: IterateAstVisitor
+        postfix: = default
+        raw_declaration: IterateAstVisitor() = default
+      methods:
+      - args:
+        - name: node
+          type:
+            name: AstNode
+            namespace: ir
+            ptr_depth: 1
+        name: Iterate
+        raw_declaration: void Iterate(ir::AstNode *node)
+        return_type:
+          name: void
+      - args:
+        - name: node
+          type:
+            name: AstNode
+            namespace: ir
+            ptr_depth: 1
+        name: HandleNode
+        postfix: final
+        raw_declaration: void HandleNode(ir::AstNode *node) final
+        return_type:
+          name: void
+  - extends: public detail::DefaultBehaviourAstVisitor
+    name: EmptyAstVisitor
+    public:
+      constructors:
+      - args: []
+        name: EmptyAstVisitor
+        postfix: = default
+        raw_declaration: EmptyAstVisitor() = default
+      methods:
+      - args:
+        - type:
+            name: AstNode
+            namespace: ir
+            ptr_depth: 1
+        name: HandleNode
+        postfix: final
+        raw_declaration: void HandleNode(ir::AstNode * ) final
+        return_type:
+          name: void
+  - extends: public detail::DefaultBehaviourAstVisitor
+    name: AbortAstVisitor
+    public:
+      constructors:
+      - args: []
+        name: AbortAstVisitor
+        postfix: = default
+        raw_declaration: AbortAstVisitor() = default
+      methods:
+      - args:
+        - type:
+            name: AstNode
+            namespace: ir
+            ptr_depth: 1
+        name: HandleNode
+        postfix: final
+        raw_declaration: void HandleNode(ir::AstNode * ) final
+        return_type:
+          name: void
+  detail:
+    class_definitions:
+    - extends: public ASTAbstractVisitor
+      known_macroses:
+      - NO_COPY_SEMANTIC(DefaultBehaviourAstVisitor);
+      - NO_MOVE_SEMANTIC(DefaultBehaviourAstVisitor);
+      - AST_NODE_MAPPING(DECLARE_CLASSES)
+      - AST_NODE_REINTERPRET_MAPPING(DECLARE_AST_NODE_CHECK_METHOD)
+      macros:
+      - arguments: nodeType, className
+        name: DECLARE_CLASSES
+      - arguments: nodeType1, nodeType2, baseClass, reinterpretClass
+        name: DECLARE_AST_NODE_CHECK_METHOD
+      name: DefaultBehaviourAstVisitor
+      public:
+        constructors:
+        - args: []
+          name: DefaultBehaviourAstVisitor
+          postfix: = default
+          raw_declaration: DefaultBehaviourAstVisitor() = default
+        destructors:
+        - args: []
+          name: ~DefaultBehaviourAstVisitor
+          postfix: = 0
+          raw_declaration: virtual ~DefaultBehaviourAstVisitor() = 0
+          return_type:
+            prefix: virtual
+        methods:
+        - args:
+          - name: node
+            type:
+              name: AstNode
+              namespace: ir
+              ptr_depth: 1
+          name: HandleNode
+          postfix: = 0
+          raw_declaration: virtual void HandleNode(ir::AstNode *node) = 0
+          return_type:
+            name: void
+            prefix: virtual
+    functions:
+    - args: []
+      name: DefaultBehaviourAstVisitor::~DefaultBehaviourAstVisitor
+      postfix: = default
+      raw_declaration: inline DefaultBehaviourAstVisitor::~DefaultBehaviourAstVisitor()
+        = default
+      return_type:
+        prefix: inline
+  usings:
+  - name: CustomAstVisitor
+    type:
+      name: DefaultBehaviourAstVisitor
+      namespace: detail

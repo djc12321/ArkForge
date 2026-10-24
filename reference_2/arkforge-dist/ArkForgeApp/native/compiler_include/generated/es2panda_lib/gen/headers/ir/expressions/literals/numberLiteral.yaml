@@ -1,0 +1,220 @@
+include:
+- '"ir/expressions/literal.h"'
+- '"lexer/token/number.h"'
+- '"util/ustring.h"'
+ir:
+  class_definitions:
+  - extends: public Literal
+    known_macroses:
+    - NO_COPY_SEMANTIC(NumberLiteral);
+    - NO_MOVE_SEMANTIC(NumberLiteral);
+    name: NumberLiteral
+    private: {}
+    public:
+      constructors:
+      - args: []
+        name: NumberLiteral
+        postfix: = delete
+        raw_declaration: NumberLiteral() = delete
+      - args:
+        - initializer_for: number_
+          name: number
+          type:
+            name: Number
+            namespace: lexer
+            other_modifiers: const
+            postfix: const
+        name: NumberLiteral
+        other_initializers:
+        - class_field: Literal
+          init_value: AstNodeType::NUMBER_LITERAL
+        raw_declaration: explicit NumberLiteral(lexer::Number const number)
+        return_type:
+          prefix: explicit
+      destructors:
+      - args: []
+        name: ~NumberLiteral
+        postfix: override = default
+        raw_declaration: ~NumberLiteral() override = default
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Str
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const util::StringView &Str() const noexcept'
+        return_type:
+          name: StringView
+          namespace: util
+          prefix: '[[nodiscard]] const'
+          ref_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Number
+        raw_declaration: '[[nodiscard]] lexer::Number &Number()'
+        return_type:
+          name: Number
+          namespace: lexer
+          prefix: '[[nodiscard]]'
+          ref_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Number
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const lexer::Number &Number() const noexcept'
+        return_type:
+          name: Number
+          namespace: lexer
+          prefix: '[[nodiscard]] const'
+          ref_depth: 1
+      - additional_attributes: get
+        args: []
+        name: IsNarrowingBlocked
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsNarrowingBlocked() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: set
+        args:
+        - default_value: 'true'
+          name: narrowingBlocked
+          type:
+            name: bool
+        name: SetNarrowingBlocked
+        postfix: noexcept
+        raw_declaration: void SetNarrowingBlocked(bool narrowingBlocked = true) noexcept
+        return_type:
+          name: void
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: parent
+          type:
+            name: AstNode
+            ptr_depth: 1
+        name: Clone
+        postfix: override
+        raw_declaration: '[[nodiscard]] NumberLiteral *Clone(ArenaAllocator *allocator,
+          AstNode *parent) override'
+        return_type:
+          name: NumberLiteral
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - args:
+        - name: cb
+          type:
+            name: NodeTransformer
+            prefix: const
+            ref_depth: 1
+        - name: transformationName
+          type:
+            name: string_view
+            namespace: std
+        name: TransformChildren
+        postfix: override
+        raw_declaration: void TransformChildren(const NodeTransformer &cb, std::string_view
+          transformationName) override
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: NodeTraverser
+            prefix: const
+            ref_depth: 1
+        name: Iterate
+        postfix: const override
+        raw_declaration: void Iterate(const NodeTraverser &cb) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: AstDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::AstDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: SrcDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::SrcDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: pg
+          type:
+            name: PandaGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::PandaGen *pg) const override
+        return_type:
+          name: void
+      - args:
+        - name: etsg
+          type:
+            name: ETSGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::ETSGen *etsg) const override
+        return_type:
+          name: void
+      - args:
+        - name: checker
+          type:
+            name: TSChecker
+            namespace: checker
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::Type *Check(checker::TSChecker *checker) override
+        return_type:
+          name: Type
+          namespace: checker
+          ptr_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            namespace: checker
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::VerifiedType Check(checker::ETSChecker *checker)
+          override
+        return_type:
+          name: VerifiedType
+          namespace: checker
+      - args: []
+        name: ToString
+        postfix: const override
+        raw_declaration: std::string ToString() const override
+        return_type:
+          name: string
+          namespace: std
+      - args:
+        - name: v
+          type:
+            name: ASTVisitorT
+            ptr_depth: 1
+        name: Accept
+        postfix: override
+        raw_declaration: void Accept(ASTVisitorT *v) override
+        return_type:
+          name: void
+macros:
+- name: ES2PANDA_IR_EXPRESSION_LITERAL_NUMBER_LITERAL_H

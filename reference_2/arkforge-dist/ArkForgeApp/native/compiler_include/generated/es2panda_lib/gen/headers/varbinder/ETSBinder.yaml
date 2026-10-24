@@ -1,0 +1,1186 @@
+include:
+- <algorithm>
+- '"varbinder/TypedBinder.h"'
+- '"varbinder/exportFacts.h"'
+- '"varbinder/recordTable.h"'
+- '"ir/ets/etsImportDeclaration.h"'
+- '"ir/ets/etsReExportDeclaration.h"'
+- '"ir/expressions/identifier.h"'
+- '"ir/module/importSpecifier.h"'
+- '"ir/statements/annotationDeclaration.h"'
+- '"parser/ETSparser.h"'
+ir:
+  class_forward_declaration:
+  - ETSImportDeclaration
+  - AstNode
+  - Identifier
+  - ObjectExpression
+  - ETSTypeReference
+  - MethodDefinition
+  - AnnotationUsage
+  - StringLiteral
+  - ETSReExportDeclaration
+  - TSEnumDeclaration
+  - TSQualifiedName
+  - ClassElement
+  - ImportSpecifier
+  - ETSNewClassInstanceExpression
+macros:
+- name: ES2PANDA_VARBINDER_ETSBINDER_H
+varbinder:
+  class_definitions:
+  - extends: public TypedBinder
+    known_macroses:
+    - NO_COPY_SEMANTIC(ETSBinder);
+    - NO_MOVE_SEMANTIC(ETSBinder);
+    name: ETSBinder
+    private: {}
+    public:
+      constructors:
+      - args:
+        - initializer_for: TypedBinder
+          name: context
+          type:
+            name: Context
+            namespace: public_lib
+            ptr_depth: 1
+        name: ETSBinder
+        other_initializers:
+        - class_field: globalRecordTable_
+          init_value: Allocator()->New<RecordTable>(Allocator(), nullptr, RecordTableFlags::NONE)
+        - class_field: recordTable_
+          init_value: globalRecordTable_
+        - class_field: externalRecordTable_
+          init_value: Allocator()->Adapter()
+        - class_field: defaultImports_
+          init_value: Allocator()->Adapter()
+        - class_field: dynamicImports_
+          init_value: Allocator()->Adapter()
+        - class_field: reExportImports_
+          init_value: Allocator()->Adapter()
+        - class_field: exportFactStore_
+          init_value: Allocator()->New<ExportFactStore>(Allocator())
+        - class_field: foreignExportCache_
+          init_value: Allocator()->Adapter()
+        raw_declaration: explicit ETSBinder(public_lib::Context *context)
+        return_type:
+          prefix: explicit
+      - args: []
+        name: ETSBinder
+        postfix: = delete
+        raw_declaration: ETSBinder() = delete
+      destructors:
+      - args: []
+        name: ~ETSBinder
+        postfix: override = default
+        raw_declaration: ~ETSBinder() override = default
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Extension
+        postfix: const noexcept override
+        raw_declaration: '[[nodiscard]] ScriptExtension Extension() const noexcept
+          override'
+        return_type:
+          name: ScriptExtension
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: BindingOptions
+        postfix: const noexcept override
+        raw_declaration: '[[nodiscard]] ResolveBindingOptions BindingOptions() const
+          noexcept override'
+        return_type:
+          name: ResolveBindingOptions
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: GetRecordTable
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] RecordTable *GetRecordTable() noexcept'
+        return_type:
+          name: RecordTable
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: GetRecordTable
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const RecordTable *GetRecordTable() const
+          noexcept'
+        return_type:
+          name: RecordTable
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: table
+          type:
+            name: RecordTable
+            ptr_depth: 1
+        name: SetRecordTable
+        postfix: noexcept
+        raw_declaration: void SetRecordTable(RecordTable *table) noexcept
+        return_type:
+          name: void
+      - args:
+        - default_value: nullptr
+          name: program
+          type:
+            name: Program
+            namespace: parser
+            ptr_depth: 1
+        name: CheckRecordTablesConsistency
+        postfix: const
+        raw_declaration: bool CheckRecordTablesConsistency(parser::Program *program
+          = nullptr) const
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - name: tbl
+          type:
+            name: RecordTable
+            ptr_depth: 1
+        name: SetGlobalRecordTable
+        postfix: noexcept
+        raw_declaration: void SetGlobalRecordTable(RecordTable *tbl) noexcept
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: GetGlobalRecordTable
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] RecordTable *GetGlobalRecordTable() noexcept'
+        return_type:
+          name: RecordTable
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: GetGlobalRecordTable
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const RecordTable *GetGlobalRecordTable()
+          const noexcept'
+        return_type:
+          name: RecordTable
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: GetExternalRecordTable
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] ArenaMap<parser::Program *, RecordTable *>
+          &GetExternalRecordTable() noexcept'
+        return_type:
+          name: ArenaMap
+          prefix: '[[nodiscard]]'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: Program
+              namespace: parser
+              ptr_depth: 1
+          - type:
+              name: RecordTable
+              ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: GetExternalRecordTable
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const ArenaMap<parser::Program *, RecordTable
+          *> &GetExternalRecordTable() const noexcept'
+        return_type:
+          name: ArenaMap
+          prefix: '[[nodiscard]] const'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: Program
+              namespace: parser
+              ptr_depth: 1
+          - type:
+              name: RecordTable
+              ptr_depth: 1
+      - args:
+        - name: program
+          type:
+            name: Program
+            namespace: parser
+            ptr_depth: 1
+        name: CleanScopesAndRecordTables
+        raw_declaration: void CleanScopesAndRecordTables(parser::Program *program)
+        return_type:
+          name: void
+      - args:
+        - name: childNode
+          type:
+            name: AstNode
+            namespace: ir
+            ptr_depth: 1
+        name: HandleCustomNodes
+        postfix: override
+        raw_declaration: void HandleCustomNodes(ir::AstNode *childNode) override
+        return_type:
+          name: void
+      - args: []
+        name: IdentifierAnalysis
+        postfix: override
+        raw_declaration: void IdentifierAnalysis() override
+        return_type:
+          name: void
+      - args:
+        - name: classDef
+          type:
+            name: ClassDefinition
+            namespace: ir
+            ptr_depth: 1
+        name: BuildClassDefinition
+        postfix: override
+        raw_declaration: void BuildClassDefinition(ir::ClassDefinition *classDef)
+          override
+        return_type:
+          name: void
+      - args:
+        - name: obj
+          type:
+            name: ObjectExpression
+            namespace: ir
+            ptr_depth: 1
+        name: BuildObjectExpression
+        raw_declaration: void BuildObjectExpression(ir::ObjectExpression *obj)
+        return_type:
+          name: void
+      - args:
+        - name: typeRef
+          type:
+            name: ETSTypeReference
+            namespace: ir
+            ptr_depth: 1
+        name: BuildETSTypeReference
+        raw_declaration: void BuildETSTypeReference(ir::ETSTypeReference *typeRef)
+        return_type:
+          name: void
+      - args:
+        - name: prop
+          type:
+            name: ClassProperty
+            namespace: ir
+            prefix: const
+            ptr_depth: 1
+        name: BuildClassProperty
+        postfix: override
+        raw_declaration: void BuildClassProperty(const ir::ClassProperty *prop) override
+        return_type:
+          name: void
+      - args:
+        - name: ident
+          type:
+            name: Identifier
+            namespace: ir
+            ptr_depth: 1
+        name: LookupIdentReference
+        postfix: override
+        raw_declaration: void LookupIdentReference(ir::Identifier *ident) override
+        return_type:
+          name: void
+      - args:
+        - name: scriptFunc
+          type:
+            name: ScriptFunction
+            namespace: ir
+            ptr_depth: 1
+        name: BuildInternalName
+        postfix: override
+        raw_declaration: '[[nodiscard]] bool BuildInternalName(ir::ScriptFunction
+          *scriptFunc) override'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: set
+        args:
+        - name: func
+          type:
+            name: ScriptFunction
+            namespace: ir
+            ptr_depth: 1
+        - name: program
+          type:
+            name: Program
+            namespace: parser
+            ptr_depth: 1
+        name: AddCompilableFunction
+        postfix: override
+        raw_declaration: void AddCompilableFunction(ir::ScriptFunction *func, parser::Program
+          *program) override
+        return_type:
+          name: void
+      - args:
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        name: IsSpecialName
+        raw_declaration: static bool IsSpecialName(const util::StringView &name)
+        return_type:
+          name: bool
+          prefix: static
+      - args:
+        - name: ident
+          type:
+            name: Identifier
+            namespace: ir
+            ptr_depth: 1
+        name: LookupInDebugInfoPlugin
+        raw_declaration: '[[nodiscard]] bool LookupInDebugInfoPlugin(ir::Identifier
+          *ident)'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - args:
+        - name: ident
+          type:
+            name: Identifier
+            namespace: ir
+            ptr_depth: 1
+        name: LookupTypeReference
+        raw_declaration: void LookupTypeReference(ir::Identifier *ident)
+        return_type:
+          name: void
+      - args:
+        - name: typeRef
+          type:
+            name: ETSTypeReference
+            namespace: ir
+            ptr_depth: 1
+        name: LookupTypeArgumentReferences
+        raw_declaration: void LookupTypeArgumentReferences(ir::ETSTypeReference *typeRef)
+        return_type:
+          name: void
+      - args:
+        - name: decl
+          type:
+            name: TSInterfaceDeclaration
+            namespace: ir
+            ptr_depth: 1
+        name: BuildInterfaceDeclaration
+        raw_declaration: void BuildInterfaceDeclaration(ir::TSInterfaceDeclaration
+          *decl)
+        return_type:
+          name: void
+      - args:
+        - name: memberExpr
+          type:
+            name: MemberExpression
+            namespace: ir
+            ptr_depth: 1
+        name: BuildMemberExpression
+        raw_declaration: void BuildMemberExpression(ir::MemberExpression *memberExpr)
+        return_type:
+          name: void
+      - args:
+        - name: methodDef
+          type:
+            name: MethodDefinition
+            namespace: ir
+            ptr_depth: 1
+        name: BuildMethodDefinition
+        raw_declaration: void BuildMethodDefinition(ir::MethodDefinition *methodDef)
+        return_type:
+          name: void
+      - args:
+        - name: overloadDef
+          type:
+            name: OverloadDeclaration
+            namespace: ir
+            ptr_depth: 1
+        name: BuildOverloadDeclaration
+        raw_declaration: void BuildOverloadDeclaration(ir::OverloadDeclaration *overloadDef)
+        return_type:
+          name: void
+      - args:
+        - name: annoDecl
+          type:
+            name: AnnotationDeclaration
+            namespace: ir
+            ptr_depth: 1
+        name: BuildAnnotationDeclaration
+        raw_declaration: void BuildAnnotationDeclaration(ir::AnnotationDeclaration
+          *annoDecl)
+        return_type:
+          name: void
+      - args:
+        - name: annoUsage
+          type:
+            name: AnnotationUsage
+            namespace: ir
+            ptr_depth: 1
+        name: BuildAnnotationUsage
+        raw_declaration: void BuildAnnotationUsage(ir::AnnotationUsage *annoUsage)
+        return_type:
+          name: void
+      - args:
+        - name: decl
+          type:
+            name: ETSImportDeclaration
+            namespace: ir
+            ptr_depth: 1
+        name: BuildImportDeclaration
+        raw_declaration: void BuildImportDeclaration(ir::ETSImportDeclaration *decl)
+        return_type:
+          name: void
+      - args: []
+        name: ValidateReexports
+        raw_declaration: void ValidateReexports()
+        return_type:
+          name: void
+      - args:
+        - name: classInstance
+          type:
+            name: ETSNewClassInstanceExpression
+            namespace: ir
+            ptr_depth: 1
+        name: BuildETSNewClassInstanceExpression
+        raw_declaration: void BuildETSNewClassInstanceExpression(ir::ETSNewClassInstanceExpression
+          *classInstance)
+        return_type:
+          name: void
+      - args:
+        - name: import
+          type:
+            name: ETSImportDeclaration
+            namespace: ir
+            prefix: const
+            ptr_depth: 1
+        name: GetExternalProgram
+        raw_declaration: parser::Program *GetExternalProgram(const ir::ETSImportDeclaration
+          *import)
+        return_type:
+          name: Program
+          namespace: parser
+          ptr_depth: 1
+      - args:
+        - name: import
+          type:
+            name: ETSImportDeclaration
+            namespace: ir
+            prefix: const
+            ptr_depth: 1
+        name: RegisterImportTarget
+        raw_declaration: parser::Program *RegisterImportTarget(const ir::ETSImportDeclaration
+          *import)
+        return_type:
+          name: Program
+          namespace: parser
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: importedProgram
+          type:
+            name: Program
+            namespace: parser
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        - name: namespaceSpecifier
+          type:
+            name: ImportNamespaceSpecifier
+            namespace: ir
+            ptr_depth: 1
+        - name: import
+          type:
+            name: ETSImportDeclaration
+            namespace: ir
+            prefix: const
+            ptr_depth: 1
+        name: AddImportNamespaceSpecifiersToTopBindings
+        raw_declaration: "void AddImportNamespaceSpecifiersToTopBindings(parser::Program\
+          \ *const importedProgram,\n                                            \
+          \       ir::ImportNamespaceSpecifier *namespaceSpecifier,\n            \
+          \                                       const ir::ETSImportDeclaration *import)"
+        return_type:
+          name: void
+      - args:
+        - name: importedName
+          type:
+            name: StringView
+            namespace: util
+        - name: local
+          type:
+            name: Identifier
+            namespace: ir
+            ptr_depth: 1
+        - name: import
+          type:
+            name: ETSImportDeclaration
+            namespace: ir
+            prefix: const
+            ptr_depth: 1
+        - default_value: ImportBindingKind::NAMED
+          name: kind
+          type:
+            name: ImportBindingKind
+        name: CreateNamedImportBinding
+        raw_declaration: "LocalVariable *CreateNamedImportBinding(util::StringView\
+          \ importedName, ir::Identifier *local,\n                               \
+          \             const ir::ETSImportDeclaration *import,\n                \
+          \                            ImportBindingKind kind = ImportBindingKind::NAMED)"
+        return_type:
+          name: LocalVariable
+          ptr_depth: 1
+      - args:
+        - name: importSpecifier
+          type:
+            name: ImportSpecifier
+            namespace: ir
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        - name: import
+          type:
+            name: ETSImportDeclaration
+            namespace: ir
+            other_modifiers: const
+            postfix: const
+            prefix: const
+            ptr_depth: 1
+        name: GetAdjustedImportedName
+        raw_declaration: "util::StringView GetAdjustedImportedName(ir::ImportSpecifier\
+          \ *const importSpecifier,\n                                            \
+          \ const ir::ETSImportDeclaration *const import)"
+        return_type:
+          name: StringView
+          namespace: util
+      - additional_attributes: set
+        args:
+        - name: importSpecifier
+          type:
+            name: ImportSpecifier
+            namespace: ir
+            ptr_depth: 1
+        - name: import
+          type:
+            name: ETSImportDeclaration
+            namespace: ir
+            prefix: const
+            ptr_depth: 1
+        name: AddImportSpecifiersToTopBindings
+        raw_declaration: void AddImportSpecifiersToTopBindings(ir::ImportSpecifier
+          *importSpecifier, const ir::ETSImportDeclaration *import)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: importDefaultSpecifier
+          type:
+            name: ImportDefaultSpecifier
+            namespace: ir
+            ptr_depth: 1
+        - name: import
+          type:
+            name: ETSImportDeclaration
+            namespace: ir
+            prefix: const
+            ptr_depth: 1
+        name: AddImportDefaultSpecifiersToTopBindings
+        raw_declaration: "void AddImportDefaultSpecifiersToTopBindings(ir::ImportDefaultSpecifier\
+          \ *importDefaultSpecifier,\n                                           \
+          \      const ir::ETSImportDeclaration *import)"
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: specifier
+          type:
+            name: AstNode
+            namespace: ir
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        - name: import
+          type:
+            name: ETSImportDeclaration
+            namespace: ir
+            other_modifiers: const
+            postfix: const
+            prefix: const
+            ptr_depth: 1
+        name: AddSpecifiersToTopBindings
+        raw_declaration: void AddSpecifiersToTopBindings(ir::AstNode *const specifier,
+          const ir::ETSImportDeclaration *const import)
+        return_type:
+          name: void
+      - args:
+        - name: specifier
+          type:
+            name: AstNode
+            namespace: ir
+            ptr_depth: 1
+        - name: import
+          type:
+            name: ETSImportDeclaration
+            namespace: ir
+            prefix: const
+            ptr_depth: 1
+        name: BindReExportSpecifierIdentifiers
+        raw_declaration: void BindReExportSpecifierIdentifiers(ir::AstNode *specifier,
+          const ir::ETSImportDeclaration *import)
+        return_type:
+          name: void
+      - args:
+        - name: reExportDecl
+          type:
+            name: ETSReExportDeclaration
+            namespace: ir
+            ptr_depth: 1
+        name: BuildReExportDeclaration
+        raw_declaration: void BuildReExportDeclaration(ir::ETSReExportDeclaration
+          *reExportDecl)
+        return_type:
+          name: void
+      - args:
+        - name: decl
+          type:
+            name: TSInterfaceDeclaration
+            namespace: ir
+            ptr_depth: 1
+        name: ResolveInterfaceDeclaration
+        raw_declaration: void ResolveInterfaceDeclaration(ir::TSInterfaceDeclaration
+          *decl)
+        return_type:
+          name: void
+      - args:
+        - name: methodDef
+          type:
+            name: MethodDefinition
+            namespace: ir
+            ptr_depth: 1
+        name: ResolveMethodDefinition
+        raw_declaration: void ResolveMethodDefinition(ir::MethodDefinition *methodDef)
+        return_type:
+          name: void
+      - args:
+        - name: prop
+          type:
+            name: ClassProperty
+            namespace: ir
+            ptr_depth: 1
+        - name: scope
+          type:
+            name: ClassScope
+            ptr_depth: 1
+        name: ResolvePropertyReference
+        raw_declaration: LocalScope *ResolvePropertyReference(ir::ClassProperty *prop,
+          ClassScope *scope)
+        return_type:
+          name: LocalScope
+          ptr_depth: 1
+      - args:
+        - name: enumDecl
+          type:
+            name: TSEnumDeclaration
+            namespace: ir
+            ptr_depth: 1
+        name: ResolveEnumDeclaration
+        raw_declaration: void ResolveEnumDeclaration(ir::TSEnumDeclaration *enumDecl)
+        return_type:
+          name: void
+      - args:
+        - name: decl
+          type:
+            name: TSInterfaceDeclaration
+            namespace: ir
+            ptr_depth: 1
+        name: InitializeInterfaceIdent
+        raw_declaration: void InitializeInterfaceIdent(ir::TSInterfaceDeclaration
+          *decl)
+        return_type:
+          name: void
+      - args:
+        - name: extProgram
+          type:
+            name: Program
+            namespace: parser
+            ptr_depth: 1
+        name: BuildExternalProgram
+        raw_declaration: void BuildExternalProgram(parser::Program *extProgram)
+        return_type:
+          name: void
+      - args: []
+        name: BuildProgram
+        raw_declaration: void BuildProgram()
+        return_type:
+          name: void
+      - args:
+        - name: func
+          type:
+            name: ScriptFunction
+            namespace: ir
+            prefix: const
+            ptr_depth: 1
+        name: BuildFunctionName
+        postfix: const
+        raw_declaration: void BuildFunctionName(const ir::ScriptFunction *func) const
+        return_type:
+          name: void
+      - args:
+        - name: scriptFunc
+          type:
+            name: ScriptFunction
+            namespace: ir
+            ptr_depth: 1
+        - name: recordTable
+          type:
+            name: RecordTable
+            ptr_depth: 1
+        name: BuildInternalNameWithCustomRecordTable
+        raw_declaration: bool BuildInternalNameWithCustomRecordTable(ir::ScriptFunction
+          *scriptFunc, RecordTable *recordTable)
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - name: func
+          type:
+            name: ScriptFunction
+            namespace: ir
+            ptr_depth: 1
+        name: AddFunctionThisParam
+        raw_declaration: void AddFunctionThisParam(ir::ScriptFunction *func)
+        return_type:
+          name: void
+      - args:
+        - name: pos
+          type:
+            name: SourcePosition
+            namespace: lexer
+            prefix: const
+            ref_depth: 1
+        - name: kind
+          type:
+            name: DiagnosticKind
+            namespace: diagnostic
+            prefix: const
+            ref_depth: 1
+        name: ThrowError
+        postfix: const
+        raw_declaration: void ThrowError(const lexer::SourcePosition &pos, const diagnostic::DiagnosticKind
+          &kind) const
+        return_type:
+          name: void
+      - args:
+        - name: pos
+          type:
+            name: SourcePosition
+            namespace: lexer
+            prefix: const
+            ref_depth: 1
+        - name: kind
+          type:
+            name: DiagnosticKind
+            namespace: diagnostic
+            prefix: const
+            ref_depth: 1
+        - name: params
+          type:
+            name: DiagnosticMessageParams
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        name: ThrowError
+        postfix: const override
+        raw_declaration: "void ThrowError(const lexer::SourcePosition &pos, const\
+          \ diagnostic::DiagnosticKind &kind,\n                    const util::DiagnosticMessageParams\
+          \ &params) const override"
+        return_type:
+          name: void
+      - args:
+        - name: str
+          type:
+            name: StringView
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        name: IsGlobalIdentifier
+        postfix: const override
+        raw_declaration: bool IsGlobalIdentifier(const util::StringView &str) const
+          override
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - name: defaultImports
+          type:
+            name: ArenaVector
+            template_args:
+            - type:
+                name: ETSImportDeclaration
+                namespace: ir
+                ptr_depth: 1
+        name: SetDefaultImports
+        postfix: noexcept
+        raw_declaration: void SetDefaultImports(ArenaVector<ir::ETSImportDeclaration
+          *> defaultImports) noexcept
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: import
+          type:
+            name: ETSImportDeclaration
+            namespace: ir
+            ptr_depth: 1
+        name: AddDynamicImport
+        raw_declaration: void AddDynamicImport(ir::ETSImportDeclaration *import)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: DynamicImports
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const ArenaVector<ir::ETSImportDeclaration
+          *> &DynamicImports() const noexcept'
+        return_type:
+          name: ArenaVector
+          prefix: '[[nodiscard]] const'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: ETSImportDeclaration
+              namespace: ir
+              ptr_depth: 1
+      - args:
+        - name: program
+          type:
+            name: Program
+            namespace: parser
+            prefix: const
+            ptr_depth: 1
+        name: DynamicImports
+        postfix: const
+        raw_declaration: '[[nodiscard]] ArenaVector<ir::ETSImportDeclaration *> DynamicImports(const
+          parser::Program *program) const'
+        return_type:
+          name: ArenaVector
+          prefix: '[[nodiscard]]'
+          template_args:
+          - type:
+              name: ETSImportDeclaration
+              namespace: ir
+              ptr_depth: 1
+      - args:
+        - name: source
+          type:
+            name: ETSBinder
+            prefix: const
+            ptr_depth: 1
+        name: CopyImportInfoFrom
+        raw_declaration: void CopyImportInfoFrom(const ETSBinder *source)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: reExport
+          type:
+            name: ETSReExportDeclaration
+            namespace: ir
+            ptr_depth: 1
+        name: AddReExportImport
+        postfix: noexcept
+        raw_declaration: void AddReExportImport(ir::ETSReExportDeclaration *reExport)
+          noexcept
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: ReExportImports
+        postfix: const
+        raw_declaration: const auto &ReExportImports() const
+        return_type:
+          name: auto
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: get
+        args: []
+        name: ReExportImports
+        raw_declaration: auto &ReExportImports()
+        return_type:
+          name: auto
+          ref_depth: 1
+      - additional_attributes: get
+        args: []
+        name: DefaultExport
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] const ir::AstNode *DefaultExport() noexcept'
+        return_type:
+          name: AstNode
+          namespace: ir
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: defaultExport
+          type:
+            name: AstNode
+            namespace: ir
+            ptr_depth: 1
+        name: SetDefaultExport
+        postfix: noexcept
+        raw_declaration: void SetDefaultExport(ir::AstNode *defaultExport) noexcept
+        return_type:
+          name: void
+      - args:
+        - name: node
+          type:
+            name: AstNode
+            namespace: ir
+            ptr_depth: 1
+        - name: scope
+          type:
+            name: Scope
+            ptr_depth: 1
+        name: ResolveReferenceForScope
+        raw_declaration: void ResolveReferenceForScope(ir::AstNode *node, Scope *scope)
+        return_type:
+          name: void
+      - args:
+        - name: parent
+          type:
+            name: AstNode
+            namespace: ir
+            other_modifiers: const
+            ptr_depth: 1
+        - name: scope
+          type:
+            name: Scope
+            ptr_depth: 1
+        name: ResolveReferencesForScope
+        raw_declaration: void ResolveReferencesForScope(ir::AstNode const *parent,
+          Scope *scope)
+        return_type:
+          name: void
+      - args:
+        - name: node
+          type:
+            name: AstNode
+            namespace: ir
+            ptr_depth: 1
+        - name: scope
+          type:
+            name: Scope
+            ptr_depth: 1
+        name: ResolveReferencesForScopeWithContext
+        raw_declaration: void ResolveReferencesForScopeWithContext(ir::AstNode *node,
+          Scope *scope)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: alias
+          type:
+            name: SelectiveExportAlias
+            prefix: const
+            ref_depth: 1
+        name: AddSelectiveExportAlias
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] bool AddSelectiveExportAlias(const SelectiveExportAlias
+          &alias) noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args:
+        - name: program
+          type:
+            name: Program
+            namespace: parser
+            ptr_depth: 1
+        name: GetExportFacts
+        postfix: const
+        raw_declaration: '[[nodiscard]] const ExportFactStore::ExportFactSnapshot
+          &GetExportFacts(parser::Program *program) const'
+        return_type:
+          name: ExportFactSnapshot
+          namespace: ExportFactStore
+          prefix: '[[nodiscard]] const'
+          ref_depth: 1
+      - additional_attributes: get
+        args: []
+        name: GetExportFactsStore
+        raw_declaration: '[[nodiscard]] ExportFactStore &GetExportFactsStore()'
+        return_type:
+          name: ExportFactStore
+          prefix: '[[nodiscard]]'
+          ref_depth: 1
+      - additional_attributes: get
+        args: []
+        name: GetExportFactsStore
+        postfix: const
+        raw_declaration: '[[nodiscard]] const ExportFactStore &GetExportFactsStore()
+          const'
+        return_type:
+          name: ExportFactStore
+          prefix: '[[nodiscard]] const'
+          ref_depth: 1
+      - additional_attributes: get
+        args:
+        - name: program
+          type:
+            name: Program
+            namespace: parser
+            prefix: const
+            ptr_depth: 1
+        name: PendingLocalExportAliases
+        postfix: const
+        raw_declaration: "[[nodiscard]] const ArenaVector<PendingLocalExportAlias>\
+          \ &PendingLocalExportAliases(\n        const parser::Program *program) const"
+        return_type:
+          name: ArenaVector
+          prefix: '[[nodiscard]] const'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: PendingLocalExportAlias
+      - args: []
+        name: CollectExportFactsForCurrentProgram
+        raw_declaration: void CollectExportFactsForCurrentProgram()
+        return_type:
+          name: void
+      - args: []
+        name: CleanUp
+        postfix: override
+        raw_declaration: void CleanUp() override
+        return_type:
+          name: void
+      - args:
+        - name: target
+          type:
+            name: VarBinder
+            ptr_depth: 1
+        name: CopyTo
+        postfix: override
+        raw_declaration: void CopyTo(VarBinder *target) override
+        return_type:
+          name: void
+  - known_macroses:
+    - NO_COPY_SEMANTIC(RecordTableContext);
+    - NO_MOVE_SEMANTIC(RecordTableContext);
+    name: RecordTableContext
+    private: {}
+    public:
+      constructors:
+      - args:
+        - initializer_for: varBinder_
+          name: varBinder
+          type:
+            name: ETSBinder
+            ptr_depth: 1
+        - name: extProgram
+          type:
+            name: Program
+            namespace: parser
+            ptr_depth: 1
+        name: RecordTableContext
+        other_initializers:
+        - class_field: savedRecordTable_
+          init_value: varBinder->recordTable_
+        raw_declaration: RecordTableContext(ETSBinder *varBinder, parser::Program
+          *extProgram)
+      destructors:
+      - args: []
+        name: ~RecordTableContext
+        raw_declaration: ~RecordTableContext()
+  functions:
+  - args:
+    - name: name
+      type:
+        name: StringView
+        namespace: util
+    name: NormalizeReExportName
+    raw_declaration: '[[nodiscard]] util::StringView NormalizeReExportName(util::StringView
+      name)'
+    return_type:
+      name: StringView
+      namespace: util
+      prefix: '[[nodiscard]]'
+  - args:
+    - name: name
+      type:
+        name: StringView
+        namespace: util
+    name: IsDefaultExportName
+    raw_declaration: '[[nodiscard]] bool IsDefaultExportName(util::StringView name)'
+    return_type:
+      name: bool
+      prefix: '[[nodiscard]]'
+  structs:
+  - members:
+    - name: import
+      type:
+        name: ETSImportDeclaration
+        namespace: ir
+        prefix: const
+        ptr_depth: 1
+    - name: specifier
+      type:
+        name: AstNode
+        namespace: ir
+        prefix: const
+        ptr_depth: 1
+    - name: variable
+      type:
+        name: Variable
+        ptr_depth: 1
+    name: DynamicImportData
+  - members:
+    - name: program
+      type:
+        name: Program
+        namespace: parser
+        ptr_depth: 1
+    - name: exportedName
+      type:
+        name: StringView
+        namespace: util
+    - name: localIdent
+      type:
+        name: Identifier
+        namespace: ir
+        prefix: const
+        ptr_depth: 1
+    - name: decl
+      type:
+        name: AstNode
+        namespace: ir
+        prefix: const
+        ptr_depth: 1
+    - name: exportDecl
+      type:
+        name: AstNode
+        namespace: ir
+        prefix: const
+        ptr_depth: 1
+    - name: reportOrigin
+      type:
+        name: AstNode
+        namespace: ir
+        prefix: const
+        ptr_depth: 1
+    - name: isExplicitTypeOnly
+      type:
+        name: bool
+    name: SelectiveExportAlias
+  usings:
+  - name: DynamicImportVariables
+    type:
+      name: ArenaUnorderedMap
+      other_modifiers: const
+      template_args:
+      - type:
+          name: Variable
+          prefix: const
+          ptr_depth: 1
+      - type:
+          name: DynamicImportData

@@ -1,0 +1,538 @@
+checker:
+  class_forward_declaration:
+  - ETSAnalyzer
+include:
+- '"scriptFunction.h"'
+- '"ir/base/classElement.h"'
+ir:
+  class_definitions:
+  - extends: public ClassElement
+    friends:
+    - checker::ETSAnalyzer
+    known_macroses:
+    - NO_COPY_SEMANTIC(MethodDefinition);
+    - NO_MOVE_SEMANTIC(MethodDefinition);
+    name: MethodDefinition
+    private: {}
+    protected: {}
+    public:
+      constructors:
+      - args: []
+        name: MethodDefinition
+        postfix: = delete
+        raw_declaration: MethodDefinition() = delete
+      - args:
+        - initializer_for: kind_
+          name: kind
+          type:
+            name: MethodDefinitionKind
+            other_modifiers: const
+            postfix: const
+        - name: key
+          type:
+            name: Expression
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        - name: value
+          type:
+            name: Expression
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        - name: modifiers
+          type:
+            name: ModifierFlags
+            other_modifiers: const
+            postfix: const
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            other_modifiers: const
+            postfix: const
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        - name: isComputed
+          type:
+            name: bool
+            other_modifiers: const
+            postfix: const
+        name: MethodDefinition
+        other_initializers:
+        - class_field: ClassElement
+          init_value: AstNodeType::METHOD_DEFINITION, key, value, modifiers, allocator,
+            isComputed
+        - class_field: overloads_
+          init_value: allocator->Adapter()
+        - class_field: baseOverloadMethod_
+          init_value: nullptr
+        - class_field: asyncPairMethod_
+          init_value: nullptr
+        raw_declaration: "explicit MethodDefinition(MethodDefinitionKind const kind,\
+          \ Expression *const key, Expression *const value,\n                    \
+          \          ModifierFlags const modifiers, [[maybe_unused]] ArenaAllocator\
+          \ *const allocator,\n                              bool const isComputed)"
+        return_type:
+          prefix: explicit
+      - args:
+        - initializer_for: kind_
+          name: kind
+          type:
+            name: MethodDefinitionKind
+            other_modifiers: const
+            postfix: const
+        - name: key
+          type:
+            name: Expression
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        - name: value
+          type:
+            name: Expression
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        - name: modifiers
+          type:
+            name: ModifierFlags
+            other_modifiers: const
+            postfix: const
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            other_modifiers: const
+            postfix: const
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        - name: isComputed
+          type:
+            name: bool
+            other_modifiers: const
+            postfix: const
+        - name: history
+          type:
+            name: AstNodeHistory
+            ptr_depth: 1
+        name: MethodDefinition
+        other_initializers:
+        - class_field: ClassElement
+          init_value: AstNodeType::METHOD_DEFINITION, key, value, modifiers, allocator,
+            isComputed
+        - class_field: overloads_
+          init_value: allocator->Adapter()
+        - class_field: baseOverloadMethod_
+          init_value: nullptr
+        - class_field: asyncPairMethod_
+          init_value: nullptr
+        raw_declaration: "explicit MethodDefinition(MethodDefinitionKind const kind,\
+          \ Expression *const key, Expression *const value,\n                    \
+          \          ModifierFlags const modifiers, [[maybe_unused]] ArenaAllocator\
+          \ *const allocator,\n                              bool const isComputed,\
+          \ AstNodeHistory *history)"
+        return_type:
+          prefix: explicit
+      destructors:
+      - args: []
+        name: ~MethodDefinition
+        postfix: override = default
+        raw_declaration: ~MethodDefinition() override = default
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Kind
+        postfix: const
+        raw_declaration: MethodDefinitionKind Kind() const
+        return_type:
+          name: MethodDefinitionKind
+      - additional_attributes: get
+        args: []
+        name: IsConstructor
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsConstructor() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsMethod
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsMethod() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - args: []
+        name: IsExtensionMethod
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsExtensionMethod() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsGetter
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsGetter() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsSetter
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsSetter() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsDefaultAccessModifier
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsDefaultAccessModifier() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: set
+        args:
+        - name: isDefault
+          type:
+            name: bool
+        name: SetDefaultAccessModifier
+        raw_declaration: void SetDefaultAccessModifier(bool isDefault)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Overloads
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const OverloadsT &Overloads() const noexcept'
+        return_type:
+          name: OverloadsT
+          prefix: '[[nodiscard]] const'
+          ref_depth: 1
+      - additional_attributes: get
+        args: []
+        name: BaseOverloadMethod
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const MethodDefinition *BaseOverloadMethod()
+          const noexcept'
+        return_type:
+          name: MethodDefinition
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: BaseOverloadMethod
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] MethodDefinition *BaseOverloadMethod() noexcept'
+        return_type:
+          name: MethodDefinition
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: AsyncPairMethod
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const MethodDefinition *AsyncPairMethod()
+          const noexcept'
+        return_type:
+          name: MethodDefinition
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: AsyncPairMethod
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] MethodDefinition *AsyncPairMethod() noexcept'
+        return_type:
+          name: MethodDefinition
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: overloadsList
+          type:
+            name: OverloadsT
+            ref_depth: 2
+        name: SetOverloads
+        raw_declaration: void SetOverloads(OverloadsT &&overloadsList)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: overload
+          type:
+            name: MethodDefinition
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        name: AddOverload
+        raw_declaration: void AddOverload(MethodDefinition *const overload)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: baseOverloadMethod
+          type:
+            name: MethodDefinition
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        name: SetBaseOverloadMethod
+        raw_declaration: void SetBaseOverloadMethod(MethodDefinition *const baseOverloadMethod)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: asyncPairMethod
+          type:
+            name: MethodDefinition
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        name: SetAsyncPairMethod
+        raw_declaration: void SetAsyncPairMethod(MethodDefinition *const asyncPairMethod)
+        return_type:
+          name: void
+      - args:
+        - name: overload
+          type:
+            name: MethodDefinition
+            ptr_depth: 1
+        name: HasOverload
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] bool HasOverload(MethodDefinition *overload)
+          noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - args: []
+        name: Function
+        raw_declaration: ScriptFunction *Function()
+        return_type:
+          name: ScriptFunction
+          ptr_depth: 1
+      - args: []
+        name: Function
+        postfix: const
+        raw_declaration: const ScriptFunction *Function() const
+        return_type:
+          name: ScriptFunction
+          prefix: const
+          ptr_depth: 1
+      - args:
+        - name: isStatic
+          type:
+            name: bool
+        name: ToPrivateFieldKind
+        postfix: const override
+        raw_declaration: PrivateFieldKind ToPrivateFieldKind(bool isStatic) const
+          override
+        return_type:
+          name: PrivateFieldKind
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: parent
+          type:
+            name: AstNode
+            ptr_depth: 1
+        name: Clone
+        postfix: override
+        raw_declaration: '[[nodiscard]] MethodDefinition *Clone(ArenaAllocator *allocator,
+          AstNode *parent) override'
+        return_type:
+          name: MethodDefinition
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - args:
+        - name: cb
+          type:
+            name: NodeTransformer
+            prefix: const
+            ref_depth: 1
+        - name: transformationName
+          type:
+            name: string_view
+            namespace: std
+        name: TransformChildren
+        postfix: override
+        raw_declaration: void TransformChildren(const NodeTransformer &cb, std::string_view
+          transformationName) override
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: NodeTraverser
+            prefix: const
+            ref_depth: 1
+        name: Iterate
+        postfix: const override
+        raw_declaration: void Iterate(const NodeTraverser &cb) const override
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: NodeTraverser
+            prefix: const
+            ref_depth: 1
+        name: ResolveReferences
+        postfix: const
+        raw_declaration: void ResolveReferences(const NodeTraverser &cb) const
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: AstDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::AstDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: SrcDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::SrcDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: pg
+          type:
+            name: PandaGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::PandaGen *pg) const override
+        return_type:
+          name: void
+      - args:
+        - name: etsg
+          type:
+            name: ETSGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::ETSGen *etsg) const override
+        return_type:
+          name: void
+      - args:
+        - name: checker
+          type:
+            name: TSChecker
+            namespace: checker
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::Type *Check(checker::TSChecker *checker) override
+        return_type:
+          name: Type
+          namespace: checker
+          ptr_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            namespace: checker
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::VerifiedType Check(checker::ETSChecker *checker)
+          override
+        return_type:
+          name: VerifiedType
+          namespace: checker
+      - args:
+        - name: v
+          type:
+            name: ASTVisitorT
+            ptr_depth: 1
+        name: Accept
+        postfix: override
+        raw_declaration: void Accept(ASTVisitorT *v) override
+        return_type:
+          name: void
+      - args: []
+        name: CleanUp
+        postfix: override
+        raw_declaration: void CleanUp() override
+        return_type:
+          name: void
+      - args:
+        - name: overloads
+          type:
+            name: MethodDefinition
+            ptr_depth: 1
+        name: EmplaceOverloads
+        raw_declaration: void EmplaceOverloads(MethodDefinition *overloads)
+        return_type:
+          name: void
+      - args: []
+        name: ClearOverloads
+        raw_declaration: void ClearOverloads()
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: overloads
+          type:
+            name: MethodDefinition
+            ptr_depth: 1
+        - name: index
+          type:
+            name: size_t
+        name: SetValueOverloads
+        raw_declaration: void SetValueOverloads(MethodDefinition *overloads, size_t
+          index)
+        return_type:
+          name: void
+      - args: []
+        name: OverloadsForUpdate
+        raw_declaration: '[[nodiscard]] ArenaVector<MethodDefinition *> &OverloadsForUpdate()'
+        return_type:
+          name: ArenaVector
+          prefix: '[[nodiscard]]'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: MethodDefinition
+              ptr_depth: 1
+      usings:
+      - name: OverloadsT
+        type:
+          name: ArenaVector
+          template_args:
+          - type:
+              name: MethodDefinition
+              ptr_depth: 1
+  class_forward_declaration:
+  - Expression
+  - ScriptFunction
+  enums:
+  - flags:
+    - NONE
+    - CONSTRUCTOR
+    - METHOD
+    - EXTENSION_METHOD
+    - GET
+    - SET
+    - EXTENSION_GET
+    - EXTENSION_SET
+    kind: simple
+    name: MethodDefinitionKind
+    namespace: ir
+macros:
+- name: ES2PANDA_PARSER_INCLUDE_AST_METHOD_DEFINITION_H

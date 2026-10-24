@@ -1,0 +1,88 @@
+enumbitops:
+  structs:
+  - members: []
+    name: IsAllowedType<ark::es2panda::parser::LexicalScopeType>
+  - members: []
+    name: IsAllowedType<ark::es2panda::parser::VariableParsingFlags>
+  - members: []
+    name: IsAllowedType<ark::es2panda::parser::ExpressionParseFlags>
+  - members: []
+    name: IsAllowedType<ark::es2panda::parser::StatementParsingFlags>
+include:
+- <cstdint>
+- '"util/enumbitops.h"'
+macros:
+- name: ES2PANDA_PARSER_PARSER_FLAGS_H
+parser:
+  enums:
+  - flags:
+    - BLOCK
+    - STRICT_BLOCK
+    - CATCH
+    - FUNCTION_PARAM
+    - TS_TYPE_LITERAL
+    kind: simple
+    name: LexicalScopeType
+    namespace: parser
+  - flags:
+    - NO_OPTS
+    - NO_SKIP_VAR_KIND
+    - ACCEPT_CONST_NO_INIT
+    - DISALLOW_INIT
+    - VAR
+    - LET
+    - CONST
+    - STOP_AT_IN
+    - IN_FOR
+    - FOR_OF
+    kind: flags
+    name: VariableParsingFlags
+    namespace: parser
+  - flags:
+    - NO_OPTS
+    - ACCEPT_COMMA
+    - ACCEPT_REST
+    - EXP_DISALLOW_AS
+    - DISALLOW_ASSIGNMENT
+    - DISALLOW_YIELD
+    - STOP_AT_IN
+    - MUST_BE_PATTERN
+    - POTENTIALLY_IN_PATTERN
+    - OBJECT_PATTERN
+    - IN_REST
+    - IMPORT
+    - POTENTIAL_CLASS_LITERAL
+    - IN_FOR
+    - INSTANCEOF
+    - POTENTIAL_NEW_ARRAY
+    kind: flags
+    name: ExpressionParseFlags
+    namespace: parser
+  - flag_unions:
+    - flags:
+      - IF_ELSE
+      - LABELLED
+      name: STMT_LEXICAL_SCOPE_NEEDED
+    - flags:
+      - GLOBAL
+      - ALLOW_LEXICAL
+      name: STMT_GLOBAL_LEXICAL
+    flags:
+    - NONE
+    - ALLOW_LEXICAL
+    - GLOBAL
+    - IF_ELSE
+    - LABELLED
+    - INIT_MODULE
+    kind: flags
+    name: StatementParsingFlags
+    namespace: parser
+  - flags:
+    - UPDATE
+    - IN
+    - OF
+    kind: simple
+    name: ForStatementKind
+    namespace: parser
+  usings:
+  - name: ENUMBITOPS_OPERATORS

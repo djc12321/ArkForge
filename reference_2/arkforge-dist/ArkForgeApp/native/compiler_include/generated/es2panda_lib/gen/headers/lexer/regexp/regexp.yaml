@@ -1,0 +1,85 @@
+include:
+- '"util/enumbitops.h"'
+- '"util/ustring.h"'
+- '"parser/parserImpl.h"'
+- <unordered_set>
+lexer:
+  class_definitions:
+  - name: RegExpParser
+    private: {}
+    public:
+      constructors:
+      - args:
+        - name: re
+          type:
+            name: RegExp
+            prefix: const
+            ref_depth: 1
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: parser
+          type:
+            name: ParserImpl
+            namespace: parser
+            ptr_depth: 1
+        name: RegExpParser
+        raw_declaration: explicit RegExpParser(const RegExp &re, ArenaAllocator *allocator,
+          parser::ParserImpl *parser)
+        return_type:
+          prefix: explicit
+      methods:
+      - args: []
+        name: ParsePattern
+        raw_declaration: void ParsePattern()
+        return_type:
+          name: void
+  enums:
+  - flags:
+    - EMPTY
+    - GLOBAL
+    - IGNORE_CASE
+    - MULTILINE
+    - DOTALL
+    - UNICODE
+    - STICKY
+    kind: flags
+    name: RegExpFlags
+    namespace: lexer
+  structs:
+  - members:
+    - args:
+      - name: p
+        type:
+          name: StringView
+          namespace: util
+      - name: f
+        type:
+          name: StringView
+          namespace: util
+      - name: reFlags
+        type:
+          name: RegExpFlags
+      name: RegExp
+      raw_declaration: RegExp(util::StringView p, util::StringView f, RegExpFlags
+        reFlags)
+    - name: patternStr
+      type:
+        name: StringView
+        namespace: util
+    - name: flagsStr
+      type:
+        name: StringView
+        namespace: util
+    - name: flags
+      type:
+        name: RegExpFlags
+    name: RegExp
+  usings:
+  - name: ENUMBITOPS_OPERATORS
+macros:
+- name: ES2PANDA_PARSER_CORE_REGEXP_H
+structs:
+- members: []
+  name: enumbitops::IsAllowedType<ark::es2panda::lexer::RegExpFlags>

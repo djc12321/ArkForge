@@ -1,0 +1,160 @@
+include:
+- '"ir/expressions/literal.h"'
+ir:
+  class_definitions:
+  - extends: public Literal
+    known_macroses:
+    - NO_COPY_SEMANTIC(UndefinedLiteral);
+    - NO_MOVE_SEMANTIC(UndefinedLiteral);
+    name: UndefinedLiteral
+    public:
+      constructors:
+      - args: []
+        name: UndefinedLiteral
+        other_initializers:
+        - class_field: Literal
+          init_value: AstNodeType::UNDEFINED_LITERAL
+        raw_declaration: explicit UndefinedLiteral()
+        return_type:
+          prefix: explicit
+      destructors:
+      - args: []
+        name: ~UndefinedLiteral
+        postfix: override = default
+        raw_declaration: ~UndefinedLiteral() override = default
+      methods:
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: parent
+          type:
+            name: AstNode
+            ptr_depth: 1
+        name: Clone
+        postfix: override
+        raw_declaration: '[[nodiscard]] UndefinedLiteral *Clone(ArenaAllocator *allocator,
+          AstNode *parent) override'
+        return_type:
+          name: UndefinedLiteral
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - args:
+        - name: cb
+          type:
+            name: NodeTransformer
+            prefix: const
+            ref_depth: 1
+        - name: transformationName
+          type:
+            name: string_view
+            namespace: std
+        name: TransformChildren
+        postfix: override
+        raw_declaration: void TransformChildren(const NodeTransformer &cb, std::string_view
+          transformationName) override
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: NodeTraverser
+            prefix: const
+            ref_depth: 1
+        name: Iterate
+        postfix: const override
+        raw_declaration: void Iterate(const NodeTraverser &cb) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: AstDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::AstDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: SrcDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::SrcDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: pg
+          type:
+            name: PandaGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::PandaGen *pg) const override
+        return_type:
+          name: void
+      - args:
+        - name: etsg
+          type:
+            name: ETSGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::ETSGen *etsg) const override
+        return_type:
+          name: void
+      - args:
+        - name: checker
+          type:
+            name: TSChecker
+            namespace: checker
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::Type *Check(checker::TSChecker *checker) override
+        return_type:
+          name: Type
+          namespace: checker
+          ptr_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            namespace: checker
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::VerifiedType Check([[maybe_unused]] checker::ETSChecker
+          *checker) override
+        return_type:
+          name: VerifiedType
+          namespace: checker
+      - additional_attributes: get
+        args: []
+        name: ToString
+        postfix: const override
+        raw_declaration: std::string ToString() const override
+        return_type:
+          name: string
+          namespace: std
+      - args:
+        - name: v
+          type:
+            name: ASTVisitorT
+            ptr_depth: 1
+        name: Accept
+        postfix: override
+        raw_declaration: void Accept(ASTVisitorT *v) override
+        return_type:
+          name: void
+macros:
+- name: ES2PANDA_IR_EXPRESSION_LITERAL_UNDEFINED_LITERAL_H

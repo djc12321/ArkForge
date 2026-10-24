@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>ArkForge Agent</title>
+  <style>
+    /* ===================================================================
+       VS Code "Dark+" 主题色板（与同工程内嵌的 Monaco 编辑器 vs-dark 完全一致）
+       =================================================================== */
+    :root {
+      --vscode-font-ui: "Segoe UI", "PingFang SC", "Microsoft YaHei", system-ui, -apple-system, sans-serif;
+      --vscode-font-mono: "Cascadia Code", "Consolas", "Courier New", monospace;
+
+      --bg-editor:   #1e1e1e;  /* 编辑器背景，与 Monaco vs-dark 同色 */
+      --bg-panel:    #252526;  /* 侧边栏 / 面板头 */
+      --bg-titlebar: #3c3c3c;  /* 标题栏 */
+      --bg-input:    #3c3c3c;  /* 输入框 */
+      --bg-hover:    #2a2d2e;
+      --bg-widget:   #252526;  /* 弹出层 / 代码块头 */
+
+      --fg:          #cccccc;
+      --fg-desc:     #9d9d9d;
+      --fg-strong:   #ffffff;
+
+      --border:      #2b2b2b;
+      --border-soft: rgba(255,255,255,0.08);
+      --border-input:#3c3c3c;
+      --focus:       #007acc;
+
+      --button-bg:     #0e639c;
+      --button-hover:  #1177bb;
+      --button-fg:     #ffffff;
+
+      --link:        #3794ff;
+      --err:         #f48771;
+      --ok:          #4ec9b0;
+
+      /* 语法高亮（VS Code Dark+ token 色） */
+      --c-comment: #6a9955;
+      --c-string:  #ce9178;
+      --c-keyword: #569cd6;
+      --c-number:  #b5cea8;
+      --c-func:    #dcdcaa;
+      --c-var:     #9cdcfe;
+      --c-type:    #4ec9b0;
+      --c-tool:    #c586c0;
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html, body {
+      margin: 0; padding: 0; height: 100%;
+      background: var(--bg-editor); color: var(--fg);
+      font-family: var(--vscode-font-ui); font-size: 13px; line-height: 1.5;
+      overflow: hidden;
+    }
+    #app { display: flex; flex-direction: column; height: 100vh; }
+
+    /* ---------------- 面板标题栏（仿 VS Code 视图标题） ---------------- */
+    .titlebar {
+      display: flex; align-items: center; height: 35px; flex: 0 0 35px;
+      padding: 0 8px; background: var(--bg-panel);
+      border-bottom: 1px solid var(--border); user-select: none;
+    }
+    .titlebar .brand { display: flex; align-items: center; gap: 6px; flex: 1; }
+    .titlebar .brand svg { width: 15px; height: 15px; flex: 0 0 15px; }
+    .titlebar .brand .name { font-size: 12px; font-weight: 600; color: var(--fg-strong); letter-spacing: .2px; }
+    .titlebar .actions { display: flex; gap: 2px; }
+    .icon-btn {
+      width: 28px; height: 28px; display: grid; place-items: center;
+      background: transparent; border: none; color: var(--fg-desc);
+      border-radius: 5px; cursor: pointer; font-size: 15px; line-height: 1;
+    }
+    .icon-btn:hover { background: var(--bg-hover); color: var(--fg); }
+
+    /* ---------------- 设置浮层 ---------------- */
+    .settings {
+      display: none; position: absolute; top: 40px; right: 8px; width: 268px; z-index: 20;
+      background: var(--bg-widget); border: 1px solid #454545; border-radius: 6px;
+      box-shadow: 0 6px 18px rgba(0,0,0,.45); padding: 12px;
+    }
+    .settings.open { display: block; }
+    .settings label { display: block; font-size: 11px; color: var(--c-var); margin: 8px 0 3px; }
+    .settings input {
+      width: 100%; background: var(--bg-input); color: var(--fg);
+      border: 1px solid var(--border-input); border-radius: 4px; padding: 6px 8px; font-size: 12px;
+      font-family: var(--vscode-font-mono);
+    }
+    .settings input:focus { outline: none; border-color: var(--focus); }
+    .settings .hint { font-size: 11px; color: var(--fg-desc); margin-top: 10px; line-height: 1.5; }
+    .settings .hint b { color: var(--c-var); font-weight: 600; }
+
+    /* ---------------- 消息区 ---------------- */
+    .messages { flex: 1; overflow-y: auto; padding: 12px 10px; }
+    .messages::-webkit-scrollbar { width: 10px; }
+    .messages::-webkit-scrollbar-thumb { background: #424242; border-radius: 5px; border: 2px solid var(--bg-editor); }
+    .messages::-webkit-scrollbar-thumb:hover { background: #4f4f4f; }
+
+    .msg { margin-bottom: 16px; }
+    .msg .role {
+      font-size: 11px; color: var(--fg-desc); margin-bottom: 4px; font-weight: 600;
+      display: flex; align-items: center; gap: 5px;
+    }
+    .msg.user .role { color: var(--c-var); }
+    .msg.assistant .role { color: var(--c-type); }
+
+    /* 用户请求块（仿 VS Code Chat 请求气泡） */
+    .msg.user .bubble {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border-soft);
+      border-radius: 6px; padding: 8px 10px;
+      white-space: pre-wrap; word-break: break-word;
+    }
+    /* 助手文本（markdown 渲染） */
+    .msg.assistant .bubble { padding: 2px 2px; }
+    .msg.assistant .bubble p { margin: 0 0 8px; }
+    .msg.assistant .bubble h1, .msg.assistant .bubble h2, .msg.assistant .bubble h3 {
+      margin: 10px 0 6px; color: var(--fg-strong); font-weight: 600; line-height: 1.3;
+    }
+    .msg.assistant .bubble h1 { font-size: 16px; } .msg.assistant .bubble h2 { font-size: 14.5px; } .msg.assistant .bubble h3 { font-size: 13.5px; }
+    .msg.assistant .bubble ul { margin: 0 0 8px; padding-left: 20px; }
+    .msg.assistant .bubble li { margin: 2px 0; }
+    .msg.assistant .bubble blockquote {
+      margin: 0 0 8px; padding: 4px 10px; border-left: 3px solid #3a3a3a; color: var(--fg-desc);
+      background: rgba(255,255,255,0.02);
+    }
+    .msg.assistant .bubble a { color: var(--link); text-decoration: none; }
+    .msg.assistant .bubble a:hover { text-decoration: underline; }
+    .msg.assistant .bubble :not(pre) > code {
+      background: rgba(255,255,255,0.10); color: var(--c-string);
+      padding: 1px 5px; border-radius: 4px; font-family: var(--vscode-font-mono); font-size: 12px;
+    }
+
+    /* 代码块（仿 VS Code 代码块：带语言头 + 复制按钮） */
+    .cb { border: 1px solid #333; border-radius: 6px; margin: 6px 0 10px; overflow: hidden; background: #1a1a1a; }
+    .cb-head {
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--bg-widget); border-bottom: 1px solid #333; padding: 4px 8px;
+    }
+    .cb-lang { font-size: 10.5px; color: var(--fg-desc); font-family: var(--vscode-font-mono); text-transform: uppercase; letter-spacing: .4px; }
+    .cb-copy {
+      background: transparent; border: 1px solid #454545; color: var(--fg-desc);
+      font-size: 11px; border-radius: 4px; padding: 2px 8px; cursor: pointer;
+    }
+    .cb-copy:hover { background: var(--bg-hover); color: var(--fg); }
+    .cb pre { margin: 0; padding: 10px; overflow: auto; max-height: 320px; }
+    .cb pre code { font-family: var(--vscode-font-mono); font-size: 12px; color: var(--fg); white-space: pre; }
+
+    /* 工具调用块 */
+    .msg.tool .bubble {
+      background: rgba(197,134,192,0.06);
+      border: 1px solid rgba(197,134,192,0.25);
+      border-radius: 6px; padding: 8px 10px;
+    }
+    .tool-cmd { font-family: var(--vscode-font-mono); font-size: 12px; color: var(--c-tool); }
+    .tool-cmd .arg { color: var(--c-func); }
+    .tool-out {
+      font-family: var(--vscode-font-mono); font-size: 12px; color: var(--fg);
+      margin-top: 6px; max-height: 240px; overflow: auto; white-space: pre-wrap; word-break: break-word;
+    }
+    .msg.system .bubble { font-size: 12px; color: var(--fg-desc); }
+    .err { color: var(--err); }
+
+    /* ---------------- 快捷动作（仿 VS Code 次级按钮 / 提示词 chip） ---------------- */
+    .quick { display: flex; flex-wrap: wrap; gap: 6px; padding: 8px 10px 4px; background: var(--bg-panel); }
+    .quick button {
+      background: #3a3d41; color: var(--fg); border: 1px solid #4b4f54; border-radius: 14px;
+      padding: 4px 11px; font-size: 12px; cursor: pointer; font-family: var(--vscode-font-ui);
+    }
+    .quick button:hover { background: #45494e; border-color: var(--focus); }
+
+    /* ---------------- 输入区（仿 VS Code 聊天输入） ---------------- */
+    .composer {
+      display: flex; gap: 8px; align-items: flex-end; padding: 8px 10px;
+      background: var(--bg-panel); border-top: 1px solid var(--border);
+    }
+    .composer textarea {
+      flex: 1; resize: none; height: 46px; max-height: 140px;
+      background: var(--bg-input); color: var(--fg);
+      border: 1px solid var(--border-input); border-radius: 6px; padding: 8px 10px;
+      font-family: var(--vscode-font-ui); font-size: 13px; line-height: 1.4;
+    }
+    .composer textarea:focus { outline: none; border-color: var(--focus); }
+    .composer textarea::placeholder { color: var(--fg-desc); }
+
+    .btn-primary {
+      background: var(--button-bg); color: var(--button-fg); border: none; border-radius: 6px;
+      padding: 0 16px; height: 46px; font-size: 13px; cursor: pointer; font-family: var(--vscode-font-ui);
+    }
+    .btn-primary:hover { background: var(--button-hover); }
+    .btn-primary:disabled { opacity: .5; cursor: default; }
+
+    .status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--err); }
+    .status-dot.ok { background: var(--ok); }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <!-- 面板标题栏：与 VS Code 视图标题一致 -->
+    <div class="titlebar">
+      <div class="brand">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M12 2l2.2 6.3L20.5 10l-6.3 2.2L12 18.5l-2.2-6.3L3.5 10l6.3-1.7L12 2z" fill="#4ec9b0"/>
+          <path d="M19 14l.9 2.6L22.5 17l-2.6.9L19 20.5l-.9-2.6L15.5 17l2.6-.9L19 14z" fill="#c586c0"/>
+        </svg>
+        <span class="name">Agent</span>
+        <span class="status-dot" id="healthDot" title="本机工具连接状态"></span>
+      </div>
+      <div class="actions">
+        <button class="icon-btn" id="newBtn" title="新对话">✚</button>
+        <button class="icon-btn" id="gearBtn" title="设置">⚙</button>
+      </div>
+    </div>
+
+    <!-- 设置浮层 -->
+    <div class="settings" id="settings">
+      <label>模型 API 地址（平板直连）</label>
+      <input id="cfgBase" placeholder="https://api.example.com/v1" spellcheck="false" />
+      <label>模型名称</label>
+      <input id="cfgModel" placeholder="deepseek-flash" spellcheck="false" />
+      <label>API Key（仅本次会话保留）</label><input id="cfgKey" type="password" autocomplete="off" />
+      <div class="hint">模型请求由平板直连 API。工程读写、构建、签名、安装和日志工具均在平板本机执行。</div>
+      <button class="btn-primary" id="healthBtn" style="width:100%;height:30px;margin-top:10px;font-size:12px;">检查本机工具</button>
+    </div>
+
+    <!-- 消息区 -->
+    <div class="messages" id="messages"></div>
+
+    <!-- 快捷动作 -->
+    <div class="quick">
+      <button data-act="current">把当前文件交给 Agent</button>
+      <button data-act="build">运行构建闭环</button>
+      <button data-act="hilog">抓取设备日志 (hilog)</button>
+      <button data-act="clear">清空对话</button>
+    </div>
+
+    <!-- 输入区 -->
+    <div class="composer">
+      <textarea id="input" placeholder="让 Agent 帮你写代码 / 调试…（Enter 发送，Shift+Enter 换行）"></textarea>
+      <button class="btn-primary" id="sendBtn">发送</button>
+    </div>
+  </div>
+
+  <script>
+    // ====================== 配置 ======================
+    const LS = (() => { try { const store = window.localStorage; store.getItem('probe'); return store; }
+      catch(e) { const values = new Map(); return {getItem:k=>values.get(k),setItem:(k,v)=>values.set(k,v)}; } })();
+    const cfg = {
+      base: LS.getItem('af_base') || 'https://api.deepseek.com',
+      model: LS.getItem('af_model') || 'deepseek-flash',
+    };
+    const $ = (s) => document.querySelector(s);
+    const messagesEl = $('#messages');
+
+    function saveCfg() {
+      cfg.base = $('#cfgBase').value.trim();
+      cfg.model = $('#cfgModel').value.trim();
+      LS.setItem('af_base', cfg.base);
+      LS.setItem('af_model', cfg.model);
+    }
+    $('#cfgBase').value = cfg.base;
+    $('#cfgModel').value = cfg.model;
+
+    // ====================== 转义 & Markdown 渲染 ======================
+    function esc(s) {
+      return String(s == null ? '' : s).replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+    }
+
+    // 轻量 Markdown -> HTML（与 VS Code 聊天渲染风格一致；离线、零依赖）
+    let _cbId = 0;
+    function codeBlock(lang, code) {
+      const id = 'cb' + (_cbId++);
+      return `<div class="cb"><div class="cb-head"><span class="cb-lang">${esc(lang || 'code')}</span>` +
+        `<button class="cb-copy" data-id="${id}">复制</button></div>` +
+        `<pre><code id="${id}">${esc(code)}</code></pre></div>`;
+    }
+    function inlineMd(s) {
+      s = esc(s);
+      s = s.replace(/`([^`]+)`/g, (m, c) => `<code>${c}</code>`);
+      s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+      s = s.replace(/__([^_]+)__/g, '<strong>$1</strong>');
+      s = s.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+      s = s.replace(/_([^_]+)_/g, '<em>$1</em>');
+      s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (m, t, u) => `${t} (${u})`);
+      return s;
+    }
+    function mdToHtml(src) {
+      const lines = String(src || '').split('\n');
+      let html = '', para = [], list = [], quote = [], inCode = false, lang = '', buf = [];
+      const flushPara = () => { if (para.length) { html += '<p>' + inlineMd(para.join(' ')) + '</p>'; para = []; } };
+      const flushList = () => { if (list.length) { html += '<ul>' + list.map((x) => '<li>' + inlineMd(x) + '</li>').join('') + '</ul>'; list = []; } };
+      const flushQuote = () => { if (quote.length) { html += '<blockquote>' + inlineMd(quote.join('<br>')) + '</blockquote>'; quote = []; } };
+      for (const line of lines) {
+        if (inCode) {
+          if (/^\s*```/.test(line)) { inCode = false; html += codeBlock(lang, buf.join('\n')); buf = []; lang = ''; }
+          else buf.push(line);
+          continue;
+        }
+        if (/^\s*```/.test(line)) { flushPara(); flushList(); flushQuote(); inCode = true; lang = line.trim().slice(3).trim(); continue; }
+        if (/^#{1,6}\s+/.test(line)) {
+          flushPara(); flushList(); flushQuote();
+          const m = line.match(/^(#{1,6})\s+(.*)$/); const lv = m[1].length;
+          html += `<h${lv}>${inlineMd(m[2])}</h${lv}>`; continue;
+        }
+        if (/^>\s?/.test(line)) { quote.push(line.replace(/^>\s?/, '')); continue; }
+        if (/^\s*[-*+]\s+/.test(line)) { list.push(line.replace(/^\s*[-*+]\s+/, '')); continue; }
+        if (line.trim() === '') { flushPara(); flushList(); flushQuote(); continue; }
+        para.push(line);
+      }
+      flushPara(); flushList(); flushQuote();
+      if (inCode) html += codeBlock(lang, buf.join('\n'));
+      return html;
+    }
+    // 复制按钮事件委托
+    messagesEl.addEventListener('click', (e) => {
+      const btn = e.target.closest('.cb-copy');
+      if (!btn) return;
+      const code = document.getElementById(btn.dataset.id);
+      if (code) {
+        const text = code.textContent;
+        if (navigator.clipboard) navigator.clipboard.writeText(text).catch(() => {});
+        const old = btn.textContent; btn.textContent = '已复制'; setTimeout(() => (btn.textContent = old), 1200);
+      }
+    });
+
+    // ====================== 渲染消息 ======================
+    function addMsg(role, html) {
+      const wrap = document.createElement('div');
+      wrap.className = 'msg ' + role;
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble';
+      if (role === 'user' || role === 'assistant') {
+        const roleEl = document.createElement('div');
+        roleEl.className = 'role';
+        roleEl.textContent = role === 'user' ? '你' : 'Agent';
+        wrap.appendChild(roleEl);
+      }
+      bubble.innerHTML = html;
+      wrap.appendChild(bubble);
+      messagesEl.appendChild(wrap);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+      return bubble;
+    }
+
+    // ====================== 对话历史 ======================
+    let history = [];
+    try { const saved=window.agentState?.get()?.messages; if(Array.isArray(saved))history=saved; } catch(e){}
+    function persistSession() {
+      try { if(JSON.stringify(history).length<=262144)window.agentState?.set({messages:history}); } catch(e){}
+    }
+    for(const message of history.slice(-20)) {
+      if(message.content)addMsg(message.role,mdToHtml(String(message.content).slice(0,8000)));
+    } // {role, content} 或 {role:'tool', tool_call_id, content}
+
+    let requestId = 0;
+    const pending = new Map();
+    window.nativeReply = function(id, result, error) {
+      const item = pending.get(id); if (!item) return;
+      pending.delete(id); clearTimeout(item.timer);
+      if (error) item.reject(new Error(error)); else item.resolve(result);
+    };
+    function localTool(method, args) {
+      return new Promise((resolve,reject) => {
+        const id = ++requestId;
+        const timer = setTimeout(() => { pending.delete(id); reject(new Error('本机工具等待超时，请查看构建输出')); }, 600000);
+        pending.set(id,{resolve,reject,timer});
+        try { window.localAgent.request(id,method,JSON.stringify(args)); }
+        catch(e) { clearTimeout(timer); pending.delete(id); reject(e); }
+      });
+    }
+    const tools = [
+      ['read_file','按行读取源码，返回文件版本；默认读取前 200 行',{path:{type:'string'},start_line:{type:'integer'},end_line:{type:'integer'}}],
+      ['search_text','在平板工程源码中搜索文本',{query:{type:'string'}}],
+      ['write_file','保存工程文件；先 read_file 获取版本，新文件 expected_version 为 0',{path:{type:'string'},content:{type:'string'},expected_version:{type:'integer'}}],
+      ['replace_text','精确替换文件中唯一的一段文本，避免重写长文件',{path:{type:'string'},old_text:{type:'string'},new_text:{type:'string'},expected_version:{type:'integer'}}],
+      ['list_dir','列出平板工程目录',{path:{type:'string'}}],
+      ['build_project','在平板本机检查、编译、签名并安装当前工程',{}],
+      ['read_logs','读取最近安装应用的本机日志',{}],
+      ['get_open_file','获取正在编辑的文件及未保存内容',{}],
+      ['debug_action','本机调试操作：start、stop、Debugger.resume、Debugger.pause、Debugger.stepOver、Debugger.stepInto、Debugger.stepOut',{action:{type:'string'}}],
+      ['debug_state','读取本机调试连接状态、调用栈和变量',{}]
+    ].map(([name,description,properties])=>({type:'function',function:{name,description,parameters:{type:'object',properties,required:name==='read_file'?['path']:Object.keys(properties),additionalProperties:false}}}));
+    async function chatOnce(messages) {
+      const body = JSON.stringify({model:cfg.model,stream:false,...(cfg.base.includes('api.deepseek.com')?{thinking:{type:'disabled'}}:{}),tools,messages:[{role:'system',content:'你是平板上的 ArkForge 开发助手。所有工具操作在当前平板工程本机执行，不使用电脑、网关或 shell。使用 read_file 获取源码和版本，write_file 或 replace_text 保存修改并检查版本冲突。使用 build_project 编译签名安装，read_logs 读取真实日志。编译失败时修复源码并重新构建。禁止把未执行的操作声称为成功。'},...messages]});
+      const result = await localTool('chat',{base:cfg.base,key:$('#cfgKey').value,body});
+      return JSON.parse(result);
+    }
+
+    // ====================== 工具执行 ======================
+    async function execTool(tc) {
+      const args = JSON.parse(tc.function.arguments || '{}');
+      return await localTool(tc.function.name,args);
+    }
+
+    // ====================== Agent 主循环 ======================
+    let running = false;
+    let stopping = false;
+    async function agentTurn(userText) {
+      if (running) return;
+      saveCfg();
+      if (!$('#cfgKey').value.trim()) { $('#settings').classList.add('open'); addMsg('system','请在设置中输入 API Key。没有密钥时仍可使用本机文件和构建快捷操作。'); return; }
+      if (!cfg.model) { addMsg('system','请填写模型名称。'); return; }
+      if (!cfg.base) { addMsg('system', '请先点 ⚙ 设置模型 API 地址。'); return; }
+      running = true; stopping = false;
+      $('#sendBtn').textContent = '停止';
+      try {
+        if (userText != null) {
+          addMsg('user', esc(userText));
+          history.push({ role: 'user', content: userText });
+        }
+        let guard = 0;
+        while (!stopping && guard++ < 12) {
+          const resp = await chatOnce(history);
+          if (stopping) break;
+          const message = resp.choices?.[0]?.message;
+          if (!message) throw new Error('模型未返回有效消息');
+          const content = message.content || '';
+          const toolCalls = message.tool_calls || [];
+          const bubble = addMsg('assistant', '');
+          // 完成后以 Markdown 重新渲染（代码块/加粗等）
+          if (content) bubble.innerHTML = mdToHtml(content);
+          if (content && !toolCalls.length) history.push({ role: 'assistant', content });
+
+          if (!toolCalls.length) {
+            if (!content) addMsg('assistant', '<span class="err">（无输出）</span>');
+            break;
+          }
+          history.push({ role: 'assistant', content: content || '', tool_calls: toolCalls.map((t) => ({ id: t.id, type: 'function', function: { name: t.function.name, arguments: t.function.arguments } })) });
+          for (const tc of toolCalls) {
+            if (stopping) { history.push({role:'tool',tool_call_id:tc.id,content:'已取消，未执行'}); continue; }
+            const name = tc.function.name;
+            let args = {}; try { args = JSON.parse(tc.function.arguments || '{}'); } catch {}
+            const argStr = Object.entries(args).map(([k, v]) => `${k}=<span class="arg">${esc(typeof v === 'string' ? v.slice(0, 120) : JSON.stringify(v))}</span>`).join(', ');
+            const tBubble = addMsg('tool', `<div class="tool-cmd">▷ ${esc(name)}(${argStr})</div><div class="tool-out">执行中…</div>`);
+            let result;
+            try { result = await execTool(tc); }
+            catch (e) { result = '工具执行异常: ' + e.message; }
+            tBubble.querySelector('.tool-out').innerHTML = `<pre class="tool-out">${esc(result).slice(0, 8000)}</pre>`;
+            history.push({ role: 'tool', tool_call_id: tc.id, content: result.length > 48000 ? result.slice(0,48000)+'\n[输出已截断，请缩小读取范围]' : result });
+          }
+        }
+        if (!stopping && guard > 12) addMsg('system','已完成 12 轮工具调用。请检查当前结果，输入下一步要求后继续。');
+      } catch (e) {
+        addMsg('system', stopping ? '已停止后续 Agent 步骤。' : '<span class="err">出错了：' + esc(e.message) + '</span>');
+      } finally {
+        persistSession();
+        running = false;
+        $('#sendBtn').textContent = '发送';
+      }
+    }
+
+    // ====================== 原生桥：当前文件 ======================
+    async function getCurrentFile() { return JSON.parse(await localTool('get_open_file',{})); }
+
+    // ====================== 交互绑定 ======================
+    $('#sendBtn').onclick = () => {
+      if (running) { stopping = true; localTool('cancel_model',{}).catch(()=>{}); addMsg('system','已请求停止后续步骤；已经开始的本机构建会继续完成。'); return; }
+      const v = $('#input').value.trim();
+      if (!v) return;
+      $('#input').value = '';
+      agentTurn(v);
+    };
+    $('#input').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); $('#sendBtn').click(); }
+    });
+
+    $('#gearBtn').onclick = () => { $('#settings').classList.toggle('open'); };
+    $('#cfgBase').onchange = saveCfg; $('#cfgModel').onchange = saveCfg;
+    $('#newBtn').onclick = () => {
+      if (running) return;
+      history = []; persistSession(); messagesEl.innerHTML = '';
+      addMsg('system', '已开始新对话。点 ⚙ 配置模型 API，或先「把当前文件交给 Agent」。');
+    };
+
+    document.querySelectorAll('.quick button').forEach((b) => {
+      b.onclick = async () => {
+        const act = b.dataset.act;
+        if (act === 'clear' && !running) { history = []; persistSession(); messagesEl.innerHTML = ''; return; }
+        if (act === 'current') {
+          const f = await getCurrentFile();
+          if (!$('#cfgKey').value) { addMsg('system', '本机已读取：' + esc(f.path) + '<pre>' + esc(f.content.slice(0,4000)) + '</pre>'); return; }
+          if (!f || !f.path) { addMsg('system', '请先在左侧编辑器打开一个文件。'); return; }
+          await agentTurn(`这是当前在编辑器打开的文件：\n路径: ${f.path}\n\n内容:\n\`\`\`\n${f.content}\n\`\`\`\n请阅读它，并按我的后续指令修改。`);
+        } else if (act === 'build') {
+          if (!$('#cfgKey').value) { try { addMsg('tool','<pre>' + esc(await localTool('build_project',{})) + '</pre>'); } catch(e) {addMsg('system',esc(e.message));} return; }
+          await agentTurn('使用 build_project 在本机编译签名安装当前工程。如果有编译报错，读取并修复源码后重新构建。');
+        } else if (act === 'hilog') {
+          if (!$('#cfgKey').value) { try { addMsg('tool','<pre>' + esc(await localTool('read_logs',{})) + '</pre>'); } catch(e) {addMsg('system',esc(e.message));} return; }
+          await agentTurn('使用 read_logs 读取最近安装应用的本机日志，分析报错。');
+        }
+      };
+    });
+
+    $('#healthBtn').onclick = async () => {
+      saveCfg();
+      try { await localTool('list_dir',{}); $('#healthDot').classList.add('ok'); addMsg('system','本机工作区工具已连接。模型连通性在发送消息时检查。'); }
+      catch(e) { addMsg('system',esc(e.message)); }
+    };
+    addMsg('system','所有工程工具均在平板本机运行。设置模型 API 地址、模型名称和 API Key 后开始。');
+  </script>
+</body>
+</html>

@@ -1,0 +1,947 @@
+checker:
+  class_forward_declaration:
+  - Signature
+include:
+- '"checker/types/signature.h"'
+- '"ir/annotationAllowed.h"'
+- '"ir/statements/annotationUsage.h"'
+- '"ir/statements/returnStatement.h"'
+- '"ir/astNode.h"'
+- '"scriptFunctionSignature.h"'
+- '"util/enumbitops.h"'
+- '"util/language.h"'
+- '"varbinder/scope.h"'
+ir:
+  class_definitions:
+  - extends: public AnnotationAllowed<AstNode>
+    known_macroses:
+    - NO_COPY_SEMANTIC(ScriptFunction);
+    - NO_MOVE_SEMANTIC(ScriptFunction);
+    name: ScriptFunction
+    private: {}
+    protected: {}
+    public:
+      constructors:
+      - args: []
+        name: ScriptFunction
+        postfix: = delete
+        raw_declaration: ScriptFunction() = delete
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: data
+          type:
+            name: ScriptFunctionData
+            ref_depth: 2
+        name: ScriptFunction
+        raw_declaration: explicit ScriptFunction(ArenaAllocator *allocator, ScriptFunctionData
+          &&data)
+        return_type:
+          prefix: explicit
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: data
+          type:
+            name: ScriptFunctionData
+            ref_depth: 2
+        - name: history
+          type:
+            name: AstNodeHistory
+            ptr_depth: 1
+        name: ScriptFunction
+        raw_declaration: explicit ScriptFunction(ArenaAllocator *allocator, ScriptFunctionData
+          &&data, AstNodeHistory *history)
+        return_type:
+          prefix: explicit
+      destructors:
+      - args: []
+        name: ~ScriptFunction
+        postfix: override = default
+        raw_declaration: ~ScriptFunction() override = default
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Id
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const Identifier *Id() const noexcept'
+        return_type:
+          name: Identifier
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Id
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] Identifier *Id() noexcept'
+        return_type:
+          name: Identifier
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Signature
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const checker::Signature *Signature() const
+          noexcept'
+        return_type:
+          name: Signature
+          namespace: checker
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Signature
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] checker::Signature *Signature() noexcept'
+        return_type:
+          name: Signature
+          namespace: checker
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Params
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const ArenaVector<ir::Expression *> &Params()
+          const noexcept'
+        return_type:
+          name: ArenaVector
+          prefix: '[[nodiscard]] const'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: Expression
+              namespace: ir
+              ptr_depth: 1
+      - args: []
+        name: Params
+        raw_declaration: '[[nodiscard]] const ArenaVector<ir::Expression *> &Params()'
+        return_type:
+          name: ArenaVector
+          prefix: '[[nodiscard]] const'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: Expression
+              namespace: ir
+              ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: ReturnStatements
+        postfix: const
+        raw_declaration: const ArenaVector<ReturnStatement *> &ReturnStatements()
+          const
+        return_type:
+          name: ArenaVector
+          prefix: const
+          ref_depth: 1
+          template_args:
+          - type:
+              name: ReturnStatement
+              ptr_depth: 1
+      - args: []
+        name: ReturnStatements
+        raw_declaration: '[[nodiscard]] const ArenaVector<ReturnStatement *> &ReturnStatements()'
+        return_type:
+          name: ArenaVector
+          prefix: '[[nodiscard]] const'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: ReturnStatement
+              ptr_depth: 1
+      - args: []
+        name: ReturnStatementsForUpdate
+        raw_declaration: '[[nodiscard]] ArenaVector<ReturnStatement *> &ReturnStatementsForUpdate()'
+        return_type:
+          name: ArenaVector
+          prefix: '[[nodiscard]]'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: ReturnStatement
+              ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: TypeParams
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const TSTypeParameterDeclaration *TypeParams()
+          const noexcept'
+        return_type:
+          name: TSTypeParameterDeclaration
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: TypeParams
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] TSTypeParameterDeclaration *TypeParams() noexcept'
+        return_type:
+          name: TSTypeParameterDeclaration
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: typeParams
+          type:
+            name: TSTypeParameterDeclaration
+            ptr_depth: 1
+        name: SetTypeParams
+        raw_declaration: void SetTypeParams(TSTypeParameterDeclaration *typeParams)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Body
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const AstNode *Body() const noexcept'
+        return_type:
+          name: AstNode
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Body
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] AstNode *Body() noexcept'
+        return_type:
+          name: AstNode
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: returnStatement
+          type:
+            name: ReturnStatement
+            ptr_depth: 1
+        name: AddReturnStatement
+        raw_declaration: void AddReturnStatement(ReturnStatement *returnStatement)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: body
+          type:
+            name: AstNode
+            ptr_depth: 1
+        name: SetBody
+        raw_declaration: void SetBody(AstNode *body)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: ReturnTypeAnnotation
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const TypeNode *ReturnTypeAnnotation() const
+          noexcept'
+        return_type:
+          name: TypeNode
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: ReturnTypeAnnotation
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] TypeNode *ReturnTypeAnnotation() noexcept'
+        return_type:
+          name: TypeNode
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: node
+          type:
+            name: TypeNode
+            ptr_depth: 1
+        name: SetReturnTypeAnnotation
+        postfix: noexcept
+        raw_declaration: void SetReturnTypeAnnotation(TypeNode *node) noexcept
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: IsEntryPoint
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsEntryPoint() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsGenerator
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsGenerator() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsAsyncFunc
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsAsyncFunc() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsAsyncImplFunc
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsAsyncImplFunc() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsDeclaredAsync
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsDeclaredAsync() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsArrow
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsArrow() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsOverload
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsOverload() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsExternalOverload
+        postfix: const
+        raw_declaration: '[[nodiscard]] bool IsExternalOverload() const'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsConstructor
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsConstructor() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsGetter
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsGetter() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsSetter
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsSetter() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsGetterOrSetter
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsGetterOrSetter() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsExtensionAccessor
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsExtensionAccessor() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsMethod
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsMethod() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsProxy
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsProxy() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsStaticBlock
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsStaticBlock() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsEnum
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsEnum() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsHidden
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsHidden() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsExternal
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsExternal() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsImplicitSuperCallNeeded
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsImplicitSuperCallNeeded() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsExplicitThisCall
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsExplicitThisCall() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsExplicitSuperCall
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsExplicitSuperCall() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: HasBody
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool HasBody() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - args: []
+        name: HasRestParameter
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool HasRestParameter() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: HasReturnStatement
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool HasReturnStatement() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: HasThrowStatement
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool HasThrowStatement() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsTrailingLambda
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsTrailingLambda() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsSynthetic
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsSynthetic() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsInterfaceProperty
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsInterfaceProperty() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsDynamic
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsDynamic() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsExtensionMethod
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsExtensionMethod() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: Flags
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] ir::ScriptFunctionFlags Flags() const noexcept'
+        return_type:
+          name: ScriptFunctionFlags
+          namespace: ir
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: HasReceiver
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool HasReceiver() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: set
+        args:
+        - name: id
+          type:
+            name: Identifier
+            ptr_depth: 1
+        name: SetIdent
+        postfix: noexcept
+        raw_declaration: void SetIdent(Identifier *id) noexcept
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: signature
+          type:
+            name: Signature
+            namespace: checker
+            ptr_depth: 1
+        name: SetSignature
+        raw_declaration: void SetSignature(checker::Signature *signature)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: flags
+          type:
+            name: ScriptFunctionFlags
+            namespace: ir
+        name: AddFlag
+        postfix: noexcept
+        raw_declaration: void AddFlag(ir::ScriptFunctionFlags flags) noexcept
+        return_type:
+          name: void
+      - args:
+        - name: flags
+          type:
+            name: ScriptFunctionFlags
+            namespace: ir
+        name: ClearFlag
+        postfix: noexcept
+        raw_declaration: void ClearFlag(ir::ScriptFunctionFlags flags) noexcept
+        return_type:
+          name: void
+      - args: []
+        name: FormalParamsLength
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] std::size_t FormalParamsLength() const noexcept'
+        return_type:
+          name: size_t
+          namespace: std
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsScopeBearer
+        postfix: const noexcept override
+        raw_declaration: '[[nodiscard]] bool IsScopeBearer() const noexcept override'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: Scope
+        postfix: const noexcept override
+        raw_declaration: '[[nodiscard]] varbinder::FunctionScope *Scope() const noexcept
+          override'
+        return_type:
+          name: FunctionScope
+          namespace: varbinder
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: scope
+          type:
+            name: FunctionScope
+            namespace: varbinder
+            ptr_depth: 1
+        name: SetScope
+        raw_declaration: void SetScope(varbinder::FunctionScope *scope)
+        return_type:
+          name: void
+      - args: []
+        name: ClearScope
+        postfix: noexcept override
+        raw_declaration: void ClearScope() noexcept override
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Language
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] es2panda::Language Language() const noexcept'
+        return_type:
+          name: Language
+          namespace: es2panda
+          prefix: '[[nodiscard]]'
+      - additional_attributes: set
+        args:
+        - name: preferredReturnType
+          type:
+            name: Type
+            namespace: checker
+            ptr_depth: 1
+        name: SetPreferredReturnType
+        raw_declaration: void SetPreferredReturnType(checker::Type *preferredReturnType)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: GetPreferredReturnType
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] checker::Type *GetPreferredReturnType() noexcept'
+        return_type:
+          name: Type
+          namespace: checker
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: GetPreferredReturnType
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] checker::Type const *GetPreferredReturnType()
+          const noexcept'
+        return_type:
+          name: Type
+          namespace: checker
+          other_modifiers: const
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: asyncPairFunction
+          type:
+            name: ScriptFunction
+            ptr_depth: 1
+        name: SetAsyncPairMethod
+        raw_declaration: void SetAsyncPairMethod(ScriptFunction *asyncPairFunction)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: AsyncPairMethod
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const ScriptFunction *AsyncPairMethod() const
+          noexcept'
+        return_type:
+          name: ScriptFunction
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: AsyncPairMethod
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] ScriptFunction *AsyncPairMethod() noexcept'
+        return_type:
+          name: ScriptFunction
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: parent
+          type:
+            name: AstNode
+            ptr_depth: 1
+        name: Clone
+        postfix: override
+        raw_declaration: '[[nodiscard]] ScriptFunction *Clone(ArenaAllocator *allocator,
+          AstNode *parent) override'
+        return_type:
+          name: ScriptFunction
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - args:
+        - name: cb
+          type:
+            name: NodeTransformer
+            prefix: const
+            ref_depth: 1
+        - name: transformationName
+          type:
+            name: string_view
+            namespace: std
+        name: TransformChildren
+        postfix: override
+        raw_declaration: void TransformChildren(const NodeTransformer &cb, std::string_view
+          transformationName) override
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: NodeTraverser
+            prefix: const
+            ref_depth: 1
+        name: Iterate
+        postfix: const override
+        raw_declaration: void Iterate(const NodeTraverser &cb) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: AstDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::AstDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: SrcDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::SrcDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: pg
+          type:
+            name: PandaGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::PandaGen *pg) const override
+        return_type:
+          name: void
+      - args:
+        - name: etsg
+          type:
+            name: ETSGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::ETSGen *etsg) const override
+        return_type:
+          name: void
+      - args:
+        - name: checker
+          type:
+            name: TSChecker
+            namespace: checker
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::Type *Check(checker::TSChecker *checker) override
+        return_type:
+          name: Type
+          namespace: checker
+          ptr_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            namespace: checker
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::VerifiedType Check(checker::ETSChecker *checker)
+          override
+        return_type:
+          name: VerifiedType
+          namespace: checker
+      - args:
+        - name: v
+          type:
+            name: ASTVisitorT
+            ptr_depth: 1
+        name: Accept
+        postfix: override
+        raw_declaration: void Accept(ASTVisitorT *v) override
+        return_type:
+          name: void
+      - args: []
+        name: CleanUp
+        postfix: override
+        raw_declaration: void CleanUp() override
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: WasChecked
+        postfix: const
+        raw_declaration: bool WasChecked() const
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - default_value: 'true'
+          name: wasChecked
+          type:
+            name: bool
+        name: SetWasChecked
+        raw_declaration: void SetWasChecked(bool wasChecked = true)
+        return_type:
+          name: void
+      - args:
+        - name: returnStatements
+          type:
+            name: ReturnStatement
+            ptr_depth: 1
+        name: EmplaceReturnStatements
+        raw_declaration: void EmplaceReturnStatements(ReturnStatement *returnStatements)
+        return_type:
+          name: void
+      - args: []
+        name: ClearReturnStatements
+        raw_declaration: void ClearReturnStatements()
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: returnStatements
+          type:
+            name: ReturnStatement
+            ptr_depth: 1
+        - name: index
+          type:
+            name: size_t
+        name: SetValueReturnStatements
+        raw_declaration: void SetValueReturnStatements(ReturnStatement *returnStatements,
+          size_t index)
+        return_type:
+          name: void
+      - args:
+        - name: params
+          type:
+            name: Expression
+            ptr_depth: 1
+        name: EmplaceParams
+        raw_declaration: void EmplaceParams(Expression *params)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: paramsList
+          type:
+            name: ArenaVector
+            ref_depth: 2
+            template_args:
+            - type:
+                name: Expression
+                ptr_depth: 1
+        name: SetParams
+        raw_declaration: void SetParams(ArenaVector<Expression *> &&paramsList)
+        return_type:
+          name: void
+      - args: []
+        name: ClearParams
+        raw_declaration: void ClearParams()
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: params
+          type:
+            name: Expression
+            ptr_depth: 1
+        - name: index
+          type:
+            name: size_t
+        name: SetValueParams
+        raw_declaration: void SetValueParams(Expression *params, size_t index)
+        return_type:
+          name: void
+      - args: []
+        name: ParamsForUpdate
+        raw_declaration: ArenaVector<Expression *> &ParamsForUpdate()
+        return_type:
+          name: ArenaVector
+          ref_depth: 1
+          template_args:
+          - type:
+              name: Expression
+              ptr_depth: 1
+    structs:
+    - members:
+      - default_value: nullptr
+        name: body
+        type:
+          name: AstNode
+          ptr_depth: 1
+      - name: signature
+        type:
+          name: FunctionSignature
+          ref_depth: 2
+      - default_value: ir::ScriptFunctionFlags::NONE
+        name: funcFlags
+        type:
+          name: ScriptFunctionFlags
+          namespace: ir
+      - default_value: ir::ModifierFlags::NONE
+        name: flags
+        type:
+          name: ModifierFlags
+          namespace: ir
+      - default_constructor: Language::Id::ETS
+        name: lang
+        type:
+          name: Language
+          namespace: ark::es2panda
+      name: ScriptFunctionData
+  class_forward_declaration:
+  - TSTypeParameterDeclaration
+  - TypeNode
+  - AnnotationUsage
+  - FunctionSignature
+macros:
+- name: ES2PANDA_PARSER_INCLUDE_AST_SCRIPT_FUNCTION_H

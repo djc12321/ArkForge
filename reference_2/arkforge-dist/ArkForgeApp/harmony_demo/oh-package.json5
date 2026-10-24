@@ -1,0 +1,8 @@
+{
+  "name": "harmony_demo",
+  "version": "1.0.0",
+  "description": "Native ArkUI HarmonyOS build and install verification",
+  "main": "",
+  "license": "MIT",
+  "dependencies": {}
+}

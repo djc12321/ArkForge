@@ -1,0 +1,148 @@
+checker:
+  class_definitions:
+  - extends: public ETSObjectType
+    name: ETSBigIntType
+    private: {}
+    public:
+      constructors:
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: super
+          type:
+            name: ETSObjectType
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: ETSBigIntType
+        other_initializers:
+        - class_field: ETSObjectType
+          init_value: "allocator, \"\", compiler::Signatures::BUILTIN_BIGINT, nullptr,\n\
+            \                        ETSObjectFlags::CLASS | ETSObjectFlags::BUILTIN_BIGINT\
+            \ | ETSObjectFlags::RESOLVED_SUPER"
+        raw_declaration: explicit ETSBigIntType(ArenaAllocator *allocator, [[maybe_unused]]
+          ETSObjectType *super)
+        return_type:
+          prefix: explicit
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: super
+          type:
+            name: ETSObjectType
+            ptr_depth: 1
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - initializer_for: value_
+          name: value
+          type:
+            name: StringView
+            namespace: util
+        name: ETSBigIntType
+        other_initializers:
+        - class_field: ETSObjectType
+          init_value: "\n              allocator, \"\", compiler::Signatures::BUILTIN_BIGINT,\n\
+            \              std::make_tuple(nullptr,\n                            \
+            \  ETSObjectFlags::CLASS | ETSObjectFlags::BUILTIN_BIGINT | ETSObjectFlags::RESOLVED_SUPER,\n\
+            \                              relation)"
+        raw_declaration: "explicit ETSBigIntType(ArenaAllocator *allocator, ETSObjectType\
+          \ *super, TypeRelation *relation,\n                           util::StringView\
+          \ value)"
+        return_type:
+          prefix: explicit
+      methods:
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: other
+          type:
+            name: Type
+            ptr_depth: 1
+        name: Identical
+        postfix: override
+        raw_declaration: void Identical(TypeRelation *relation, Type *other) override
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: source
+          type:
+            name: Type
+            ptr_depth: 1
+        name: AssignmentTarget
+        postfix: override
+        raw_declaration: void AssignmentTarget(TypeRelation *relation, Type *source)
+          override
+        return_type:
+          name: void
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: globalTypes
+          type:
+            name: GlobalTypesHolder
+            ptr_depth: 1
+        name: Instantiate
+        postfix: override
+        raw_declaration: Type *Instantiate(ArenaAllocator *allocator, TypeRelation
+          *relation, GlobalTypesHolder *globalTypes) override
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args:
+        - name: ss
+          type:
+            name: stringstream
+            namespace: std
+            ref_depth: 1
+        - name: precise
+          type:
+            name: bool
+            prefix: '[[maybe_unused]]'
+        name: ToString
+        postfix: const override
+        raw_declaration: void ToString(std::stringstream &ss, [[maybe_unused]] bool
+          precise) const override
+        return_type:
+          name: void
+      - args:
+        - name: ss
+          type:
+            name: stringstream
+            namespace: std
+            prefix: '[[maybe_unused]]'
+            ref_depth: 1
+        name: ToAssemblerType
+        postfix: const override
+        raw_declaration: void ToAssemblerType([[maybe_unused]] std::stringstream &ss)
+          const override
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: GetValue
+        postfix: const
+        raw_declaration: util::StringView GetValue() const
+        return_type:
+          name: StringView
+          namespace: util
+include:
+- '"checker/types/ets/etsObjectType.h"'
+macros:
+- name: ES2PANDA_COMPILER_CHECKER_TYPES_ETS_BIGINT_TYPE_H

@@ -1,0 +1,54 @@
+{
+  "compilerOptions": {
+    "baseUrl": "__COMPILER_DIR__",
+    "cacheDir": "__COMPILER_DIR__/decls",
+    "paths": {},
+    "dependencies": {
+      "std/core": {
+        "path": "__COMPILER_DIR__/etsstdlib.abc"
+      },
+      "std/math": {
+        "path": "__COMPILER_DIR__/etsstdlib.abc"
+      },
+      "std/math/consts": {
+        "path": "__COMPILER_DIR__/etsstdlib.abc"
+      },
+      "std/containers": {
+        "path": "__COMPILER_DIR__/etsstdlib.abc"
+      },
+      "std/interop/js": {
+        "path": "__COMPILER_DIR__/etsstdlib.abc"
+      },
+      "std/time": {
+        "path": "__COMPILER_DIR__/etsstdlib.abc"
+      },
+      "std/debug": {
+        "path": "__COMPILER_DIR__/etsstdlib.abc"
+      },
+      "std/debug/concurrency": {
+        "path": "__COMPILER_DIR__/etsstdlib.abc"
+      },
+      "std/dfx": {
+        "path": "__COMPILER_DIR__/etsstdlib.abc"
+      },
+      "std/testing": {
+        "path": "__COMPILER_DIR__/etsstdlib.abc"
+      },
+      "std/concurrency": {
+        "path": "__COMPILER_DIR__/etsstdlib.abc"
+      },
+      "std/annotations": {
+        "path": "__COMPILER_DIR__/etsstdlib.abc"
+      },
+      "std/interop": {
+        "path": "__COMPILER_DIR__/etsstdlib.abc"
+      },
+      "escompat": {
+        "path": "__COMPILER_DIR__/etsstdlib.abc"
+      },
+      "arkruntime": {
+        "path": "__COMPILER_DIR__/etsstdlib.abc"
+      }
+    }
+  }
+}

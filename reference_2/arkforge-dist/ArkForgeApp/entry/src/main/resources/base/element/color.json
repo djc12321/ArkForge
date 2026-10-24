@@ -1,0 +1,9 @@
+{"color":[
+  {"name":"start_window_background","value":"#202328"},
+  {"name":"workspace_dark_background","value":"#202328"},
+  {"name":"workspace_light_background","value":"#E5E9EF"},
+  {"name":"workspace_dark_surface_hover","value":"#3D4B5C"},
+  {"name":"workspace_light_surface_hover","value":"#DDEBFA"},
+  {"name":"workspace_dark_divider","value":"#59626E"},
+  {"name":"workspace_light_divider","value":"#AAB4C2"}
+]}

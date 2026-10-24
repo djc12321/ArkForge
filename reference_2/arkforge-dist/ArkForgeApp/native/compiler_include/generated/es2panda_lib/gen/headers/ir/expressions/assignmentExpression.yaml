@@ -1,0 +1,466 @@
+checker:
+  class_forward_declaration:
+  - ETSAnalyzer
+include:
+- '"ir/expression.h"'
+- '"generated/tokenType.h"'
+ir:
+  class_definitions:
+  - extends: public Expression
+    friends:
+    - checker::ETSAnalyzer
+    known_macroses:
+    - NO_MOVE_SEMANTIC(AssignmentExpression);
+    name: AssignmentExpression
+    private: {}
+    protected: {}
+    public:
+      constructors:
+      - args: []
+        name: AssignmentExpression
+        postfix: = delete
+        raw_declaration: AssignmentExpression() = delete
+      - args:
+        - name: left
+          type:
+            name: Expression
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        - name: right
+          type:
+            name: Expression
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        - name: assignmentOperator
+          type:
+            name: TokenType
+            namespace: lexer
+            other_modifiers: const
+            postfix: const
+        name: AssignmentExpression
+        other_initializers:
+        - class_field: AssignmentExpression
+          init_value: AstNodeType::ASSIGNMENT_EXPRESSION, left, right, assignmentOperator
+        raw_declaration: "explicit AssignmentExpression(Expression *const left, Expression\
+          \ *const right,\n                                  lexer::TokenType const\
+          \ assignmentOperator)"
+        return_type:
+          prefix: explicit
+      - args:
+        - initializer_for: Expression
+          name: type
+          type:
+            name: AstNodeType
+            other_modifiers: const
+            postfix: const
+        - initializer_for: left_
+          name: left
+          type:
+            name: Expression
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        - initializer_for: right_
+          name: right
+          type:
+            name: Expression
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        - initializer_for: operator_
+          name: assignmentOperator
+          type:
+            name: TokenType
+            namespace: lexer
+            other_modifiers: const
+            postfix: const
+        name: AssignmentExpression
+        raw_declaration: "explicit AssignmentExpression(AstNodeType const type, Expression\
+          \ *const left, Expression *const right,\n                              \
+          \    lexer::TokenType const assignmentOperator)"
+        return_type:
+          prefix: explicit
+      - args:
+        - name: tag
+          type:
+            name: Tag
+        - name: other
+          type:
+            name: AssignmentExpression
+            other_modifiers: const
+            ref_depth: 1
+        - name: left
+          type:
+            name: Expression
+            ptr_depth: 1
+        - name: right
+          type:
+            name: Expression
+            ptr_depth: 1
+        name: AssignmentExpression
+        raw_declaration: explicit AssignmentExpression(Tag tag, AssignmentExpression
+          const &other, Expression *left, Expression *right)
+        return_type:
+          prefix: explicit
+      destructors:
+      - args: []
+        name: ~AssignmentExpression
+        postfix: override = default
+        raw_declaration: ~AssignmentExpression() override = default
+      fields:
+      - default_value: (const AssignmentExpression &) = delete
+        name: operator
+        type:
+          name: AssignmentExpression
+          ref_depth: 1
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Left
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const Expression *Left() const noexcept'
+        return_type:
+          name: Expression
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Left
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] Expression *Left() noexcept'
+        return_type:
+          name: Expression
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Right
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] Expression *Right() noexcept'
+        return_type:
+          name: Expression
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Right
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const Expression *Right() const noexcept'
+        return_type:
+          name: Expression
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: expr
+          type:
+            name: Expression
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        name: SetRight
+        postfix: noexcept
+        raw_declaration: void SetRight(Expression *const expr) noexcept
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: expr
+          type:
+            name: Expression
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        name: SetLeft
+        postfix: noexcept
+        raw_declaration: void SetLeft(Expression *const expr) noexcept
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Result
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const Expression *Result() const noexcept'
+        return_type:
+          name: Expression
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Result
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] Expression *Result() noexcept'
+        return_type:
+          name: Expression
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: OperatorType
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] lexer::TokenType OperatorType() const noexcept'
+        return_type:
+          name: TokenType
+          namespace: lexer
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args:
+        - name: tokenType
+          type:
+            name: TokenType
+            namespace: lexer
+        name: SetOperatorType
+        postfix: noexcept
+        raw_declaration: lexer::TokenType SetOperatorType(lexer::TokenType tokenType)
+          noexcept
+        return_type:
+          name: TokenType
+          namespace: lexer
+      - additional_attributes: set
+        args:
+        - name: expr
+          type:
+            name: Expression
+            ptr_depth: 1
+        name: SetResult
+        postfix: noexcept
+        raw_declaration: void SetResult(Expression *expr) noexcept
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: IsLogicalExtended
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsLogicalExtended() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: Target
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] varbinder::Variable *Target() noexcept'
+        return_type:
+          name: Variable
+          namespace: varbinder
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Target
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] varbinder::Variable *Target() const noexcept'
+        return_type:
+          name: Variable
+          namespace: varbinder
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: set
+        args: []
+        name: SetIgnoreConstAssign
+        raw_declaration: void SetIgnoreConstAssign()
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: IsIgnoreConstAssign
+        postfix: const
+        raw_declaration: '[[nodiscard]] bool IsIgnoreConstAssign() const'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: set
+        args: []
+        name: SetIsTopLevelDeclInit
+        raw_declaration: void SetIsTopLevelDeclInit()
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: IsTopLevelDeclInit
+        postfix: const
+        raw_declaration: '[[nodiscard]] bool IsTopLevelDeclInit() const'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: parent
+          type:
+            name: AstNode
+            ptr_depth: 1
+        name: Clone
+        postfix: override
+        raw_declaration: '[[nodiscard]] AssignmentExpression *Clone(ArenaAllocator
+          *allocator, AstNode *parent) override'
+        return_type:
+          name: AssignmentExpression
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - args:
+        - name: mustBePattern
+          type:
+            name: bool
+        name: ConvertibleToAssignmentPatternLeft
+        raw_declaration: '[[nodiscard]] bool ConvertibleToAssignmentPatternLeft(bool
+          mustBePattern)'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - args: []
+        name: ConvertibleToAssignmentPatternRight
+        raw_declaration: '[[nodiscard]] bool ConvertibleToAssignmentPatternRight()'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - args:
+        - default_value: 'true'
+          name: mustBePattern
+          type:
+            name: bool
+        name: ConvertibleToAssignmentPattern
+        raw_declaration: '[[nodiscard]] bool ConvertibleToAssignmentPattern(bool mustBePattern
+          = true)'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - args:
+        - name: cb
+          type:
+            name: NodeTransformer
+            prefix: const
+            ref_depth: 1
+        - name: transformationName
+          type:
+            name: string_view
+            namespace: std
+        name: TransformChildren
+        postfix: override
+        raw_declaration: void TransformChildren(const NodeTransformer &cb, std::string_view
+          transformationName) override
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: NodeTraverser
+            prefix: const
+            ref_depth: 1
+        name: Iterate
+        postfix: const override
+        raw_declaration: void Iterate(const NodeTraverser &cb) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: AstDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::AstDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: SrcDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::SrcDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: pg
+          type:
+            name: PandaGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::PandaGen *pg) const override
+        return_type:
+          name: void
+      - args:
+        - name: etsg
+          type:
+            name: ETSGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::ETSGen *etsg) const override
+        return_type:
+          name: void
+      - args:
+        - name: pg
+          type:
+            name: PandaGen
+            namespace: compiler
+            ptr_depth: 1
+        name: CompilePattern
+        postfix: const
+        raw_declaration: void CompilePattern(compiler::PandaGen *pg) const
+        return_type:
+          name: void
+      - args:
+        - name: checker
+          type:
+            name: TSChecker
+            namespace: checker
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::Type *Check([[maybe_unused]] checker::TSChecker
+          *checker) override
+        return_type:
+          name: Type
+          namespace: checker
+          ptr_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            namespace: checker
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::VerifiedType Check([[maybe_unused]] checker::ETSChecker
+          *checker) override
+        return_type:
+          name: VerifiedType
+          namespace: checker
+      - args:
+        - name: v
+          type:
+            name: ASTVisitorT
+            ptr_depth: 1
+        name: Accept
+        postfix: override
+        raw_declaration: void Accept(ASTVisitorT *v) override
+        return_type:
+          name: void
+      - args: []
+        name: CleanUp
+        postfix: override
+        raw_declaration: void CleanUp() override
+        return_type:
+          name: void
+      - args: []
+        name: CleanCheckInformation
+        postfix: override
+        raw_declaration: void CleanCheckInformation() override
+        return_type:
+          name: void
+macros:
+- name: ES2PANDA_IR_EXPRESSION_ASSIGNMENT_EXPRESSION_H

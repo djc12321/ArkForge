@@ -1,0 +1,501 @@
+include:
+- '"ir/statement.h"'
+- '"ir/annotationAllowed.h"'
+- '"ir/statements/annotationUsage.h"'
+- '"varbinder/scope.h"'
+ir:
+  class_definitions:
+  - extends: public AnnotationAllowed<TypedStatement>
+    name: TSEnumDeclaration
+    private: {}
+    public:
+      constructors:
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        - initializer_for: key_
+          name: key
+          type:
+            name: Identifier
+            ptr_depth: 1
+        - name: members
+          type:
+            name: ArenaVector
+            ref_depth: 2
+            template_args:
+            - type:
+                name: AstNode
+                ptr_depth: 1
+        - name: flags
+          type:
+            name: ConstructorFlags
+            ref_depth: 2
+        - initializer_for: lang_
+          name: lang
+          type:
+            name: Language
+        name: TSEnumDeclaration
+        other_initializers:
+        - class_field: AnnotationAllowed<TypedStatement>
+          init_value: AstNodeType::TS_ENUM_DECLARATION, allocator
+        - class_field: typeAnnotation_
+          init_value: nullptr
+        - class_field: members_
+          init_value: std::move(members)
+        - class_field: isConst_
+          init_value: flags.isConst
+        raw_declaration: "explicit TSEnumDeclaration([[maybe_unused]] ArenaAllocator\
+          \ *allocator, Identifier *key,\n                               ArenaVector<AstNode\
+          \ *> &&members, ConstructorFlags &&flags, Language lang)"
+        return_type:
+          prefix: explicit
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        - initializer_for: key_
+          name: key
+          type:
+            name: Identifier
+            ptr_depth: 1
+        - name: members
+          type:
+            name: ArenaVector
+            ref_depth: 2
+            template_args:
+            - type:
+                name: AstNode
+                ptr_depth: 1
+        - name: flags
+          type:
+            name: ConstructorFlags
+            ref_depth: 2
+        - initializer_for: typeAnnotation_
+          name: typeNode
+          type:
+            name: TypeNode
+            namespace: ir
+            ptr_depth: 1
+        - initializer_for: lang_
+          name: lang
+          type:
+            name: Language
+        name: TSEnumDeclaration
+        other_initializers:
+        - class_field: AnnotationAllowed<TypedStatement>
+          init_value: AstNodeType::TS_ENUM_DECLARATION, allocator
+        - class_field: members_
+          init_value: std::move(members)
+        - class_field: isConst_
+          init_value: flags.isConst
+        raw_declaration: "explicit TSEnumDeclaration([[maybe_unused]] ArenaAllocator\
+          \ *allocator, Identifier *key,\n                               ArenaVector<AstNode\
+          \ *> &&members, ConstructorFlags &&flags, ir::TypeNode *typeNode,\n    \
+          \                           Language lang)"
+        return_type:
+          prefix: explicit
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        - initializer_for: key_
+          name: key
+          type:
+            name: Identifier
+            ptr_depth: 1
+        - name: members
+          type:
+            name: ArenaVector
+            ref_depth: 2
+            template_args:
+            - type:
+                name: AstNode
+                ptr_depth: 1
+        - name: flags
+          type:
+            name: ConstructorFlags
+            ref_depth: 2
+        - initializer_for: lang_
+          name: lang
+          type:
+            name: Language
+        - name: history
+          type:
+            name: AstNodeHistory
+            ptr_depth: 1
+        name: TSEnumDeclaration
+        other_initializers:
+        - class_field: AnnotationAllowed<TypedStatement>
+          init_value: AstNodeType::TS_ENUM_DECLARATION, allocator
+        - class_field: typeAnnotation_
+          init_value: nullptr
+        - class_field: members_
+          init_value: std::move(members)
+        - class_field: isConst_
+          init_value: flags.isConst
+        raw_declaration: "explicit TSEnumDeclaration([[maybe_unused]] ArenaAllocator\
+          \ *allocator, Identifier *key,\n                               ArenaVector<AstNode\
+          \ *> &&members, ConstructorFlags &&flags, Language lang,\n             \
+          \                  AstNodeHistory *history)"
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: IsScopeBearer
+        postfix: const noexcept override
+        raw_declaration: '[[nodiscard]] bool IsScopeBearer() const noexcept override'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: Scope
+        postfix: const noexcept override
+        raw_declaration: '[[nodiscard]] varbinder::LocalScope *Scope() const noexcept
+          override'
+        return_type:
+          name: LocalScope
+          namespace: varbinder
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: scope
+          type:
+            name: LocalScope
+            namespace: varbinder
+            ptr_depth: 1
+        name: SetScope
+        raw_declaration: void SetScope(varbinder::LocalScope *scope)
+        return_type:
+          name: void
+      - args: []
+        name: ClearScope
+        postfix: noexcept override
+        raw_declaration: void ClearScope() noexcept override
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Key
+        postfix: const
+        raw_declaration: const Identifier *Key() const
+        return_type:
+          name: Identifier
+          prefix: const
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Key
+        raw_declaration: Identifier *Key()
+        return_type:
+          name: Identifier
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Members
+        postfix: const
+        raw_declaration: const ArenaVector<AstNode *> &Members() const
+        return_type:
+          name: ArenaVector
+          prefix: const
+          ref_depth: 1
+          template_args:
+          - type:
+              name: AstNode
+              ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: InternalName
+        postfix: const
+        raw_declaration: const util::StringView &InternalName() const
+        return_type:
+          name: StringView
+          namespace: util
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: set
+        args:
+        - name: internalName
+          type:
+            name: StringView
+            namespace: util
+        name: SetInternalName
+        raw_declaration: void SetInternalName(util::StringView internalName)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: BoxedClass
+        postfix: const
+        raw_declaration: ir::ClassDefinition *BoxedClass() const
+        return_type:
+          name: ClassDefinition
+          namespace: ir
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: boxedClass
+          type:
+            name: ClassDefinition
+            namespace: ir
+            ptr_depth: 1
+        name: SetBoxedClass
+        raw_declaration: void SetBoxedClass(ir::ClassDefinition *boxedClass)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: IsConst
+        postfix: const
+        raw_declaration: bool IsConst() const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args: []
+        name: Language
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] es2panda::Language Language() const noexcept'
+        return_type:
+          name: Language
+          namespace: es2panda
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: TypeAnnotation
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] TypeNode *TypeAnnotation() noexcept'
+        return_type:
+          name: TypeNode
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: TypeAnnotation
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const TypeNode *TypeAnnotation() const noexcept'
+        return_type:
+          name: TypeNode
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: TSChecker
+            namespace: checker
+            ptr_depth: 1
+        - name: enumVar
+          type:
+            name: EnumVariable
+            namespace: varbinder
+            ptr_depth: 1
+        - name: expr
+          type:
+            name: AstNode
+            namespace: ir
+            prefix: const
+            ptr_depth: 1
+        name: EvaluateEnumMember
+        raw_declaration: "static varbinder::EnumMemberResult EvaluateEnumMember(checker::TSChecker\
+          \ *checker, varbinder::EnumVariable *enumVar,\n                        \
+          \                                  const ir::AstNode *expr)"
+        return_type:
+          name: EnumMemberResult
+          namespace: varbinder
+          prefix: static
+      - args:
+        - name: cb
+          type:
+            name: NodeTransformer
+            prefix: const
+            ref_depth: 1
+        - name: transformationName
+          type:
+            name: string_view
+            namespace: std
+        name: TransformChildren
+        postfix: override
+        raw_declaration: void TransformChildren(const NodeTransformer &cb, std::string_view
+          transformationName) override
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: NodeTraverser
+            prefix: const
+            ref_depth: 1
+        name: Iterate
+        postfix: const override
+        raw_declaration: void Iterate(const NodeTraverser &cb) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: AstDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::AstDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: SrcDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::SrcDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: pg
+          type:
+            name: PandaGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::PandaGen *pg) const override
+        return_type:
+          name: void
+      - args:
+        - name: etsg
+          type:
+            name: ETSGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::ETSGen *etsg) const override
+        return_type:
+          name: void
+      - args:
+        - name: checker
+          type:
+            name: TSChecker
+            namespace: checker
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::Type *Check(checker::TSChecker *checker) override
+        return_type:
+          name: Type
+          namespace: checker
+          ptr_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            namespace: checker
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::VerifiedType Check(checker::ETSChecker *checker)
+          override
+        return_type:
+          name: VerifiedType
+          namespace: checker
+      - args:
+        - name: v
+          type:
+            name: ASTVisitorT
+            ptr_depth: 1
+        name: Accept
+        postfix: override
+        raw_declaration: void Accept(ASTVisitorT *v) override
+        return_type:
+          name: void
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        name: Construct
+        postfix: override
+        raw_declaration: TSEnumDeclaration *Construct(ArenaAllocator *allocator) override
+        return_type:
+          name: TSEnumDeclaration
+          ptr_depth: 1
+      - args:
+        - name: other
+          type:
+            name: AstNode
+            ptr_depth: 1
+        name: CopyTo
+        postfix: const override
+        raw_declaration: void CopyTo(AstNode *other) const override
+        return_type:
+          name: void
+      - args:
+        - name: source
+          type:
+            name: AstNode
+            ptr_depth: 1
+        name: EmplaceMembers
+        raw_declaration: void EmplaceMembers(AstNode *source)
+        return_type:
+          name: void
+      - args: []
+        name: ClearMembers
+        raw_declaration: void ClearMembers()
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: source
+          type:
+            name: AstNode
+            ptr_depth: 1
+        - name: index
+          type:
+            name: size_t
+        name: SetValueMembers
+        raw_declaration: void SetValueMembers(AstNode *source, size_t index)
+        return_type:
+          name: void
+      - args: []
+        name: MembersForUpdate
+        raw_declaration: '[[nodiscard]] ArenaVector<AstNode *> &MembersForUpdate()'
+        return_type:
+          name: ArenaVector
+          prefix: '[[nodiscard]]'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: AstNode
+              ptr_depth: 1
+    structs:
+    - members:
+      - name: isConst
+        type:
+          name: bool
+      - default_value: 'false'
+        name: isStatic
+        type:
+          name: bool
+      - default_value: 'false'
+        name: isDeclare
+        type:
+          name: bool
+      name: ConstructorFlags
+  class_forward_declaration:
+  - Identifier
+  - TSEnumMember
+macros:
+- name: ES2PANDA_IR_TS_ENUM_DECLARATION_H
+varbinder:
+  class_forward_declaration:
+  - EnumVariable

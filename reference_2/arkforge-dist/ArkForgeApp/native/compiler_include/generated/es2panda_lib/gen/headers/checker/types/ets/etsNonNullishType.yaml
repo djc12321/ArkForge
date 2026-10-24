@@ -1,0 +1,241 @@
+checker:
+  class_definitions:
+  - extends: public Type
+    name: ETSNonNullishType
+    private: {}
+    public:
+      constructors:
+      - args:
+        - initializer_for: underlying_
+          name: underlying
+          type:
+            name: Type
+            ptr_depth: 1
+        name: ETSNonNullishType
+        other_initializers:
+        - class_field: Type
+          init_value: TypeFlag::ETS_NONNULLISH
+        raw_declaration: explicit ETSNonNullishType(Type *underlying)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: GetUnderlying
+        postfix: const
+        raw_declaration: Type *GetUnderlying() const
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GetConstraintOrUnderlying
+        postfix: const
+        raw_declaration: Type *GetConstraintOrUnderlying() const
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: other
+          type:
+            name: Type
+            ptr_depth: 1
+        name: Identical
+        postfix: override
+        raw_declaration: void Identical(TypeRelation *relation, Type *other) override
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: source
+          type:
+            name: Type
+            ptr_depth: 1
+        name: AssignmentTarget
+        postfix: override
+        raw_declaration: void AssignmentTarget(TypeRelation *relation, Type *source)
+          override
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: target
+          type:
+            name: Type
+            ptr_depth: 1
+        name: AssignmentSource
+        postfix: override
+        raw_declaration: bool AssignmentSource(TypeRelation *relation, Type *target)
+          override
+        return_type:
+          name: bool
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: target
+          type:
+            name: Type
+            ptr_depth: 1
+        name: Cast
+        postfix: override
+        raw_declaration: void Cast(TypeRelation *relation, Type *target) override
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: source
+          type:
+            name: Type
+            ptr_depth: 1
+        name: CastTarget
+        postfix: override
+        raw_declaration: void CastTarget(TypeRelation *relation, Type *source) override
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: source
+          type:
+            name: Type
+            ptr_depth: 1
+        name: IsSupertypeOf
+        postfix: override
+        raw_declaration: void IsSupertypeOf(TypeRelation *relation, Type *source)
+          override
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: target
+          type:
+            name: Type
+            ptr_depth: 1
+        name: IsSubtypeOf
+        postfix: override
+        raw_declaration: void IsSubtypeOf(TypeRelation *relation, Type *target) override
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: varianceFlag
+          type:
+            name: VarianceFlag
+        name: CheckVarianceRecursively
+        postfix: override
+        raw_declaration: void CheckVarianceRecursively(TypeRelation *relation, VarianceFlag
+          varianceFlag) override
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: substitution
+          type:
+            name: Substitution
+            prefix: const
+            ptr_depth: 1
+        name: Substitute
+        postfix: override
+        raw_declaration: Type *Substitute(TypeRelation *relation, const Substitution
+          *substitution) override
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args:
+        - name: func
+          type:
+            name: TypeTraverser
+            prefix: const
+            ref_depth: 1
+        name: Iterate
+        postfix: const override
+        raw_declaration: void Iterate(const TypeTraverser &func) const override
+        return_type:
+          name: void
+      - args:
+        - name: ss
+          type:
+            name: stringstream
+            namespace: std
+            ref_depth: 1
+        - name: precise
+          type:
+            name: bool
+        name: ToString
+        postfix: const override
+        raw_declaration: void ToString(std::stringstream &ss, bool precise) const
+          override
+        return_type:
+          name: void
+      - args:
+        - name: ss
+          type:
+            name: stringstream
+            namespace: std
+            ref_depth: 1
+        name: ToAssemblerType
+        postfix: const override
+        raw_declaration: void ToAssemblerType(std::stringstream &ss) const override
+        return_type:
+          name: void
+      - args:
+        - name: ss
+          type:
+            name: stringstream
+            namespace: std
+            ref_depth: 1
+        name: ToDebugInfoType
+        postfix: const override
+        raw_declaration: void ToDebugInfoType(std::stringstream &ss) const override
+        return_type:
+          name: void
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: globalTypes
+          type:
+            name: GlobalTypesHolder
+            ptr_depth: 1
+        name: Instantiate
+        postfix: override
+        raw_declaration: Type *Instantiate(ArenaAllocator *allocator, TypeRelation
+          *relation, GlobalTypesHolder *globalTypes) override
+        return_type:
+          name: Type
+          ptr_depth: 1
+include:
+- '"checker/types/type.h"'
+- '"ir/astNode.h"'
+macros:
+- name: ES2PANDA_COMPILER_CHECKER_TYPES_ETS_NON_NULLISH_TYPE_H

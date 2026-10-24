@@ -1,0 +1,489 @@
+checker:
+  class_forward_declaration:
+  - ETSAnalyzer
+include:
+- '"ir/annotationAllowed.h"'
+- '"ir/expression.h"'
+- '"ir/expressions/identifier.h"'
+- '"ir/statements/annotationUsage.h"'
+ir:
+  class_definitions:
+  - extends: public AnnotationAllowed<Expression>
+    known_macroses:
+    - NO_COPY_SEMANTIC(ETSParameterExpression);
+    - NO_MOVE_SEMANTIC(ETSParameterExpression);
+    name: ETSParameterExpression
+    private: {}
+    public:
+      constructors:
+      - args: []
+        name: ETSParameterExpression
+        postfix: = delete
+        raw_declaration: ETSParameterExpression() = delete
+      - args:
+        - name: identOrSpread
+          type:
+            name: AnnotatedExpression
+            ptr_depth: 1
+        - name: isOptional
+          type:
+            name: bool
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        name: ETSParameterExpression
+        raw_declaration: "explicit ETSParameterExpression(AnnotatedExpression *identOrSpread,\
+          \ bool isOptional,\n                                    ArenaAllocator *const\
+          \ allocator)"
+        return_type:
+          prefix: explicit
+      - args:
+        - name: identOrSpread
+          type:
+            name: AnnotatedExpression
+            ptr_depth: 1
+        - name: isOptional
+          type:
+            name: bool
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        - name: history
+          type:
+            name: AstNodeHistory
+            ptr_depth: 1
+        name: ETSParameterExpression
+        raw_declaration: "explicit ETSParameterExpression(AnnotatedExpression *identOrSpread,\
+          \ bool isOptional,\n                                    ArenaAllocator *const\
+          \ allocator, AstNodeHistory *history)"
+        return_type:
+          prefix: explicit
+      - args:
+        - name: identOrSpread
+          type:
+            name: AnnotatedExpression
+            ptr_depth: 1
+        - name: initializer
+          type:
+            name: Expression
+            namespace: ir
+            ptr_depth: 1
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        name: ETSParameterExpression
+        raw_declaration: "explicit ETSParameterExpression(AnnotatedExpression *identOrSpread,\
+          \ ir::Expression *initializer,\n                                    ArenaAllocator\
+          \ *const allocator)"
+        return_type:
+          prefix: explicit
+      - args:
+        - name: identOrSpread
+          type:
+            name: AnnotatedExpression
+            ptr_depth: 1
+        - name: initializer
+          type:
+            name: Expression
+            namespace: ir
+            ptr_depth: 1
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        - name: history
+          type:
+            name: AstNodeHistory
+            ptr_depth: 1
+        name: ETSParameterExpression
+        raw_declaration: "explicit ETSParameterExpression(AnnotatedExpression *identOrSpread,\
+          \ ir::Expression *initializer,\n                                    ArenaAllocator\
+          \ *const allocator, AstNodeHistory *history)"
+        return_type:
+          prefix: explicit
+      destructors:
+      - args: []
+        name: ~ETSParameterExpression
+        postfix: override = default
+        raw_declaration: ~ETSParameterExpression() override = default
+      methods:
+      - args: []
+        name: Name
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const util::StringView &Name() const noexcept'
+        return_type:
+          name: StringView
+          namespace: util
+          prefix: '[[nodiscard]] const'
+          ref_depth: 1
+      - args: []
+        name: Ident
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const Identifier *Ident() const noexcept'
+        return_type:
+          name: Identifier
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - args: []
+        name: Ident
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] Identifier *Ident() noexcept'
+        return_type:
+          name: Identifier
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: ident
+          type:
+            name: Identifier
+            ptr_depth: 1
+        name: SetIdent
+        postfix: noexcept
+        raw_declaration: void SetIdent(Identifier *ident) noexcept
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Spread
+        postfix: noexcept
+        raw_declaration: SpreadElement *Spread() noexcept
+        return_type:
+          name: SpreadElement
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Spread
+        postfix: const noexcept
+        raw_declaration: const SpreadElement *Spread() const noexcept
+        return_type:
+          name: SpreadElement
+          prefix: const
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: spread
+          type:
+            name: SpreadElement
+            ptr_depth: 1
+        name: SetSpread
+        raw_declaration: void SetSpread(SpreadElement *spread)
+        return_type:
+          name: void
+      - args: []
+        name: RestParameter
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const SpreadElement *RestParameter() const
+          noexcept'
+        return_type:
+          name: SpreadElement
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - args: []
+        name: RestParameter
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] SpreadElement *RestParameter() noexcept'
+        return_type:
+          name: SpreadElement
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - args: []
+        name: Initializer
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const Expression *Initializer() const noexcept'
+        return_type:
+          name: Expression
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - args: []
+        name: Initializer
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] Expression *Initializer() noexcept'
+        return_type:
+          name: Expression
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: savedLexer
+          type:
+            name: StringView
+            namespace: util
+        name: SetLexerSaved
+        raw_declaration: void SetLexerSaved(util::StringView savedLexer)
+        return_type:
+          name: void
+      - args: []
+        name: LexerSaved
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] util::StringView LexerSaved() const noexcept'
+        return_type:
+          name: StringView
+          namespace: util
+          prefix: '[[nodiscard]]'
+      - args: []
+        name: Variable
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] varbinder::Variable *Variable() const noexcept'
+        return_type:
+          name: Variable
+          namespace: varbinder
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: variable
+          type:
+            name: Variable
+            namespace: varbinder
+            ptr_depth: 1
+        name: SetVariable
+        postfix: noexcept
+        raw_declaration: void SetVariable(varbinder::Variable *variable) noexcept
+        return_type:
+          name: void
+      - args: []
+        name: TypeAnnotation
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] TypeNode const *TypeAnnotation() const noexcept'
+        return_type:
+          name: TypeNode
+          other_modifiers: const
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - args: []
+        name: TypeAnnotation
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] TypeNode *TypeAnnotation() noexcept'
+        return_type:
+          name: TypeNode
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: typeNode
+          type:
+            name: TypeNode
+            ptr_depth: 1
+        name: SetTypeAnnotation
+        postfix: noexcept
+        raw_declaration: void SetTypeAnnotation(TypeNode *typeNode) noexcept
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: IsOptional
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsOptional() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: bool
+        name: SetOptional
+        postfix: noexcept
+        raw_declaration: void SetOptional(bool value) noexcept
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: initExpr
+          type:
+            name: Expression
+            ptr_depth: 1
+        name: SetInitializer
+        postfix: noexcept
+        raw_declaration: void SetInitializer(Expression *initExpr) noexcept
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: IsRestParameter
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsRestParameter() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: GetRequiredParams
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] std::size_t GetRequiredParams() const noexcept'
+        return_type:
+          name: size_t
+          namespace: std
+          prefix: '[[nodiscard]]'
+      - additional_attributes: set
+        args:
+        - name: extraValue
+          type:
+            name: size_t
+            namespace: std
+            other_modifiers: const
+            postfix: const
+        name: SetRequiredParams
+        raw_declaration: void SetRequiredParams(std::size_t const extraValue)
+        return_type:
+          name: void
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: parent
+          type:
+            name: AstNode
+            ptr_depth: 1
+        name: Clone
+        postfix: override
+        raw_declaration: '[[nodiscard]] ETSParameterExpression *Clone(ArenaAllocator
+          *allocator, AstNode *parent) override'
+        return_type:
+          name: ETSParameterExpression
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - args:
+        - name: cb
+          type:
+            name: NodeTraverser
+            prefix: const
+            ref_depth: 1
+        name: Iterate
+        postfix: const override
+        raw_declaration: void Iterate(const NodeTraverser &cb) const override
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: NodeTransformer
+            prefix: const
+            ref_depth: 1
+        - name: transformationName
+          type:
+            name: string_view
+            namespace: std
+        name: TransformChildren
+        postfix: override
+        raw_declaration: void TransformChildren(const NodeTransformer &cb, std::string_view
+          transformationName) override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: AstDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::AstDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: SrcDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::SrcDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: pg
+          type:
+            name: PandaGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::PandaGen *pg) const override
+        return_type:
+          name: void
+      - args:
+        - name: etsg
+          type:
+            name: ETSGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::ETSGen *etsg) const override
+        return_type:
+          name: void
+      - args:
+        - name: checker
+          type:
+            name: TSChecker
+            namespace: checker
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::Type *Check(checker::TSChecker *checker) override
+        return_type:
+          name: Type
+          namespace: checker
+          ptr_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            namespace: checker
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::VerifiedType Check(checker::ETSChecker *checker)
+          override
+        return_type:
+          name: VerifiedType
+          namespace: checker
+      - args:
+        - name: v
+          type:
+            name: ASTVisitorT
+            ptr_depth: 1
+        name: Accept
+        postfix: override
+        raw_declaration: void Accept(ASTVisitorT *v) override
+        return_type:
+          name: void
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        name: Construct
+        postfix: override
+        raw_declaration: ETSParameterExpression *Construct(ArenaAllocator *allocator)
+          override
+        return_type:
+          name: ETSParameterExpression
+          ptr_depth: 1
+      - args:
+        - name: other
+          type:
+            name: AstNode
+            ptr_depth: 1
+        name: CopyTo
+        postfix: const override
+        raw_declaration: void CopyTo(AstNode *other) const override
+        return_type:
+          name: void
+macros:
+- name: ES2PANDA_IR_EXPRESSION_ETS_PARAMETER_EXPRESSION_H

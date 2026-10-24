@@ -1,0 +1,19 @@
+{
+  "module": {
+    "name": "harmony_demo",
+    "type": "feature",
+    "deviceTypes": ["tablet", "phone"],
+    "deliveryWithInstall": true,
+    "installationFree": false,
+    "pages": "$profile:main_pages",
+    "abilities": [{
+      "name": "HarmonyDemoAbility",
+      "srcEntry": "./ets/harmonydemoability/HarmonyDemoAbility.ets",
+      "label": "$string:demo_label",
+      "icon": "$media:app_icon",
+      "startWindowIcon": "$media:app_icon",
+      "startWindowBackground": "$color:demo_background",
+      "exported": true
+    }]
+  }
+}

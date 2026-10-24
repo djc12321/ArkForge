@@ -1,0 +1,47 @@
+checker:
+  class_definitions:
+  - name: ResolveResult
+    private: {}
+    public:
+      constructors:
+      - args:
+        - initializer_for: variable_
+          name: v
+          type:
+            name: Variable
+            namespace: varbinder
+            ptr_depth: 1
+        - initializer_for: kind_
+          name: kind
+          type:
+            name: ResolvedKind
+        name: ResolveResult
+        raw_declaration: explicit ResolveResult(varbinder::Variable *v, ResolvedKind
+          kind)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Variable
+        raw_declaration: varbinder::Variable *Variable()
+        return_type:
+          name: Variable
+          namespace: varbinder
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Kind
+        raw_declaration: ResolvedKind Kind()
+        return_type:
+          name: ResolvedKind
+  enums:
+  - flags:
+    - PROPERTY
+    - EXTENSION_FUNCTION
+    - EXTENSION_ACCESSOR
+    kind: simple
+    name: ResolvedKind
+    namespace: checker
+macros:
+- name: ES2PANDA_CHECKER_RESOLVE_RESULT_H

@@ -1,0 +1,487 @@
+checker:
+  class_forward_declaration:
+  - ETSAnalyzer
+  - TSAnalyzer
+  - Signature
+compiler:
+  class_forward_declaration:
+  - JSCompiler
+  - ETSCompiler
+include:
+- '"varbinder/variable.h"'
+- '"ir/base/scriptFunction.h"'
+- '"ir/expression.h"'
+- '"ir/expressions/arrowFunctionExpression.h"'
+ir:
+  class_definitions:
+  - extends: public MaybeOptionalExpression
+    friends:
+    - checker::TSAnalyzer
+    - checker::ETSAnalyzer
+    - compiler::JSCompiler
+    - compiler::ETSCompiler
+    known_macroses:
+    - NO_COPY_SEMANTIC(CallExpression);
+    - NO_MOVE_SEMANTIC(CallExpression);
+    name: CallExpression
+    private: {}
+    protected: {}
+    public:
+      constructors:
+      - args: []
+        name: CallExpression
+        postfix: = delete
+        raw_declaration: CallExpression() = delete
+      - args:
+        - initializer_for: callee_
+          name: callee
+          type:
+            name: Expression
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        - name: arguments
+          type:
+            name: ArenaVector
+            ref_depth: 2
+            template_args:
+            - type:
+                name: Expression
+                ptr_depth: 1
+        - initializer_for: typeParams_
+          name: typeParams
+          type:
+            name: TSTypeParameterInstantiation
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        - name: optional
+          type:
+            name: bool
+            other_modifiers: const
+            postfix: const
+        - default_value: 'false'
+          initializer_for: trailingComma_
+          name: trailingComma
+          type:
+            name: bool
+            other_modifiers: const
+            postfix: const
+        name: CallExpression
+        other_initializers:
+        - class_field: MaybeOptionalExpression
+          init_value: AstNodeType::CALL_EXPRESSION, optional
+        - class_field: arguments_
+          init_value: std::move(arguments)
+        - class_field: trailingLambdaInfo_
+          init_value: '{nullptr, false, false, trailingComma}'
+        raw_declaration: "explicit CallExpression(Expression *const callee, ArenaVector<Expression\
+          \ *> &&arguments,\n                            TSTypeParameterInstantiation\
+          \ *const typeParams, bool const optional,\n                            bool\
+          \ const trailingComma = false)"
+        return_type:
+          prefix: explicit
+      - args:
+        - name: other
+          type:
+            name: CallExpression
+            other_modifiers: const
+            ref_depth: 1
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        name: CallExpression
+        raw_declaration: explicit CallExpression(CallExpression const &other, ArenaAllocator
+          *allocator)
+        return_type:
+          prefix: explicit
+      destructors:
+      - args: []
+        name: ~CallExpression
+        postfix: override = default
+        raw_declaration: ~CallExpression() override = default
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Callee
+        postfix: const
+        raw_declaration: const Expression *Callee() const
+        return_type:
+          name: Expression
+          prefix: const
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Callee
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] Expression *Callee() noexcept'
+        return_type:
+          name: Expression
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: callee
+          type:
+            name: Expression
+            ptr_depth: 1
+        name: SetCallee
+        postfix: noexcept
+        raw_declaration: void SetCallee(Expression *callee) noexcept
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: TypeParams
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const TSTypeParameterInstantiation *TypeParams()
+          const noexcept'
+        return_type:
+          name: TSTypeParameterInstantiation
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: TypeParams
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] TSTypeParameterInstantiation *TypeParams()
+          noexcept'
+        return_type:
+          name: TSTypeParameterInstantiation
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Arguments
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const ArenaVector<Expression *> &Arguments()
+          const noexcept'
+        return_type:
+          name: ArenaVector
+          prefix: '[[nodiscard]] const'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: Expression
+              ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Arguments
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] ArenaVector<Expression *> &Arguments() noexcept'
+        return_type:
+          name: ArenaVector
+          prefix: '[[nodiscard]]'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: Expression
+              ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: argumentsList
+          type:
+            name: ArenaVector
+            ref_depth: 2
+            template_args:
+            - type:
+                name: Expression
+                ptr_depth: 1
+        name: SetArguments
+        raw_declaration: void SetArguments(ArenaVector<Expression *> &&argumentsList)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: HasTrailingComma
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool HasTrailingComma() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: Signature
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] checker::Signature *Signature() noexcept'
+        return_type:
+          name: Signature
+          namespace: checker
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Signature
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] checker::Signature *Signature() const noexcept'
+        return_type:
+          name: Signature
+          namespace: checker
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: signature
+          type:
+            name: Signature
+            namespace: checker
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        name: SetSignature
+        postfix: noexcept
+        raw_declaration: void SetSignature(checker::Signature *const signature) noexcept
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: typeParams
+          type:
+            name: TSTypeParameterInstantiation
+            ptr_depth: 1
+        name: SetTypeParams
+        postfix: noexcept
+        raw_declaration: void SetTypeParams(TSTypeParameterInstantiation *typeParams)
+          noexcept
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: UncheckedType
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] checker::Type *UncheckedType() const noexcept'
+        return_type:
+          name: Type
+          namespace: checker
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: type
+          type:
+            name: Type
+            namespace: checker
+            ptr_depth: 1
+        name: SetUncheckedType
+        postfix: noexcept
+        raw_declaration: void SetUncheckedType(checker::Type *type) noexcept
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: block
+          type:
+            name: BlockStatement
+            namespace: ir
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        name: SetTrailingBlock
+        postfix: noexcept
+        raw_declaration: void SetTrailingBlock(ir::BlockStatement *const block) noexcept
+        return_type:
+          name: void
+      - args: []
+        name: IsExtensionAccessorCall
+        raw_declaration: bool IsExtensionAccessorCall()
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args: []
+        name: TrailingBlock
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] ir::BlockStatement *TrailingBlock() const
+          noexcept'
+        return_type:
+          name: BlockStatement
+          namespace: ir
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: isNewLine
+          type:
+            name: bool
+            other_modifiers: const
+            postfix: const
+        name: SetIsTrailingBlockInNewLine
+        postfix: noexcept
+        raw_declaration: void SetIsTrailingBlockInNewLine(bool const isNewLine) noexcept
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: IsTrailingBlockInNewLine
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsTrailingBlockInNewLine() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: set
+        args:
+        - name: isTrailingCall
+          type:
+            name: bool
+            other_modifiers: const
+            postfix: const
+        name: SetIsTrailingCall
+        postfix: noexcept
+        raw_declaration: void SetIsTrailingCall(bool const isTrailingCall) noexcept
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: IsTrailingCall
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsTrailingCall() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsETSConstructorCall
+        postfix: const noexcept
+        raw_declaration: bool IsETSConstructorCall() const noexcept
+        return_type:
+          name: bool
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: parent
+          type:
+            name: AstNode
+            ptr_depth: 1
+        name: Clone
+        postfix: override
+        raw_declaration: '[[nodiscard]] CallExpression *Clone(ArenaAllocator *allocator,
+          AstNode *parent) override'
+        return_type:
+          name: CallExpression
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - args:
+        - name: cb
+          type:
+            name: NodeTransformer
+            prefix: const
+            ref_depth: 1
+        - name: transformationName
+          type:
+            name: string_view
+            namespace: std
+        name: TransformChildren
+        postfix: override
+        raw_declaration: void TransformChildren(const NodeTransformer &cb, std::string_view
+          transformationName) override
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: NodeTraverser
+            prefix: const
+            ref_depth: 1
+        name: Iterate
+        postfix: const override
+        raw_declaration: void Iterate(const NodeTraverser &cb) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: AstDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::AstDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: SrcDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::SrcDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: pg
+          type:
+            name: PandaGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::PandaGen *pg) const override
+        return_type:
+          name: void
+      - args:
+        - name: etsg
+          type:
+            name: ETSGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::ETSGen *etsg) const override
+        return_type:
+          name: void
+      - args: []
+        name: CleanCheckInformation
+        postfix: override
+        raw_declaration: void CleanCheckInformation() override
+        return_type:
+          name: void
+      - args:
+        - name: checker
+          type:
+            name: TSChecker
+            namespace: checker
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::Type *Check(checker::TSChecker *checker) override
+        return_type:
+          name: Type
+          namespace: checker
+          ptr_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            namespace: checker
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::VerifiedType Check(checker::ETSChecker *checker)
+          override
+        return_type:
+          name: VerifiedType
+          namespace: checker
+      - args:
+        - name: v
+          type:
+            name: ASTVisitorT
+            ptr_depth: 1
+        name: Accept
+        postfix: override
+        raw_declaration: void Accept(ASTVisitorT *v) override
+        return_type:
+          name: void
+      - args: []
+        name: CleanUp
+        postfix: override
+        raw_declaration: void CleanUp() override
+        return_type:
+          name: void
+  class_forward_declaration:
+  - TSTypeParameterInstantiation
+macros:
+- name: ES2PANDA_IR_EXPRESSION_CALL_EXPRESSION_H

@@ -1,0 +1,396 @@
+checker:
+  class_forward_declaration:
+  - ETSAnalyzer
+include:
+- '"checker/checkerContext.h"'
+- '"compiler/core/vReg.h"'
+- '"ir/expression.h"'
+ir:
+  class_definitions:
+  - extends: public Expression
+    friends:
+    - checker::ETSAnalyzer
+    known_macroses:
+    - NO_COPY_SEMANTIC(BinaryExpression);
+    - NO_MOVE_SEMANTIC(BinaryExpression);
+    name: BinaryExpression
+    private: {}
+    public:
+      constructors:
+      - args: []
+        name: BinaryExpression
+        postfix: = delete
+        raw_declaration: BinaryExpression() = delete
+      - args:
+        - initializer_for: left_
+          name: left
+          type:
+            name: Expression
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        - initializer_for: right_
+          name: right
+          type:
+            name: Expression
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        - initializer_for: operator_
+          name: operatorType
+          type:
+            name: TokenType
+            namespace: lexer
+            other_modifiers: const
+            postfix: const
+        name: BinaryExpression
+        other_initializers:
+        - class_field: Expression
+          init_value: AstNodeType::BINARY_EXPRESSION
+        raw_declaration: explicit BinaryExpression(Expression *const left, Expression
+          *const right, lexer::TokenType const operatorType)
+        return_type:
+          prefix: explicit
+      destructors:
+      - args: []
+        name: ~BinaryExpression
+        postfix: override = default
+        raw_declaration: ~BinaryExpression() override = default
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Left
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const Expression *Left() const noexcept'
+        return_type:
+          name: Expression
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Left
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] Expression *Left() noexcept'
+        return_type:
+          name: Expression
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Right
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const Expression *Right() const noexcept'
+        return_type:
+          name: Expression
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Right
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] Expression *Right() noexcept'
+        return_type:
+          name: Expression
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Result
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const Expression *Result() const noexcept'
+        return_type:
+          name: Expression
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Result
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] Expression *Result() noexcept'
+        return_type:
+          name: Expression
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: OperatorType
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] lexer::TokenType OperatorType() const noexcept'
+        return_type:
+          name: TokenType
+          namespace: lexer
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsLogical
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsLogical() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsLogicalExtended
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsLogicalExtended() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsBitwise
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsBitwise() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsEquality
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsEquality() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsArithmetic
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsArithmetic() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: set
+        args:
+        - name: expr
+          type:
+            name: Expression
+            ptr_depth: 1
+        name: SetLeft
+        postfix: noexcept
+        raw_declaration: void SetLeft(Expression *expr) noexcept
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: expr
+          type:
+            name: Expression
+            ptr_depth: 1
+        name: SetRight
+        postfix: noexcept
+        raw_declaration: void SetRight(Expression *expr) noexcept
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: expr
+          type:
+            name: Expression
+            ptr_depth: 1
+        name: SetResult
+        postfix: noexcept
+        raw_declaration: void SetResult(Expression *expr) noexcept
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: operatorType
+          type:
+            name: TokenType
+            namespace: lexer
+        name: SetOperator
+        postfix: noexcept
+        raw_declaration: void SetOperator(lexer::TokenType operatorType) noexcept
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: OperationType
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] checker::Type *OperationType() noexcept'
+        return_type:
+          name: Type
+          namespace: checker
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: operationType
+          type:
+            name: Type
+            namespace: checker
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        name: SetOperationType
+        postfix: noexcept
+        raw_declaration: void SetOperationType(checker::Type *const operationType)
+          noexcept
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: OperationType
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const checker::Type *OperationType() const
+          noexcept'
+        return_type:
+          name: Type
+          namespace: checker
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: parent
+          type:
+            name: AstNode
+            ptr_depth: 1
+        name: Clone
+        postfix: override
+        raw_declaration: '[[nodiscard]] BinaryExpression *Clone(ArenaAllocator *allocator,
+          AstNode *parent) override'
+        return_type:
+          name: BinaryExpression
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - args:
+        - name: cb
+          type:
+            name: NodeTransformer
+            prefix: const
+            ref_depth: 1
+        - name: transformationName
+          type:
+            name: string_view
+            namespace: std
+        name: TransformChildren
+        postfix: override
+        raw_declaration: void TransformChildren(const NodeTransformer &cb, std::string_view
+          transformationName) override
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: NodeTraverser
+            prefix: const
+            ref_depth: 1
+        name: Iterate
+        postfix: const override
+        raw_declaration: void Iterate(const NodeTraverser &cb) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: AstDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::AstDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: SrcDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::SrcDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: pg
+          type:
+            name: PandaGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::PandaGen *pg) const override
+        return_type:
+          name: void
+      - args:
+        - name: etsg
+          type:
+            name: ETSGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::ETSGen *etsg) const override
+        return_type:
+          name: void
+      - args:
+        - name: etsg
+          type:
+            name: ETSGen
+            namespace: compiler
+            ptr_depth: 1
+        - name: lhs
+          type:
+            name: VReg
+            namespace: compiler
+        name: CompileOperands
+        postfix: const
+        raw_declaration: void CompileOperands(compiler::ETSGen *etsg, compiler::VReg
+          lhs) const
+        return_type:
+          name: void
+      - args:
+        - name: checker
+          type:
+            name: TSChecker
+            namespace: checker
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::Type *Check(checker::TSChecker *checker) override
+        return_type:
+          name: Type
+          namespace: checker
+          ptr_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            namespace: checker
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::VerifiedType Check(checker::ETSChecker *checker)
+          override
+        return_type:
+          name: VerifiedType
+          namespace: checker
+      - args:
+        - name: v
+          type:
+            name: ASTVisitorT
+            ptr_depth: 1
+        name: Accept
+        postfix: override
+        raw_declaration: void Accept(ASTVisitorT *v) override
+        return_type:
+          name: void
+      - args: []
+        name: CleanUp
+        postfix: override
+        raw_declaration: void CleanUp() override
+        return_type:
+          name: void
+      - args: []
+        name: CleanCheckInformation
+        postfix: override
+        raw_declaration: void CleanCheckInformation() override
+        return_type:
+          name: void
+macros:
+- name: ES2PANDA_IR_EXPRESSION_BINARY_EXPRESSION_H

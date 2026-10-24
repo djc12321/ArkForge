@@ -1,0 +1,239 @@
+ast_verifier:
+  class_definitions:
+  - extends: public InvariantsRegistry
+    known_macroses:
+    - NO_COPY_SEMANTIC(ASTVerifier);
+    - NO_MOVE_SEMANTIC(ASTVerifier);
+    name: ASTVerifier
+    private: {}
+    public:
+      constructors:
+      - args:
+        - initializer_for: context_
+          name: context
+          type:
+            name: Context
+            namespace: public_lib
+            prefix: const
+            ref_depth: 1
+        name: ASTVerifier
+        raw_declaration: explicit ASTVerifier(const public_lib::Context &context)
+        return_type:
+          prefix: explicit
+      destructors:
+      - args: []
+        name: ~ASTVerifier
+        raw_declaration: ~ASTVerifier()
+      methods:
+      - args: []
+        name: After
+        raw_declaration: void After()
+        return_type:
+          name: void
+      - args: []
+        name: Before
+        raw_declaration: void Before()
+        return_type:
+          name: void
+      - args:
+        - name: phaseName
+          type:
+            name: string_view
+            namespace: std
+        name: Verify
+        postfix: noexcept
+        raw_declaration: void Verify(std::string_view phaseName) noexcept
+        return_type:
+          name: void
+      - args:
+        - name: occurredPhaseName
+          type:
+            name: string_view
+            namespace: std
+        name: IntroduceNewInvariants
+        raw_declaration: void IntroduceNewInvariants(std::string_view occurredPhaseName)
+        return_type:
+          name: void
+      - args: []
+        name: Suppress
+        raw_declaration: void Suppress()
+        return_type:
+          name: void
+      - args: []
+        name: DumpMessages
+        postfix: const
+        raw_declaration: void DumpMessages() const
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - name: id
+          type:
+            name: VerifierInvariants
+        name: TreatAsWarning
+        postfix: const
+        raw_declaration: bool TreatAsWarning(VerifierInvariants id) const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - name: id
+          type:
+            name: VerifierInvariants
+        name: TreatAsError
+        postfix: const
+        raw_declaration: bool TreatAsError(VerifierInvariants id) const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args: []
+        name: HasErrors
+        postfix: const
+        raw_declaration: bool HasErrors() const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args: []
+        name: HasWarnings
+        postfix: const
+        raw_declaration: bool HasWarnings() const
+        return_type:
+          name: bool
+      usings:
+      - name: SourcePath
+        type:
+          name: string_view
+          namespace: std
+      - name: PhaseName
+        type:
+          name: string_view
+          namespace: std
+      - name: InvariantsMessages
+        type:
+          name: map
+          namespace: std
+          template_args:
+          - type:
+              name: VerifierInvariants
+          - type:
+              name: Messages
+      - name: WarningsErrors
+        type:
+          name: map
+          namespace: std
+          template_args:
+          - type:
+              name: string_view
+              namespace: std
+          - type:
+              name: InvariantsMessages
+      - name: SourceMessages
+        type:
+          name: map
+          namespace: std
+          template_args:
+          - type:
+              name: SourcePath
+          - type:
+              name: WarningsErrors
+      - name: GroupedMessages
+        type:
+          name: vector
+          namespace: std
+          template_args:
+          - type:
+              name: pair
+              namespace: std
+              template_args:
+              - type:
+                  name: PhaseName
+              - type:
+                  name: SourceMessages
+  usings:
+  - name: InvariantsRegistry
+    type:
+      name: InvariantsRegistryImpl
+      template_args:
+      - type:
+          name: NodeHasParent
+      - type:
+          name: NodeHasSourceRange
+      - type:
+          name: EveryChildHasValidParent
+      - type:
+          name: EveryChildInParentRange
+      - type:
+          name: CheckStructDeclaration
+      - type:
+          name: VariableHasScope
+      - type:
+          name: NodeHasType
+      - type:
+          name: NoPrimitiveTypes
+      - type:
+          name: EnumHasCorrectType
+      - type:
+          name: IdentifierHasVariable
+      - type:
+          name: ReferenceTypeAnnotationIsNull
+      - type:
+          name: ArithmeticOperationValid
+      - type:
+          name: SequenceExpressionHasLastType
+      - type:
+          name: ForLoopCorrectlyInitialized
+      - type:
+          name: VariableHasEnclosingScope
+      - type:
+          name: ModifierAccessValid
+      - type:
+          name: VariableNameIdentifierNameSame
+      - type:
+          name: CheckAbstractMethod
+      - type:
+          name: GetterSetterValidation
+      - type:
+          name: CheckScopeDeclaration
+      - type:
+          name: CheckConstProperties
+include:
+- <algorithm>
+- <iterator>
+- <regex>
+- <string>
+- <unordered_set>
+- '"ast_verifier/invariantBase.h"'
+- '"ast_verifier/invariants/sequenceExpressionHasLastType.h"'
+- '"ast_verifier/invariants/checkAbstractMethod.h"'
+- '"ast_verifier/invariants/everyChildHasValidParent.h"'
+- '"ast_verifier/invariants/everyChildInParentRange.h"'
+- '"ast_verifier/invariants/getterSetterValidation.h"'
+- '"ast_verifier/invariants/identifierHasVariable.h"'
+- '"ast_verifier/invariants/nodeHasParent.h"'
+- '"ast_verifier/invariants/nodeHasSourceRange.h"'
+- '"ast_verifier/invariants/nodeHasType.h"'
+- '"ast_verifier/invariants/referenceTypeAnnotationIsNull.h"'
+- '"ast_verifier/invariants/variableHasScope.h"'
+- '"ast_verifier/invariants/variableHasEnclosingScope.h"'
+- '"ast_verifier/invariants/forLoopCorrectlyInitialized.h"'
+- '"ast_verifier/invariants/modifierAccessValid.h"'
+- '"ast_verifier/invariants/importExportAccessValid.h"'
+- '"ast_verifier/invariants/arithmeticOperationValid.h"'
+- '"ast_verifier/invariants/variableNameIdentifierNameSame.h"'
+- '"ast_verifier/invariants/checkScopeDeclaration.h"'
+- '"ast_verifier/invariants/checkStructDeclaration.h"'
+- '"ast_verifier/invariants/checkConstProperties.h"'
+- '"ir/astNode.h"'
+- '"ir/statements/blockStatement.h"'
+- '"lexer/token/sourceLocation.h"'
+- '"util/ustring.h"'
+- '"util/options.h"'
+- '"varbinder/variable.h"'
+- '"public/public.h"'
+macros:
+- name: ES2PANDA_COMPILER_CORE_ASTVERIFIER_H
+- arguments: lvl, msg
+  body: LOG(lvl, ES2PANDA) << "[ASTV] " << msg
+  name: LOG_ASTV
+- arguments: lvl, msg
+  name: LOG_ASTV

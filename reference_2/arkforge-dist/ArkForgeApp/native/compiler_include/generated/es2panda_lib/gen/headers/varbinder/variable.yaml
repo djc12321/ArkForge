@@ -1,0 +1,620 @@
+checker:
+  class_forward_declaration:
+  - Type
+  functions:
+  - args:
+    - name: tp
+      type:
+        name: Type
+        other_modifiers: const
+        ptr_depth: 1
+    name: IsTypeError
+    raw_declaration: bool IsTypeError(Type const *tp)
+    return_type:
+      name: bool
+  - args:
+    - name: type
+      type:
+        name: Type
+        other_modifiers: const
+        ptr_depth: 1
+    name: ContainsTypeError
+    raw_declaration: bool ContainsTypeError(Type const *type)
+    return_type:
+      name: bool
+include:
+- '"varbinder/enumMemberResult.h"'
+- '"varbinder/variableFlags.h"'
+- '"ir/irnode.h"'
+ir:
+  class_forward_declaration:
+  - AstNode
+  - ETSImportDeclaration
+macros:
+- name: ES2PANDA_COMPILER_SCOPES_VARIABLE_H
+varbinder:
+  class_definitions:
+  - known_macroses:
+    - NO_COPY_SEMANTIC(Variable);
+    - NO_MOVE_SEMANTIC(Variable);
+    - VARIABLE_TYPES(DECLARE_CHECKS_CASTS)
+    macros:
+    - arguments: variableType, className
+      name: DECLARE_CHECKS_CASTS
+    name: Variable
+    private: {}
+    protected: {}
+    public:
+      destructors:
+      - args: []
+        name: ~Variable
+        postfix: = default
+        raw_declaration: virtual ~Variable() = default
+        return_type:
+          prefix: virtual
+      methods:
+      - args: []
+        name: Type
+        postfix: const = 0
+        raw_declaration: VariableType virtual Type() const = 0
+        return_type:
+          name: VariableType
+          other_modifiers: virtual
+          postfix: virtual
+      - additional_attributes: get
+        args: []
+        name: Declaration
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const Decl *Declaration() const noexcept'
+        return_type:
+          name: Decl
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Declaration
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] Decl *Declaration() noexcept'
+        return_type:
+          name: Decl
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Flags
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] VariableFlags Flags() const noexcept'
+        return_type:
+          name: VariableFlags
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: TsType
+        postfix: const
+        raw_declaration: '[[nodiscard]] checker::Type *TsType() const'
+        return_type:
+          name: Type
+          namespace: checker
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: GetScope
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] Scope *GetScope() const noexcept'
+        return_type:
+          name: Scope
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: get
+        args:
+        - name: tsType
+          type:
+            name: Type
+            namespace: checker
+            ptr_depth: 1
+        name: SetTsType
+        postfix: noexcept
+        raw_declaration: checker::Type *SetTsType(checker::Type *tsType) noexcept
+        return_type:
+          name: Type
+          namespace: checker
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: scope
+          type:
+            name: Scope
+            namespace: varbinder
+            ptr_depth: 1
+        name: SetScope
+        postfix: noexcept
+        raw_declaration: void SetScope(varbinder::Scope *scope) noexcept
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: flag
+          type:
+            name: VariableFlags
+        name: AddFlag
+        postfix: noexcept
+        raw_declaration: void AddFlag(VariableFlags flag) noexcept
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - name: flag
+          type:
+            name: VariableFlags
+        name: HasFlag
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool HasFlag(VariableFlags flag) const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - args:
+        - name: flag
+          type:
+            name: VariableFlags
+        name: RemoveFlag
+        postfix: noexcept
+        raw_declaration: void RemoveFlag(VariableFlags flag) noexcept
+        return_type:
+          name: void
+      - args:
+        - name: decl
+          type:
+            name: Decl
+            ptr_depth: 1
+        - name: flags
+          type:
+            name: VariableFlags
+        name: Reset
+        postfix: noexcept
+        raw_declaration: void Reset(Decl *decl, VariableFlags flags) noexcept
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: LexicalBound
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool LexicalBound() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - args: []
+        name: Name
+        postfix: const
+        raw_declaration: '[[nodiscard]] const util::StringView &Name() const'
+        return_type:
+          name: StringView
+          namespace: util
+          prefix: '[[nodiscard]] const'
+          ref_depth: 1
+      - additional_attributes: set
+        args:
+        - name: scope
+          type:
+            name: Scope
+            ptr_depth: 1
+        name: SetLexical
+        postfix: = 0
+        raw_declaration: virtual void SetLexical(Scope *scope) = 0
+        return_type:
+          name: void
+          prefix: virtual
+  - extends: public Variable
+    name: LocalVariable
+    private: {}
+    public:
+      constructors:
+      - args:
+        - name: decl
+          type:
+            name: Decl
+            ptr_depth: 1
+        - name: flags
+          type:
+            name: VariableFlags
+        name: LocalVariable
+        raw_declaration: explicit LocalVariable(Decl *decl, VariableFlags flags)
+        return_type:
+          prefix: explicit
+      - args:
+        - name: flags
+          type:
+            name: VariableFlags
+            prefix: const
+        name: LocalVariable
+        raw_declaration: explicit LocalVariable(const VariableFlags flags)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Type
+        postfix: const override
+        raw_declaration: VariableType Type() const override
+        return_type:
+          name: VariableType
+      - args:
+        - name: vreg
+          type:
+            name: VReg
+            namespace: compiler
+        name: BindVReg
+        raw_declaration: void BindVReg(compiler::VReg vreg)
+        return_type:
+          name: void
+      - args:
+        - name: slot
+          type:
+            name: uint32_t
+        name: BindLexEnvSlot
+        raw_declaration: void BindLexEnvSlot(uint32_t slot)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Vreg
+        postfix: const
+        raw_declaration: compiler::VReg Vreg() const
+        return_type:
+          name: VReg
+          namespace: compiler
+      - additional_attributes: get
+        args: []
+        name: Vreg
+        raw_declaration: compiler::VReg &Vreg()
+        return_type:
+          name: VReg
+          namespace: compiler
+          ref_depth: 1
+      - args: []
+        name: LexIdx
+        postfix: const
+        raw_declaration: uint32_t LexIdx() const
+        return_type:
+          name: uint32_t
+      - additional_attributes: get
+        args: []
+        name: ImportBinding
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const ImportBindingInfo *ImportBinding() const
+          noexcept'
+        return_type:
+          name: ImportBindingInfo
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: ImportBinding
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] ImportBindingInfo *ImportBinding() noexcept'
+        return_type:
+          name: ImportBindingInfo
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: importBinding
+          type:
+            name: ImportBindingInfo
+            ptr_depth: 1
+        name: SetImportBinding
+        postfix: noexcept
+        raw_declaration: void SetImportBinding(ImportBindingInfo *importBinding) noexcept
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: IsImportBinding
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsImportBinding() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsNamespaceImportBinding
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsNamespaceImportBinding() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsNonNamespaceImportBinding
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsNonNamespaceImportBinding() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: set
+        args:
+        - name: scope
+          type:
+            name: Scope
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: SetLexical
+        postfix: override
+        raw_declaration: void SetLexical([[maybe_unused]] Scope *scope) override
+        return_type:
+          name: void
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: decl
+          type:
+            name: Decl
+            ptr_depth: 1
+        name: Copy
+        postfix: const
+        raw_declaration: LocalVariable *Copy(ArenaAllocator *allocator, Decl *decl)
+          const
+        return_type:
+          name: LocalVariable
+          ptr_depth: 1
+  - extends: public Variable
+    name: GlobalVariable
+    public:
+      constructors:
+      - args:
+        - name: decl
+          type:
+            name: Decl
+            ptr_depth: 1
+        - name: flags
+          type:
+            name: VariableFlags
+        name: GlobalVariable
+        other_initializers:
+        - class_field: Variable
+          init_value: decl, flags
+        raw_declaration: explicit GlobalVariable(Decl *decl, VariableFlags flags)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Type
+        postfix: const override
+        raw_declaration: VariableType Type() const override
+        return_type:
+          name: VariableType
+      - additional_attributes: set
+        args:
+        - name: scope
+          type:
+            name: Scope
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: SetLexical
+        postfix: override
+        raw_declaration: void SetLexical([[maybe_unused]] Scope *scope) override
+        return_type:
+          name: void
+  - extends: public Variable
+    name: ModuleVariable
+    private: {}
+    public:
+      constructors:
+      - args:
+        - name: decl
+          type:
+            name: Decl
+            ptr_depth: 1
+        - name: flags
+          type:
+            name: VariableFlags
+        name: ModuleVariable
+        other_initializers:
+        - class_field: Variable
+          init_value: decl, flags
+        raw_declaration: explicit ModuleVariable(Decl *decl, VariableFlags flags)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Type
+        postfix: const override
+        raw_declaration: VariableType Type() const override
+        return_type:
+          name: VariableType
+      - additional_attributes: get
+        args: []
+        name: ModuleReg
+        raw_declaration: compiler::VReg &ModuleReg()
+        return_type:
+          name: VReg
+          namespace: compiler
+          ref_depth: 1
+      - additional_attributes: get
+        args: []
+        name: ModuleReg
+        postfix: const
+        raw_declaration: compiler::VReg ModuleReg() const
+        return_type:
+          name: VReg
+          namespace: compiler
+      - additional_attributes: get
+        args: []
+        name: ExoticName
+        postfix: const
+        raw_declaration: const util::StringView &ExoticName() const
+        return_type:
+          name: StringView
+          namespace: util
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: get
+        args: []
+        name: ExoticName
+        raw_declaration: util::StringView &ExoticName()
+        return_type:
+          name: StringView
+          namespace: util
+          ref_depth: 1
+      - additional_attributes: set
+        args:
+        - name: scope
+          type:
+            name: Scope
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: SetLexical
+        postfix: override
+        raw_declaration: void SetLexical([[maybe_unused]] Scope *scope) override
+        return_type:
+          name: void
+  - extends: public Variable
+    name: EnumVariable
+    private: {}
+    public:
+      constructors:
+      - args:
+        - name: decl
+          type:
+            name: Decl
+            ptr_depth: 1
+        - default_value: 'false'
+          initializer_for: backReference_
+          name: backReference
+          type:
+            name: bool
+        name: EnumVariable
+        other_initializers:
+        - class_field: Variable
+          init_value: decl, VariableFlags::NONE
+        raw_declaration: explicit EnumVariable(Decl *decl, bool backReference = false)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Type
+        postfix: const override
+        raw_declaration: VariableType Type() const override
+        return_type:
+          name: VariableType
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: EnumMemberResult
+        name: SetValue
+        raw_declaration: void SetValue(EnumMemberResult value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Value
+        postfix: const
+        raw_declaration: const EnumMemberResult &Value() const
+        return_type:
+          name: EnumMemberResult
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: get
+        args: []
+        name: BackReference
+        postfix: const
+        raw_declaration: bool BackReference() const
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args: []
+        name: SetBackReference
+        raw_declaration: void SetBackReference()
+        return_type:
+          name: void
+      - args:
+        - name: decl
+          type:
+            name: Decl
+            ptr_depth: 1
+        name: ResetDecl
+        raw_declaration: void ResetDecl(Decl *decl)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: scope
+          type:
+            name: Scope
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: SetLexical
+        postfix: override
+        raw_declaration: void SetLexical([[maybe_unused]] Scope *scope) override
+        return_type:
+          name: void
+  class_forward_declaration:
+  - Decl
+  - Scope
+  - VariableScope
+  - Variable
+  enums:
+  - flags:
+    - NAMED
+    - DEFAULT
+    - NAMESPACE
+    kind: simple
+    name: ImportBindingKind
+    namespace: varbinder
+  known_macroses:
+  - VARIABLE_TYPES(DECLARE_CLASSES)
+  macros:
+  - arguments: type, className
+    body: class className;
+    name: DECLARE_CLASSES
+  structs:
+  - members:
+    - default_constructor: ''
+      name: importDecl
+      type:
+        name: ETSImportDeclaration
+        namespace: ir
+        prefix: const
+        ptr_depth: 1
+    - default_constructor: ''
+      name: importedName
+      type:
+        name: StringView
+        namespace: util
+    - default_constructor: ''
+      name: localName
+      type:
+        name: StringView
+        namespace: util
+    - default_constructor: ''
+      name: origin
+      type:
+        name: AstNode
+        namespace: ir
+        prefix: const
+        ptr_depth: 1
+    - default_constructor: ''
+      name: resolvedVariable
+      type:
+        name: Variable
+        ptr_depth: 1
+    - default_constructor: ''
+      name: conflictingLocalVariable
+      type:
+        name: Variable
+        ptr_depth: 1
+    - default_constructor: ImportBindingKind::NAMED
+      name: kind
+      type:
+        name: ImportBindingKind
+    - default_constructor: ''
+      name: isTypeOnly
+      type:
+        name: bool
+    name: ImportBindingInfo

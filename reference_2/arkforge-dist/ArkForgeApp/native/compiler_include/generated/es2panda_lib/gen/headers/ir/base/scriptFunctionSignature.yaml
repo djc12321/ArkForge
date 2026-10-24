@@ -1,0 +1,196 @@
+include:
+- '"ir/expression.h"'
+- <ir/ets/etsParameterExpression.h>
+ir:
+  class_definitions:
+  - known_macroses:
+    - NO_COPY_SEMANTIC(FunctionSignature);
+    - DEFAULT_MOVE_SEMANTIC(FunctionSignature);
+    name: FunctionSignature
+    private: {}
+    public:
+      constructors:
+      - args:
+        - initializer_for: typeParams_
+          name: typeParams
+          type:
+            name: TSTypeParameterDeclaration
+            ptr_depth: 1
+        - name: params
+          type:
+            name: ArenaVector
+            ref_depth: 2
+            template_args:
+            - type:
+                name: Expression
+                namespace: ir
+                ptr_depth: 1
+        - initializer_for: returnTypeAnnotation_
+          name: returnTypeAnnotation
+          type:
+            name: TypeNode
+            ptr_depth: 1
+        - default_value: 'false'
+          initializer_for: hasReceiver_
+          name: hasReceiver
+          type:
+            name: bool
+        name: FunctionSignature
+        other_initializers:
+        - class_field: params_
+          init_value: std::move(params)
+        raw_declaration: "explicit FunctionSignature(TSTypeParameterDeclaration *typeParams,\
+          \ ArenaVector<ir::Expression *> &&params,\n                            \
+          \   TypeNode *returnTypeAnnotation, bool hasReceiver = false)"
+        return_type:
+          prefix: explicit
+      - args: []
+        name: FunctionSignature
+        postfix: = delete
+        raw_declaration: FunctionSignature() = delete
+      destructors:
+      - args: []
+        name: ~FunctionSignature
+        postfix: = default
+        raw_declaration: ~FunctionSignature() = default
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Params
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const ArenaVector<ir::Expression *> &Params()
+          const noexcept'
+        return_type:
+          name: ArenaVector
+          prefix: '[[nodiscard]] const'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: Expression
+              namespace: ir
+              ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Params
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] ArenaVector<ir::Expression *> &Params() noexcept'
+        return_type:
+          name: ArenaVector
+          prefix: '[[nodiscard]]'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: Expression
+              namespace: ir
+              ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: TypeParams
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] TSTypeParameterDeclaration *TypeParams() noexcept'
+        return_type:
+          name: TSTypeParameterDeclaration
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: TypeParams
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const TSTypeParameterDeclaration *TypeParams()
+          const noexcept'
+        return_type:
+          name: TSTypeParameterDeclaration
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: typeParams
+          type:
+            name: TSTypeParameterDeclaration
+            ptr_depth: 1
+        name: SetTypeParams
+        postfix: noexcept
+        raw_declaration: void SetTypeParams(TSTypeParameterDeclaration *typeParams)
+          noexcept
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: ReturnType
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] TypeNode *ReturnType() noexcept'
+        return_type:
+          name: TypeNode
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: get
+        args:
+        - name: type
+          type:
+            name: TypeNode
+            ptr_depth: 1
+        name: SetReturnType
+        postfix: noexcept
+        raw_declaration: void SetReturnType(TypeNode *type) noexcept
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: ReturnType
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const TypeNode *ReturnType() const noexcept'
+        return_type:
+          name: TypeNode
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - args:
+        - name: cb
+          type:
+            name: NodeTraverser
+            prefix: const
+            ref_depth: 1
+        name: Iterate
+        postfix: const
+        raw_declaration: void Iterate(const NodeTraverser &cb) const
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: NodeTransformer
+            prefix: const
+            ref_depth: 1
+        - name: transformationName
+          type:
+            name: string_view
+            namespace: std
+        name: TransformChildren
+        raw_declaration: void TransformChildren(const NodeTransformer &cb, std::string_view
+          transformationName)
+        return_type:
+          name: void
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        name: Clone
+        raw_declaration: '[[nodiscard]] FunctionSignature Clone(ArenaAllocator *allocator)'
+        return_type:
+          name: FunctionSignature
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: HasReceiver
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool HasReceiver() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+  class_forward_declaration:
+  - TSTypeParameterDeclaration
+  - TypeNode
+  - ScriptFunction
+  - ETSFunctionType
+macros:
+- name: ES2PANDA_COMPILER_CORE_SCRIPT_FUNCTION_SIGNATURE_H

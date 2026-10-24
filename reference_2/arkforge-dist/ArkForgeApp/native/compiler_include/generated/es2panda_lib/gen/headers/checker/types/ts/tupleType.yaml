@@ -1,0 +1,231 @@
+checker:
+  class_definitions:
+  - extends: public ObjectType
+    name: TupleType
+    private: {}
+    public:
+      constructors:
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        name: TupleType
+        other_initializers:
+        - class_field: ObjectType
+          init_value: ObjectTypeKind::TUPLE
+        - class_field: elementFlags_
+          init_value: allocator->Adapter()
+        - class_field: namedMembers_
+          init_value: allocator->Adapter()
+        raw_declaration: explicit TupleType(ArenaAllocator *allocator)
+        return_type:
+          prefix: explicit
+      - args:
+        - name: contents
+          type:
+            name: tuple
+            namespace: std
+            template_args:
+            - type:
+                name: ObjectDescriptor
+                ptr_depth: 1
+            - type:
+                name: ArenaVector
+                ref_depth: 2
+                template_args:
+                - type:
+                    name: ElementFlags
+            - type:
+                name: ElementFlags
+            - type:
+                name: NamedTupleMemberPool
+                ref_depth: 2
+        - initializer_for: minLength_
+          name: minLength
+          type:
+            name: uint32_t
+        - initializer_for: fixedLength_
+          name: fixedLength
+          type:
+            name: uint32_t
+        - initializer_for: readonly_
+          name: readonly
+          type:
+            name: bool
+        name: TupleType
+        other_initializers:
+        - class_field: ObjectType
+          init_value: ObjectType::ObjectTypeKind::TUPLE, std::get<ObjectDescriptor
+            *>(contents)
+        - class_field: elementFlags_
+          init_value: std::move(std::get<ArenaVector<ElementFlags> &&>(contents))
+        - class_field: combinedFlags_
+          init_value: std::get<ElementFlags>(contents)
+        - class_field: namedMembers_
+          init_value: std::move(std::get<NamedTupleMemberPool &&>(contents))
+        raw_declaration: "TupleType(\n        std::tuple<ObjectDescriptor *, ArenaVector<ElementFlags>\
+          \ &&, ElementFlags, NamedTupleMemberPool &&> contents,\n        uint32_t\
+          \ minLength, uint32_t fixedLength, bool readonly)"
+      methods:
+      - additional_attributes: get
+        args: []
+        name: CombinedFlags
+        postfix: const
+        raw_declaration: ElementFlags CombinedFlags() const
+        return_type:
+          name: ElementFlags
+      - additional_attributes: get
+        args: []
+        name: MinLength
+        postfix: const
+        raw_declaration: uint32_t MinLength() const
+        return_type:
+          name: uint32_t
+      - additional_attributes: get
+        args: []
+        name: FixedLength
+        postfix: const
+        raw_declaration: uint32_t FixedLength() const
+        return_type:
+          name: uint32_t
+      - additional_attributes: get
+        args:
+        - name: combinedFlag
+          type:
+            name: ElementFlags
+        name: HasCombinedFlag
+        postfix: const
+        raw_declaration: bool HasCombinedFlag(ElementFlags combinedFlag) const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args: []
+        name: IsReadOnly
+        postfix: const
+        raw_declaration: bool IsReadOnly() const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args: []
+        name: NamedMembers
+        postfix: const
+        raw_declaration: const NamedTupleMemberPool &NamedMembers() const
+        return_type:
+          name: NamedTupleMemberPool
+          prefix: const
+          ref_depth: 1
+      - args:
+        - name: member
+          type:
+            name: LocalVariable
+            namespace: varbinder
+            ptr_depth: 1
+        name: FindNamedMemberName
+        postfix: const
+        raw_declaration: const util::StringView &FindNamedMemberName(varbinder::LocalVariable
+          *member) const
+        return_type:
+          name: StringView
+          namespace: util
+          prefix: const
+          ref_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: TSChecker
+            ptr_depth: 1
+        name: ConvertToArrayType
+        raw_declaration: Type *ConvertToArrayType(TSChecker *checker)
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args:
+        - name: ss
+          type:
+            name: stringstream
+            namespace: std
+            ref_depth: 1
+        - name: precise
+          type:
+            name: bool
+        name: ToString
+        postfix: const override
+        raw_declaration: void ToString(std::stringstream &ss, bool precise) const
+          override
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: other
+          type:
+            name: Type
+            ptr_depth: 1
+        name: Identical
+        postfix: override
+        raw_declaration: void Identical(TypeRelation *relation, Type *other) override
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: source
+          type:
+            name: Type
+            ptr_depth: 1
+        name: AssignmentTarget
+        postfix: override
+        raw_declaration: void AssignmentTarget(TypeRelation *relation, Type *source)
+          override
+        return_type:
+          name: void
+      - args: []
+        name: GetTypeFacts
+        postfix: const override
+        raw_declaration: TypeFacts GetTypeFacts() const override
+        return_type:
+          name: TypeFacts
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: globalTypes
+          type:
+            name: GlobalTypesHolder
+            ptr_depth: 1
+        name: Instantiate
+        postfix: override
+        raw_declaration: Type *Instantiate(ArenaAllocator *allocator, TypeRelation
+          *relation, GlobalTypesHolder *globalTypes) override
+        return_type:
+          name: Type
+          ptr_depth: 1
+  usings:
+  - name: NamedTupleMemberPool
+    type:
+      name: ArenaUnorderedMap
+      template_args:
+      - type:
+          name: LocalVariable
+          namespace: varbinder
+          ptr_depth: 1
+      - type:
+          name: StringView
+          namespace: util
+include:
+- '"util/es2pandaMacros.h"'
+- '"varbinder/variable.h"'
+- '"checker/types/ts/elementFlags.h"'
+- '"checker/types/ts/objectType.h"'
+macros:
+- name: ES2PANDA_COMPILER_CHECKER_TYPES_TS_TUPLE_TYPE_H

@@ -1,0 +1,99 @@
+es2panda:
+  class_definitions:
+  - enums:
+    - flags:
+      - AS
+      - JS
+      - TS
+      - ETS
+      - COUNT
+      kind: simple
+      name: Id
+      namespace: es2panda
+      parent_class_name: Language
+    name: Language
+    private: {}
+    public:
+      constructors:
+      - args:
+        - initializer_for: id_
+          name: id
+          type:
+            name: Id
+        name: Language
+        raw_declaration: constexpr Language(Id id)
+        return_type:
+          prefix: constexpr
+      fields:
+      - default_value: "(const Language &l) const\n    {\n        return id_ != l.id_"
+        name: operator!
+        type:
+          name: bool
+      methods:
+      - args: []
+        name: ToString
+        postfix: const
+        raw_declaration: constexpr std::string_view ToString() const
+        return_type:
+          name: string_view
+          namespace: std
+          prefix: constexpr
+      - args:
+        - name: str
+          type:
+            name: string_view
+            namespace: std
+        name: FromString
+        raw_declaration: static std::optional<Language> FromString(std::string_view
+          str)
+        return_type:
+          name: optional
+          namespace: std
+          prefix: static
+          template_args:
+          - type:
+              name: Language
+      - additional_attributes: get
+        args: []
+        name: GetId
+        postfix: const
+        raw_declaration: Id GetId() const
+        return_type:
+          name: Id
+      - args: []
+        name: IsDynamic
+        postfix: const
+        raw_declaration: bool IsDynamic() const
+        return_type:
+          name: bool
+      - args: []
+        name: IsValid
+        postfix: const
+        raw_declaration: bool IsValid() const
+        return_type:
+          name: bool
+      - args: []
+        name: All
+        raw_declaration: static std::array<Language, COUNT> All()
+        return_type:
+          name: array
+          namespace: std
+          prefix: static
+          template_args:
+          - type:
+              name: Language
+          - type:
+              name: COUNT
+include:
+- <algorithm>
+- <array>
+- <optional>
+- <string_view>
+- <tuple>
+- '"util/es2pandaMacros.h"'
+macros:
+- name: ES2PANDA_DYNAMIC_LANGUAGE_H
+std:
+  structs:
+  - members: []
+    name: hash<ark::es2panda::Language>

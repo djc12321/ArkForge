@@ -1,0 +1,52 @@
+include:
+- '"ir/expression.h"'
+ir:
+  class_definitions:
+  - extends: public Expression
+    known_macroses:
+    - NO_COPY_SEMANTIC(Literal);
+    - NO_MOVE_SEMANTIC(Literal);
+    name: Literal
+    private: {}
+    protected: {}
+    public:
+      constructors:
+      - args: []
+        name: Literal
+        postfix: = delete
+        raw_declaration: Literal() = delete
+      destructors:
+      - args: []
+        name: ~Literal
+        postfix: override = default
+        raw_declaration: ~Literal() override = default
+      methods:
+      - additional_attributes: get
+        args: []
+        name: IsLiteral
+        postfix: const noexcept override
+        raw_declaration: '[[nodiscard]] bool IsLiteral() const noexcept override'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsFolded
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsFolded() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: set
+        args:
+        - default_value: 'true'
+          name: folded
+          type:
+            name: bool
+        name: SetFolded
+        postfix: noexcept
+        raw_declaration: void SetFolded(bool folded = true) noexcept
+        return_type:
+          name: void
+macros:
+- name: ES2PANDA_IR_EXPRESSION_LITERAL_H

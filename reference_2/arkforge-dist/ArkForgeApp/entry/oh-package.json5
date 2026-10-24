@@ -1,0 +1,17 @@
+{
+  "name": "entry",
+  "version": "1.0.0",
+  "description": "Harmony Playground 主模块",
+  "main": "",
+  "author": "",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "libarkforge_cli.so": "file:./src/main/cpp/types/libarkforge_cli",
+    "libarkforge_resources.so": "file:./src/main/cpp/types/libarkforge_resources",
+    "libarkforge_script.so": "file:./src/main/cpp/types/libjsvm",
+    "libsigntool.so": "file:./src/main/cpp/types/libsigntool",
+    "libhdc_z.so": "file:./src/main/cpp/types/libhdc_z",
+    "libes2abc.so": "file:./src/main/cpp/types/libes2abc",
+    "libarkforge_dynamic.so": "file:./src/main/cpp/types/libarkforge_dynamic"
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "module": {
+    "name": "entry",
+    "type": "entry",
+    "description": "$string:module_desc",
+    "mainElement": "EntryAbility",
+    /*
+     * deviceTypes 声明支持的设备。这里只声明 tablet（平板）。
+     * 说明：本 App 不依赖「电脑桌面」能力，纯平板模式下即可运行。
+     */
+    "deviceTypes": [
+      "tablet",
+      "phone"
+    ],
+    "deliveryWithInstall": true,
+    "installationFree": false,
+    "pages": "$profile:main_pages",
+    "requestPermissions": [{ "name": "ohos.permission.INTERNET" }],
+    "abilities": [
+      {
+        "name": "EntryAbility",
+        "srcEntry": "./ets/entryability/EntryAbility.ets",
+        "description": "$string:ability_desc",
+        "label": "$string:ability_label",
+        "icon": "$media:app_icon",
+        "startWindowIcon": "$media:app_icon",
+        "startWindowBackground": "$color:start_window_background",
+        "exported": true,
+        "skills": [
+          {
+            "entities": [
+              "entity.system.home"
+            ],
+            "actions": [
+              "ohos.want.action.home"
+            ]
+          },
+          {
+            "entities": ["entity.system.browsable"],
+            "actions": ["ohos.want.action.viewData"],
+            "uris": [{"scheme":"arkforge","host":"signing","path":"return"}]
+          }
+        ]
+      },
+      {
+        "name": "StandaloneAbility",
+        "srcEntry": "./ets/entryability/StandaloneAbility.ets",
+        "description": "$string:standalone_desc",
+        "label": "$string:standalone_label",
+        "icon": "$media:app_icon",
+        "startWindowIcon": "$media:app_icon",
+        "startWindowBackground": "$color:start_window_background",
+        "exported": true,
+        "skills": [
+          {
+            "entities": [
+              "entity.system.home"
+            ],
+            "actions": [
+              "ohos.want.action.home"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

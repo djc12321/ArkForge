@@ -1,0 +1,645 @@
+es2panda:
+  class_definitions:
+  - class_definitions:
+    - name: Pattern
+      private: {}
+      public:
+        methods:
+        - args: []
+          name: Pattern
+          postfix: = default
+          raw_declaration: Pattern() = default
+        - args:
+          - name: value
+            type:
+              name: string
+              namespace: std
+          - name: base
+            type:
+              name: string
+              namespace: std
+          name: Pattern
+          raw_declaration: Pattern(std::string value, std::string base)
+        - args: []
+          name: IsPattern
+          postfix: const
+          raw_declaration: bool IsPattern() const
+          return_type:
+            name: bool
+        - args: []
+          name: GetSearchRoot
+          postfix: const
+          raw_declaration: std::string GetSearchRoot() const
+          return_type:
+            name: string
+            namespace: std
+        - args:
+          - name: path
+            type:
+              name: string
+              namespace: std
+              prefix: const
+              ref_depth: 1
+          name: Match
+          postfix: const
+          raw_declaration: bool Match(const std::string &path) const
+          return_type:
+            name: bool
+    - name: ExternalModuleData
+      private: {}
+      public:
+        methods:
+        - args:
+          - initializer_for: lang_
+            name: lang
+            type:
+              name: Language
+          - name: path
+            type:
+              name: string
+              namespace: std
+          - name: sourceFilePath
+            type:
+              name: string
+              namespace: std
+          - name: ohmUrl
+            type:
+              name: string
+              namespace: std
+          - name: mainFile
+            type:
+              name: string
+              namespace: std
+          - default_value: '{}'
+            name: alias
+            type:
+              name: vector
+              namespace: std
+              template_args:
+              - type:
+                  name: string
+                  namespace: std
+          name: ExternalModuleData
+          other_initializers:
+          - class_field: path_
+            init_value: std::move(path)
+          - class_field: sourceFilePath_
+            init_value: std::move(sourceFilePath)
+          - class_field: ohmUrl_
+            init_value: std::move(ohmUrl)
+          - class_field: mainFile_
+            init_value: std::move(mainFile)
+          - class_field: alias_
+            init_value: std::move(alias)
+          raw_declaration: "explicit ExternalModuleData(Language lang, std::string\
+            \ path, std::string sourceFilePath, std::string ohmUrl,\n            \
+            \                        std::string mainFile, std::vector<std::string>\
+            \ alias = {})"
+          return_type:
+            prefix: explicit
+        - additional_attributes: get
+          args: []
+          name: GetLanguage
+          postfix: const
+          raw_declaration: Language GetLanguage() const
+          return_type:
+            name: Language
+        - additional_attributes: get
+          args: []
+          name: Path
+          postfix: const
+          raw_declaration: const std::string &Path() const
+          return_type:
+            name: string
+            namespace: std
+            prefix: const
+            ref_depth: 1
+        - additional_attributes: get
+          args: []
+          name: SourceFilePath
+          postfix: const
+          raw_declaration: std::string_view SourceFilePath() const
+          return_type:
+            name: string_view
+            namespace: std
+        - additional_attributes: get
+          args: []
+          name: OhmUrl
+          postfix: const
+          raw_declaration: std::string_view OhmUrl() const
+          return_type:
+            name: string_view
+            namespace: std
+        - additional_attributes: get
+          args: []
+          name: MainFile
+          postfix: const
+          raw_declaration: std::string_view MainFile() const
+          return_type:
+            name: string_view
+            namespace: std
+        - additional_attributes: get
+          args: []
+          name: Alias
+          postfix: const
+          raw_declaration: const std::vector<std::string> &Alias() const
+          return_type:
+            name: vector
+            namespace: std
+            prefix: const
+            ref_depth: 1
+            template_args:
+            - type:
+                name: string
+                namespace: std
+    name: ArkTsConfig
+    private: {}
+    public:
+      constructors:
+      - args:
+        - initializer_for: configPath_
+          name: configPath
+          type:
+            name: string_view
+            namespace: std
+        - initializer_for: diagnosticEngine_
+          name: de
+          type:
+            name: DiagnosticEngine
+            namespace: util
+            ref_depth: 1
+        name: ArkTsConfig
+        raw_declaration: explicit ArkTsConfig(std::string_view configPath, util::DiagnosticEngine
+          &de)
+        return_type:
+          prefix: explicit
+      methods:
+      - args: []
+        name: Parse
+        raw_declaration: bool Parse()
+        return_type:
+          name: bool
+      - args:
+        - name: path
+          type:
+            name: string_view
+            namespace: std
+        - default_value: 'false'
+          name: isDynamic
+          type:
+            name: bool
+        - default_value: nullptr
+          name: fsQueryCache
+          type:
+            name: FsQueryCache
+            namespace: util
+            ptr_depth: 1
+        name: ResolvePath
+        postfix: const
+        raw_declaration: "std::optional<std::string> ResolvePath(std::string_view\
+          \ path, bool isDynamic = false,\n                                      \
+          \     util::FsQueryCache *fsQueryCache = nullptr) const"
+        return_type:
+          name: optional
+          namespace: std
+          template_args:
+          - type:
+              name: string
+              namespace: std
+      - args:
+        - name: stdlib
+          type:
+            name: string
+            namespace: std
+            prefix: const
+            ref_depth: 1
+        name: FixupWithStdlibOption
+        raw_declaration: void FixupWithStdlibOption(const std::string &stdlib)
+        return_type:
+          name: void
+      - args: []
+        name: FixupWithoutStdlibOption
+        raw_declaration: void FixupWithoutStdlibOption()
+        return_type:
+          name: void
+      - args: []
+        name: ResolveAllDependenciesInArkTsConfig
+        raw_declaration: void ResolveAllDependenciesInArkTsConfig()
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: ConfigPath
+        postfix: const
+        raw_declaration: const std::string &ConfigPath() const
+        return_type:
+          name: string
+          namespace: std
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Package
+        postfix: const
+        raw_declaration: const std::string &Package() const
+        return_type:
+          name: string
+          namespace: std
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: get
+        args: []
+        name: BaseUrl
+        postfix: const
+        raw_declaration: const std::string &BaseUrl() const
+        return_type:
+          name: string
+          namespace: std
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: get
+        args: []
+        name: RootDir
+        postfix: const
+        raw_declaration: const std::string &RootDir() const
+        return_type:
+          name: string
+          namespace: std
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: get
+        args: []
+        name: OutDir
+        postfix: const
+        raw_declaration: const std::string &OutDir() const
+        return_type:
+          name: string
+          namespace: std
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: get
+        args: []
+        name: CacheDir
+        postfix: const
+        raw_declaration: const std::string &CacheDir() const
+        return_type:
+          name: string
+          namespace: std
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: get
+        args: []
+        name: DeclgenV2OutPath
+        postfix: const
+        raw_declaration: const std::string &DeclgenV2OutPath() const
+        return_type:
+          name: string
+          namespace: std
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Files
+        postfix: const
+        raw_declaration: const std::vector<std::string> &Files() const
+        return_type:
+          name: vector
+          namespace: std
+          prefix: const
+          ref_depth: 1
+          template_args:
+          - type:
+              name: string
+              namespace: std
+      - additional_attributes: get
+        args: []
+        name: UseUrl
+        postfix: const
+        raw_declaration: const bool &UseUrl() const
+        return_type:
+          name: bool
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Paths
+        postfix: const
+        raw_declaration: const PathsMap &Paths() const
+        return_type:
+          name: PathsMap
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Dependencies
+        postfix: const
+        raw_declaration: const std::map<std::string, ExternalModuleData, CompareByLength>
+          &Dependencies() const
+        return_type:
+          name: map
+          namespace: std
+          prefix: const
+          ref_depth: 1
+          template_args:
+          - type:
+              name: string
+              namespace: std
+          - type:
+              name: ExternalModuleData
+          - type:
+              name: CompareByLength
+      - additional_attributes: get
+        args: []
+        name: SourcePathMap
+        postfix: const
+        raw_declaration: const std::map<std::string_view, std::string_view> &SourcePathMap()
+          const
+        return_type:
+          name: map
+          namespace: std
+          prefix: const
+          ref_depth: 1
+          template_args:
+          - type:
+              name: string_view
+              namespace: std
+          - type:
+              name: string_view
+              namespace: std
+      - additional_attributes: get
+        args: []
+        name: MockMap
+        postfix: const
+        raw_declaration: const std::map<std::string, std::string, std::less<>> &MockMap()
+          const
+        return_type:
+          name: map
+          namespace: std
+          prefix: const
+          ref_depth: 1
+          template_args:
+          - type:
+              name: string
+              namespace: std
+          - type:
+              name: string
+              namespace: std
+          - type:
+              name: less
+              namespace: std
+              template_args: []
+      - additional_attributes: get
+        args: []
+        name: MockSources
+        postfix: const
+        raw_declaration: const std::set<std::string, std::less<>> &MockSources() const
+        return_type:
+          name: set
+          namespace: std
+          prefix: const
+          ref_depth: 1
+          template_args:
+          - type:
+              name: string
+              namespace: std
+          - type:
+              name: less
+              namespace: std
+              template_args: []
+      - args:
+        - name: importString
+          type:
+            name: string_view
+            namespace: std
+        name: FindInDependencies
+        postfix: const
+        raw_declaration: DependenciesLookupResult FindInDependencies(std::string_view
+          importString) const
+        return_type:
+          name: DependenciesLookupResult
+      - additional_attributes: get
+        args:
+        - name: importString
+          type:
+            name: string
+            namespace: std
+            prefix: const
+            ref_depth: 1
+        name: FindInDependencies
+        postfix: const
+        raw_declaration: DependenciesLookupResult FindInDependencies(const std::string
+          &importString) const
+        return_type:
+          name: DependenciesLookupResult
+      - additional_attributes: get
+        args: []
+        name: Include
+        postfix: const
+        raw_declaration: const std::vector<Pattern> &Include() const
+        return_type:
+          name: vector
+          namespace: std
+          prefix: const
+          ref_depth: 1
+          template_args:
+          - type:
+              name: Pattern
+      - additional_attributes: get
+        args: []
+        name: Exclude
+        postfix: const
+        raw_declaration: const std::vector<Pattern> &Exclude() const
+        return_type:
+          name: vector
+          namespace: std
+          prefix: const
+          ref_depth: 1
+          template_args:
+          - type:
+              name: Pattern
+      - args:
+        - name: src
+          type:
+            name: path
+            namespace: fs
+            prefix: const
+            ref_depth: 1
+        - name: rootDir
+          type:
+            name: path
+            namespace: fs
+            prefix: const
+            ref_depth: 1
+        - name: outDir
+          type:
+            name: path
+            namespace: fs
+            prefix: const
+            ref_depth: 1
+        name: ComputeDestination
+        postfix: const
+        raw_declaration: fs::path ComputeDestination(const fs::path &src, const fs::path
+          &rootDir, const fs::path &outDir) const
+        return_type:
+          name: path
+          namespace: fs
+      - args:
+        - name: cond
+          type:
+            name: bool
+        - name: diag
+          type:
+            name: DiagnosticKind
+            namespace: diagnostic
+            prefix: const
+            ref_depth: 1
+        - name: params
+          type:
+            name: DiagnosticMessageParams
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        name: Check
+        postfix: const
+        raw_declaration: bool Check(bool cond, const diagnostic::DiagnosticKind &diag,
+          const util::DiagnosticMessageParams &params) const
+        return_type:
+          name: bool
+      - args: []
+        name: GenerateSourcePathMap
+        raw_declaration: void GenerateSourcePathMap()
+        return_type:
+          name: void
+      usings:
+      - name: DependenciesLookupResult
+        type:
+          name: optional
+          namespace: std
+          other_modifiers: const
+          template_args:
+          - type:
+              name: pair
+              namespace: std
+              other_modifiers: const
+              template_args:
+              - type:
+                  name: string
+                  namespace: std
+                  prefix: const
+                  ref_depth: 1
+              - type:
+                  name: ExternalModuleData
+                  prefix: const
+                  ref_depth: 1
+    usings:
+    - name: PathsMap
+      type:
+        name: map
+        namespace: std
+        template_args:
+        - type:
+            name: string
+            namespace: std
+        - type:
+            name: vector
+            namespace: std
+            template_args:
+            - type:
+                name: string
+                namespace: std
+        - type:
+            name: CompareByLength
+  functions:
+  - args:
+    - name: arktsConfig
+      type:
+        name: ArkTsConfig
+        prefix: const
+        ref_depth: 1
+    name: FindProjectSources
+    raw_declaration: std::vector<std::pair<std::string, std::string>> FindProjectSources(const
+      ArkTsConfig &arktsConfig)
+    return_type:
+      name: vector
+      namespace: std
+      template_args:
+      - type:
+          name: pair
+          namespace: std
+          template_args:
+          - type:
+              name: string
+              namespace: std
+          - type:
+              name: string
+              namespace: std
+  - args:
+    - name: a
+      type:
+        name: string
+        namespace: std
+        prefix: const
+        ref_depth: 1
+    - name: b
+      type:
+        name: string
+        namespace: std
+        prefix: const
+        ref_depth: 1
+    name: JoinPaths
+    raw_declaration: std::string JoinPaths(const std::string &a, const std::string
+      &b)
+    return_type:
+      name: string
+      namespace: std
+  - args:
+    - name: path
+      type:
+        name: string
+        namespace: std
+        prefix: const
+        ref_depth: 1
+    name: ParentPath
+    raw_declaration: std::string ParentPath(const std::string &path)
+    return_type:
+      name: string
+      namespace: std
+  structs:
+  - members:
+    - default_value: void
+      name: is_transparent
+      type:
+        name: using
+    name: CompareByLength
+include:
+- <map>
+- <memory>
+- <set>
+- <string>
+- <unordered_map>
+- <unordered_set>
+- <vector>
+- '"util/language.h"'
+- '"util/diagnostic.h"'
+- '"libarkbase/utils/json_builder.h"'
+- '"libarkbase/utils/json_parser.h"'
+- <dirent.h>
+- <sys/types.h>
+- <filesystem>
+- <experimental/filesystem>
+macros:
+- name: ES2PANDA_AOT_ARKTSCONFIG_H
+- name: ARKTSCONFIG_USE_FILESYSTEM
+usings:
+- name: fs
+  type:
+    name: filesystem
+    namespace: std
+- name: fs
+  type:
+    name: filesystem
+    namespace: std::experimental
+util:
+  class_forward_declaration:
+  - DiagnosticEngine
+  - FsQueryCache

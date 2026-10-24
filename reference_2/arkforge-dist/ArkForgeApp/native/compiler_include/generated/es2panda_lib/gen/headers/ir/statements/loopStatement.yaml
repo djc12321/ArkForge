@@ -1,0 +1,147 @@
+include:
+- '"varbinder/scope.h"'
+- '"ir/statement.h"'
+ir:
+  class_definitions:
+  - extends: public Statement
+    known_macroses:
+    - NO_COPY_SEMANTIC(LoopStatement);
+    - NO_MOVE_SEMANTIC(LoopStatement);
+    name: LoopStatement
+    private: {}
+    protected: {}
+    public:
+      constructors:
+      - args: []
+        name: LoopStatement
+        postfix: = delete
+        raw_declaration: LoopStatement() = delete
+      destructors:
+      - args: []
+        name: ~LoopStatement
+        postfix: override = default
+        raw_declaration: ~LoopStatement() override = default
+      methods:
+      - additional_attributes: get
+        args: []
+        name: IsScopeBearer
+        postfix: const noexcept override
+        raw_declaration: '[[nodiscard]] bool IsScopeBearer() const noexcept override'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: Scope
+        postfix: const noexcept final
+        raw_declaration: '[[nodiscard]] varbinder::LoopScope *Scope() const noexcept
+          final'
+        return_type:
+          name: LoopScope
+          namespace: varbinder
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: scope
+          type:
+            name: LoopScope
+            namespace: varbinder
+            ptr_depth: 1
+        name: SetScope
+        raw_declaration: void SetScope(varbinder::LoopScope *scope)
+        return_type:
+          name: void
+      - args: []
+        name: ClearScope
+        postfix: noexcept override
+        raw_declaration: void ClearScope() noexcept override
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: NodeTransformer
+            prefix: '[[maybe_unused]] const'
+            ref_depth: 1
+        - name: transformationName
+          type:
+            name: string_view
+            namespace: std
+            other_modifiers: const
+            postfix: const
+            prefix: '[[maybe_unused]]'
+        name: TransformChildren
+        postfix: override
+        raw_declaration: "void TransformChildren([[maybe_unused]] const NodeTransformer\
+          \ &cb,\n                           [[maybe_unused]] std::string_view const\
+          \ transformationName) override"
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: NodeTraverser
+            prefix: '[[maybe_unused]] const'
+            ref_depth: 1
+        name: Iterate
+        postfix: const override
+        raw_declaration: void Iterate([[maybe_unused]] const NodeTraverser &cb) const
+          override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: AstDumper
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump([[maybe_unused]] AstDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: pg
+          type:
+            name: PandaGen
+            namespace: compiler
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile([[maybe_unused]] compiler::PandaGen *pg) const
+          override
+        return_type:
+          name: void
+      - args:
+        - name: checker
+          type:
+            name: TSChecker
+            namespace: checker
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::Type *Check([[maybe_unused]] checker::TSChecker
+          *checker) override
+        return_type:
+          name: Type
+          namespace: checker
+          ptr_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            namespace: checker
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::VerifiedType Check([[maybe_unused]] checker::ETSChecker
+          *checker) override
+        return_type:
+          name: VerifiedType
+          namespace: checker
+macros:
+- name: ES2PANDA_IR_STATEMENT_LOOP_STATEMENT_H

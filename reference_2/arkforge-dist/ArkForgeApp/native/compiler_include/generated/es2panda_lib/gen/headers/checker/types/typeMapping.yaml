@@ -1,0 +1,124 @@
+include:
+- '"typeFlag.h"'
+macros:
+- name: ES2PANDA_COMPILER_CHECKER_TYPES_TYPE_MAPPING_H
+- arguments: _
+  name: TYPE_MAPPING
+  values:
+  - - TypeFlag::ARRAY
+    - ArrayType
+  - - TypeFlag::ANY
+    - AnyType
+  - - TypeFlag::BIGINT_LITERAL
+    - BigintLiteralType
+  - - TypeFlag::NUMBER
+    - NumberType
+  - - TypeFlag::STRING
+    - StringType
+  - - TypeFlag::BOOLEAN
+    - BooleanType
+  - - TypeFlag::VOID
+    - VoidType
+  - - TypeFlag::NULL_TYPE
+    - NullType
+  - - TypeFlag::UNDEFINED
+    - UndefinedType
+  - - TypeFlag::UNKNOWN
+    - UnknownType
+  - - TypeFlag::NEVER
+    - NeverType
+  - - TypeFlag::UNION
+    - UnionType
+  - - TypeFlag::OBJECT
+    - ObjectType
+  - - TypeFlag::BIGINT
+    - BigintType
+  - - TypeFlag::BOOLEAN_LITERAL
+    - BooleanLiteralType
+  - - TypeFlag::NUMBER_LITERAL
+    - NumberLiteralType
+  - - TypeFlag::STRING_LITERAL
+    - StringLiteralType
+  - - TypeFlag::ENUM
+    - EnumType
+  - - TypeFlag::ENUM_LITERAL
+    - EnumLiteralType
+  - - TypeFlag::TYPE_PARAMETER
+    - TypeParameter
+  - - TypeFlag::TYPE_REFERENCE
+    - TypeReference
+  - - TypeFlag::BYTE
+    - ByteType
+  - - TypeFlag::SHORT
+    - ShortType
+  - - TypeFlag::INT
+    - IntType
+  - - TypeFlag::LONG
+    - LongType
+  - - TypeFlag::FLOAT
+    - FloatType
+  - - TypeFlag::DOUBLE
+    - DoubleType
+  - - TypeFlag::CHAR
+    - CharType
+  - - TypeFlag::ETS_BOOLEAN
+    - ETSBooleanType
+  - - TypeFlag::ETS_VOID
+    - ETSVoidType
+  - - TypeFlag::ETS_NULL
+    - ETSNullType
+  - - TypeFlag::ETS_UNDEFINED
+    - ETSUndefinedType
+  - - TypeFlag::ETS_ANY
+    - ETSAnyType
+  - - TypeFlag::ETS_NEVER
+    - ETSNeverType
+  - - TypeFlag::FUNCTION
+    - ETSFunctionType
+  - - TypeFlag::ETS_OBJECT
+    - ETSObjectType
+  - - TypeFlag::ETS_ARRAY
+    - ETSArrayType
+  - - TypeFlag::ETS_UNION
+    - ETSUnionType
+  - - TypeFlag::NON_PRIMITIVE
+    - NonPrimitiveType
+  - - TypeFlag::ETS_WILDCARD
+    - ETSWildcardType
+  - - TypeFlag::ETS_TYPE_PARAMETER
+    - ETSTypeParameter
+  - - TypeFlag::ETS_NONNULLISH
+    - ETSNonNullishType
+  - - TypeFlag::ETS_READONLY
+    - ETSReadonlyType
+  - - TypeFlag::ETS_AWAITED
+    - ETSAwaitedType
+  - - TypeFlag::ETS_RETURN_TYPE_UTILITY
+    - ETSReturnTypeUtilityType
+  - - TypeFlag::ETS_NUMERIC_ENUM
+    - ETSNumericEnumType
+  - - TypeFlag::ETS_STRING_ENUM
+    - ETSStringEnumType
+  - - TypeFlag::ETS_ENUM
+    - ETSEnumType
+  - - TypeFlag::ETS_EXTENSION_FUNC_HELPER
+    - ETSExtensionFuncHelperType
+  - - TypeFlag::ETS_TUPLE
+    - ETSTupleType
+  - - TypeFlag::ETS_PARTIAL_TYPE_PARAMETER
+    - ETSPartialTypeParameter
+  - - TypeFlag::TYPE_ERROR
+    - TypeError
+  - - TypeFlag::ETS_TYPE_ALIAS
+    - ETSTypeAliasType
+- arguments: _
+  name: OBJECT_TYPE_MAPPING
+  values:
+  - - ObjectType::ObjectTypeKind::FUNCTION
+    - FunctionType
+  - - ObjectType::ObjectTypeKind::TUPLE
+    - TupleType
+  - - ObjectType::ObjectTypeKind::LITERAL
+    - ObjectLiteralType
+  - - ObjectType::ObjectTypeKind::INTERFACE
+    - InterfaceType

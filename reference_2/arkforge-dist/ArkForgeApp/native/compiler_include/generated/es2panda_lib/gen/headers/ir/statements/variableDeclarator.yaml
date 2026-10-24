@@ -1,0 +1,259 @@
+checker:
+  class_forward_declaration:
+  - TSAnalyzer
+include:
+- '"ir/expression.h"'
+- '"ir/statement.h"'
+ir:
+  class_definitions:
+  - extends: public TypedStatement
+    friends:
+    - checker::TSAnalyzer
+    name: VariableDeclarator
+    private: {}
+    public:
+      constructors:
+      - args:
+        - initializer_for: flag_
+          name: flag
+          type:
+            name: VariableDeclaratorFlag
+        - initializer_for: id_
+          name: ident
+          type:
+            name: Expression
+            ptr_depth: 1
+        name: VariableDeclarator
+        other_initializers:
+        - class_field: TypedStatement
+          init_value: AstNodeType::VARIABLE_DECLARATOR
+        raw_declaration: explicit VariableDeclarator(VariableDeclaratorFlag flag,
+          Expression *ident)
+        return_type:
+          prefix: explicit
+      - args:
+        - initializer_for: flag_
+          name: flag
+          type:
+            name: VariableDeclaratorFlag
+        - initializer_for: id_
+          name: ident
+          type:
+            name: Expression
+            ptr_depth: 1
+        - initializer_for: init_
+          name: init
+          type:
+            name: Expression
+            ptr_depth: 1
+        name: VariableDeclarator
+        other_initializers:
+        - class_field: TypedStatement
+          init_value: AstNodeType::VARIABLE_DECLARATOR
+        raw_declaration: explicit VariableDeclarator(VariableDeclaratorFlag flag,
+          Expression *ident, Expression *init)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Init
+        raw_declaration: Expression *Init()
+        return_type:
+          name: Expression
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Init
+        postfix: const
+        raw_declaration: const Expression *Init() const
+        return_type:
+          name: Expression
+          prefix: const
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: init
+          type:
+            name: Expression
+            ptr_depth: 1
+        name: SetInit
+        raw_declaration: void SetInit(Expression *init)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Id
+        raw_declaration: Expression *Id()
+        return_type:
+          name: Expression
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Id
+        postfix: const
+        raw_declaration: const Expression *Id() const
+        return_type:
+          name: Expression
+          prefix: const
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: id
+          type:
+            name: Expression
+            ptr_depth: 1
+        name: SetId
+        raw_declaration: void SetId(Expression *id)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Flag
+        raw_declaration: VariableDeclaratorFlag Flag()
+        return_type:
+          name: VariableDeclaratorFlag
+      - args:
+        - name: cb
+          type:
+            name: NodeTransformer
+            prefix: const
+            ref_depth: 1
+        - name: transformationName
+          type:
+            name: string_view
+            namespace: std
+        name: TransformChildren
+        postfix: override
+        raw_declaration: void TransformChildren(const NodeTransformer &cb, std::string_view
+          transformationName) override
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: NodeTraverser
+            prefix: const
+            ref_depth: 1
+        name: Iterate
+        postfix: const override
+        raw_declaration: void Iterate(const NodeTraverser &cb) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: AstDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::AstDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: SrcDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::SrcDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: pg
+          type:
+            name: PandaGen
+            namespace: compiler
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile([[maybe_unused]] compiler::PandaGen *pg) const
+          override
+        return_type:
+          name: void
+      - args:
+        - name: etsg
+          type:
+            name: ETSGen
+            namespace: compiler
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile([[maybe_unused]] compiler::ETSGen *etsg) const
+          override
+        return_type:
+          name: void
+      - args:
+        - name: checker
+          type:
+            name: TSChecker
+            namespace: checker
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::Type *Check([[maybe_unused]] checker::TSChecker
+          *checker) override
+        return_type:
+          name: Type
+          namespace: checker
+          ptr_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            namespace: checker
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::VerifiedType Check([[maybe_unused]] checker::ETSChecker
+          *checker) override
+        return_type:
+          name: VerifiedType
+          namespace: checker
+      - args:
+        - name: v
+          type:
+            name: ASTVisitorT
+            ptr_depth: 1
+        name: Accept
+        postfix: override
+        raw_declaration: void Accept(ASTVisitorT *v) override
+        return_type:
+          name: void
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: parent
+          type:
+            name: AstNode
+            ptr_depth: 1
+        name: Clone
+        postfix: override
+        raw_declaration: '[[nodiscard]] VariableDeclarator *Clone(ArenaAllocator *allocator,
+          AstNode *parent) override'
+        return_type:
+          name: VariableDeclarator
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+  class_forward_declaration:
+  - Expression
+  enums:
+  - flags:
+    - LET
+    - CONST
+    - VAR
+    - UNKNOWN
+    kind: simple
+    name: VariableDeclaratorFlag
+    namespace: ir
+macros:
+- name: ES2PANDA_IR_STATEMENT_VARIABLE_DECLARATOR_H

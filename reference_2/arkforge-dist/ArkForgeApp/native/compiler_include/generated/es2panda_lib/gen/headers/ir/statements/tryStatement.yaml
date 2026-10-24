@@ -1,0 +1,396 @@
+checker:
+  class_forward_declaration:
+  - TSAnalyzer
+  - ETSAnalyzer
+compiler:
+  class_forward_declaration:
+  - JSCompiler
+  - ETSCompiler
+  - PandaGen
+  - TryLabelSet
+  - TryContext
+include:
+- '"compiler/core/labelPair.h"'
+- '"ir/statement.h"'
+- '"util/helpers.h"'
+- <memory>
+ir:
+  class_definitions:
+  - extends: public Statement
+    friends:
+    - checker::TSAnalyzer
+    - checker::ETSAnalyzer
+    - compiler::JSCompiler
+    - compiler::ETSCompiler
+    name: TryStatement
+    private: {}
+    public:
+      constructors:
+      - args:
+        - initializer_for: block_
+          name: block
+          type:
+            name: BlockStatement
+            ptr_depth: 1
+        - name: catchClauses
+          type:
+            name: ArenaVector
+            ref_depth: 2
+            template_args:
+            - type:
+                name: CatchClause
+                ptr_depth: 1
+        - initializer_for: finalizer_
+          name: finalizer
+          type:
+            name: BlockStatement
+            ptr_depth: 1
+        - name: finalizerInsertions
+          type:
+            name: ArenaVector
+            other_modifiers: const
+            template_args:
+            - type:
+                name: pair
+                namespace: std
+                other_modifiers: const
+                template_args:
+                - type:
+                    name: LabelPair
+                    namespace: compiler
+                - type:
+                    name: Statement
+                    prefix: const
+                    ptr_depth: 1
+        name: TryStatement
+        other_initializers:
+        - class_field: Statement
+          init_value: AstNodeType::TRY_STATEMENT
+        - class_field: catchClauses_
+          init_value: std::move(catchClauses)
+        - class_field: finalizerInsertions_
+          init_value: std::move(finalizerInsertions)
+        raw_declaration: "explicit TryStatement(BlockStatement *block, ArenaVector<CatchClause\
+          \ *> &&catchClauses, BlockStatement *finalizer,\n                      \
+          \    ArenaVector<std::pair<compiler::LabelPair, const Statement *>> finalizerInsertions)"
+        return_type:
+          prefix: explicit
+      - args:
+        - initializer_for: block_
+          name: block
+          type:
+            name: BlockStatement
+            ptr_depth: 1
+        - name: catchClauses
+          type:
+            name: ArenaVector
+            ref_depth: 2
+            template_args:
+            - type:
+                name: CatchClause
+                ptr_depth: 1
+        - initializer_for: finalizer_
+          name: finalizer
+          type:
+            name: BlockStatement
+            ptr_depth: 1
+        - name: finalizerInsertionsLabelPair
+          type:
+            name: ArenaVector
+            template_args:
+            - type:
+                name: LabelPair
+                namespace: compiler
+        - name: finalizerInsertionsStatement
+          type:
+            name: ArenaVector
+            template_args:
+            - type:
+                name: Statement
+                ptr_depth: 1
+        name: TryStatement
+        other_initializers:
+        - class_field: Statement
+          init_value: AstNodeType::TRY_STATEMENT
+        - class_field: catchClauses_
+          init_value: std::move(catchClauses)
+        - class_field: finalizerInsertions_
+          init_value: catchClauses_.get_allocator()
+        raw_declaration: "explicit TryStatement(BlockStatement *block, ArenaVector<CatchClause\
+          \ *> &&catchClauses, BlockStatement *finalizer,\n                      \
+          \    ArenaVector<compiler::LabelPair> finalizerInsertionsLabelPair,\n  \
+          \                        ArenaVector<Statement *> finalizerInsertionsStatement)"
+        return_type:
+          prefix: explicit
+      - args:
+        - name: other
+          type:
+            name: TryStatement
+            other_modifiers: const
+            ref_depth: 1
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        name: TryStatement
+        raw_declaration: explicit TryStatement(TryStatement const &other, ArenaAllocator
+          *allocator)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: FinallyBlock
+        postfix: const
+        raw_declaration: BlockStatement *FinallyBlock() const
+        return_type:
+          name: BlockStatement
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: finallyBlock
+          type:
+            name: BlockStatement
+            ptr_depth: 1
+        name: SetFinallyBlock
+        raw_declaration: void SetFinallyBlock(BlockStatement *finallyBlock)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Block
+        postfix: const
+        raw_declaration: BlockStatement *Block() const
+        return_type:
+          name: BlockStatement
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: block
+          type:
+            name: BlockStatement
+            ptr_depth: 1
+        name: SetBlock
+        raw_declaration: void SetBlock(BlockStatement *block)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: insertion
+          type:
+            name: LabelPair
+            namespace: compiler
+        - name: insertionStmt
+          type:
+            name: Statement
+            prefix: const
+            ptr_depth: 1
+        name: AddFinalizerInsertion
+        raw_declaration: "std::pair<compiler::LabelPair, const Statement *> AddFinalizerInsertion(compiler::LabelPair\
+          \ insertion,\n                                                         \
+          \                   const Statement *insertionStmt)"
+        return_type:
+          name: pair
+          namespace: std
+          other_modifiers: const
+          template_args:
+          - type:
+              name: LabelPair
+              namespace: compiler
+          - type:
+              name: Statement
+              prefix: const
+              ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: HasFinalizer
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool HasFinalizer() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - args: []
+        name: HasDefaultCatchClause
+        postfix: const
+        raw_declaration: bool HasDefaultCatchClause() const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args: []
+        name: CatchClauses
+        postfix: const
+        raw_declaration: const ArenaVector<CatchClause *> &CatchClauses() const
+        return_type:
+          name: ArenaVector
+          prefix: const
+          ref_depth: 1
+          template_args:
+          - type:
+              name: CatchClause
+              ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: catchClausesList
+          type:
+            name: ArenaVector
+            ref_depth: 2
+            template_args:
+            - type:
+                name: CatchClause
+                ptr_depth: 1
+        name: SetCatchClauses
+        raw_declaration: void SetCatchClauses(ArenaVector<CatchClause *> &&catchClausesList)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: FinallyCanCompleteNormally
+        postfix: const
+        raw_declaration: bool FinallyCanCompleteNormally() const
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - name: finallyCanCompleteNormally
+          type:
+            name: bool
+        name: SetFinallyCanCompleteNormally
+        raw_declaration: void SetFinallyCanCompleteNormally(bool finallyCanCompleteNormally)
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: NodeTransformer
+            prefix: const
+            ref_depth: 1
+        - name: transformationName
+          type:
+            name: string_view
+            namespace: std
+        name: TransformChildren
+        postfix: override
+        raw_declaration: void TransformChildren(const NodeTransformer &cb, std::string_view
+          transformationName) override
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: NodeTraverser
+            prefix: const
+            ref_depth: 1
+        name: Iterate
+        postfix: const override
+        raw_declaration: void Iterate(const NodeTraverser &cb) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: AstDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::AstDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: SrcDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::SrcDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: pg
+          type:
+            name: PandaGen
+            namespace: compiler
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile([[maybe_unused]] compiler::PandaGen *pg) const
+          override
+        return_type:
+          name: void
+      - args:
+        - name: etsg
+          type:
+            name: ETSGen
+            namespace: compiler
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile([[maybe_unused]] compiler::ETSGen *etsg) const
+          override
+        return_type:
+          name: void
+      - args:
+        - name: checker
+          type:
+            name: TSChecker
+            namespace: checker
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::Type *Check([[maybe_unused]] checker::TSChecker
+          *checker) override
+        return_type:
+          name: Type
+          namespace: checker
+          ptr_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            namespace: checker
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::VerifiedType Check([[maybe_unused]] checker::ETSChecker
+          *checker) override
+        return_type:
+          name: VerifiedType
+          namespace: checker
+      - args:
+        - name: v
+          type:
+            name: ASTVisitorT
+            ptr_depth: 1
+        name: Accept
+        postfix: override
+        raw_declaration: void Accept(ASTVisitorT *v) override
+        return_type:
+          name: void
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: parent
+          type:
+            name: AstNode
+            ptr_depth: 1
+        name: Clone
+        postfix: override
+        raw_declaration: '[[nodiscard]] TryStatement *Clone(ArenaAllocator *allocator,
+          AstNode *parent) override'
+        return_type:
+          name: TryStatement
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+  class_forward_declaration:
+  - BlockStatement
+  - CatchClause
+macros:
+- name: ES2PANDA_IR_STATEMENT_TRY_STATEMENT_H

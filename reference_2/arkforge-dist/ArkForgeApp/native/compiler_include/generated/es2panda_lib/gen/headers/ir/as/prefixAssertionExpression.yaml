@@ -1,0 +1,155 @@
+include:
+- '"ir/expression.h"'
+ir:
+  class_definitions:
+  - extends: public Expression
+    name: PrefixAssertionExpression
+    private: {}
+    public:
+      constructors:
+      - args:
+        - initializer_for: expr_
+          name: expr
+          type:
+            name: Expression
+            ptr_depth: 1
+        - initializer_for: type_
+          name: type
+          type:
+            name: TypeNode
+            ptr_depth: 1
+        name: PrefixAssertionExpression
+        other_initializers:
+        - class_field: Expression
+          init_value: AstNodeType::PREFIX_ASSERTION_EXPRESSION
+        raw_declaration: explicit PrefixAssertionExpression(Expression *expr, TypeNode
+          *type)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Expr
+        postfix: const
+        raw_declaration: const Expression *Expr() const
+        return_type:
+          name: Expression
+          prefix: const
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Type
+        postfix: const
+        raw_declaration: const TypeNode *Type() const
+        return_type:
+          name: TypeNode
+          prefix: const
+          ptr_depth: 1
+      - args:
+        - name: cb
+          type:
+            name: NodeTransformer
+            prefix: const
+            ref_depth: 1
+        - name: transformationName
+          type:
+            name: string_view
+            namespace: std
+        name: TransformChildren
+        postfix: override
+        raw_declaration: void TransformChildren(const NodeTransformer &cb, std::string_view
+          transformationName) override
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: NodeTraverser
+            prefix: const
+            ref_depth: 1
+        name: Iterate
+        postfix: const override
+        raw_declaration: void Iterate(const NodeTraverser &cb) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: AstDumper
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(AstDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: SrcDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::SrcDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: pg
+          type:
+            name: PandaGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::PandaGen *pg) const override
+        return_type:
+          name: void
+      - args:
+        - name: etsg
+          type:
+            name: ETSGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::ETSGen *etsg) const override
+        return_type:
+          name: void
+      - args:
+        - name: checker
+          type:
+            name: TSChecker
+            namespace: checker
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::Type *Check(checker::TSChecker *checker) override
+        return_type:
+          name: Type
+          namespace: checker
+          ptr_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            namespace: checker
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::VerifiedType Check(checker::ETSChecker *checker)
+          override
+        return_type:
+          name: VerifiedType
+          namespace: checker
+      - args:
+        - name: v
+          type:
+            name: ASTVisitorT
+            ptr_depth: 1
+        name: Accept
+        postfix: override
+        raw_declaration: void Accept(ASTVisitorT *v) override
+        return_type:
+          name: void
+macros:
+- name: ES2PANDA_IR_PREFIX_ASSERTION_EXPRESSION_H

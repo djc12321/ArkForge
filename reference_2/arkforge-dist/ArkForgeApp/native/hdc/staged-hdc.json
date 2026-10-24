@@ -1,0 +1,5 @@
+{
+  "sha256": "74e47393f70058aedc5f9e008937c6768a66b571a46b0e2f966d594e6fb3ca6e",
+  "upstreamCommit": "10e867eb30f43b605089458be20fd85e943a327d",
+  "transport": "TCP only; normal daemon authentication retained"
+}

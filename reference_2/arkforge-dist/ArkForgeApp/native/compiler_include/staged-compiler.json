@@ -1,0 +1,122 @@
+[
+  {
+    "name": "libes2panda-public.so",
+    "sha256": "2fa7c5674b3cc069150311b8b11889f328f96b662c3d8cfd38b990f10273be7c",
+    "needed": [
+      "libes2panda-lib.so",
+      "libarkbytecodeopt.so",
+      "libarkcompiler.so",
+      "libhmicuuc.z.so",
+      "libarkassembler.so",
+      "libarkfile.so",
+      "libarkziparchive.so",
+      "libarkbase.so",
+      "libc_secshared.so",
+      "libc.so"
+    ]
+  },
+  {
+    "name": "libc_secshared.so",
+    "sha256": "1b49d1d65e3fa1c17a932cb15bb0e912fbbaeda43a14cc2f3f78bdf0c87543ec",
+    "needed": [
+      "libc.so"
+    ]
+  },
+  {
+    "name": "libarkbase.so",
+    "sha256": "49128965e8bd146c7faf040724d775c119b783876eb7dd4529ae976a10b98cb7",
+    "needed": [
+      "libc_secshared.so",
+      "libc.so"
+    ]
+  },
+  {
+    "name": "libarkziparchive.so",
+    "sha256": "44ca38d0d202c7f235ab0d0147357c5937195abd24780da55144dd6a26468807",
+    "needed": [
+      "libarkbase.so",
+      "libc_secshared.so",
+      "libc.so"
+    ]
+  },
+  {
+    "name": "libarkfile.so",
+    "sha256": "890a00dc4601098da28fb678271c07f39146d65cd6882eefbe5caf7ba7f13519",
+    "needed": [
+      "libarkziparchive.so",
+      "libarkbase.so",
+      "libc_secshared.so",
+      "libc.so"
+    ]
+  },
+  {
+    "name": "libarkassembler.so",
+    "sha256": "07d5c9ef9d78c9cf9166e7d9a117c2774f515f22a6f88fdfe51ba1244e85f844",
+    "needed": [
+      "libarkfile.so",
+      "libarkziparchive.so",
+      "libarkbase.so",
+      "libc_secshared.so",
+      "libc.so"
+    ]
+  },
+  {
+    "name": "libhmicuuc.z.so",
+    "sha256": "7556c2297061471f9a6361cd4342f00ae79ea1b5c6039bfc191317faedddbc1b",
+    "needed": [
+      "libc.so"
+    ]
+  },
+  {
+    "name": "libarkcompiler.so",
+    "sha256": "f29f4833a5ac76057325033bbf16547d6d54b4947648f540999a7116e324ebd2",
+    "needed": [
+      "libarkfile.so",
+      "libarkziparchive.so",
+      "libarkbase.so",
+      "libc_secshared.so",
+      "libc.so"
+    ]
+  },
+  {
+    "name": "libarkbytecodeopt.so",
+    "sha256": "37a8641ac43ea1191db1f2c98b1bb688082a404e4711572ce01a0c8604fa48d3",
+    "needed": [
+      "libarkcompiler.so",
+      "libarkassembler.so",
+      "libarkfile.so",
+      "libarkziparchive.so",
+      "libarkbase.so",
+      "libc_secshared.so",
+      "libc.so"
+    ]
+  },
+  {
+    "name": "libes2panda-lib.so",
+    "sha256": "69ab4e97454cbd849fbddc464d3a569cab2c7479e6d2c53942de197370d23b43",
+    "needed": [
+      "libhmicuuc.z.so",
+      "libarkdisassembler.so",
+      "libarkbytecodeopt.so",
+      "libarkassembler.so",
+      "libarkcompiler.so",
+      "libarkfile.so",
+      "libarkziparchive.so",
+      "libarkbase.so",
+      "libc_secshared.so",
+      "libc.so"
+    ]
+  },
+  {
+    "name": "libarkdisassembler.so",
+    "sha256": "6ac6080308daaf05f3bb15c03be4efbc7c7055975f35f592d1a0d8e732ed91ec",
+    "needed": [
+      "libarkassembler.so",
+      "libarkfile.so",
+      "libarkziparchive.so",
+      "libarkbase.so",
+      "libc_secshared.so",
+      "libc.so"
+    ]
+  }
+]

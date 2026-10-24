@@ -1,0 +1,236 @@
+include:
+- '"ir/expression.h"'
+ir:
+  class_definitions:
+  - extends: public Expression
+    known_macroses:
+    - NO_COPY_SEMANTIC(FunctionExpression);
+    - NO_MOVE_SEMANTIC(FunctionExpression);
+    name: FunctionExpression
+    private: {}
+    protected: {}
+    public:
+      constructors:
+      - args: []
+        name: FunctionExpression
+        postfix: = delete
+        raw_declaration: FunctionExpression() = delete
+      - args:
+        - name: func
+          type:
+            name: ScriptFunction
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        name: FunctionExpression
+        other_initializers:
+        - class_field: FunctionExpression
+          init_value: nullptr, func
+        raw_declaration: explicit FunctionExpression(ScriptFunction *const func)
+        return_type:
+          prefix: explicit
+      - args:
+        - name: namedExpr
+          type:
+            name: Identifier
+            namespace: ir
+            ptr_depth: 1
+        - name: func
+          type:
+            name: ScriptFunction
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        name: FunctionExpression
+        raw_declaration: explicit FunctionExpression(ir::Identifier *namedExpr, ScriptFunction
+          *const func)
+        return_type:
+          prefix: explicit
+      destructors:
+      - args: []
+        name: ~FunctionExpression
+        postfix: override = default
+        raw_declaration: ~FunctionExpression() override = default
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Function
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const ScriptFunction *Function() const noexcept'
+        return_type:
+          name: ScriptFunction
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Function
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] ScriptFunction *Function() noexcept'
+        return_type:
+          name: ScriptFunction
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: func
+          type:
+            name: ScriptFunction
+            ptr_depth: 1
+        name: SetFunction
+        raw_declaration: void SetFunction(ScriptFunction *func)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: IsAnonymous
+        postfix: const
+        raw_declaration: bool IsAnonymous() const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args: []
+        name: Id
+        raw_declaration: ir::Identifier *Id()
+        return_type:
+          name: Identifier
+          namespace: ir
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: id
+          type:
+            name: Identifier
+            namespace: ir
+            ptr_depth: 1
+        name: SetId
+        raw_declaration: void SetId(ir::Identifier *id)
+        return_type:
+          name: void
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: parent
+          type:
+            name: AstNode
+            ptr_depth: 1
+        name: Clone
+        postfix: override
+        raw_declaration: '[[nodiscard]] FunctionExpression *Clone(ArenaAllocator *allocator,
+          AstNode *parent) override'
+        return_type:
+          name: FunctionExpression
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - args:
+        - name: cb
+          type:
+            name: NodeTransformer
+            prefix: const
+            ref_depth: 1
+        - name: transformationName
+          type:
+            name: string_view
+            namespace: std
+        name: TransformChildren
+        postfix: override
+        raw_declaration: void TransformChildren(const NodeTransformer &cb, std::string_view
+          transformationName) override
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: NodeTraverser
+            prefix: const
+            ref_depth: 1
+        name: Iterate
+        postfix: const override
+        raw_declaration: void Iterate(const NodeTraverser &cb) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: AstDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::AstDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: SrcDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::SrcDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: pg
+          type:
+            name: PandaGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::PandaGen *pg) const override
+        return_type:
+          name: void
+      - args:
+        - name: etsg
+          type:
+            name: ETSGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::ETSGen *etsg) const override
+        return_type:
+          name: void
+      - args:
+        - name: checker
+          type:
+            name: TSChecker
+            namespace: checker
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::Type *Check(checker::TSChecker *checker) override
+        return_type:
+          name: Type
+          namespace: checker
+          ptr_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            namespace: checker
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::VerifiedType Check(checker::ETSChecker *checker)
+          override
+        return_type:
+          name: VerifiedType
+          namespace: checker
+      - args:
+        - name: v
+          type:
+            name: ASTVisitorT
+            ptr_depth: 1
+        name: Accept
+        postfix: override
+        raw_declaration: void Accept(ASTVisitorT *v) override
+        return_type:
+          name: void
+  class_forward_declaration:
+  - ScriptFunction
+macros:
+- name: ES2PANDA_IR_EXPRESSION_FUNCTION_EXPRESSION_H

@@ -1,0 +1,367 @@
+checker:
+  class_forward_declaration:
+  - Signature
+include:
+- '"util/es2pandaMacros.h"'
+- '"util/ustring.h"'
+- '"util/enumbitops.h"'
+ir:
+  class_forward_declaration:
+  - ClassDefinition
+  - ScriptFunction
+  - TSInterfaceDeclaration
+  - AnnotationDeclaration
+  - Identifier
+macros:
+- name: ES2PANDA_VARBINDER_RECORDTABLE_H
+parser:
+  class_forward_declaration:
+  - Program
+structs:
+- members: []
+  name: enumbitops::IsAllowedType<ark::es2panda::varbinder::RecordTableFlags>
+varbinder:
+  class_definitions:
+  - known_macroses:
+    - NO_COPY_SEMANTIC(RecordTable);
+    - NO_MOVE_SEMANTIC(RecordTable);
+    name: RecordTable
+    private: {}
+    public:
+      constructors:
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - initializer_for: program_
+          name: program
+          type:
+            name: Program
+            namespace: parser
+            ptr_depth: 1
+        - initializer_for: flags_
+          name: flags
+          type:
+            name: RecordTableFlags
+        name: RecordTable
+        other_initializers:
+        - class_field: classDefinitions_
+          init_value: allocator->Adapter()
+        - class_field: interfaceDeclarations_
+          init_value: allocator->Adapter()
+        - class_field: annotationDeclarations_
+          init_value: allocator->Adapter()
+        raw_declaration: explicit RecordTable(ArenaAllocator *allocator, parser::Program
+          *program, RecordTableFlags flags)
+        return_type:
+          prefix: explicit
+      destructors:
+      - args: []
+        name: ~RecordTable
+        postfix: = default
+        raw_declaration: ~RecordTable() = default
+      methods:
+      - args:
+        - name: other
+          type:
+            name: RecordTable
+            ptr_depth: 1
+        name: Merge
+        raw_declaration: void Merge(RecordTable *other)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: IsExternal
+        postfix: const
+        raw_declaration: bool IsExternal() const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args: []
+        name: ClassDefinitions
+        raw_declaration: ArenaSet<ir::ClassDefinition *> &ClassDefinitions()
+        return_type:
+          name: ArenaSet
+          ref_depth: 1
+          template_args:
+          - type:
+              name: ClassDefinition
+              namespace: ir
+              ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: ClassDefinitions
+        postfix: const
+        raw_declaration: const ArenaSet<ir::ClassDefinition *> &ClassDefinitions()
+          const
+        return_type:
+          name: ArenaSet
+          prefix: const
+          ref_depth: 1
+          template_args:
+          - type:
+              name: ClassDefinition
+              namespace: ir
+              ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: InterfaceDeclarations
+        raw_declaration: ArenaSet<ir::TSInterfaceDeclaration *> &InterfaceDeclarations()
+        return_type:
+          name: ArenaSet
+          ref_depth: 1
+          template_args:
+          - type:
+              name: TSInterfaceDeclaration
+              namespace: ir
+              ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: InterfaceDeclarations
+        postfix: const
+        raw_declaration: const ArenaSet<ir::TSInterfaceDeclaration *> &InterfaceDeclarations()
+          const
+        return_type:
+          name: ArenaSet
+          prefix: const
+          ref_depth: 1
+          template_args:
+          - type:
+              name: TSInterfaceDeclaration
+              namespace: ir
+              ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: AnnotationDeclarations
+        raw_declaration: ArenaSet<ir::AnnotationDeclaration *> &AnnotationDeclarations()
+        return_type:
+          name: ArenaSet
+          ref_depth: 1
+          template_args:
+          - type:
+              name: AnnotationDeclaration
+              namespace: ir
+              ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: AnnotationDeclarations
+        postfix: const
+        raw_declaration: const ArenaSet<ir::AnnotationDeclaration *> &AnnotationDeclarations()
+          const
+        return_type:
+          name: ArenaSet
+          prefix: const
+          ref_depth: 1
+          template_args:
+          - type:
+              name: AnnotationDeclaration
+              namespace: ir
+              ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: classDefinition
+          type:
+            name: ClassDefinition
+            namespace: ir
+            ptr_depth: 1
+        name: SetClassDefinition
+        raw_declaration: void SetClassDefinition(ir::ClassDefinition *classDefinition)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: ClassDefinition
+        raw_declaration: ir::ClassDefinition *ClassDefinition()
+        return_type:
+          name: ClassDefinition
+          namespace: ir
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: ClassDefinition
+        postfix: const
+        raw_declaration: const ir::ClassDefinition *ClassDefinition() const
+        return_type:
+          name: ClassDefinition
+          namespace: ir
+          prefix: const
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: interfaceDeclaration
+          type:
+            name: TSInterfaceDeclaration
+            namespace: ir
+            ptr_depth: 1
+        name: SetInterfaceDeclaration
+        raw_declaration: void SetInterfaceDeclaration(ir::TSInterfaceDeclaration *interfaceDeclaration)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: InterfaceDeclaration
+        raw_declaration: ir::TSInterfaceDeclaration *InterfaceDeclaration()
+        return_type:
+          name: TSInterfaceDeclaration
+          namespace: ir
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: InterfaceDeclaration
+        postfix: const
+        raw_declaration: const ir::TSInterfaceDeclaration *InterfaceDeclaration()
+          const
+        return_type:
+          name: TSInterfaceDeclaration
+          namespace: ir
+          prefix: const
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: annotationDeclaration
+          type:
+            name: AnnotationDeclaration
+            namespace: ir
+            ptr_depth: 1
+        name: SetAnnotationDeclaration
+        raw_declaration: void SetAnnotationDeclaration(ir::AnnotationDeclaration *annotationDeclaration)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: AnnotationDeclaration
+        raw_declaration: ir::AnnotationDeclaration *AnnotationDeclaration()
+        return_type:
+          name: AnnotationDeclaration
+          namespace: ir
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: AnnotationDeclaration
+        postfix: const
+        raw_declaration: const ir::AnnotationDeclaration *AnnotationDeclaration()
+          const
+        return_type:
+          name: AnnotationDeclaration
+          namespace: ir
+          prefix: const
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: program
+          type:
+            name: Program
+            namespace: parser
+            ptr_depth: 1
+        name: SetProgram
+        raw_declaration: void SetProgram(parser::Program *program)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Program
+        raw_declaration: parser::Program *Program()
+        return_type:
+          name: Program
+          namespace: parser
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Program
+        postfix: const
+        raw_declaration: const parser::Program *Program() const
+        return_type:
+          name: Program
+          namespace: parser
+          prefix: const
+          ptr_depth: 1
+      - args: []
+        name: RecordName
+        postfix: const
+        raw_declaration: util::StringView RecordName() const
+        return_type:
+          name: StringView
+          namespace: util
+      - args: []
+        name: CleanUp
+        raw_declaration: void CleanUp()
+        return_type:
+          name: void
+  - known_macroses:
+    - NO_COPY_SEMANTIC(BoundContext);
+    - NO_MOVE_SEMANTIC(BoundContext);
+    name: BoundContext
+    private: {}
+    public:
+      constructors:
+      - args:
+        - name: recordTable
+          type:
+            name: RecordTable
+            ptr_depth: 1
+        - name: classDef
+          type:
+            name: ClassDefinition
+            namespace: ir
+            ptr_depth: 1
+        - default_value: 'false'
+          name: force
+          type:
+            name: bool
+        name: BoundContext
+        raw_declaration: explicit BoundContext(RecordTable *recordTable, ir::ClassDefinition
+          *classDef, bool force = false)
+        return_type:
+          prefix: explicit
+      - args:
+        - name: recordTable
+          type:
+            name: RecordTable
+            ptr_depth: 1
+        - name: interfaceDecl
+          type:
+            name: TSInterfaceDeclaration
+            namespace: ir
+            ptr_depth: 1
+        - default_value: 'false'
+          name: force
+          type:
+            name: bool
+        name: BoundContext
+        raw_declaration: explicit BoundContext(RecordTable *recordTable, ir::TSInterfaceDeclaration
+          *interfaceDecl, bool force = false)
+        return_type:
+          prefix: explicit
+      - args:
+        - name: recordTable
+          type:
+            name: RecordTable
+            ptr_depth: 1
+        - name: annotationDecl
+          type:
+            name: AnnotationDeclaration
+            namespace: ir
+            ptr_depth: 1
+        - default_value: 'false'
+          name: force
+          type:
+            name: bool
+        name: BoundContext
+        raw_declaration: explicit BoundContext(RecordTable *recordTable, ir::AnnotationDeclaration
+          *annotationDecl, bool force = false)
+        return_type:
+          prefix: explicit
+      destructors:
+      - args: []
+        name: ~BoundContext
+        raw_declaration: ~BoundContext()
+      methods:
+      - args: []
+        name: FormRecordName
+        postfix: const
+        raw_declaration: util::StringView FormRecordName() const
+        return_type:
+          name: StringView
+          namespace: util

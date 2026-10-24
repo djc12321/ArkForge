@@ -1,0 +1,149 @@
+checker:
+  class_definitions:
+  - extends: public Type
+    known_macroses:
+    - NO_COPY_SEMANTIC(ETSWildcardType);
+    - NO_MOVE_SEMANTIC(ETSWildcardType);
+    name: ETSWildcardType
+    private: {}
+    public:
+      constructors:
+      - args: []
+        name: ETSWildcardType
+        postfix: = delete
+        raw_declaration: ETSWildcardType() = delete
+      - args:
+        - initializer_for: tparam_
+          name: tparam
+          type:
+            name: ETSTypeParameter
+            ptr_depth: 1
+        name: ETSWildcardType
+        other_initializers:
+        - class_field: Type
+          init_value: TypeFlag::ETS_WILDCARD
+        raw_declaration: explicit ETSWildcardType(ETSTypeParameter *tparam)
+        return_type:
+          prefix: explicit
+      destructors:
+      - args: []
+        name: ~ETSWildcardType
+        postfix: override = default
+        raw_declaration: ~ETSWildcardType() override = default
+      methods:
+      - additional_attributes: get
+        args: []
+        name: GetUnderlying
+        postfix: const
+        raw_declaration: ETSTypeParameter *GetUnderlying() const
+        return_type:
+          name: ETSTypeParameter
+          ptr_depth: 1
+      - args:
+        - name: ss
+          type:
+            name: stringstream
+            namespace: std
+            ref_depth: 1
+        - name: precise
+          type:
+            name: bool
+        name: ToString
+        postfix: const override
+        raw_declaration: void ToString(std::stringstream &ss, bool precise) const
+          override
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: other
+          type:
+            name: Type
+            ptr_depth: 1
+        name: Identical
+        postfix: override
+        raw_declaration: void Identical(TypeRelation *relation, Type *other) override
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: source
+          type:
+            name: Type
+            ptr_depth: 1
+        name: AssignmentTarget
+        postfix: override
+        raw_declaration: void AssignmentTarget(TypeRelation *relation, Type *source)
+          override
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: target
+          type:
+            name: Type
+            ptr_depth: 1
+        name: AssignmentSource
+        postfix: override
+        raw_declaration: bool AssignmentSource(TypeRelation *relation, Type *target)
+          override
+        return_type:
+          name: bool
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: globalTypes
+          type:
+            name: GlobalTypesHolder
+            ptr_depth: 1
+        name: Instantiate
+        postfix: override
+        raw_declaration: Type *Instantiate(ArenaAllocator *allocator, TypeRelation
+          *relation, GlobalTypesHolder *globalTypes) override
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: target
+          type:
+            name: Type
+            ptr_depth: 1
+        name: Cast
+        postfix: override
+        raw_declaration: void Cast(TypeRelation *relation, Type *target) override
+        return_type:
+          name: void
+      - args:
+        - name: ss
+          type:
+            name: stringstream
+            namespace: std
+            ref_depth: 1
+        name: ToAssemblerType
+        postfix: const override
+        raw_declaration: void ToAssemblerType(std::stringstream &ss) const override
+        return_type:
+          name: void
+include:
+- '"checker/types/type.h"'
+macros:
+- name: ES2PANDA_COMPILER_CHECKER_TYPES_ETS_WILDCARD_TYPE_H

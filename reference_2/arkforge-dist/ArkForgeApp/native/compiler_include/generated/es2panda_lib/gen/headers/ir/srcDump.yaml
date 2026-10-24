@@ -1,0 +1,605 @@
+include:
+- '"ir/astNode.h"'
+- '"ir/obfuscationNameCache.h"'
+- '"parser/JsdocHelper.h"'
+- <memory>
+ir:
+  class_definitions:
+  - class_definitions:
+    - known_macroses:
+      - NO_COPY_SEMANTIC(Releaser);
+      name: Lock
+      private: {}
+      public:
+        fields:
+        - default_value: (Releaser &&other) = delete
+          name: operator
+          type:
+            name: Releaser
+            ref_depth: 1
+        methods:
+        - args:
+          - name: other
+            type:
+              name: Releaser
+              ref_depth: 2
+          name: Releaser
+          other_initializers:
+          - class_field: lock_
+            init_value: other.lock_
+          - class_field: prevAcquired_
+            init_value: other.prevAcquired_
+          raw_declaration: Releaser(Releaser &&other)
+        - args: []
+          name: Releaser
+          other_initializers:
+          - class_field: lock_
+            init_value: nullptr
+          - class_field: prevAcquired_
+            init_value: 'false'
+          raw_declaration: Releaser()
+        - args:
+          - initializer_for: lock_
+            name: lock
+            type:
+              name: Lock
+              ptr_depth: 1
+          name: Releaser
+          other_initializers:
+          - class_field: prevAcquired_
+            init_value: lock->acquired_
+          raw_declaration: explicit Releaser(Lock *lock)
+          return_type:
+            prefix: explicit
+        - args: []
+          name: ~Releaser
+          raw_declaration: ~Releaser()
+        - args: []
+          name: Acquire
+          raw_declaration: void Acquire()
+          return_type:
+            name: void
+        - additional_attributes: get
+          args: []
+          name: IsAcquired
+          raw_declaration: bool IsAcquired()
+          return_type:
+            name: bool
+        - additional_attributes: get
+          args: []
+          name: BuildReleaser
+          raw_declaration: '[[nodiscard]] auto BuildReleaser()'
+          return_type:
+            name: auto
+            prefix: '[[nodiscard]]'
+        - additional_attributes: get
+          args: []
+          name: BuildEmptyReleaser
+          raw_declaration: '[[nodiscard]] static auto BuildEmptyReleaser()'
+          return_type:
+            name: auto
+            prefix: '[[nodiscard]] static'
+    name: Declgen
+    private: {}
+    public:
+      constructors:
+      - args:
+        - initializer_for: ctx_
+          name: ctx
+          type:
+            name: Context
+            namespace: public_lib
+            ptr_depth: 1
+        name: Declgen
+        raw_declaration: explicit Declgen(public_lib::Context *ctx)
+        return_type:
+          prefix: explicit
+      methods:
+      - args:
+        - name: dumper
+          type:
+            name: SrcDumper
+            ptr_depth: 1
+        - name: key
+          type:
+            name: string
+            namespace: std
+            prefix: const
+            ref_depth: 1
+        name: DumpNode
+        raw_declaration: void DumpNode(SrcDumper *dumper, const std::string &key)
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: SrcDumper
+            ptr_depth: 1
+        - name: type
+          type:
+            name: Type
+            namespace: checker
+            prefix: const
+            ptr_depth: 1
+        name: Dump
+        raw_declaration: void Dump(SrcDumper *dumper, const checker::Type *type)
+        return_type:
+          name: void
+      - args:
+        - name: import
+          type:
+            name: ImportDeclaration
+            namespace: ir
+            prefix: const
+            ptr_depth: 1
+        name: CollectImport
+        raw_declaration: void CollectImport(const ir::ImportDeclaration *import)
+        return_type:
+          name: void
+      - args:
+        - name: className
+          type:
+            name: StringView
+            namespace: util
+        name: ShouldSkipClassDeclaration
+        postfix: const
+        raw_declaration: bool ShouldSkipClassDeclaration(util::StringView className)
+          const
+        return_type:
+          name: bool
+      - args:
+        - name: res
+          type:
+            name: string
+            namespace: std
+            ref_depth: 1
+        name: DumpImports
+        raw_declaration: void DumpImports(std::string &res)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: BuildPostDumpIndirectDepsPhaseLockGuard
+        raw_declaration: auto BuildPostDumpIndirectDepsPhaseLockGuard()
+        return_type:
+          name: auto
+      - additional_attributes: set
+        args: []
+        name: SetPostDumpIndirectDepsPhase
+        raw_declaration: void SetPostDumpIndirectDepsPhase()
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: IsPostDumpIndirectDepsPhase
+        raw_declaration: bool IsPostDumpIndirectDepsPhase()
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - name: key
+          type:
+            name: string
+            namespace: std
+            prefix: const
+            ref_depth: 1
+        - name: value
+          type:
+            name: T
+            ptr_depth: 1
+        name: AddNode
+        raw_declaration: void AddNode(const std::string &key, T *value)
+        return_type:
+          name: void
+        template: typename T
+      - args:
+        - name: task
+          type:
+            name: T
+            ref_depth: 2
+        name: PushTask
+        raw_declaration: void PushTask(T &&task)
+        return_type:
+          name: void
+        template: typename T
+      - args: []
+        name: Run
+        raw_declaration: void Run()
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: GetCtx
+        postfix: const
+        raw_declaration: auto GetCtx() const
+        return_type:
+          name: auto
+      - additional_attributes: get
+        args: []
+        name: GetNameCache
+        raw_declaration: ObfuscationNameCache *GetNameCache()
+        return_type:
+          name: ObfuscationNameCache
+          ptr_depth: 1
+      - args:
+        - default_value: '""'
+          name: moduleName
+          type:
+            name: string
+            namespace: std
+            prefix: const
+            ref_depth: 1
+        name: InitNameCache
+        raw_declaration: void InitNameCache(const std::string &moduleName = "")
+        return_type:
+          name: void
+      - args:
+        - name: outputPath
+          type:
+            name: string
+            namespace: std
+            prefix: const
+            ref_depth: 1
+        - default_value: nullptr
+          name: resolvedFilePath
+          type:
+            name: string
+            namespace: std
+            ptr_depth: 1
+        name: GenerateNameCacheJson
+        raw_declaration: bool GenerateNameCacheJson(const std::string &outputPath,
+          std::string *resolvedFilePath = nullptr)
+        return_type:
+          name: bool
+      - args:
+        - name: node
+          type:
+            name: FunctionDeclaration
+            prefix: const
+            ptr_depth: 1
+        name: RecordNodeInNameCache
+        raw_declaration: void RecordNodeInNameCache(const FunctionDeclaration *node)
+        return_type:
+          name: void
+      - args:
+        - name: node
+          type:
+            name: ClassDefinition
+            prefix: const
+            ptr_depth: 1
+        name: RecordNodeInNameCache
+        raw_declaration: void RecordNodeInNameCache(const ClassDefinition *node)
+        return_type:
+          name: void
+      - args:
+        - name: node
+          type:
+            name: TSInterfaceDeclaration
+            prefix: const
+            ptr_depth: 1
+        name: RecordNodeInNameCache
+        raw_declaration: void RecordNodeInNameCache(const TSInterfaceDeclaration *node)
+        return_type:
+          name: void
+      - args:
+        - name: node
+          type:
+            name: TSEnumDeclaration
+            prefix: const
+            ptr_depth: 1
+        name: RecordNodeInNameCache
+        raw_declaration: void RecordNodeInNameCache(const TSEnumDeclaration *node)
+        return_type:
+          name: void
+      - args:
+        - name: node
+          type:
+            name: AnnotationDeclaration
+            prefix: const
+            ptr_depth: 1
+        name: RecordNodeInNameCache
+        raw_declaration: void RecordNodeInNameCache(const AnnotationDeclaration *node)
+        return_type:
+          name: void
+      - args:
+        - name: node
+          type:
+            name: ClassProperty
+            prefix: const
+            ptr_depth: 1
+        name: RecordNodeInNameCache
+        raw_declaration: void RecordNodeInNameCache(const ClassProperty *node)
+        return_type:
+          name: void
+      - args:
+        - name: node
+          type:
+            name: MethodDefinition
+            prefix: const
+            ptr_depth: 1
+        name: RecordNodeInNameCache
+        raw_declaration: void RecordNodeInNameCache(const MethodDefinition *node)
+        return_type:
+          name: void
+      - args:
+        - name: node
+          type:
+            name: TSEnumMember
+            prefix: const
+            ptr_depth: 1
+        name: RecordNodeInNameCache
+        raw_declaration: void RecordNodeInNameCache(const TSEnumMember *node)
+        return_type:
+          name: void
+      usings:
+      - name: NodeVariant
+        type:
+          name: variant
+          namespace: std
+          other_modifiers: const
+          template_args:
+          - type:
+              name: monostate
+              namespace: std
+          - type:
+              name: ClassDefinition
+              namespace: ark::es2panda::ir
+              prefix: const
+              ptr_depth: 1
+          - type:
+              name: TSTypeAliasDeclaration
+              namespace: ark::es2panda::ir
+              prefix: const
+              ptr_depth: 1
+          - type:
+              name: ClassProperty
+              namespace: ark::es2panda::ir
+              prefix: const
+              ptr_depth: 1
+          - type:
+              name: TSInterfaceDeclaration
+              namespace: ark::es2panda::ir
+              prefix: const
+              ptr_depth: 1
+          - type:
+              name: TSEnumDeclaration
+              namespace: ark::es2panda::ir
+              prefix: const
+              ptr_depth: 1
+  - name: SrcDumper
+    private: {}
+    public:
+      constructors:
+      - args:
+        - name: node
+          type:
+            name: AstNode
+            namespace: ir
+            prefix: '[[maybe_unused]] const'
+            ptr_depth: 1
+        name: SrcDumper
+        raw_declaration: explicit SrcDumper([[maybe_unused]] const ir::AstNode *node)
+        return_type:
+          prefix: explicit
+      - args:
+        - name: node
+          type:
+            name: AstNode
+            namespace: ir
+            prefix: '[[maybe_unused]] const'
+            ptr_depth: 1
+        - name: isDeclgen
+          type:
+            name: bool
+            prefix: '[[maybe_unused]]'
+        name: SrcDumper
+        raw_declaration: explicit SrcDumper([[maybe_unused]] const ir::AstNode *node,
+          [[maybe_unused]] bool isDeclgen)
+        return_type:
+          prefix: explicit
+      - args:
+        - default_value: nullptr
+          name: dg
+          type:
+            name: Declgen
+            ptr_depth: 1
+        name: SrcDumper
+        raw_declaration: explicit SrcDumper(Declgen *dg = nullptr)
+        return_type:
+          prefix: explicit
+      - args:
+        - name: node
+          type:
+            name: AstNode
+            namespace: ir
+            prefix: const
+            ptr_depth: 1
+        - name: enableJsdocDump
+          type:
+            name: bool
+        - name: dg
+          type:
+            name: Declgen
+            ptr_depth: 1
+        name: SrcDumper
+        raw_declaration: explicit SrcDumper(const ir::AstNode *node, bool enableJsdocDump,
+          Declgen *dg)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: set
+        args:
+        - name: str
+          type:
+            name: string_view
+            namespace: std
+        name: Add
+        raw_declaration: void Add(std::string_view str)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: ch
+          type:
+            name: char
+        name: Add
+        raw_declaration: void Add(char ch)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: i
+          type:
+            name: int8_t
+        name: Add
+        raw_declaration: void Add(int8_t i)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: i
+          type:
+            name: int16_t
+        name: Add
+        raw_declaration: void Add(int16_t i)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: i
+          type:
+            name: int32_t
+        name: Add
+        raw_declaration: void Add(int32_t i)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: l
+          type:
+            name: int64_t
+        name: Add
+        raw_declaration: void Add(int64_t l)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: f
+          type:
+            name: float
+        name: Add
+        raw_declaration: void Add(float f)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: d
+          type:
+            name: double
+        name: Add
+        raw_declaration: void Add(double d)
+        return_type:
+          name: void
+      - args: []
+        name: Str
+        postfix: const
+        raw_declaration: std::string Str() const
+        return_type:
+          name: string
+          namespace: std
+      - args: []
+        name: IncrIndent
+        raw_declaration: void IncrIndent()
+        return_type:
+          name: void
+      - args: []
+        name: DecrIndent
+        raw_declaration: void DecrIndent()
+        return_type:
+          name: void
+      - args:
+        - default_value: '1'
+          name: num
+          type:
+            name: size_t
+        name: Endl
+        raw_declaration: void Endl(size_t num = 1)
+        return_type:
+          name: void
+      - args: []
+        name: IsDeclgen
+        postfix: const
+        raw_declaration: bool IsDeclgen() const
+        return_type:
+          name: bool
+      - args: []
+        name: GetDeclgen
+        postfix: const
+        raw_declaration: Declgen *GetDeclgen() const
+        return_type:
+          name: Declgen
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: BuildAmbientContextGuard
+        raw_declaration: auto BuildAmbientContextGuard()
+        return_type:
+          name: auto
+      - args: []
+        name: TryDeclareAmbientContext
+        raw_declaration: void TryDeclareAmbientContext()
+        return_type:
+          name: void
+      - args:
+        - name: inputNode
+          type:
+            name: AstNode
+            namespace: ir
+            prefix: const
+            ptr_depth: 1
+        name: DumpJsdocBeforeTargetNode
+        raw_declaration: void DumpJsdocBeforeTargetNode(const ir::AstNode *inputNode)
+        return_type:
+          name: void
+      - args:
+        - name: program
+          type:
+            name: Program
+            namespace: parser
+            prefix: const
+            ptr_depth: 1
+        name: DumpExports
+        raw_declaration: void DumpExports(const parser::Program *program)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args: []
+        name: SetDefaultExport
+        postfix: noexcept
+        raw_declaration: void SetDefaultExport() noexcept
+        return_type:
+          name: void
+      - args: []
+        name: HasDefaultExport
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool HasDefaultExport() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+  class_forward_declaration:
+  - ClassDefinition
+  - TSTypeAliasDeclaration
+  - ClassProperty
+  - TSInterfaceDeclaration
+  - TSEnumDeclaration
+  - FunctionDeclaration
+  - VariableDeclaration
+  - MethodDefinition
+  - TSEnumMember
+  - AnnotationDeclaration
+  - SrcDumper
+macros:
+- name: ES2PANDA_IR_SRCDUMP_H
+parser:
+  class_forward_declaration:
+  - Program

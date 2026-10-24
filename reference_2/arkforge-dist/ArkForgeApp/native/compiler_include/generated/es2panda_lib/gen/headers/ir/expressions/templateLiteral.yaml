@@ -1,0 +1,278 @@
+include:
+- '"ir/base/templateElement.h"'
+- '"ir/expression.h"'
+ir:
+  class_definitions:
+  - extends: public Expression
+    known_macroses:
+    - NO_COPY_SEMANTIC(TemplateLiteral);
+    - NO_MOVE_SEMANTIC(TemplateLiteral);
+    name: TemplateLiteral
+    private: {}
+    public:
+      constructors:
+      - args: []
+        name: TemplateLiteral
+        postfix: = delete
+        raw_declaration: TemplateLiteral() = delete
+      - args:
+        - name: quasis
+          type:
+            name: ArenaVector
+            ref_depth: 2
+            template_args:
+            - type:
+                name: TemplateElement
+                ptr_depth: 1
+        - name: expressions
+          type:
+            name: ArenaVector
+            ref_depth: 2
+            template_args:
+            - type:
+                name: Expression
+                ptr_depth: 1
+        - initializer_for: multilineString_
+          name: multilineString
+          type:
+            name: StringView
+            namespace: util
+        name: TemplateLiteral
+        other_initializers:
+        - class_field: Expression
+          init_value: AstNodeType::TEMPLATE_LITERAL
+        - class_field: quasis_
+          init_value: std::move(quasis)
+        - class_field: expressions_
+          init_value: std::move(expressions)
+        raw_declaration: "explicit TemplateLiteral(ArenaVector<TemplateElement *>\
+          \ &&quasis, ArenaVector<Expression *> &&expressions,\n                 \
+          \            util::StringView multilineString)"
+        return_type:
+          prefix: explicit
+      - args:
+        - name: tag
+          type:
+            name: Tag
+        - name: other
+          type:
+            name: TemplateLiteral
+            other_modifiers: const
+            ref_depth: 1
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        name: TemplateLiteral
+        raw_declaration: explicit TemplateLiteral(Tag tag, TemplateLiteral const &other,
+          ArenaAllocator *allocator)
+        return_type:
+          prefix: explicit
+      destructors:
+      - args: []
+        name: ~TemplateLiteral
+        postfix: override = default
+        raw_declaration: ~TemplateLiteral() override = default
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Quasis
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const ArenaVector<TemplateElement *> &Quasis()
+          const noexcept'
+        return_type:
+          name: ArenaVector
+          prefix: '[[nodiscard]] const'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: TemplateElement
+              ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: quasisList
+          type:
+            name: ArenaVector
+            ref_depth: 2
+            template_args:
+            - type:
+                name: TemplateElement
+                ptr_depth: 1
+        name: SetQuasis
+        raw_declaration: void SetQuasis(ArenaVector<TemplateElement *> &&quasisList)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Expressions
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const ArenaVector<Expression *> &Expressions()
+          const noexcept'
+        return_type:
+          name: ArenaVector
+          prefix: '[[nodiscard]] const'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: Expression
+              ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: expressionsList
+          type:
+            name: ArenaVector
+            ref_depth: 2
+            template_args:
+            - type:
+                name: Expression
+                ptr_depth: 1
+        name: SetExpressions
+        raw_declaration: void SetExpressions(ArenaVector<Expression *> &&expressionsList)
+        return_type:
+          name: void
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: parent
+          type:
+            name: AstNode
+            ptr_depth: 1
+        name: Clone
+        postfix: override
+        raw_declaration: '[[nodiscard]] TemplateLiteral *Clone(ArenaAllocator *allocator,
+          AstNode *parent) override'
+        return_type:
+          name: TemplateLiteral
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - args:
+        - name: cb
+          type:
+            name: NodeTransformer
+            prefix: const
+            ref_depth: 1
+        - name: transformationName
+          type:
+            name: string_view
+            namespace: std
+        name: TransformChildren
+        postfix: override
+        raw_declaration: void TransformChildren(const NodeTransformer &cb, std::string_view
+          transformationName) override
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: NodeTraverser
+            prefix: const
+            ref_depth: 1
+        name: Iterate
+        postfix: const override
+        raw_declaration: void Iterate(const NodeTraverser &cb) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: AstDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::AstDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: SrcDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::SrcDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: pg
+          type:
+            name: PandaGen
+            namespace: compiler
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile([[maybe_unused]] compiler::PandaGen *pg) const
+          override
+        return_type:
+          name: void
+      - args:
+        - name: etsg
+          type:
+            name: ETSGen
+            namespace: compiler
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile([[maybe_unused]] compiler::ETSGen *etsg) const
+          override
+        return_type:
+          name: void
+      - args:
+        - name: checker
+          type:
+            name: TSChecker
+            namespace: checker
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::Type *Check([[maybe_unused]] checker::TSChecker
+          *checker) override
+        return_type:
+          name: Type
+          namespace: checker
+          ptr_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            namespace: checker
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::VerifiedType Check([[maybe_unused]] checker::ETSChecker
+          *checker) override
+        return_type:
+          name: VerifiedType
+          namespace: checker
+      - args: []
+        name: GetMultilineString
+        postfix: const
+        raw_declaration: util::StringView GetMultilineString() const
+        return_type:
+          name: StringView
+          namespace: util
+      - args:
+        - name: v
+          type:
+            name: ASTVisitorT
+            ptr_depth: 1
+        name: Accept
+        postfix: override
+        raw_declaration: void Accept(ASTVisitorT *v) override
+        return_type:
+          name: void
+      - args: []
+        name: CleanCheckInformation
+        postfix: override
+        raw_declaration: void CleanCheckInformation() override
+        return_type:
+          name: void
+macros:
+- name: ES2PANDA_PARSER_INCLUDE_AST_TEMPLATE_LITERAL_H

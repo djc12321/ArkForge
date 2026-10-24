@@ -1,0 +1,1033 @@
+checker:
+  class_definitions:
+  - known_macroses:
+    - NO_COPY_SEMANTIC(GlobalTypesHolder);
+    - NO_MOVE_SEMANTIC(GlobalTypesHolder);
+    name: GlobalTypesHolder
+    private: {}
+    public:
+      constructors:
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        name: GlobalTypesHolder
+        raw_declaration: explicit GlobalTypesHolder(ArenaAllocator *allocator)
+        return_type:
+          prefix: explicit
+      destructors:
+      - args: []
+        name: ~GlobalTypesHolder
+        postfix: = default
+        raw_declaration: ~GlobalTypesHolder() = default
+      methods:
+      - additional_attributes: set
+        args: []
+        name: AddETSEscompatLayer
+        raw_declaration: void AddETSEscompatLayer()
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        name: AddEtsSpecificTypes
+        raw_declaration: void AddEtsSpecificTypes(ArenaAllocator *allocator)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args: []
+        name: AddEtsSpecificBuiltinTypes
+        raw_declaration: void AddEtsSpecificBuiltinTypes()
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        name: AddTSSpecificTypes
+        raw_declaration: void AddTSSpecificTypes(ArenaAllocator *allocator)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        name: AddFunctionTypes
+        raw_declaration: void AddFunctionTypes(ArenaAllocator *allocator)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        name: AddTupleTypes
+        raw_declaration: void AddTupleTypes(ArenaAllocator *allocator)
+        return_type:
+          name: void
+      - args: []
+        name: GlobalNumberType
+        raw_declaration: Type *GlobalNumberType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalAnyType
+        raw_declaration: Type *GlobalAnyType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalStringType
+        raw_declaration: Type *GlobalStringType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalBooleanType
+        raw_declaration: Type *GlobalBooleanType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalVoidType
+        raw_declaration: Type *GlobalVoidType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalNullType
+        raw_declaration: Type *GlobalNullType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalUndefinedType
+        raw_declaration: Type *GlobalUndefinedType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalUnknownType
+        raw_declaration: Type *GlobalUnknownType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalNeverType
+        raw_declaration: Type *GlobalNeverType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalNonPrimitiveType
+        raw_declaration: Type *GlobalNonPrimitiveType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalBigintType
+        raw_declaration: Type *GlobalBigintType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalFalseType
+        raw_declaration: Type *GlobalFalseType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalTrueType
+        raw_declaration: Type *GlobalTrueType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalNumberOrBigintType
+        raw_declaration: Type *GlobalNumberOrBigintType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalStringOrNumberType
+        raw_declaration: Type *GlobalStringOrNumberType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalZeroType
+        raw_declaration: Type *GlobalZeroType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalEmptyStringType
+        raw_declaration: Type *GlobalEmptyStringType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalZeroBigintType
+        raw_declaration: Type *GlobalZeroBigintType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalPrimitiveType
+        raw_declaration: Type *GlobalPrimitiveType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalEmptyTupleType
+        raw_declaration: Type *GlobalEmptyTupleType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalEmptyObjectType
+        raw_declaration: Type *GlobalEmptyObjectType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalResolvingReturnType
+        raw_declaration: Type *GlobalResolvingReturnType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalErrorType
+        raw_declaration: Type *GlobalErrorType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalByteType
+        raw_declaration: Type *GlobalByteType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalShortType
+        raw_declaration: Type *GlobalShortType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalIntType
+        raw_declaration: Type *GlobalIntType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalLongType
+        raw_declaration: Type *GlobalLongType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalFloatType
+        raw_declaration: Type *GlobalFloatType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalDoubleType
+        raw_declaration: Type *GlobalDoubleType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalCharType
+        raw_declaration: Type *GlobalCharType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalETSBooleanType
+        raw_declaration: Type *GlobalETSBooleanType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalETSStringLiteralType
+        raw_declaration: Type *GlobalETSStringLiteralType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalETSVoidType
+        raw_declaration: Type *GlobalETSVoidType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalETSObjectType
+        raw_declaration: Type *GlobalETSObjectType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalETSNullType
+        raw_declaration: Type *GlobalETSNullType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalETSUndefinedType
+        raw_declaration: Type *GlobalETSUndefinedType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalETSAnyType
+        raw_declaration: Type *GlobalETSAnyType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalETSRelaxedAnyType
+        raw_declaration: Type *GlobalETSRelaxedAnyType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalETSNeverType
+        raw_declaration: Type *GlobalETSNeverType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalETSUnionUndefinedNull
+        raw_declaration: Type *GlobalETSUnionUndefinedNull()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalETSUnionUndefinedNullObject
+        raw_declaration: Type *GlobalETSUnionUndefinedNullObject()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalETSBooleanBuiltinType
+        raw_declaration: Type *GlobalETSBooleanBuiltinType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalByteBuiltinType
+        raw_declaration: Type *GlobalByteBuiltinType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalClassBuiltinType
+        raw_declaration: Type *GlobalClassBuiltinType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalCharBuiltinType
+        raw_declaration: Type *GlobalCharBuiltinType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalComparableBuiltinType
+        raw_declaration: Type *GlobalComparableBuiltinType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalConsoleBuiltinType
+        raw_declaration: Type *GlobalConsoleBuiltinType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalDoubleBuiltinType
+        raw_declaration: Type *GlobalDoubleBuiltinType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalExceptionBuiltinType
+        raw_declaration: Type *GlobalExceptionBuiltinType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalFloatBuiltinType
+        raw_declaration: Type *GlobalFloatBuiltinType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalFloatingBuiltinType
+        raw_declaration: Type *GlobalFloatingBuiltinType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalIntegerBuiltinType
+        raw_declaration: Type *GlobalIntegerBuiltinType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalIntegralBuiltinType
+        raw_declaration: Type *GlobalIntegralBuiltinType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalLongBuiltinType
+        raw_declaration: Type *GlobalLongBuiltinType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalNumericBuiltinType
+        raw_declaration: Type *GlobalNumericBuiltinType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalErrorBuiltinType
+        raw_declaration: Type *GlobalErrorBuiltinType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalRuntimeBuiltinType
+        raw_declaration: Type *GlobalRuntimeBuiltinType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalShortBuiltinType
+        raw_declaration: Type *GlobalShortBuiltinType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalStackTraceElementBuiltinType
+        raw_declaration: Type *GlobalStackTraceElementBuiltinType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalStackTraceBuiltinType
+        raw_declaration: Type *GlobalStackTraceBuiltinType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalArrayIndexOutOfBoundsErrorBuiltinType
+        raw_declaration: Type *GlobalArrayIndexOutOfBoundsErrorBuiltinType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalArithmeticErrorBuiltinType
+        raw_declaration: Type *GlobalArithmeticErrorBuiltinType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalClassCastErrorBuiltinType
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] Type *GlobalClassCastErrorBuiltinType() const
+          noexcept'
+        return_type:
+          name: Type
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - args: []
+        name: GlobalETSStringBuiltinType
+        raw_declaration: Type *GlobalETSStringBuiltinType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalETSBigIntBuiltinType
+        raw_declaration: Type *GlobalETSBigIntBuiltinType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalETSBigIntLiteralType
+        raw_declaration: Type *GlobalETSBigIntLiteralType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalStringBuilderBuiltinType
+        raw_declaration: Type *GlobalStringBuilderBuiltinType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalTypeBuiltinType
+        raw_declaration: Type *GlobalTypeBuiltinType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalTypesBuiltinType
+        raw_declaration: Type *GlobalTypesBuiltinType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalPromiseBuiltinType
+        raw_declaration: Type *GlobalPromiseBuiltinType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalFunctionBuiltinType
+        raw_declaration: Type *GlobalFunctionBuiltinType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalIterableBuiltinType
+        raw_declaration: Type *GlobalIterableBuiltinType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalIteratorBuiltinType
+        raw_declaration: Type *GlobalIteratorBuiltinType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalIteratorResultBuiltinType
+        raw_declaration: Type *GlobalIteratorResultBuiltinType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalBoxBuiltinType
+        raw_declaration: Type *GlobalBoxBuiltinType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalBooleanBoxBuiltinType
+        raw_declaration: Type *GlobalBooleanBoxBuiltinType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalByteBoxBuiltinType
+        raw_declaration: Type *GlobalByteBoxBuiltinType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalCharBoxBuiltinType
+        raw_declaration: Type *GlobalCharBoxBuiltinType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalShortBoxBuiltinType
+        raw_declaration: Type *GlobalShortBoxBuiltinType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalIntBoxBuiltinType
+        raw_declaration: Type *GlobalIntBoxBuiltinType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalLongBoxBuiltinType
+        raw_declaration: Type *GlobalLongBoxBuiltinType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalFloatBoxBuiltinType
+        raw_declaration: Type *GlobalFloatBoxBuiltinType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalDoubleBoxBuiltinType
+        raw_declaration: Type *GlobalDoubleBoxBuiltinType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: VariadicFunctionTypeThreshold
+        raw_declaration: size_t VariadicFunctionTypeThreshold()
+        return_type:
+          name: size_t
+      - args:
+        - name: nargs
+          type:
+            name: size_t
+        - name: hasRest
+          type:
+            name: bool
+        name: GlobalFunctionBuiltinType
+        raw_declaration: Type *GlobalFunctionBuiltinType(size_t nargs, bool hasRest)
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args:
+        - name: nargs
+          type:
+            name: size_t
+        - name: hasRest
+          type:
+            name: bool
+        name: GlobalLambdaBuiltinType
+        raw_declaration: Type *GlobalLambdaBuiltinType(size_t nargs, bool hasRest)
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args:
+        - name: nargs
+          type:
+            name: size_t
+        name: GlobalTupleBuiltinType
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] Type *GlobalTupleBuiltinType(size_t nargs)
+          const noexcept'
+        return_type:
+          name: Type
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - args: []
+        name: VariadicTupleTypeThreshold
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] size_t VariadicTupleTypeThreshold() const
+          noexcept'
+        return_type:
+          name: size_t
+          prefix: '[[nodiscard]]'
+      - args: []
+        name: GlobalArrayBuiltinType
+        raw_declaration: Type *GlobalArrayBuiltinType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalReadonlyArray
+        raw_declaration: Type *GlobalReadonlyArray()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalAssertionErrorBuiltinType
+        raw_declaration: Type *GlobalAssertionErrorBuiltinType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalDivideByZeroErrorBuiltinType
+        raw_declaration: Type *GlobalDivideByZeroErrorBuiltinType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalNullPointerErrorBuiltinType
+        raw_declaration: Type *GlobalNullPointerErrorBuiltinType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalUncaughtExceptionErrorBuiltinType
+        raw_declaration: Type *GlobalUncaughtExceptionErrorBuiltinType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalMapBuiltinType
+        raw_declaration: Type *GlobalMapBuiltinType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalRecordBuiltinType
+        raw_declaration: Type *GlobalRecordBuiltinType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalRegExpBuiltinType
+        raw_declaration: Type *GlobalRegExpBuiltinType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalSetBuiltinType
+        raw_declaration: Type *GlobalSetBuiltinType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args: []
+        name: GlobalTypeError
+        raw_declaration: Type *GlobalTypeError()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args:
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+        - name: type
+          type:
+            name: Type
+            ptr_depth: 1
+        name: InitializeBuiltin
+        raw_declaration: void InitializeBuiltin(util::StringView name, Type *type)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: GlobalTypes
+        raw_declaration: Holder &GlobalTypes()
+        return_type:
+          name: Holder
+          ref_depth: 1
+      - additional_attributes: get
+        args: []
+        name: GlobalTypes
+        postfix: const
+        raw_declaration: const Holder &GlobalTypes() const
+        return_type:
+          name: Holder
+          prefix: const
+          ref_depth: 1
+      - args:
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+        name: NameToId
+        postfix: const
+        raw_declaration: std::optional<GlobalTypeId> NameToId(util::StringView name)
+          const
+        return_type:
+          name: optional
+          namespace: std
+          template_args:
+          - type:
+              name: GlobalTypeId
+      - additional_attributes: get
+        args:
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+        - name: type
+          type:
+            name: ETSObjectType
+            ptr_depth: 1
+        name: FindExtensionSetterInMap
+        raw_declaration: Signature *FindExtensionSetterInMap(util::StringView name,
+          ETSObjectType *type)
+        return_type:
+          name: Signature
+          ptr_depth: 1
+      - additional_attributes: get
+        args:
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+        - name: type
+          type:
+            name: ETSObjectType
+            ptr_depth: 1
+        name: FindExtensionGetterInMap
+        raw_declaration: Signature *FindExtensionGetterInMap(util::StringView name,
+          ETSObjectType *type)
+        return_type:
+          name: Signature
+          ptr_depth: 1
+      - args:
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+        - name: type
+          type:
+            name: ETSObjectType
+            ptr_depth: 1
+        - name: sig
+          type:
+            name: Signature
+            ptr_depth: 1
+        name: InsertExtensionSetterToMap
+        raw_declaration: void InsertExtensionSetterToMap(util::StringView name, ETSObjectType
+          *type, Signature *sig)
+        return_type:
+          name: void
+      - args:
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+        - name: type
+          type:
+            name: ETSObjectType
+            ptr_depth: 1
+        - name: sig
+          type:
+            name: Signature
+            ptr_depth: 1
+        name: InsertExtensionGetterToMap
+        raw_declaration: void InsertExtensionGetterToMap(util::StringView name, ETSObjectType
+          *type, Signature *sig)
+        return_type:
+          name: void
+      usings:
+      - name: Holder
+        type:
+          name: array
+          namespace: std
+          other_modifiers: static
+          template_args:
+          - type:
+              name: Type
+              ptr_depth: 1
+          - type:
+              name: static_cast
+              postfix: (GlobalTypeId::COUNT)
+              template_args:
+              - type:
+                  name: size_t
+  enums:
+  - flags:
+    - NUMBER
+    - ANY
+    - STRING
+    - BOOLEAN
+    - VOID
+    - NULL_ID
+    - UNDEFINED
+    - UNKNOWN
+    - NEVER
+    - NON_PRIMITIVE
+    - BIGINT
+    - FALSE_ID
+    - TRUE_ID
+    - NUMBER_OR_BIGINT
+    - STRING_OR_NUMBER
+    - ZERO
+    - EMPTY_STRING
+    - ZERO_BIGINT
+    - PRIMITIVE
+    - EMPTY_TUPLE
+    - EMPTY_OBJECT
+    - RESOLVING_RETURN_TYPE
+    - ERROR_TYPE
+    - BYTE
+    - SHORT
+    - INT
+    - LONG
+    - FLOAT
+    - DOUBLE
+    - CHAR
+    - ETS_BOOLEAN
+    - ETS_STRING
+    - ETS_VOID
+    - ETS_OBJECT_BUILTIN
+    - ETS_NULL
+    - ETS_UNDEFINED
+    - ETS_UNION_UNDEFINED_NULL
+    - ETS_ANY
+    - ETS_RELAXED_ANY
+    - ETS_NEVER
+    - ETS_UNION_UNDEFINED_NULL_OBJECT
+    - ETS_BOOLEAN_BUILTIN
+    - ETS_BYTE_BUILTIN
+    - ETS_CLASS_BUILTIN
+    - ETS_CHAR_BUILTIN
+    - ETS_COMPARABLE_BUILTIN
+    - ETS_CONSOLE_BUILTIN
+    - ETS_DATE_BUILTIN
+    - ETS_DOUBLE_BUILTIN
+    - ETS_EXCEPTION_BUILTIN
+    - ETS_FLOAT_BUILTIN
+    - ETS_FLOATING_BUILTIN
+    - ETS_INT_BUILTIN
+    - ETS_INTEGRAL_BUILTIN
+    - ETS_LONG_BUILTIN
+    - ETS_NUMERIC_BUILTIN
+    - ETS_MAP_BUILTIN
+    - ETS_RECORD_BUILTIN
+    - ETS_ERROR_BUILTIN
+    - ETS_RUNTIME_BUILTIN
+    - ETS_RUNTIME_LINKER_BUILTIN
+    - ETS_SET_BUILTIN
+    - ETS_SHORT_BUILTIN
+    - ETS_STACK_TRACE_ELEMENT_BUILTIN
+    - ETS_STACK_TRACE_BUILTIN
+    - ETS_ARRAY_INDEX_OUT_OF_BOUNDS_ERROR_BUILTIN
+    - ETS_ARITHMETIC_ERROR_BUILTIN
+    - ETS_CLASS_CAST_ERROR_BUILTIN
+    - ETS_ASSERTION_ERROR_BUILTIN
+    - ETS_DIVIDE_BY_ZERO_ERROR_BUILTIN
+    - ETS_NULL_POINTER_ERROR_BUILTIN
+    - ETS_UNCAUGHT_EXCEPTION_ERROR_BUILTIN
+    - ETS_STRING_BUILTIN
+    - ETS_STRING_BUILDER_BUILTIN
+    - ETS_TYPE_BUILTIN
+    - ETS_TYPES_BUILTIN
+    - ETS_PROMISE_BUILTIN
+    - ETS_FUNCTION_BUILTIN
+    - ETS_ITERABLE_BUILTIN
+    - ETS_ITERATOR_BUILTIN
+    - ETS_ITERATOR_RESULT_BUILTIN
+    - ETS_REGEXP_BUILTIN
+    - ETS_ARRAY_BUILTIN
+    - ETS_BOX_BUILTIN
+    - ETS_BOOLEAN_BOX_BUILTIN
+    - ETS_BYTE_BOX_BUILTIN
+    - ETS_CHAR_BOX_BUILTIN
+    - ETS_SHORT_BOX_BUILTIN
+    - ETS_INT_BOX_BUILTIN
+    - ETS_LONG_BOX_BUILTIN
+    - ETS_FLOAT_BOX_BUILTIN
+    - ETS_DOUBLE_BOX_BUILTIN
+    - ETS_BIG_INT_BUILTIN
+    - ETS_BIG_INT
+    - ETS_ARRAY
+    - ETS_READONLY_ARRAY
+    - ETS_FUNCTION0_CLASS
+    - ETS_FUNCTION1_CLASS
+    - ETS_FUNCTION2_CLASS
+    - ETS_FUNCTION3_CLASS
+    - ETS_FUNCTION4_CLASS
+    - ETS_FUNCTION5_CLASS
+    - ETS_FUNCTION6_CLASS
+    - ETS_FUNCTION7_CLASS
+    - ETS_FUNCTION8_CLASS
+    - ETS_FUNCTION9_CLASS
+    - ETS_FUNCTION10_CLASS
+    - ETS_FUNCTION11_CLASS
+    - ETS_FUNCTION12_CLASS
+    - ETS_FUNCTION13_CLASS
+    - ETS_FUNCTION14_CLASS
+    - ETS_FUNCTION15_CLASS
+    - ETS_FUNCTION16_CLASS
+    - ETS_FUNCTIONN_CLASS
+    - ETS_LAMBDA0_CLASS
+    - ETS_LAMBDA1_CLASS
+    - ETS_LAMBDA2_CLASS
+    - ETS_LAMBDA3_CLASS
+    - ETS_LAMBDA4_CLASS
+    - ETS_LAMBDA5_CLASS
+    - ETS_LAMBDA6_CLASS
+    - ETS_LAMBDA7_CLASS
+    - ETS_LAMBDA8_CLASS
+    - ETS_LAMBDA9_CLASS
+    - ETS_LAMBDA10_CLASS
+    - ETS_LAMBDA11_CLASS
+    - ETS_LAMBDA12_CLASS
+    - ETS_LAMBDA13_CLASS
+    - ETS_LAMBDA14_CLASS
+    - ETS_LAMBDA15_CLASS
+    - ETS_LAMBDA16_CLASS
+    - ETS_LAMBDAN_CLASS
+    - ETS_FUNCTIONR0_CLASS
+    - ETS_FUNCTIONR1_CLASS
+    - ETS_FUNCTIONR2_CLASS
+    - ETS_FUNCTIONR3_CLASS
+    - ETS_FUNCTIONR4_CLASS
+    - ETS_FUNCTIONR5_CLASS
+    - ETS_FUNCTIONR6_CLASS
+    - ETS_FUNCTIONR7_CLASS
+    - ETS_FUNCTIONR8_CLASS
+    - ETS_FUNCTIONR9_CLASS
+    - ETS_FUNCTIONR10_CLASS
+    - ETS_FUNCTIONR11_CLASS
+    - ETS_FUNCTIONR12_CLASS
+    - ETS_FUNCTIONR13_CLASS
+    - ETS_FUNCTIONR14_CLASS
+    - ETS_FUNCTIONR15_CLASS
+    - ETS_FUNCTIONR16_CLASS
+    - ETS_LAMBDAR0_CLASS
+    - ETS_LAMBDAR1_CLASS
+    - ETS_LAMBDAR2_CLASS
+    - ETS_LAMBDAR3_CLASS
+    - ETS_LAMBDAR4_CLASS
+    - ETS_LAMBDAR5_CLASS
+    - ETS_LAMBDAR6_CLASS
+    - ETS_LAMBDAR7_CLASS
+    - ETS_LAMBDAR8_CLASS
+    - ETS_LAMBDAR9_CLASS
+    - ETS_LAMBDAR10_CLASS
+    - ETS_LAMBDAR11_CLASS
+    - ETS_LAMBDAR12_CLASS
+    - ETS_LAMBDAR13_CLASS
+    - ETS_LAMBDAR14_CLASS
+    - ETS_LAMBDAR15_CLASS
+    - ETS_LAMBDAR16_CLASS
+    - ETS_TUPLE0_CLASS
+    - ETS_TUPLE1_CLASS
+    - ETS_TUPLE2_CLASS
+    - ETS_TUPLE3_CLASS
+    - ETS_TUPLE4_CLASS
+    - ETS_TUPLE5_CLASS
+    - ETS_TUPLE6_CLASS
+    - ETS_TUPLE7_CLASS
+    - ETS_TUPLE8_CLASS
+    - ETS_TUPLE9_CLASS
+    - ETS_TUPLE10_CLASS
+    - ETS_TUPLE11_CLASS
+    - ETS_TUPLE12_CLASS
+    - ETS_TUPLE13_CLASS
+    - ETS_TUPLE14_CLASS
+    - ETS_TUPLE15_CLASS
+    - ETS_TUPLE16_CLASS
+    - ETS_TUPLEN_CLASS
+    - TYPE_ERROR
+    - COUNT
+    kind: simple
+    name: GlobalTypeId
+    namespace: checker
+  usings:
+  - name: ExtensionAccessorMap
+    type:
+      name: ArenaUnorderedMap
+      template_args:
+      - type:
+          name: StringView
+          namespace: util
+      - type:
+          name: ArenaUnorderedMap
+          template_args:
+          - type:
+              name: ETSObjectType
+              namespace: checker
+              ptr_depth: 1
+          - type:
+              name: Signature
+              ptr_depth: 1
+include:
+- '"checker/types/type.h"'
+macros:
+- name: ES2PANDA_COMPILER_CHECKER_TYPES_GLOBAL_TYPES_HOLDER_H

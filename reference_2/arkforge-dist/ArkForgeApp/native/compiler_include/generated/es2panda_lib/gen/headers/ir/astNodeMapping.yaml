@@ -1,0 +1,344 @@
+macros:
+- name: ES2PANDA_IR_AST_NODE_MAPPING_H
+- arguments: _
+  name: AST_NODE_MAPPING
+  values:
+  - - ARROW_FUNCTION_EXPRESSION
+    - ArrowFunctionExpression
+  - - ANNOTATION_DECLARATION
+    - AnnotationDeclaration
+  - - ANNOTATION_USAGE
+    - AnnotationUsage
+  - - ASSERT_STATEMENT
+    - AssertStatement
+  - - AWAIT_EXPRESSION
+    - AwaitExpression
+  - - BIGINT_LITERAL
+    - BigIntLiteral
+  - - BINARY_EXPRESSION
+    - BinaryExpression
+  - - BLOCK_STATEMENT
+    - BlockStatement
+  - - BOOLEAN_LITERAL
+    - BooleanLiteral
+  - - BREAK_STATEMENT
+    - BreakStatement
+  - - CALL_EXPRESSION
+    - CallExpression
+  - - CATCH_CLAUSE
+    - CatchClause
+  - - CHAIN_EXPRESSION
+    - ChainExpression
+  - - CHAR_LITERAL
+    - CharLiteral
+  - - CLASS_DEFINITION
+    - ClassDefinition
+  - - CLASS_DECLARATION
+    - ClassDeclaration
+  - - CLASS_EXPRESSION
+    - ClassExpression
+  - - CLASS_PROPERTY
+    - ClassProperty
+  - - CLASS_STATIC_BLOCK
+    - ClassStaticBlock
+  - - CONDITIONAL_EXPRESSION
+    - ConditionalExpression
+  - - CONTINUE_STATEMENT
+    - ContinueStatement
+  - - DEBUGGER_STATEMENT
+    - DebuggerStatement
+  - - DECORATOR
+    - Decorator
+  - - DIRECT_EVAL
+    - DirectEvalExpression
+  - - DO_WHILE_STATEMENT
+    - DoWhileStatement
+  - - EMPTY_STATEMENT
+    - EmptyStatement
+  - - EXPORT_ALL_DECLARATION
+    - ExportAllDeclaration
+  - - EXPORT_DEFAULT_DECLARATION
+    - ExportDefaultDeclaration
+  - - EXPORT_NAMED_DECLARATION
+    - ExportNamedDeclaration
+  - - EXPORT_SPECIFIER
+    - ExportSpecifier
+  - - EXPRESSION_STATEMENT
+    - ExpressionStatement
+  - - FOR_IN_STATEMENT
+    - ForInStatement
+  - - FOR_OF_STATEMENT
+    - ForOfStatement
+  - - FOR_UPDATE_STATEMENT
+    - ForUpdateStatement
+  - - FUNCTION_DECLARATION
+    - FunctionDeclaration
+  - - FUNCTION_EXPRESSION
+    - FunctionExpression
+  - - IDENTIFIER
+    - Identifier
+  - - DUMMYNODE
+    - DummyNode
+  - - IF_STATEMENT
+    - IfStatement
+  - - IMPORT_DECLARATION
+    - ImportDeclaration
+  - - IMPORT_EXPRESSION
+    - ImportExpression
+  - - IMPORT_DEFAULT_SPECIFIER
+    - ImportDefaultSpecifier
+  - - IMPORT_NAMESPACE_SPECIFIER
+    - ImportNamespaceSpecifier
+  - - IMPORT_SPECIFIER
+    - ImportSpecifier
+  - - LABELLED_STATEMENT
+    - LabelledStatement
+  - - MEMBER_EXPRESSION
+    - MemberExpression
+  - - META_PROPERTY_EXPRESSION
+    - MetaProperty
+  - - METHOD_DEFINITION
+    - MethodDefinition
+  - - NAMED_TYPE
+    - NamedType
+  - - NEW_EXPRESSION
+    - NewExpression
+  - - NULL_LITERAL
+    - NullLiteral
+  - - UNDEFINED_LITERAL
+    - UndefinedLiteral
+  - - NUMBER_LITERAL
+    - NumberLiteral
+  - - OMITTED_EXPRESSION
+    - OmittedExpression
+  - - OVERLOAD_DECLARATION
+    - OverloadDeclaration
+  - - PREFIX_ASSERTION_EXPRESSION
+    - PrefixAssertionExpression
+  - - PROPERTY
+    - Property
+  - - REGEXP_LITERAL
+    - RegExpLiteral
+  - - REEXPORT_STATEMENT
+    - ETSReExportDeclaration
+  - - RETURN_STATEMENT
+    - ReturnStatement
+  - - SCRIPT_FUNCTION
+    - ScriptFunction
+  - - SEQUENCE_EXPRESSION
+    - SequenceExpression
+  - - STRING_LITERAL
+    - StringLiteral
+  - - ETS_NON_NULLISH_TYPE
+    - ETSNonNullishTypeNode
+  - - ETS_NULL_TYPE
+    - ETSNullType
+  - - ETS_UNDEFINED_TYPE
+    - ETSUndefinedType
+  - - ETS_NEVER_TYPE
+    - ETSNeverType
+  - - ETS_STRING_LITERAL_TYPE
+    - ETSStringLiteralType
+  - - ETS_INTRINSIC_NODE_TYPE
+    - ETSIntrinsicNode
+  - - ETS_FUNCTION_TYPE
+    - ETSFunctionType
+  - - ETS_GENERIC_INSTANTIATED_NODE
+    - ETSGenericInstantiatedNode
+  - - ETS_PRIMITIVE_TYPE
+    - ETSPrimitiveType
+  - - ETS_PACKAGE_DECLARATION
+    - ETSPackageDeclaration
+  - - ETS_CLASS_LITERAL
+    - ETSClassLiteral
+  - - ETS_TYPE_REFERENCE
+    - ETSTypeReference
+  - - ETS_TYPE_REFERENCE_PART
+    - ETSTypeReferencePart
+  - - ETS_DESTRUCTURING
+    - ETSDestructuring
+  - - ETS_UNION_TYPE
+    - ETSUnionType
+  - - ETS_KEYOF_TYPE
+    - ETSKeyofType
+  - - ETS_NEW_ARRAY_INSTANCE_EXPRESSION
+    - ETSNewArrayInstanceExpression
+  - - ETS_NEW_MULTI_DIM_ARRAY_INSTANCE_EXPRESSION
+    - ETSNewMultiDimArrayInstanceExpression
+  - - ETS_NEW_CLASS_INSTANCE_EXPRESSION
+    - ETSNewClassInstanceExpression
+  - - ETS_IMPORT_DECLARATION
+    - ETSImportDeclaration
+  - - ETS_PARAMETER_EXPRESSION
+    - ETSParameterExpression
+  - - ETS_TUPLE
+    - ETSTuple
+  - - ETS_MODULE
+    - ETSModule
+  - - SUPER_EXPRESSION
+    - SuperExpression
+  - - STRUCT_DECLARATION
+    - ETSStructDeclaration
+  - - SWITCH_CASE_STATEMENT
+    - SwitchCaseStatement
+  - - SWITCH_STATEMENT
+    - SwitchStatement
+  - - TS_ENUM_DECLARATION
+    - TSEnumDeclaration
+  - - TS_ENUM_MEMBER
+    - TSEnumMember
+  - - TS_EXTERNAL_MODULE_REFERENCE
+    - TSExternalModuleReference
+  - - TS_NUMBER_KEYWORD
+    - TSNumberKeyword
+  - - TS_ANY_KEYWORD
+    - TSAnyKeyword
+  - - TS_STRING_KEYWORD
+    - TSStringKeyword
+  - - TS_BOOLEAN_KEYWORD
+    - TSBooleanKeyword
+  - - TS_VOID_KEYWORD
+    - TSVoidKeyword
+  - - TS_UNDEFINED_KEYWORD
+    - TSUndefinedKeyword
+  - - TS_UNKNOWN_KEYWORD
+    - TSUnknownKeyword
+  - - TS_OBJECT_KEYWORD
+    - TSObjectKeyword
+  - - TS_BIGINT_KEYWORD
+    - TSBigintKeyword
+  - - TS_NEVER_KEYWORD
+    - TSNeverKeyword
+  - - TS_NON_NULL_EXPRESSION
+    - TSNonNullExpression
+  - - TS_NULL_KEYWORD
+    - TSNullKeyword
+  - - TS_ARRAY_TYPE
+    - TSArrayType
+  - - TS_UNION_TYPE
+    - TSUnionType
+  - - TS_TYPE_LITERAL
+    - TSTypeLiteral
+  - - TS_PROPERTY_SIGNATURE
+    - TSPropertySignature
+  - - TS_METHOD_SIGNATURE
+    - TSMethodSignature
+  - - TS_SIGNATURE_DECLARATION
+    - TSSignatureDeclaration
+  - - TS_PARENT_TYPE
+    - TSParenthesizedType
+  - - TS_LITERAL_TYPE
+    - TSLiteralType
+  - - TS_INFER_TYPE
+    - TSInferType
+  - - TS_CONDITIONAL_TYPE
+    - TSConditionalType
+  - - TS_IMPORT_TYPE
+    - TSImportType
+  - - TS_INTERSECTION_TYPE
+    - TSIntersectionType
+  - - TS_MAPPED_TYPE
+    - TSMappedType
+  - - TS_MODULE_BLOCK
+    - TSModuleBlock
+  - - TS_THIS_TYPE
+    - TSThisType
+  - - TS_TYPE_OPERATOR
+    - TSTypeOperator
+  - - TS_TYPE_PARAMETER
+    - TSTypeParameter
+  - - TS_TYPE_PARAMETER_DECLARATION
+    - TSTypeParameterDeclaration
+  - - TS_TYPE_PARAMETER_INSTANTIATION
+    - TSTypeParameterInstantiation
+  - - TS_TYPE_PREDICATE
+    - TSTypePredicate
+  - - TS_PARAMETER_PROPERTY
+    - TSParameterProperty
+  - - TS_MODULE_DECLARATION
+    - TSModuleDeclaration
+  - - TS_IMPORT_EQUALS_DECLARATION
+    - TSImportEqualsDeclaration
+  - - TS_FUNCTION_TYPE
+    - TSFunctionType
+  - - TS_CONSTRUCTOR_TYPE
+    - TSConstructorType
+  - - TS_TYPE_ALIAS_DECLARATION
+    - TSTypeAliasDeclaration
+  - - TS_TYPE_REFERENCE
+    - TSTypeReference
+  - - TS_QUALIFIED_NAME
+    - TSQualifiedName
+  - - TS_INDEXED_ACCESS_TYPE
+    - TSIndexedAccessType
+  - - TS_INTERFACE_DECLARATION
+    - TSInterfaceDeclaration
+  - - TS_INTERFACE_BODY
+    - TSInterfaceBody
+  - - TS_INTERFACE_HERITAGE
+    - TSInterfaceHeritage
+  - - TS_TUPLE_TYPE
+    - TSTupleType
+  - - TS_NAMED_TUPLE_MEMBER
+    - TSNamedTupleMember
+  - - TS_INDEX_SIGNATURE
+    - TSIndexSignature
+  - - TS_TYPE_QUERY
+    - TSTypeQuery
+  - - TS_AS_EXPRESSION
+    - TSAsExpression
+  - - TS_CLASS_IMPLEMENTS
+    - TSClassImplements
+  - - TS_TYPE_ASSERTION
+    - TSTypeAssertion
+  - - TAGGED_TEMPLATE_EXPRESSION
+    - TaggedTemplateExpression
+  - - TEMPLATE_ELEMENT
+    - TemplateElement
+  - - TEMPLATE_LITERAL
+    - TemplateLiteral
+  - - THIS_EXPRESSION
+    - ThisExpression
+  - - TYPEOF_EXPRESSION
+    - TypeofExpression
+  - - THROW_STATEMENT
+    - ThrowStatement
+  - - TRY_STATEMENT
+    - TryStatement
+  - - UNARY_EXPRESSION
+    - UnaryExpression
+  - - UPDATE_EXPRESSION
+    - UpdateExpression
+  - - VARIABLE_DECLARATION
+    - VariableDeclaration
+  - - VARIABLE_DECLARATOR
+    - VariableDeclarator
+  - - WHILE_STATEMENT
+    - WhileStatement
+  - - YIELD_EXPRESSION
+    - YieldExpression
+  - - OPAQUE_TYPE_NODE
+    - OpaqueTypeNode
+  - - BLOCK_EXPRESSION
+    - BlockExpression
+  - - BROKEN_TYPE_NODE
+    - BrokenTypeNode
+- arguments: _
+  name: AST_NODE_REINTERPRET_MAPPING
+  values:
+  - - ARRAY_EXPRESSION
+    - ARRAY_PATTERN
+    - ArrayExpression
+    - ArrayPattern
+  - - ASSIGNMENT_EXPRESSION
+    - ASSIGNMENT_PATTERN
+    - AssignmentExpression
+    - AssignmentPattern
+  - - OBJECT_EXPRESSION
+    - OBJECT_PATTERN
+    - ObjectExpression
+    - ObjectPattern
+  - - SPREAD_ELEMENT
+    - REST_ELEMENT
+    - SpreadElement
+    - RestElement

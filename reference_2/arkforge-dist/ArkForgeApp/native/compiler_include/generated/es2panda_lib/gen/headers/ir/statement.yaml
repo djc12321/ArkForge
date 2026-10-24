@@ -1,0 +1,59 @@
+include:
+- '"ir/astNode.h"'
+ir:
+  class_definitions:
+  - extends: public AstNode
+    known_macroses:
+    - NO_MOVE_SEMANTIC(Statement);
+    name: Statement
+    protected: {}
+    public:
+      constructors:
+      - args: []
+        name: Statement
+        postfix: = delete
+        raw_declaration: Statement() = delete
+      destructors:
+      - args: []
+        name: ~Statement
+        postfix: override = default
+        raw_declaration: ~Statement() override = default
+      fields:
+      - default_value: (const Statement &) = delete
+        name: operator
+        type:
+          name: Statement
+          ref_depth: 1
+      methods:
+      - additional_attributes: get
+        args: []
+        name: IsStatement
+        postfix: const noexcept override
+        raw_declaration: '[[nodiscard]] bool IsStatement() const noexcept override'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: set
+        args:
+        - name: checker
+          type:
+            name: ETSChecker
+            namespace: checker
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        - name: type
+          type:
+            name: Type
+            namespace: checker
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: SetReturnType
+        raw_declaration: virtual void SetReturnType([[maybe_unused]] checker::ETSChecker
+          *checker, [[maybe_unused]] checker::Type *type)
+        return_type:
+          name: void
+          prefix: virtual
+  class_forward_declaration:
+  - ClassElement
+macros:
+- name: ES2PANDA_IR_STATEMENT_H

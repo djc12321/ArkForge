@@ -1,0 +1,661 @@
+checker:
+  class_definitions:
+  - class_definitions:
+    - name: RelationEntry
+      public:
+        fields:
+        - name: result
+          type:
+            name: RelationResult
+        - name: type
+          type:
+            name: RelationType
+    name: RelationHolder
+    private: {}
+    public:
+      constructors:
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        name: RelationHolder
+        other_initializers:
+        - class_field: cached_
+          init_value: allocator->Adapter()
+        raw_declaration: explicit RelationHolder(ArenaAllocator *allocator)
+        return_type:
+          prefix: explicit
+      methods:
+      - args:
+        - name: sourceId
+          type:
+            name: uint32_t
+        - name: targetId
+          type:
+            name: uint32_t
+        name: MakeKey
+        raw_declaration: static RelationKey MakeKey(uint32_t sourceId, uint32_t targetId)
+        return_type:
+          name: RelationKey
+          prefix: static
+      - args:
+        - name: key
+          type:
+            name: RelationKey
+        name: Find
+        postfix: const
+        raw_declaration: const RelationEntry *Find(RelationKey key) const
+        return_type:
+          name: RelationEntry
+          prefix: const
+          ptr_depth: 1
+      - args:
+        - name: key
+          type:
+            name: RelationKey
+        - name: entry
+          type:
+            name: RelationEntry
+        name: Insert
+        raw_declaration: void Insert(RelationKey key, RelationEntry entry)
+        return_type:
+          name: void
+      - args: []
+        name: Clear
+        raw_declaration: void Clear()
+        return_type:
+          name: void
+      usings:
+      - name: RelationKey
+        type:
+          name: uint64_t
+  - friends:
+    - SavedTypeRelationFlagsContext
+    - ETSChecker
+    name: TypeRelation
+    private: {}
+    public:
+      constructors:
+      - args:
+        - name: checker
+          type:
+            name: Checker
+            ptr_depth: 1
+        name: TypeRelation
+        other_initializers:
+        - class_field: TypeRelation
+          init_value: checker, false
+        raw_declaration: explicit TypeRelation(Checker *checker)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: IsTrue
+        postfix: const
+        raw_declaration: bool IsTrue() const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args: []
+        name: IsError
+        postfix: const
+        raw_declaration: bool IsError() const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args: []
+        name: NoReturnTypeCheck
+        postfix: const
+        raw_declaration: bool NoReturnTypeCheck() const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args: []
+        name: DirectReturn
+        postfix: const
+        raw_declaration: bool DirectReturn() const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args: []
+        name: InAssignmentContext
+        postfix: const
+        raw_declaration: bool InAssignmentContext() const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args: []
+        name: IgnoreTypeParameters
+        postfix: const
+        raw_declaration: bool IgnoreTypeParameters() const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args: []
+        name: InCastingContext
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool InCastingContext() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: UncheckedCast
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool UncheckedCast() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsOverridingCheck
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsOverridingCheck() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsBridgeCheck
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsBridgeCheck() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: GetTypeRelationFlags
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] TypeRelationFlag GetTypeRelationFlags() const
+          noexcept'
+        return_type:
+          name: TypeRelationFlag
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: GetChecker
+        postfix: const
+        raw_declaration: const Checker *GetChecker() const
+        return_type:
+          name: Checker
+          prefix: const
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: checker
+          type:
+            name: Checker
+            ptr_depth: 1
+        name: SetChecker
+        raw_declaration: void SetChecker(Checker *checker)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: GetNode
+        postfix: const
+        raw_declaration: ir::Expression *GetNode() const
+        return_type:
+          name: Expression
+          namespace: ir
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: GetChecker
+        raw_declaration: Checker *GetChecker()
+        return_type:
+          name: Checker
+          ptr_depth: 1
+      - args:
+        - name: type
+          type:
+            name: Type
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        name: IncreaseTypeRecursionCount
+        raw_declaration: void IncreaseTypeRecursionCount(Type *const type)
+        return_type:
+          name: void
+      - args:
+        - name: type
+          type:
+            name: Type
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        name: IsAtTypeDepthLimit
+        raw_declaration: bool IsAtTypeDepthLimit(Type *const type)
+        return_type:
+          name: bool
+      - args:
+        - name: type
+          type:
+            name: Type
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        name: DecreaseTypeRecursionCount
+        raw_declaration: void DecreaseTypeRecursionCount(Type *const type)
+        return_type:
+          name: void
+      - args:
+        - name: typeParameters1
+          type:
+            name: ArenaVector
+            other_modifiers: const
+            ref_depth: 1
+            template_args:
+            - type:
+                name: Type
+                ptr_depth: 1
+        - name: typeParameters2
+          type:
+            name: ArenaVector
+            other_modifiers: const
+            ref_depth: 1
+            template_args:
+            - type:
+                name: Type
+                ptr_depth: 1
+        name: CheckTypeParameterConstraints
+        raw_declaration: "[[nodiscard]] bool CheckTypeParameterConstraints(ArenaVector<Type\
+          \ *> const &typeParameters1,\n                                         \
+          \            ArenaVector<Type *> const &typeParameters2)"
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args:
+        - name: source
+          type:
+            name: Type
+            other_modifiers: const
+            ptr_depth: 1
+        - name: target
+          type:
+            name: Type
+            other_modifiers: const
+            ptr_depth: 1
+        name: IsIdenticalTo
+        raw_declaration: bool IsIdenticalTo(Type const *source, Type const *target)
+        return_type:
+          name: bool
+      - args:
+        - name: source
+          type:
+            name: Type
+            ptr_depth: 1
+        - name: target
+          type:
+            name: Type
+            ptr_depth: 1
+        name: IsIdenticalTo
+        raw_declaration: bool IsIdenticalTo(Type *source, Type *target)
+        return_type:
+          name: bool
+      - args:
+        - name: source
+          type:
+            name: Signature
+            other_modifiers: const
+            ptr_depth: 1
+        - name: target
+          type:
+            name: Signature
+            other_modifiers: const
+            ptr_depth: 1
+        name: SignatureIsIdenticalTo
+        raw_declaration: bool SignatureIsIdenticalTo(Signature const *source, Signature
+          const *target)
+        return_type:
+          name: bool
+      - args:
+        - name: source
+          type:
+            name: Type
+            ptr_depth: 1
+        - name: target
+          type:
+            name: Type
+            ptr_depth: 1
+        name: IsAssignableTo
+        raw_declaration: bool IsAssignableTo(Type *source, Type *target)
+        return_type:
+          name: bool
+      - args:
+        - name: source
+          type:
+            name: Type
+            ptr_depth: 1
+        - name: target
+          type:
+            name: Type
+            ptr_depth: 1
+        name: IsComparableTo
+        raw_declaration: bool IsComparableTo(Type *source, Type *target)
+        return_type:
+          name: bool
+      - args:
+        - name: source
+          type:
+            name: Type
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        - name: target
+          type:
+            name: Type
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        name: IsCastableTo
+        raw_declaration: bool IsCastableTo(Type *const source, Type *const target)
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - name: super
+          type:
+            name: Type
+            other_modifiers: const
+            ptr_depth: 1
+        - name: sub
+          type:
+            name: Type
+            other_modifiers: const
+            ptr_depth: 1
+        name: IsSupertypeOf
+        raw_declaration: bool IsSupertypeOf(Type const *super, Type const *sub)
+        return_type:
+          name: bool
+      - args:
+        - name: target
+          type:
+            name: Type
+            ptr_depth: 1
+        - name: source
+          type:
+            name: Type
+            ptr_depth: 1
+        name: IsLegalBoxedPrimitiveConversion
+        raw_declaration: bool IsLegalBoxedPrimitiveConversion(Type *target, Type *source)
+        return_type:
+          name: bool
+      - args:
+        - name: super
+          type:
+            name: Type
+            ptr_depth: 1
+        - name: sub
+          type:
+            name: Type
+            ptr_depth: 1
+        name: IsSupertypeOf
+        raw_declaration: bool IsSupertypeOf(Type *super, Type *sub)
+        return_type:
+          name: bool
+      - args:
+        - name: sub
+          type:
+            name: Type
+            ptr_depth: 1
+        - name: super
+          type:
+            name: Type
+            ptr_depth: 1
+        name: IsSubtypeOf
+        raw_declaration: bool IsSubtypeOf(Type *sub, Type *super)
+        return_type:
+          name: bool
+      - args:
+        - name: source
+          type:
+            name: IndexInfo
+            ptr_depth: 1
+        - name: target
+          type:
+            name: IndexInfo
+            ptr_depth: 1
+        name: IsIdenticalTo
+        raw_declaration: bool IsIdenticalTo(IndexInfo *source, IndexInfo *target)
+        return_type:
+          name: bool
+      - args:
+        - name: super
+          type:
+            name: Signature
+            other_modifiers: const
+            ptr_depth: 1
+        - name: sub
+          type:
+            name: Signature
+            other_modifiers: const
+            ptr_depth: 1
+        name: SignatureIsSupertypeOf
+        raw_declaration: bool SignatureIsSupertypeOf(Signature const *super, Signature
+          const *sub)
+        return_type:
+          name: bool
+      - args:
+        - name: super
+          type:
+            name: Signature
+            ptr_depth: 1
+        - name: sub
+          type:
+            name: Signature
+            ptr_depth: 1
+        name: SignatureIsCoveredBy
+        raw_declaration: bool SignatureIsCoveredBy(Signature *super, Signature *sub)
+        return_type:
+          name: bool
+      - args:
+        - name: type
+          type:
+            name: Type
+            ptr_depth: 1
+        - name: varianceFlag
+          type:
+            name: VarianceFlag
+        name: CheckVarianceRecursively
+        raw_declaration: bool CheckVarianceRecursively(Type *type, VarianceFlag varianceFlag)
+        return_type:
+          name: bool
+      - args:
+        - name: source
+          type:
+            name: Type
+            ptr_depth: 1
+        - name: target
+          type:
+            name: Type
+            ptr_depth: 1
+        name: IsReadonlyTypeOf
+        raw_declaration: bool IsReadonlyTypeOf(Type *source, Type *target)
+        return_type:
+          name: bool
+      - args:
+        - name: variance
+          type:
+            name: VarianceFlag
+        - name: posVariance
+          type:
+            name: VarianceFlag
+        name: TransferVariant
+        raw_declaration: VarianceFlag TransferVariant(VarianceFlag variance, VarianceFlag
+          posVariance)
+        return_type:
+          name: VarianceFlag
+      - args:
+        - name: kind
+          type:
+            name: DiagnosticKind
+            namespace: diagnostic
+            prefix: const
+            ref_depth: 1
+        - name: loc
+          type:
+            name: SourcePosition
+            namespace: lexer
+            prefix: const
+            ref_depth: 1
+        name: RaiseError
+        postfix: const
+        raw_declaration: void RaiseError(const diagnostic::DiagnosticKind &kind, const
+          lexer::SourcePosition &loc) const
+        return_type:
+          name: void
+      - args:
+        - name: kind
+          type:
+            name: DiagnosticKind
+            namespace: diagnostic
+            prefix: const
+            ref_depth: 1
+        - name: list
+          type:
+            name: DiagnosticMessageParams
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        - name: loc
+          type:
+            name: SourcePosition
+            namespace: lexer
+            prefix: const
+            ref_depth: 1
+        name: RaiseError
+        postfix: const
+        raw_declaration: "void RaiseError(const diagnostic::DiagnosticKind &kind,\
+          \ const util::DiagnosticMessageParams &list,\n                    const\
+          \ lexer::SourcePosition &loc) const"
+        return_type:
+          name: void
+      - args:
+        - name: res
+          type:
+            name: bool
+        name: Result
+        raw_declaration: bool Result(bool res)
+        return_type:
+          name: bool
+      - args:
+        - name: res
+          type:
+            name: RelationResult
+        name: Result
+        raw_declaration: void Result(RelationResult res)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: node
+          type:
+            name: Expression
+            namespace: ir
+            ptr_depth: 1
+        name: SetNode
+        raw_declaration: void SetNode(ir::Expression *node)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: flags
+          type:
+            name: TypeRelationFlag
+        name: SetFlags
+        raw_declaration: void SetFlags(TypeRelationFlag flags)
+        return_type:
+          name: void
+      - args:
+        - name: flags
+          type:
+            name: TypeRelationFlag
+        name: RemoveFlags
+        raw_declaration: void RemoveFlags(TypeRelationFlag flags)
+        return_type:
+          name: void
+      - args: []
+        name: Allocator
+        raw_declaration: ArenaAllocator *Allocator()
+        return_type:
+          name: ArenaAllocator
+          ptr_depth: 1
+  - known_macroses:
+    - NO_COPY_SEMANTIC(SavedTypeRelationFlagsContext);
+    name: SavedTypeRelationFlagsContext
+    private: {}
+    public:
+      constructors:
+      - args:
+        - initializer_for: relation_
+          name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: newFlag
+          type:
+            name: TypeRelationFlag
+            other_modifiers: const
+            postfix: const
+        name: SavedTypeRelationFlagsContext
+        other_initializers:
+        - class_field: prev_
+          init_value: relation->flags_
+        raw_declaration: explicit SavedTypeRelationFlagsContext(TypeRelation *relation,
+          TypeRelationFlag const newFlag)
+        return_type:
+          prefix: explicit
+      - args:
+        - name: other
+          type:
+            name: SavedTypeRelationFlagsContext
+            ref_depth: 2
+        name: SavedTypeRelationFlagsContext
+        other_initializers:
+        - class_field: relation_
+          init_value: other.relation_
+        - class_field: prev_
+          init_value: std::move(other.prev_)
+        postfix: noexcept
+        raw_declaration: explicit SavedTypeRelationFlagsContext(SavedTypeRelationFlagsContext
+          &&other) noexcept
+        return_type:
+          prefix: explicit
+      destructors:
+      - args: []
+        name: ~SavedTypeRelationFlagsContext
+        raw_declaration: ~SavedTypeRelationFlagsContext()
+      fields:
+      - default_value: "(SavedTypeRelationFlagsContext &&other) noexcept\n    {\n\
+          \        if (this != &other) {\n            relation_ = other.relation_"
+        name: operator
+        type:
+          name: SavedTypeRelationFlagsContext
+          ref_depth: 1
+      - default_value: nullptr
+        type:
+          name: other.relation_
+      - default_value: std::move(other.prev_)
+        type:
+          name: prev_
+      - name: this
+        type:
+          name: return
+          ptr_depth: 1
+include:
+- <mutex>
+- '"lexer/token/sourceLocation.h"'
+- '"util/enumbitops.h"'
+- '"util/diagnosticEngine.h"'
+ir:
+  class_forward_declaration:
+  - Expression
+macros:
+- name: ES2PANDA_COMPILER_CHECKER_TYPES_TYPE_RELATION_H
+structs:
+- members: []
+  name: enumbitops::IsAllowedType<ark::es2panda::checker::TypeRelationFlag>

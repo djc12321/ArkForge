@@ -1,0 +1,296 @@
+include:
+- '"ir/astNode.h"'
+- '"ir/expression.h"'
+- '"ir/statement.h"'
+ir:
+  class_definitions:
+  - extends: public Expression
+    known_macroses:
+    - NO_COPY_SEMANTIC(BlockExpression);
+    - NO_MOVE_SEMANTIC(BlockExpression);
+    name: BlockExpression
+    private: {}
+    public:
+      constructors:
+      - args: []
+        name: BlockExpression
+        postfix: = delete
+        raw_declaration: BlockExpression() = delete
+      - args:
+        - name: statements
+          type:
+            name: ArenaVector
+            ref_depth: 2
+            template_args:
+            - type:
+                name: Statement
+                namespace: ir
+                ptr_depth: 1
+        name: BlockExpression
+        raw_declaration: explicit BlockExpression(ArenaVector<ir::Statement *> &&statements)
+        return_type:
+          prefix: explicit
+      - args:
+        - name: tag
+          type:
+            name: Tag
+        - name: other
+          type:
+            name: BlockExpression
+            other_modifiers: const
+            ref_depth: 1
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        name: BlockExpression
+        raw_declaration: explicit BlockExpression(Tag tag, BlockExpression const &other,
+          ArenaAllocator *allocator)
+        return_type:
+          prefix: explicit
+      destructors:
+      - args: []
+        name: ~BlockExpression
+        postfix: override = default
+        raw_declaration: ~BlockExpression() override = default
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Statements
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] ArenaVector<ir::Statement *> const &Statements()
+          const noexcept'
+        return_type:
+          name: ArenaVector
+          other_modifiers: const
+          prefix: '[[nodiscard]]'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: Statement
+              namespace: ir
+              ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Statements
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] ArenaVector<ir::Statement *> &Statements()
+          noexcept'
+        return_type:
+          name: ArenaVector
+          prefix: '[[nodiscard]]'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: Statement
+              namespace: ir
+              ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: statementList
+          type:
+            name: ArenaVector
+            ref_depth: 2
+            template_args:
+            - type:
+                name: Statement
+                ptr_depth: 1
+        name: SetStatements
+        raw_declaration: void SetStatements(ArenaVector<Statement *> &&statementList)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: statements
+          type:
+            name: ArenaVector
+            other_modifiers: const
+            ref_depth: 1
+            template_args:
+            - type:
+                name: Statement
+                namespace: ir
+                ptr_depth: 1
+        name: AddStatements
+        raw_declaration: void AddStatements(ArenaVector<ir::Statement *> const &statements)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: statement
+          type:
+            name: Statement
+            namespace: ir
+            ptr_depth: 1
+        name: AddStatement
+        raw_declaration: void AddStatement(ir::Statement *statement)
+        return_type:
+          name: void
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: parent
+          type:
+            name: AstNode
+            ptr_depth: 1
+        name: Clone
+        postfix: override
+        raw_declaration: '[[nodiscard]] BlockExpression *Clone(ArenaAllocator *allocator,
+          AstNode *parent) override'
+        return_type:
+          name: BlockExpression
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: IsScopeBearer
+        postfix: const noexcept override
+        raw_declaration: '[[nodiscard]] bool IsScopeBearer() const noexcept override'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: Scope
+        postfix: const noexcept override
+        raw_declaration: '[[nodiscard]] varbinder::Scope *Scope() const noexcept override'
+        return_type:
+          name: Scope
+          namespace: varbinder
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: scope
+          type:
+            name: Scope
+            namespace: varbinder
+            ptr_depth: 1
+        name: SetScope
+        raw_declaration: void SetScope(varbinder::Scope *scope)
+        return_type:
+          name: void
+      - args: []
+        name: ClearScope
+        postfix: noexcept override
+        raw_declaration: void ClearScope() noexcept override
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: NodeTransformer
+            prefix: const
+            ref_depth: 1
+        - name: transformationName
+          type:
+            name: string_view
+            namespace: std
+        name: TransformChildren
+        postfix: override
+        raw_declaration: void TransformChildren(const NodeTransformer &cb, std::string_view
+          transformationName) override
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: NodeTraverser
+            prefix: const
+            ref_depth: 1
+        name: Iterate
+        postfix: const override
+        raw_declaration: void Iterate(const NodeTraverser &cb) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: AstDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::AstDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: SrcDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::SrcDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: pg
+          type:
+            name: PandaGen
+            namespace: compiler
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile([[maybe_unused]] compiler::PandaGen *pg) const
+          override
+        return_type:
+          name: void
+      - args:
+        - name: etsg
+          type:
+            name: ETSGen
+            namespace: compiler
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile([[maybe_unused]] compiler::ETSGen *etsg) const
+          override
+        return_type:
+          name: void
+      - args:
+        - name: checker
+          type:
+            name: TSChecker
+            namespace: checker
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::Type *Check([[maybe_unused]] checker::TSChecker
+          *checker) override
+        return_type:
+          name: Type
+          namespace: checker
+          ptr_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            namespace: checker
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::VerifiedType Check([[maybe_unused]] checker::ETSChecker
+          *checker) override
+        return_type:
+          name: VerifiedType
+          namespace: checker
+      - args:
+        - name: v
+          type:
+            name: ASTVisitorT
+            ptr_depth: 1
+        name: Accept
+        postfix: override
+        raw_declaration: void Accept(ASTVisitorT *v) override
+        return_type:
+          name: void
+macros:
+- name: ES2PANDA_IR_EXPRESSION_BLOCK_EXPRESSION_H

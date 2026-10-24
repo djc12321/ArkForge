@@ -1,0 +1,78 @@
+--- a/src/vs/workbench/services/actions/common/menusExtensionPoint.ts
++++ b/src/vs/workbench/services/actions/common/menusExtensionPoint.ts
+@@ -35,6 +35,12 @@
+ }
+ 
+ const apiMenus: IAPIMenu[] = [
++	{
++		key: 'menubar/help',
++		id: MenuId.MenubarHelpMenu,
++		description: 'ArkForge guides in the native Help menu',
++		supportsSubmenus: false
++	},
+ 	{
+ 		key: 'accounts/context',
+ 		id: MenuId.AccountsContext,
+diff --git a/src/vs/workbench/contrib/welcomeGettingStarted/browser/gettingStarted.ts b/src/vs/workbench/contrib/welcomeGettingStarted/browser/gettingStarted.ts
+index 105ad03c..7ff084d6 100644
+--- a/src/vs/workbench/contrib/welcomeGettingStarted/browser/gettingStarted.ts
++++ b/src/vs/workbench/contrib/welcomeGettingStarted/browser/gettingStarted.ts
+@@ -4,6 +4,7 @@
+  *--------------------------------------------------------------------------------------------*/
+ 
+ import { $, Dimension, addDisposableListener, append, clearNode, reset } from '../../../../base/browser/dom.js';
++import { EventType as TouchEventType, Gesture, GestureEvent } from '../../../../base/browser/touch.js';
+ import { renderFormattedText } from '../../../../base/browser/formattedTextRenderer.js';
+ import { status } from '../../../../base/browser/ui/aria/aria.js';
+ import { StandardKeyboardEvent } from '../../../../base/browser/keyboardEvent.js';
+@@ -409,6 +410,28 @@ export class GettingStartedPage extends EditorPane {
+ 		this.scrollToCategory(categoryID, stepId);
+ 	}
+ 
++	private registerTouchScrolling(): void {
++		let initialTarget: Node | undefined;
++		this._register(Gesture.addTarget(this.container));
++		this._register(addDisposableListener(this.container, TouchEventType.Start, (e: GestureEvent) => {
++			initialTarget = e.initialTarget instanceof Node ? e.initialTarget : undefined;
++			this.detailsScrollbar.value?.scanDomNode();
++			this.detailsPageScrollbar?.scanDomNode();
++			this.categoriesPageScrollbar?.scanDomNode();
++		}));
++		this._register(addDisposableListener(this.container, TouchEventType.Change, (e: GestureEvent) => {
++			const target = e.initialTarget instanceof Node ? e.initialTarget : initialTarget;
++			if (!target) { return; }
++			// Scroll the innermost pane first, then chain to the page at its boundary.
++			for (const scrollbar of [this.detailsScrollbar.value, this.detailsPageScrollbar, this.categoriesPageScrollbar]) {
++				if (!scrollbar?.getDomNode().contains(target)) { continue; }
++				const before = scrollbar.getScrollPosition().scrollTop;
++				scrollbar.setScrollPosition({ scrollTop: before - e.translationY });
++				if (scrollbar.getScrollPosition().scrollTop !== before) { break; }
++			}
++		}));
++	}
++
+ 	private registerDispatchListeners() {
+ 		this.dispatchListeners.clear();
+ 
+@@ -422,6 +445,13 @@ export class GettingStartedPage extends EditorPane {
+ 				[command, argument] = dispatch.split(':');
+ 			}
+ 			if (command) {
++				this.dispatchListeners.add(Gesture.addTarget(element as HTMLElement));
++				this.dispatchListeners.add(addDisposableListener(element, TouchEventType.Tap, (e: GestureEvent) => {
++					const target = e.initialTarget as HTMLElement | undefined;
++					if (!target || target.closest('.monaco-button') || target.closest('[x-dispatch]') !== element) { return; }
++					e.preventDefault();
++					this.runDispatchCommand(command, argument);
++				}));
+ 				this.dispatchListeners.add(addDisposableListener(element, 'click', (e) => {
+ 					e.stopPropagation();
+ 					this.runDispatchCommand(command, argument);
+@@ -907,6 +937,7 @@ export class GettingStartedPage extends EditorPane {
+ 		this.detailsPageScrollbar.scanDomNode();
+ 
+ 		parent.appendChild(this.container);
++		this.registerTouchScrolling();
+ 	}
+ 
+ 	private async buildCategoriesSlide(preserveFocus?: boolean) {

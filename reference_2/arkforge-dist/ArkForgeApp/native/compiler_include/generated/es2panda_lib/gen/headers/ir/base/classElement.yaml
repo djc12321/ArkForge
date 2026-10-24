@@ -1,0 +1,267 @@
+include:
+- '"ir/statement.h"'
+- '"ir/typed.h"'
+ir:
+  class_definitions:
+  - extends: public TypedStatement
+    known_macroses:
+    - NO_COPY_SEMANTIC(ClassElement);
+    - NO_MOVE_SEMANTIC(ClassElement);
+    name: ClassElement
+    protected: {}
+    public:
+      constructors:
+      - args: []
+        name: ClassElement
+        postfix: = delete
+        raw_declaration: ClassElement() = delete
+      - args:
+        - name: elementType
+          type:
+            name: AstNodeType
+            other_modifiers: const
+            postfix: const
+        - initializer_for: key_
+          name: key
+          type:
+            name: Expression
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        - initializer_for: value_
+          name: value
+          type:
+            name: Expression
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        - name: modifiers
+          type:
+            name: ModifierFlags
+            other_modifiers: const
+            postfix: const
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            other_modifiers: const
+            postfix: const
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        - initializer_for: isComputed_
+          name: isComputed
+          type:
+            name: bool
+            other_modifiers: const
+            postfix: const
+        name: ClassElement
+        other_initializers:
+        - class_field: TypedStatement
+          init_value: elementType, modifiers
+        raw_declaration: "explicit ClassElement(AstNodeType const elementType, Expression\
+          \ *const key, Expression *const value,\n                          ModifierFlags\
+          \ const modifiers, [[maybe_unused]] ArenaAllocator *const allocator,\n \
+          \                         bool const isComputed)"
+        return_type:
+          prefix: explicit
+      - args:
+        - name: elementType
+          type:
+            name: AstNodeType
+            other_modifiers: const
+            postfix: const
+        - initializer_for: key_
+          name: key
+          type:
+            name: Expression
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        - initializer_for: value_
+          name: value
+          type:
+            name: Expression
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        - name: modifiers
+          type:
+            name: ModifierFlags
+            other_modifiers: const
+            postfix: const
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            other_modifiers: const
+            postfix: const
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        - initializer_for: isComputed_
+          name: isComputed
+          type:
+            name: bool
+            other_modifiers: const
+            postfix: const
+        - name: history
+          type:
+            name: AstNodeHistory
+            ptr_depth: 1
+        name: ClassElement
+        other_initializers:
+        - class_field: TypedStatement
+          init_value: elementType, modifiers
+        raw_declaration: "explicit ClassElement(AstNodeType const elementType, Expression\
+          \ *const key, Expression *const value,\n                          ModifierFlags\
+          \ const modifiers, [[maybe_unused]] ArenaAllocator *const allocator,\n \
+          \                         bool const isComputed, AstNodeHistory *history)"
+        return_type:
+          prefix: explicit
+      destructors:
+      - args: []
+        name: ~ClassElement
+        postfix: override = default
+        raw_declaration: ~ClassElement() override = default
+      methods:
+      - args: []
+        name: Id
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] Identifier *Id() noexcept'
+        return_type:
+          name: Identifier
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - args: []
+        name: Id
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const Identifier *Id() const noexcept'
+        return_type:
+          name: Identifier
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: id
+          type:
+            name: Identifier
+            ptr_depth: 1
+        name: SetId
+        raw_declaration: void SetId(Identifier *id)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Key
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] Expression *Key() noexcept'
+        return_type:
+          name: Expression
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Key
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const Expression *Key() const noexcept'
+        return_type:
+          name: Expression
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: key
+          type:
+            name: Expression
+            ptr_depth: 1
+        name: SetKey
+        raw_declaration: void SetKey(Expression *key)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Value
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] Expression *Value() noexcept'
+        return_type:
+          name: Expression
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: Expression
+            ptr_depth: 1
+        name: SetValue
+        postfix: noexcept
+        raw_declaration: void SetValue(Expression *value) noexcept
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Value
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const Expression *Value() const noexcept'
+        return_type:
+          name: Expression
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: OriginEnumMember
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const TSEnumMember *OriginEnumMember() const
+          noexcept'
+        return_type:
+          name: TSEnumMember
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: enumMember
+          type:
+            name: TSEnumMember
+            namespace: ir
+            ptr_depth: 1
+        name: SetOrigEnumMember
+        raw_declaration: void SetOrigEnumMember(ir::TSEnumMember *enumMember)
+        return_type:
+          name: void
+      - args: []
+        name: IsPrivateElement
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsPrivateElement() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsComputed
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsComputed() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - args:
+        - name: isStatic
+          type:
+            name: bool
+        name: ToPrivateFieldKind
+        postfix: const = 0
+        raw_declaration: '[[nodiscard]] virtual PrivateFieldKind ToPrivateFieldKind(bool
+          isStatic) const = 0'
+        return_type:
+          name: PrivateFieldKind
+          prefix: '[[nodiscard]] virtual'
+      - args:
+        - name: other
+          type:
+            name: AstNode
+            ptr_depth: 1
+        name: CopyTo
+        postfix: const override
+        raw_declaration: void CopyTo(AstNode *other) const override
+        return_type:
+          name: void
+  class_forward_declaration:
+  - Expression
+macros:
+- name: ES2PANDA_PARSER_INCLUDE_AST_CLASS_ELEMENT_H

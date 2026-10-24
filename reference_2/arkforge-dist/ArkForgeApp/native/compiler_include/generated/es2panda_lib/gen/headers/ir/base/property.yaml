@@ -1,0 +1,379 @@
+include:
+- '"ir/expression.h"'
+- '"ir/validationInfo.h"'
+ir:
+  class_definitions:
+  - extends: public Expression
+    known_macroses:
+    - NO_MOVE_SEMANTIC(Property);
+    name: Property
+    private: {}
+    protected: {}
+    public:
+      constructors:
+      - args: []
+        name: Property
+        postfix: = delete
+        raw_declaration: Property() = delete
+      - args:
+        - initializer_for: key_
+          name: key
+          type:
+            name: Expression
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        - initializer_for: value_
+          name: value
+          type:
+            name: Expression
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        name: Property
+        other_initializers:
+        - class_field: Expression
+          init_value: AstNodeType::PROPERTY
+        - class_field: kind_
+          init_value: PropertyKind::INIT
+        raw_declaration: explicit Property(Expression *const key, Expression *const
+          value)
+        return_type:
+          prefix: explicit
+      - args:
+        - initializer_for: kind_
+          name: kind
+          type:
+            name: PropertyKind
+            other_modifiers: const
+            postfix: const
+        - initializer_for: key_
+          name: key
+          type:
+            name: Expression
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        - initializer_for: value_
+          name: value
+          type:
+            name: Expression
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        - initializer_for: isMethod_
+          name: isMethod
+          type:
+            name: bool
+            other_modifiers: const
+            postfix: const
+        - initializer_for: isComputed_
+          name: isComputed
+          type:
+            name: bool
+            other_modifiers: const
+            postfix: const
+        name: Property
+        other_initializers:
+        - class_field: Expression
+          init_value: AstNodeType::PROPERTY
+        - class_field: isShorthand_
+          init_value: 'false'
+        raw_declaration: "explicit Property(PropertyKind const kind, Expression *const\
+          \ key, Expression *const value, bool const isMethod,\n                 \
+          \     bool const isComputed)"
+        return_type:
+          prefix: explicit
+      - args:
+        - name: tag
+          type:
+            name: Tag
+        - name: other
+          type:
+            name: Property
+            other_modifiers: const
+            ref_depth: 1
+        - name: key
+          type:
+            name: Expression
+            ptr_depth: 1
+        - name: value
+          type:
+            name: Expression
+            ptr_depth: 1
+        name: Property
+        raw_declaration: explicit Property(Tag tag, Property const &other, Expression
+          *key, Expression *value)
+        return_type:
+          prefix: explicit
+      destructors:
+      - args: []
+        name: ~Property
+        postfix: override = default
+        raw_declaration: ~Property() override = default
+      fields:
+      - default_value: (const Property &) = delete
+        name: operator
+        type:
+          name: Property
+          ref_depth: 1
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Key
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] Expression *Key() noexcept'
+        return_type:
+          name: Expression
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Key
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const Expression *Key() const noexcept'
+        return_type:
+          name: Expression
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: key
+          type:
+            name: Expression
+            ptr_depth: 1
+        name: SetKey
+        raw_declaration: void SetKey(Expression *key)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Value
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const Expression *Value() const noexcept'
+        return_type:
+          name: Expression
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Value
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] Expression *Value() noexcept'
+        return_type:
+          name: Expression
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: Expression
+            ptr_depth: 1
+        name: SetValue
+        postfix: noexcept
+        raw_declaration: void SetValue(Expression *value) noexcept
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Kind
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] PropertyKind Kind() const noexcept'
+        return_type:
+          name: PropertyKind
+          prefix: '[[nodiscard]]'
+      - additional_attributes: set
+        args:
+        - name: kind
+          type:
+            name: PropertyKind
+        name: SetKind
+        postfix: noexcept
+        raw_declaration: void SetKind(PropertyKind kind) noexcept
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: IsMethod
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsMethod() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsShorthand
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsShorthand() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsComputed
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsComputed() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsAccessor
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsAccessor() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args:
+        - name: kind
+          type:
+            name: PropertyKind
+        name: IsAccessorKind
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] static bool IsAccessorKind(PropertyKind kind)
+          noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]] static'
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: parent
+          type:
+            name: AstNode
+            ptr_depth: 1
+        name: Clone
+        postfix: override
+        raw_declaration: '[[nodiscard]] Property *Clone(ArenaAllocator *allocator,
+          AstNode *parent) override'
+        return_type:
+          name: Property
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - args: []
+        name: ConvertibleToPatternProperty
+        raw_declaration: bool ConvertibleToPatternProperty()
+        return_type:
+          name: bool
+      - args:
+        - name: cb
+          type:
+            name: NodeTransformer
+            prefix: const
+            ref_depth: 1
+        - name: transformationName
+          type:
+            name: string_view
+            namespace: std
+        name: TransformChildren
+        postfix: override
+        raw_declaration: void TransformChildren(const NodeTransformer &cb, std::string_view
+          transformationName) override
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: NodeTraverser
+            prefix: const
+            ref_depth: 1
+        name: Iterate
+        postfix: const override
+        raw_declaration: void Iterate(const NodeTraverser &cb) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: AstDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::AstDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: SrcDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::SrcDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: pg
+          type:
+            name: PandaGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::PandaGen *pg) const override
+        return_type:
+          name: void
+      - args:
+        - name: etsg
+          type:
+            name: ETSGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::ETSGen *etsg) const override
+        return_type:
+          name: void
+      - args:
+        - name: checker
+          type:
+            name: TSChecker
+            namespace: checker
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::Type *Check(checker::TSChecker *checker) override
+        return_type:
+          name: Type
+          namespace: checker
+          ptr_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            namespace: checker
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::VerifiedType Check(checker::ETSChecker *checker)
+          override
+        return_type:
+          name: VerifiedType
+          namespace: checker
+      - args:
+        - name: v
+          type:
+            name: ASTVisitorT
+            ptr_depth: 1
+        name: Accept
+        postfix: override
+        raw_declaration: void Accept(ASTVisitorT *v) override
+        return_type:
+          name: void
+  enums:
+  - flags:
+    - INIT
+    - GET
+    - SET
+    - PROTO
+    kind: simple
+    name: PropertyKind
+    namespace: ir
+macros:
+- name: ES2PANDA_PARSER_INCLUDE_AST_PROPERTY_H

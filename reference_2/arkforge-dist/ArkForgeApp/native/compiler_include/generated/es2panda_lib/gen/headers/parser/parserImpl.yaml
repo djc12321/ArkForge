@@ -1,0 +1,314 @@
+include:
+- '"forwardDeclForParserImpl.h"'
+- '"ir/base/scriptFunctionSignature.h"'
+- '"lexer/token/sourceLocation.h"'
+- '"generated/tokenType.h"'
+- '"parser/context/classPrivateContext.h"'
+- '"parser/context/parserContext.h"'
+- '"parser/parserFlags.h"'
+- '"util/diagnosticEngine.h"'
+- '"util/helpers.h"'
+- '"util/importPathManager.h"'
+- '"util/recursiveGuard.h"'
+lexer:
+  class_forward_declaration:
+  - RegExpParser
+macros:
+- name: ES2PANDA_PARSER_CORE_PARSER_IMPL_H
+parser:
+  class_definitions:
+  - known_macroses:
+    - NO_COPY_SEMANTIC(ParserImpl);
+    - NO_MOVE_SEMANTIC(ParserImpl);
+    name: ParserImpl
+    private: {}
+    protected: {}
+    public:
+      constructors:
+      - args:
+        - name: ctx
+          type:
+            name: Context
+            namespace: public_lib
+            ptr_depth: 1
+        - default_value: ParserStatus::NO_OPTS
+          name: status
+          type:
+            name: ParserStatus
+        name: ParserImpl
+        raw_declaration: explicit ParserImpl(public_lib::Context *ctx, ParserStatus
+          status = ParserStatus::NO_OPTS)
+        return_type:
+          prefix: explicit
+      destructors:
+      - args: []
+        name: ~ParserImpl
+        postfix: = default
+        raw_declaration: virtual ~ParserImpl() = default
+        return_type:
+          prefix: virtual
+      methods:
+      - args: []
+        name: ParseGlobal
+        raw_declaration: void ParseGlobal()
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: IsETSParser
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] virtual bool IsETSParser() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]] virtual'
+      - additional_attributes: get
+        args:
+        - name: token
+          type:
+            name: Token
+            namespace: lexer
+            prefix: '[[maybe_unused]] const'
+            ref_depth: 1
+        name: IsValidIdentifierName
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] virtual bool IsValidIdentifierName([[maybe_unused]]
+          const lexer::Token &token) const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]] virtual'
+      - args: []
+        name: AsETSParser
+        raw_declaration: ETSParser *AsETSParser()
+        return_type:
+          name: ETSParser
+          ptr_depth: 1
+      - args: []
+        name: AsETSParser
+        postfix: const
+        raw_declaration: const ETSParser *AsETSParser() const
+        return_type:
+          name: ETSParser
+          prefix: const
+          ptr_depth: 1
+      - args: []
+        name: DiagnosticEngine
+        postfix: const
+        raw_declaration: util::DiagnosticEngine &DiagnosticEngine() const
+        return_type:
+          name: DiagnosticEngine
+          namespace: util
+          ref_depth: 1
+      - additional_attributes: set
+        args:
+        - name: status
+          type:
+            name: ParserStatus
+        name: AddParserStatus
+        raw_declaration: void AddParserStatus(ParserStatus status)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - name: status
+          type:
+            name: ParserStatus
+        name: HasParserStatus
+        postfix: const noexcept
+        raw_declaration: bool HasParserStatus(ParserStatus status) const noexcept
+        return_type:
+          name: bool
+      - args: []
+        name: GetPositionForDiagnostic
+        postfix: const
+        raw_declaration: lexer::SourcePosition GetPositionForDiagnostic() const
+        return_type:
+          name: SourcePosition
+          namespace: lexer
+      - additional_attributes: get
+        args: []
+        name: Context
+        postfix: const
+        raw_declaration: public_lib::Context *Context() const
+        return_type:
+          name: Context
+          namespace: public_lib
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: GetImportPathManager
+        raw_declaration: util::ImportPathManager *GetImportPathManager()
+        return_type:
+          name: ImportPathManager
+          namespace: util
+          ptr_depth: 1
+      - args:
+        - name: errorType
+          type:
+            name: DiagnosticType
+            namespace: util
+        - name: errorMessage
+          type:
+            name: string_view
+            namespace: std
+        - name: pos
+          type:
+            name: SourcePosition
+            namespace: lexer
+            prefix: const
+            ref_depth: 1
+        name: LogError
+        raw_declaration: void LogError(util::DiagnosticType errorType, std::string_view
+          errorMessage, const lexer::SourcePosition &pos)
+        return_type:
+          name: void
+      - args:
+        - name: diagnostic
+          type:
+            name: DiagnosticKind
+            namespace: diagnostic
+            prefix: const
+            ref_depth: 1
+        - default_value: '{}'
+          name: diagnosticParams
+          type:
+            name: DiagnosticMessageParams
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        name: LogError
+        raw_declaration: "void LogError(const diagnostic::DiagnosticKind &diagnostic,\n\
+          \                  const util::DiagnosticMessageParams &diagnosticParams\
+          \ = {})"
+        return_type:
+          name: void
+      - args:
+        - name: diagnostic
+          type:
+            name: DiagnosticKind
+            namespace: diagnostic
+            prefix: const
+            ref_depth: 1
+        - name: diagnosticParams
+          type:
+            name: DiagnosticMessageParams
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        - name: pos
+          type:
+            name: SourcePosition
+            namespace: lexer
+            prefix: const
+            ref_depth: 1
+        name: LogError
+        raw_declaration: "void LogError(const diagnostic::DiagnosticKind &diagnostic,\
+          \ const util::DiagnosticMessageParams &diagnosticParams,\n             \
+          \     const lexer::SourcePosition &pos)"
+        return_type:
+          name: void
+      - args:
+        - name: errorMessage
+          type:
+            name: string_view
+            namespace: std
+        name: LogSyntaxError
+        raw_declaration: void LogSyntaxError(std::string_view errorMessage)
+        return_type:
+          name: void
+      - args:
+        - name: list
+          type:
+            name: DiagnosticMessageParams
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        name: LogSyntaxError
+        raw_declaration: void LogSyntaxError(const util::DiagnosticMessageParams &list)
+        return_type:
+          name: void
+      - args:
+        - name: errorMessage
+          type:
+            name: string_view
+            namespace: std
+        - name: pos
+          type:
+            name: SourcePosition
+            namespace: lexer
+            prefix: const
+            ref_depth: 1
+        name: LogSyntaxError
+        raw_declaration: void LogSyntaxError(std::string_view errorMessage, const
+          lexer::SourcePosition &pos)
+        return_type:
+          name: void
+      - args:
+        - name: list
+          type:
+            name: DiagnosticMessageParams
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        - name: pos
+          type:
+            name: SourcePosition
+            namespace: lexer
+            prefix: const
+            ref_depth: 1
+        name: LogSyntaxError
+        raw_declaration: void LogSyntaxError(const util::DiagnosticMessageParams &list,
+          const lexer::SourcePosition &pos)
+        return_type:
+          name: void
+  class_forward_declaration:
+  - Program
+  enums:
+  - flags:
+    - NO_OPTS
+    - IN_UNION
+    - ALLOW_CONST
+    - IN_INTERSECTION
+    - RESTRICT_EXTENDS
+    - REPORT_ERROR
+    - CAN_BE_TS_TYPE_PREDICATE
+    - BREAK_AT_NEW_LINE
+    - RETURN_TYPE
+    - POTENTIAL_CLASS_LITERAL
+    - ALLOW_INTERSECTION
+    - ADD_TYPE_PARAMETER_BINDING
+    - DISALLOW_PRIMARY_TYPE
+    - ALLOW_WILDCARD
+    - IGNORE_FUNCTION_TYPE
+    - ALLOW_DECLARATION_SITE_VARIANCE
+    - DISALLOW_UNION
+    - POTENTIAL_NEW_ARRAY
+    - ANNOTATION_NOT_ALLOW
+    - INSTANCEOF
+    - TYPE_ALIAS_CONTEXT
+    - IGNORE_KEYW_KEYOF
+    - PARENTHESIZED_TYPE
+    kind: flags
+    name: TypeAnnotationParsingOptions
+    namespace: parser
+  - flags:
+    - NO_OPT
+    - ALLOW_TRAILING_SEP
+    - ALLOW_TYPE_KEYWORD
+    kind: flags
+    name: ParseListOptions
+    namespace: parser
+  usings:
+  - name: ENUMBITOPS_OPERATORS
+public_lib:
+  structs:
+  - name: Context
+structs:
+- members: []
+  name: enumbitops::IsAllowedType<ark::es2panda::parser::TypeAnnotationParsingOptions>
+- members: []
+  name: enumbitops::IsAllowedType<ark::es2panda::parser::ParseListOptions>
+util:
+  class_forward_declaration:
+  - Options
+  - SourcePositionHelper
+  - ImportPathManager

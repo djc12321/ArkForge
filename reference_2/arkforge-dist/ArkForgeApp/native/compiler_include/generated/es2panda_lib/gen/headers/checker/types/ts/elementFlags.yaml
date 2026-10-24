@@ -1,0 +1,40 @@
+checker:
+  enums:
+  - flag_unions:
+    - flags:
+      - REQUIRED
+      - OPTIONAL
+      name: FIXED
+    - flags:
+      - REST
+      - VARIADIC
+      name: VARIABLE
+    - flags:
+      - OPTIONAL
+      - REST
+      - VARIADIC
+      name: NON_REQUIRED
+    - flags:
+      - REQUIRED
+      - OPTIONAL
+      - VARIADIC
+      name: NON_REST
+    flags:
+    - NO_OPTS
+    - REQUIRED
+    - OPTIONAL
+    - REST
+    - VARIADIC
+    kind: flags
+    name: ElementFlags
+    namespace: checker
+  usings:
+  - name: ENUMBITOPS_OPERATORS
+include:
+- <cstdint>
+- '"util/enumbitops.h"'
+macros:
+- name: ES2PANDA_COMPILER_CHECKER_TYPES_TS_ELEMENT_FLAGS_H
+structs:
+- members: []
+  name: enumbitops::IsAllowedType<ark::es2panda::checker::ElementFlags>

@@ -1,0 +1,444 @@
+checker:
+  class_definitions:
+  - extends: public ETSObjectType
+    known_macroses:
+    - NO_COPY_SEMANTIC(ETSEnumType);
+    - NO_MOVE_SEMANTIC(ETSEnumType);
+    name: ETSEnumType
+    private: {}
+    protected: {}
+    public:
+      constructors:
+      - args: []
+        name: ETSEnumType
+        postfix: = delete
+        raw_declaration: ETSEnumType() = delete
+      destructors:
+      - args: []
+        name: ~ETSEnumType
+        postfix: override = default
+        raw_declaration: ~ETSEnumType() override = default
+      fields:
+      - default_constructor: '"toString"'
+        name: TO_STRING_METHOD_NAME
+        type:
+          name: string_view
+          namespace: std
+          prefix: static constexpr
+      - default_constructor: '"valueOf"'
+        name: VALUE_OF_METHOD_NAME
+        type:
+          name: string_view
+          namespace: std
+          prefix: static constexpr
+      - default_constructor: '"getName"'
+        name: GET_NAME_METHOD_NAME
+        type:
+          name: string_view
+          namespace: std
+          prefix: static constexpr
+      - default_constructor: '"getValueOf"'
+        name: GET_VALUE_OF_METHOD_NAME
+        type:
+          name: string_view
+          namespace: std
+          prefix: static constexpr
+      - default_constructor: '"fromValue"'
+        name: FROM_VALUE_METHOD_NAME
+        type:
+          name: string_view
+          namespace: std
+          prefix: static constexpr
+      - default_constructor: '"values"'
+        name: VALUES_METHOD_NAME
+        type:
+          name: string_view
+          namespace: std
+          prefix: static constexpr
+      - default_constructor: '"getOrdinal"'
+        name: GET_ORDINAL_METHOD_NAME
+        type:
+          name: string_view
+          namespace: std
+          prefix: static constexpr
+      - default_constructor: '"$_get"'
+        name: DOLLAR_GET_METHOD_NAME
+        type:
+          name: string_view
+          namespace: std
+          prefix: static constexpr
+      - default_constructor: '"#StringValuesArray"'
+        name: STRING_VALUES_ARRAY_NAME
+        type:
+          name: string_view
+          namespace: std
+          prefix: static constexpr
+      - default_constructor: '"#ValuesArray"'
+        name: VALUES_ARRAY_NAME
+        type:
+          name: string_view
+          namespace: std
+          prefix: static constexpr
+      - default_constructor: '"#NamesArray"'
+        name: NAMES_ARRAY_NAME
+        type:
+          name: string_view
+          namespace: std
+          prefix: static constexpr
+      methods:
+      - additional_attributes: get
+        args:
+        - name: name
+          type:
+            name: string_view
+            namespace: std
+        name: GetOrdinalFromMemberName
+        postfix: const
+        raw_declaration: auto GetOrdinalFromMemberName(std::string_view name) const
+        return_type:
+          name: auto
+      - args:
+        - name: ord
+          type:
+            name: size_t
+        name: GetValueLiteralFromOrdinal
+        postfix: const
+        raw_declaration: auto GetValueLiteralFromOrdinal(size_t ord) const
+        return_type:
+          name: auto
+      - args:
+        - name: node
+          type:
+            name: Expression
+            namespace: ir
+            ptr_depth: 1
+        name: NodeIsEnumLiteral
+        postfix: const
+        raw_declaration: bool NodeIsEnumLiteral(ir::Expression *node) const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args: []
+        name: EnumAnnotedType
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] Type *EnumAnnotedType() noexcept'
+        return_type:
+          name: Type
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: typeNode
+          type:
+            name: TypeNode
+            namespace: ir
+            ptr_depth: 1
+        - name: checker
+          type:
+            name: ETSChecker
+            ptr_depth: 1
+        name: SetEnumType
+        postfix: noexcept
+        raw_declaration: void SetEnumType(ir::TypeNode *typeNode, ETSChecker *checker)
+          noexcept
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: EnumAnnotedType
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const Type *EnumAnnotedType() const noexcept'
+        return_type:
+          name: Type
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            prefix: const
+            ptr_depth: 1
+        - name: flag
+          type:
+            name: ETSObjectFlags
+        name: CheckBuiltInType
+        postfix: const noexcept = 0
+        raw_declaration: virtual bool CheckBuiltInType(const ETSChecker *checker,
+          ETSObjectFlags flag) const noexcept = 0
+        return_type:
+          name: bool
+          prefix: virtual
+      - args: []
+        name: Underlying
+        postfix: const
+        raw_declaration: Type *Underlying() const
+        return_type:
+          name: Type
+          ptr_depth: 1
+  - extends: public ETSEnumType
+    known_macroses:
+    - NO_COPY_SEMANTIC(ETSNumericEnumType);
+    - NO_MOVE_SEMANTIC(ETSNumericEnumType);
+    name: ETSNumericEnumType
+    public:
+      constructors:
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+        - name: internalName
+          type:
+            name: StringView
+            namespace: util
+        - name: declNode
+          type:
+            name: AstNode
+            namespace: ir
+            ptr_depth: 1
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        name: ETSNumericEnumType
+        other_initializers:
+        - class_field: ETSEnumType
+          init_value: allocator, name, internalName, declNode, relation, ETSObjectFlags::NUMERIC_ENUM_OBJECT
+        raw_declaration: "explicit ETSNumericEnumType(ArenaAllocator *allocator, util::StringView\
+          \ name, util::StringView internalName,\n                               \
+          \ ir::AstNode *declNode, TypeRelation *relation)"
+        return_type:
+          prefix: explicit
+      - args: []
+        name: ETSNumericEnumType
+        postfix: = delete
+        raw_declaration: ETSNumericEnumType() = delete
+      destructors:
+      - args: []
+        name: ~ETSNumericEnumType
+        postfix: override = default
+        raw_declaration: ~ETSNumericEnumType() override = default
+      methods:
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: target
+          type:
+            name: Type
+            ptr_depth: 1
+        name: AssignmentSource
+        postfix: override
+        raw_declaration: bool AssignmentSource(TypeRelation *relation, Type *target)
+          override
+        return_type:
+          name: bool
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: source
+          type:
+            name: Type
+            ptr_depth: 1
+        name: AssignmentTarget
+        postfix: override
+        raw_declaration: void AssignmentTarget(TypeRelation *relation, Type *source)
+          override
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: target
+          type:
+            name: Type
+            ptr_depth: 1
+        name: Cast
+        postfix: override
+        raw_declaration: void Cast(TypeRelation *relation, Type *target) override
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: source
+          type:
+            name: Type
+            ptr_depth: 1
+        name: CastTarget
+        postfix: override
+        raw_declaration: void CastTarget(TypeRelation *relation, Type *source) override
+        return_type:
+          name: void
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            prefix: const
+            ptr_depth: 1
+        - name: flag
+          type:
+            name: ETSObjectFlags
+        name: CheckBuiltInType
+        postfix: const noexcept override
+        raw_declaration: '[[nodiscard]] bool CheckBuiltInType(const ETSChecker *checker,
+          ETSObjectFlags flag) const noexcept override'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            ptr_depth: 1
+        name: NonAnnotedHasDouble
+        postfix: const
+        raw_declaration: '[[nodiscard]] bool NonAnnotedHasDouble(ETSChecker *checker)
+          const'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+  - extends: public ETSEnumType
+    known_macroses:
+    - NO_COPY_SEMANTIC(ETSStringEnumType);
+    - NO_MOVE_SEMANTIC(ETSStringEnumType);
+    name: ETSStringEnumType
+    public:
+      constructors:
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+        - name: internalName
+          type:
+            name: StringView
+            namespace: util
+        - name: declNode
+          type:
+            name: AstNode
+            namespace: ir
+            ptr_depth: 1
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        name: ETSStringEnumType
+        other_initializers:
+        - class_field: ETSEnumType
+          init_value: allocator, name, internalName, declNode, relation, ETSObjectFlags::STRING_ENUM_OBJECT
+        raw_declaration: "explicit ETSStringEnumType(ArenaAllocator *allocator, util::StringView\
+          \ name, util::StringView internalName,\n                               ir::AstNode\
+          \ *declNode, TypeRelation *relation)"
+        return_type:
+          prefix: explicit
+      - args: []
+        name: ETSStringEnumType
+        postfix: = delete
+        raw_declaration: ETSStringEnumType() = delete
+      destructors:
+      - args: []
+        name: ~ETSStringEnumType
+        postfix: override = default
+        raw_declaration: ~ETSStringEnumType() override = default
+      methods:
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: target
+          type:
+            name: Type
+            ptr_depth: 1
+        name: AssignmentSource
+        postfix: override
+        raw_declaration: bool AssignmentSource(TypeRelation *relation, Type *target)
+          override
+        return_type:
+          name: bool
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: source
+          type:
+            name: Type
+            ptr_depth: 1
+        name: AssignmentTarget
+        postfix: override
+        raw_declaration: void AssignmentTarget(TypeRelation *relation, Type *source)
+          override
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: target
+          type:
+            name: Type
+            ptr_depth: 1
+        name: Cast
+        postfix: override
+        raw_declaration: void Cast(TypeRelation *relation, Type *target) override
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: source
+          type:
+            name: Type
+            ptr_depth: 1
+        name: CastTarget
+        postfix: override
+        raw_declaration: void CastTarget(TypeRelation *relation, Type *source) override
+        return_type:
+          name: void
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            prefix: const
+            ptr_depth: 1
+        - name: flag
+          type:
+            name: ETSObjectFlags
+        name: CheckBuiltInType
+        postfix: const noexcept override
+        raw_declaration: '[[nodiscard]] bool CheckBuiltInType(const ETSChecker *checker,
+          ETSObjectFlags flag) const noexcept override'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+include:
+- '"checker/types/ets/etsObjectType.h"'
+- '"checker/types/ets/etsObjectTypeConstants.h"'
+- '"checker/types/typeFlag.h"'
+- '"ir/base/classProperty.h"'
+- '"ir/expressions/arrayExpression.h"'
+- '"ir/expressions/literals/stringLiteral.h"'
+- '"ir/expressions/memberExpression.h"'
+- '"util/es2pandaMacros.h"'
+macros:
+- name: ES2PANDA_COMPILER_CHECKER_TYPES_ETS_ENUM_TYPE_H

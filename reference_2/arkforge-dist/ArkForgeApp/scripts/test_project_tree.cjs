@@ -1,0 +1,24 @@
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+const vm = require('node:vm');
+const ts = require('../../arkforge/node_modules/typescript');
+const source = fs.readFileSync(path.join(__dirname, '../entry/src/main/ets/model/ProjectTreeModel.ets'), 'utf8');
+const compiled = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.CommonJS } }).outputText;
+const context = { exports: {} };
+vm.runInNewContext(compiled, context);
+const model = context.exports.ProjectTreeModel;
+const files = ['entry/src/main/ets/pages/Index.ets', 'entry/src/main/module.json5',
+  'harmony_demo/src/main/ets/pages/Index.ets', 'AppScope/app.json5', 'build-profile.json5'];
+const entries = model.entries(files);
+const collapsed = Array.from(model.visible(entries, []).map(n => n.path));
+assert.deepEqual(collapsed, ['AppScope', 'entry', 'harmony_demo', 'build-profile.json5']);
+const open = model.reveal(files[0], []);
+const visible = Array.from(model.visible(entries, open).map(n => n.path));
+assert(visible.includes(files[0]));
+assert(!visible.includes(files[2]));
+assert(visible.indexOf('entry/src/main/ets') < visible.indexOf('entry/src/main/module.json5'));
+assert.equal(entries.filter(n => n.name === 'Index.ets').length, 2);
+assert.equal(model.entries(['../secret', '/absolute']).length, 0);
+assert.equal(model.reveal(files[0], open).length, open.length);
+console.log('PASS: hierarchy, directory sorting, collapse, active-file reveal, duplicate filenames, path validation');

@@ -1,0 +1,208 @@
+include:
+- '"ir/expression.h"'
+ir:
+  class_definitions:
+  - extends: public Expression
+    known_macroses:
+    - NO_COPY_SEMANTIC(TaggedTemplateExpression);
+    - NO_MOVE_SEMANTIC(TaggedTemplateExpression);
+    name: TaggedTemplateExpression
+    private: {}
+    public:
+      constructors:
+      - args: []
+        name: TaggedTemplateExpression
+        postfix: = delete
+        raw_declaration: TaggedTemplateExpression() = delete
+      - args:
+        - initializer_for: tag_
+          name: tag
+          type:
+            name: Expression
+            ptr_depth: 1
+        - initializer_for: quasi_
+          name: quasi
+          type:
+            name: TemplateLiteral
+            ptr_depth: 1
+        - initializer_for: typeParams_
+          name: typeParams
+          type:
+            name: TSTypeParameterInstantiation
+            ptr_depth: 1
+        name: TaggedTemplateExpression
+        other_initializers:
+        - class_field: Expression
+          init_value: AstNodeType::TAGGED_TEMPLATE_EXPRESSION
+        raw_declaration: explicit TaggedTemplateExpression(Expression *tag, TemplateLiteral
+          *quasi, TSTypeParameterInstantiation *typeParams)
+        return_type:
+          prefix: explicit
+      destructors:
+      - args: []
+        name: ~TaggedTemplateExpression
+        postfix: override = default
+        raw_declaration: ~TaggedTemplateExpression() override = default
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Tag
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const Expression *Tag() const noexcept'
+        return_type:
+          name: Expression
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Quasi
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const TemplateLiteral *Quasi() const noexcept'
+        return_type:
+          name: TemplateLiteral
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: TypeParams
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const TSTypeParameterInstantiation *TypeParams()
+          const noexcept'
+        return_type:
+          name: TSTypeParameterInstantiation
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: parent
+          type:
+            name: AstNode
+            ptr_depth: 1
+        name: Clone
+        postfix: override
+        raw_declaration: '[[nodiscard]] TaggedTemplateExpression *Clone(ArenaAllocator
+          *allocator, AstNode *parent) override'
+        return_type:
+          name: TaggedTemplateExpression
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - args:
+        - name: cb
+          type:
+            name: NodeTransformer
+            prefix: const
+            ref_depth: 1
+        - name: transformationName
+          type:
+            name: string_view
+            namespace: std
+        name: TransformChildren
+        postfix: override
+        raw_declaration: void TransformChildren(const NodeTransformer &cb, std::string_view
+          transformationName) override
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: NodeTraverser
+            prefix: const
+            ref_depth: 1
+        name: Iterate
+        postfix: const override
+        raw_declaration: void Iterate(const NodeTraverser &cb) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: AstDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::AstDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: SrcDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::SrcDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: pg
+          type:
+            name: PandaGen
+            namespace: compiler
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile([[maybe_unused]] compiler::PandaGen *pg) const
+          override
+        return_type:
+          name: void
+      - args:
+        - name: etsg
+          type:
+            name: ETSGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::ETSGen *etsg) const override
+        return_type:
+          name: void
+      - args:
+        - name: checker
+          type:
+            name: TSChecker
+            namespace: checker
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::Type *Check([[maybe_unused]] checker::TSChecker
+          *checker) override
+        return_type:
+          name: Type
+          namespace: checker
+          ptr_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            namespace: checker
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::VerifiedType Check([[maybe_unused]] checker::ETSChecker
+          *checker) override
+        return_type:
+          name: VerifiedType
+          namespace: checker
+      - args:
+        - name: v
+          type:
+            name: ASTVisitorT
+            ptr_depth: 1
+        name: Accept
+        postfix: override
+        raw_declaration: void Accept(ASTVisitorT *v) override
+        return_type:
+          name: void
+  class_forward_declaration:
+  - TemplateLiteral
+  - TSTypeParameterInstantiation
+macros:
+- name: ES2PANDA_IR_EXPRESSION_TAGGED_TEMPLATE_EXPRESSION_H

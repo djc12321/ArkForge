@@ -1,0 +1,941 @@
+include:
+- '"varbinder/variableFlags.h"'
+- '"util/es2pandaMacros.h"'
+- '"util/diagnosticEngine.h"'
+- '"util/ustring.h"'
+ir:
+  class_forward_declaration:
+  - AstNode
+  - ScriptFunction
+  - TSInterfaceDeclaration
+  - ImportDeclaration
+  - ETSImportDeclaration
+macros:
+- name: ES2PANDA_COMPILER_SCOPES_DECLARATION_H
+varbinder:
+  class_definitions:
+  - known_macroses:
+    - NO_COPY_SEMANTIC(Decl);
+    - NO_MOVE_SEMANTIC(Decl);
+    - DECLARATION_KINDS(DECLARE_CHECKS_CASTS)
+    macros:
+    - arguments: declKind, className
+      name: DECLARE_CHECKS_CASTS
+    name: Decl
+    protected: {}
+    public:
+      destructors:
+      - args: []
+        name: ~Decl
+        postfix: = default
+        raw_declaration: virtual ~Decl() = default
+        return_type:
+          prefix: virtual
+      methods:
+      - args: []
+        name: Type
+        postfix: const = 0
+        raw_declaration: virtual DeclType Type() const = 0
+        return_type:
+          name: DeclType
+          prefix: virtual
+      - additional_attributes: get
+        args: []
+        name: Name
+        postfix: const
+        raw_declaration: const util::StringView &Name() const
+        return_type:
+          name: StringView
+          namespace: util
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Node
+        raw_declaration: ir::AstNode *Node()
+        return_type:
+          name: AstNode
+          namespace: ir
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Node
+        postfix: const
+        raw_declaration: const ir::AstNode *Node() const
+        return_type:
+          name: AstNode
+          namespace: ir
+          prefix: const
+          ptr_depth: 1
+      - args:
+        - name: node
+          type:
+            name: AstNode
+            namespace: ir
+            ptr_depth: 1
+        name: BindNode
+        raw_declaration: void BindNode(ir::AstNode *node)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: IsLetOrConstDecl
+        postfix: const
+        raw_declaration: bool IsLetOrConstDecl() const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args: []
+        name: PossibleTDZ
+        postfix: const
+        raw_declaration: bool PossibleTDZ() const
+        return_type:
+          name: bool
+  - extends: public Decl
+    name: MultiDecl
+    private: {}
+    public:
+      constructors:
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - initializer_for: Decl
+          name: name
+          type:
+            name: StringView
+            namespace: util
+        name: MultiDecl
+        other_initializers:
+        - class_field: declarations_
+          init_value: allocator->Adapter()
+        raw_declaration: explicit MultiDecl(ArenaAllocator *allocator, util::StringView
+          name)
+        return_type:
+          prefix: explicit
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+        - name: declNode
+          type:
+            name: AstNode
+            namespace: ir
+            ptr_depth: 1
+        name: MultiDecl
+        other_initializers:
+        - class_field: Decl
+          init_value: name, declNode
+        - class_field: declarations_
+          init_value: allocator->Adapter()
+        raw_declaration: explicit MultiDecl(ArenaAllocator *allocator, util::StringView
+          name, ir::AstNode *declNode)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Decls
+        postfix: const
+        raw_declaration: const ArenaVector<T *> &Decls() const
+        return_type:
+          name: ArenaVector
+          prefix: const
+          ref_depth: 1
+          template_args:
+          - type:
+              name: T
+              ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: decl
+          type:
+            name: T
+            ptr_depth: 1
+        name: Add
+        raw_declaration: void Add(T *decl)
+        return_type:
+          name: void
+    template: typename T
+  - extends: public Decl
+    name: EnumLiteralDecl
+    private: {}
+    public:
+      constructors:
+      - args:
+        - initializer_for: Decl
+          name: name
+          type:
+            name: StringView
+            namespace: util
+        - initializer_for: isConst_
+          name: isConst
+          type:
+            name: bool
+        name: EnumLiteralDecl
+        raw_declaration: explicit EnumLiteralDecl(util::StringView name, bool isConst)
+        return_type:
+          prefix: explicit
+      - args:
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+        - name: declNode
+          type:
+            name: AstNode
+            namespace: ir
+            ptr_depth: 1
+        - initializer_for: isConst_
+          name: isConst
+          type:
+            name: bool
+        name: EnumLiteralDecl
+        other_initializers:
+        - class_field: Decl
+          init_value: name, declNode
+        raw_declaration: explicit EnumLiteralDecl(util::StringView name, ir::AstNode
+          *declNode, bool isConst)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Type
+        postfix: const override
+        raw_declaration: DeclType Type() const override
+        return_type:
+          name: DeclType
+      - additional_attributes: get
+        args: []
+        name: IsConst
+        postfix: const
+        raw_declaration: bool IsConst() const
+        return_type:
+          name: bool
+      - args:
+        - name: scope
+          type:
+            name: LocalScope
+            ptr_depth: 1
+        name: BindScope
+        raw_declaration: void BindScope(LocalScope *scope)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Scope
+        raw_declaration: LocalScope *Scope()
+        return_type:
+          name: LocalScope
+          ptr_depth: 1
+  - extends: public MultiDecl<ir::TSInterfaceDeclaration>
+    name: InterfaceDecl
+    public:
+      constructors:
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+        name: InterfaceDecl
+        other_initializers:
+        - class_field: MultiDecl
+          init_value: allocator, name
+        raw_declaration: explicit InterfaceDecl(ArenaAllocator *allocator, util::StringView
+          name)
+        return_type:
+          prefix: explicit
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+        - name: declNode
+          type:
+            name: AstNode
+            namespace: ir
+            ptr_depth: 1
+        name: InterfaceDecl
+        other_initializers:
+        - class_field: MultiDecl
+          init_value: allocator, name, declNode
+        raw_declaration: explicit InterfaceDecl(ArenaAllocator *allocator, util::StringView
+          name, ir::AstNode *declNode)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Type
+        postfix: const override
+        raw_declaration: DeclType Type() const override
+        return_type:
+          name: DeclType
+  - extends: public Decl
+    name: ClassDecl
+    public:
+      constructors:
+      - args:
+        - initializer_for: Decl
+          name: name
+          type:
+            name: StringView
+            namespace: util
+        name: ClassDecl
+        raw_declaration: explicit ClassDecl(util::StringView name)
+        return_type:
+          prefix: explicit
+      - args:
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+        - name: node
+          type:
+            name: AstNode
+            namespace: ir
+            ptr_depth: 1
+        name: ClassDecl
+        other_initializers:
+        - class_field: Decl
+          init_value: name, node
+        raw_declaration: explicit ClassDecl(util::StringView name, ir::AstNode *node)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Type
+        postfix: const override
+        raw_declaration: DeclType Type() const override
+        return_type:
+          name: DeclType
+  - extends: public MultiDecl<ir::ScriptFunction>
+    name: FunctionDecl
+    public:
+      constructors:
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+        - name: node
+          type:
+            name: AstNode
+            namespace: ir
+            ptr_depth: 1
+        name: FunctionDecl
+        other_initializers:
+        - class_field: MultiDecl
+          init_value: allocator, name
+        raw_declaration: explicit FunctionDecl(ArenaAllocator *allocator, util::StringView
+          name, ir::AstNode *node)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Type
+        postfix: const override
+        raw_declaration: DeclType Type() const override
+        return_type:
+          name: DeclType
+  - extends: public Decl
+    name: TypeParameterDecl
+    public:
+      constructors:
+      - args:
+        - initializer_for: Decl
+          name: name
+          type:
+            name: StringView
+            namespace: util
+        name: TypeParameterDecl
+        raw_declaration: explicit TypeParameterDecl(util::StringView name)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Type
+        postfix: const override
+        raw_declaration: DeclType Type() const override
+        return_type:
+          name: DeclType
+  - extends: public Decl
+    name: PropertyDecl
+    public:
+      constructors:
+      - args:
+        - initializer_for: Decl
+          name: name
+          type:
+            name: StringView
+            namespace: util
+        name: PropertyDecl
+        raw_declaration: explicit PropertyDecl(util::StringView name)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Type
+        postfix: const override
+        raw_declaration: DeclType Type() const override
+        return_type:
+          name: DeclType
+  - extends: public Decl
+    name: MethodDecl
+    public:
+      constructors:
+      - args:
+        - initializer_for: Decl
+          name: name
+          type:
+            name: StringView
+            namespace: util
+        name: MethodDecl
+        raw_declaration: explicit MethodDecl(util::StringView name)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Type
+        postfix: const override
+        raw_declaration: DeclType Type() const override
+        return_type:
+          name: DeclType
+  - extends: public Decl
+    name: EnumDecl
+    public:
+      constructors:
+      - args:
+        - initializer_for: Decl
+          name: name
+          type:
+            name: StringView
+            namespace: util
+        name: EnumDecl
+        raw_declaration: explicit EnumDecl(util::StringView name)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Type
+        postfix: const override
+        raw_declaration: DeclType Type() const override
+        return_type:
+          name: DeclType
+  - extends: public Decl
+    name: TypeAliasDecl
+    public:
+      constructors:
+      - args:
+        - initializer_for: Decl
+          name: name
+          type:
+            name: StringView
+            namespace: util
+        name: TypeAliasDecl
+        raw_declaration: explicit TypeAliasDecl(util::StringView name)
+        return_type:
+          prefix: explicit
+      - args:
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+        - name: node
+          type:
+            name: AstNode
+            namespace: ir
+            ptr_depth: 1
+        name: TypeAliasDecl
+        other_initializers:
+        - class_field: Decl
+          init_value: name, node
+        raw_declaration: explicit TypeAliasDecl(util::StringView name, ir::AstNode
+          *node)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Type
+        postfix: const override
+        raw_declaration: DeclType Type() const override
+        return_type:
+          name: DeclType
+  - extends: public Decl
+    name: NameSpaceDecl
+    public:
+      constructors:
+      - args:
+        - initializer_for: Decl
+          name: name
+          type:
+            name: StringView
+            namespace: util
+        name: NameSpaceDecl
+        raw_declaration: explicit NameSpaceDecl(util::StringView name)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Type
+        postfix: const override
+        raw_declaration: DeclType Type() const override
+        return_type:
+          name: DeclType
+  - extends: public Decl
+    name: VarDecl
+    public:
+      constructors:
+      - args:
+        - initializer_for: Decl
+          name: name
+          type:
+            name: StringView
+            namespace: util
+        name: VarDecl
+        raw_declaration: explicit VarDecl(util::StringView name)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Type
+        postfix: const override
+        raw_declaration: DeclType Type() const override
+        return_type:
+          name: DeclType
+  - extends: public Decl
+    name: LetDecl
+    public:
+      constructors:
+      - args:
+        - initializer_for: Decl
+          name: name
+          type:
+            name: StringView
+            namespace: util
+        name: LetDecl
+        raw_declaration: explicit LetDecl(util::StringView name)
+        return_type:
+          prefix: explicit
+      - args:
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+        - name: declNode
+          type:
+            name: AstNode
+            namespace: ir
+            ptr_depth: 1
+        name: LetDecl
+        other_initializers:
+        - class_field: Decl
+          init_value: name, declNode
+        raw_declaration: explicit LetDecl(util::StringView name, ir::AstNode *declNode)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Type
+        postfix: const override
+        raw_declaration: DeclType Type() const override
+        return_type:
+          name: DeclType
+  - extends: public Decl
+    name: ConstDecl
+    public:
+      constructors:
+      - args:
+        - initializer_for: Decl
+          name: name
+          type:
+            name: StringView
+            namespace: util
+        name: ConstDecl
+        raw_declaration: explicit ConstDecl(util::StringView name)
+        return_type:
+          prefix: explicit
+      - args:
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+        - name: declNode
+          type:
+            name: AstNode
+            namespace: ir
+            ptr_depth: 1
+        name: ConstDecl
+        other_initializers:
+        - class_field: Decl
+          init_value: name, declNode
+        raw_declaration: explicit ConstDecl(util::StringView name, ir::AstNode *declNode)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Type
+        postfix: const override
+        raw_declaration: DeclType Type() const override
+        return_type:
+          name: DeclType
+  - extends: public Decl
+    name: LabelDecl
+    public:
+      constructors:
+      - args:
+        - initializer_for: Decl
+          name: name
+          type:
+            name: StringView
+            namespace: util
+        name: LabelDecl
+        raw_declaration: explicit LabelDecl(util::StringView name)
+        return_type:
+          prefix: explicit
+      - args:
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+        - name: declNode
+          type:
+            name: AstNode
+            namespace: ir
+            ptr_depth: 1
+        name: LabelDecl
+        other_initializers:
+        - class_field: Decl
+          init_value: name, declNode
+        raw_declaration: explicit LabelDecl(util::StringView name, ir::AstNode *declNode)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Type
+        postfix: const override
+        raw_declaration: DeclType Type() const override
+        return_type:
+          name: DeclType
+  - extends: public Decl
+    name: ReadonlyDecl
+    public:
+      constructors:
+      - args:
+        - initializer_for: Decl
+          name: name
+          type:
+            name: StringView
+            namespace: util
+        name: ReadonlyDecl
+        raw_declaration: explicit ReadonlyDecl(util::StringView name)
+        return_type:
+          prefix: explicit
+      - args:
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+        - name: declNode
+          type:
+            name: AstNode
+            namespace: ir
+            ptr_depth: 1
+        name: ReadonlyDecl
+        other_initializers:
+        - class_field: Decl
+          init_value: name, declNode
+        raw_declaration: explicit ReadonlyDecl(util::StringView name, ir::AstNode
+          *declNode)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Type
+        postfix: const override
+        raw_declaration: DeclType Type() const override
+        return_type:
+          name: DeclType
+  - extends: public Decl
+    name: ParameterDecl
+    public:
+      constructors:
+      - args:
+        - initializer_for: Decl
+          name: name
+          type:
+            name: StringView
+            namespace: util
+        name: ParameterDecl
+        raw_declaration: explicit ParameterDecl(util::StringView name)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Type
+        postfix: const override
+        raw_declaration: DeclType Type() const override
+        return_type:
+          name: DeclType
+  - extends: public Decl
+    name: AnnotationDecl
+    public:
+      constructors:
+      - args:
+        - initializer_for: Decl
+          name: name
+          type:
+            name: StringView
+            namespace: util
+        name: AnnotationDecl
+        raw_declaration: explicit AnnotationDecl(util::StringView name)
+        return_type:
+          prefix: explicit
+      - args:
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+        - name: node
+          type:
+            name: AstNode
+            namespace: ir
+            ptr_depth: 1
+        name: AnnotationDecl
+        other_initializers:
+        - class_field: Decl
+          init_value: name, node
+        raw_declaration: explicit AnnotationDecl(util::StringView name, ir::AstNode
+          *node)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Type
+        postfix: const override
+        raw_declaration: DeclType Type() const override
+        return_type:
+          name: DeclType
+  - extends: public Decl
+    name: AnnotationUsage
+    public:
+      constructors:
+      - args:
+        - initializer_for: Decl
+          name: name
+          type:
+            name: StringView
+            namespace: util
+        name: AnnotationUsage
+        raw_declaration: explicit AnnotationUsage(util::StringView name)
+        return_type:
+          prefix: explicit
+      - args:
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+        - name: node
+          type:
+            name: AstNode
+            namespace: ir
+            ptr_depth: 1
+        name: AnnotationUsage
+        other_initializers:
+        - class_field: Decl
+          init_value: name, node
+        raw_declaration: explicit AnnotationUsage(util::StringView name, ir::AstNode
+          *node)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Type
+        postfix: const override
+        raw_declaration: DeclType Type() const override
+        return_type:
+          name: DeclType
+  - extends: public Decl
+    name: ImportDecl
+    private: {}
+    public:
+      constructors:
+      - args:
+        - initializer_for: importName_
+          name: importName
+          type:
+            name: StringView
+            namespace: util
+        - initializer_for: Decl
+          name: localName
+          type:
+            name: StringView
+            namespace: util
+        name: ImportDecl
+        raw_declaration: explicit ImportDecl(util::StringView importName, util::StringView
+          localName)
+        return_type:
+          prefix: explicit
+      - args:
+        - initializer_for: importName_
+          name: importName
+          type:
+            name: StringView
+            namespace: util
+        - initializer_for: Decl
+          name: localName
+          type:
+            name: StringView
+            namespace: util
+        - name: node
+          type:
+            name: AstNode
+            namespace: ir
+            ptr_depth: 1
+        name: ImportDecl
+        raw_declaration: explicit ImportDecl(util::StringView importName, util::StringView
+          localName, ir::AstNode *node)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: ImportName
+        postfix: const
+        raw_declaration: const util::StringView &ImportName() const
+        return_type:
+          name: StringView
+          namespace: util
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: get
+        args: []
+        name: LocalName
+        postfix: const
+        raw_declaration: const util::StringView &LocalName() const
+        return_type:
+          name: StringView
+          namespace: util
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Type
+        postfix: const override
+        raw_declaration: DeclType Type() const override
+        return_type:
+          name: DeclType
+  - extends: public Decl
+    name: ExportDecl
+    private: {}
+    public:
+      constructors:
+      - args:
+        - initializer_for: exportName_
+          name: exportName
+          type:
+            name: StringView
+            namespace: util
+        - initializer_for: Decl
+          name: localName
+          type:
+            name: StringView
+            namespace: util
+        name: ExportDecl
+        raw_declaration: explicit ExportDecl(util::StringView exportName, util::StringView
+          localName)
+        return_type:
+          prefix: explicit
+      - args:
+        - initializer_for: exportName_
+          name: exportName
+          type:
+            name: StringView
+            namespace: util
+        - initializer_for: Decl
+          name: localName
+          type:
+            name: StringView
+            namespace: util
+        - name: node
+          type:
+            name: AstNode
+            namespace: ir
+            ptr_depth: 1
+        name: ExportDecl
+        raw_declaration: explicit ExportDecl(util::StringView exportName, util::StringView
+          localName, ir::AstNode *node)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: ExportName
+        postfix: const
+        raw_declaration: const util::StringView &ExportName() const
+        return_type:
+          name: StringView
+          namespace: util
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: get
+        args: []
+        name: LocalName
+        postfix: const
+        raw_declaration: const util::StringView &LocalName() const
+        return_type:
+          name: StringView
+          namespace: util
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Type
+        postfix: const override
+        raw_declaration: DeclType Type() const override
+        return_type:
+          name: DeclType
+  class_forward_declaration:
+  - Scope
+  - LocalScope
+  known_macroses:
+  - DECLARATION_KINDS(DECLARE_CLASSES)
+  macros:
+  - arguments: decl_kind, className
+    body: class className;
+    name: DECLARE_CLASSES

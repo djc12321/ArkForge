@@ -1,0 +1,216 @@
+include:
+- '"ir/typeNode.h"'
+- '"ir/ts/tsTypeParameter.h"'
+ir:
+  class_definitions:
+  - extends: public TypeNode
+    name: TSMappedType
+    private: {}
+    public:
+      constructors:
+      - args:
+        - initializer_for: typeParameter_
+          name: typeParameter
+          type:
+            name: TSTypeParameter
+            ptr_depth: 1
+        - initializer_for: typeAnnotation_
+          name: typeAnnotation
+          type:
+            name: TypeNode
+            ptr_depth: 1
+        - initializer_for: readonly_
+          name: readonly
+          type:
+            name: MappedOption
+        - initializer_for: optional_
+          name: optional
+          type:
+            name: MappedOption
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        name: TSMappedType
+        other_initializers:
+        - class_field: TypeNode
+          init_value: AstNodeType::TS_MAPPED_TYPE, allocator
+        raw_declaration: "explicit TSMappedType(TSTypeParameter *typeParameter, TypeNode\
+          \ *typeAnnotation, MappedOption readonly,\n                          MappedOption\
+          \ optional, ArenaAllocator *const allocator)"
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: TypeParameter
+        raw_declaration: TSTypeParameter *TypeParameter()
+        return_type:
+          name: TSTypeParameter
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: TypeAnnotation
+        raw_declaration: TypeNode *TypeAnnotation()
+        return_type:
+          name: TypeNode
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Readonly
+        raw_declaration: MappedOption Readonly()
+        return_type:
+          name: MappedOption
+      - additional_attributes: get
+        args: []
+        name: Optional
+        raw_declaration: MappedOption Optional()
+        return_type:
+          name: MappedOption
+      - args:
+        - name: cb
+          type:
+            name: NodeTransformer
+            prefix: const
+            ref_depth: 1
+        - name: transformationName
+          type:
+            name: string_view
+            namespace: std
+        name: TransformChildren
+        postfix: override
+        raw_declaration: void TransformChildren(const NodeTransformer &cb, std::string_view
+          transformationName) override
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: NodeTraverser
+            prefix: const
+            ref_depth: 1
+        name: Iterate
+        postfix: const override
+        raw_declaration: void Iterate(const NodeTraverser &cb) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: AstDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::AstDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: SrcDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::SrcDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: pg
+          type:
+            name: PandaGen
+            namespace: compiler
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile([[maybe_unused]] compiler::PandaGen *pg) const
+          override
+        return_type:
+          name: void
+      - args:
+        - name: etsg
+          type:
+            name: ETSGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::ETSGen *etsg) const override
+        return_type:
+          name: void
+      - args:
+        - name: checker
+          type:
+            name: TSChecker
+            namespace: checker
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::Type *Check([[maybe_unused]] checker::TSChecker
+          *checker) override
+        return_type:
+          name: Type
+          namespace: checker
+          ptr_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: TSChecker
+            namespace: checker
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: GetType
+        postfix: override
+        raw_declaration: checker::Type *GetType([[maybe_unused]] checker::TSChecker
+          *checker) override
+        return_type:
+          name: Type
+          namespace: checker
+          ptr_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            namespace: checker
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::VerifiedType Check([[maybe_unused]] checker::ETSChecker
+          *checker) override
+        return_type:
+          name: VerifiedType
+          namespace: checker
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: parent
+          type:
+            name: AstNode
+            ptr_depth: 1
+        name: Clone
+        postfix: override
+        raw_declaration: TSMappedType *Clone(ArenaAllocator *allocator, AstNode *parent)
+          override
+        return_type:
+          name: TSMappedType
+          ptr_depth: 1
+      - args:
+        - name: v
+          type:
+            name: ASTVisitorT
+            ptr_depth: 1
+        name: Accept
+        postfix: override
+        raw_declaration: void Accept(ASTVisitorT *v) override
+        return_type:
+          name: void
+macros:
+- name: ES2PANDA_IR_TS_MAPPED_TYPE_H

@@ -1,0 +1,524 @@
+checker:
+  class_definitions:
+  - friends:
+    - ETSExtensionFuncHelperType
+    known_macroses:
+    - NO_COPY_SEMANTIC(Signature);
+    - NO_MOVE_SEMANTIC(Signature);
+    name: Signature
+    private: {}
+    public:
+      constructors:
+      - args:
+        - initializer_for: signatureInfo_
+          name: signatureInfo
+          type:
+            name: SignatureInfo
+            ptr_depth: 1
+        - initializer_for: returnType_
+          name: returnType
+          type:
+            name: Type
+            ptr_depth: 1
+        - default_value: nullptr
+          initializer_for: func_
+          name: func
+          type:
+            name: ScriptFunction
+            namespace: ir
+            ptr_depth: 1
+        name: Signature
+        raw_declaration: Signature(SignatureInfo *signatureInfo, Type *returnType,
+          ir::ScriptFunction *func = nullptr)
+      - args: []
+        name: Signature
+        postfix: = delete
+        raw_declaration: Signature() = delete
+      destructors:
+      - args: []
+        name: ~Signature
+        postfix: = default
+        raw_declaration: ~Signature() = default
+      methods:
+      - additional_attributes: get
+        args: []
+        name: GetSignatureInfo
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const SignatureInfo *GetSignatureInfo() const
+          noexcept'
+        return_type:
+          name: SignatureInfo
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: GetSignatureInfo
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] SignatureInfo *GetSignatureInfo() noexcept'
+        return_type:
+          name: SignatureInfo
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: TypeParams
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const ArenaVector<Type *> &TypeParams() const
+          noexcept'
+        return_type:
+          name: ArenaVector
+          prefix: '[[nodiscard]] const'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: Type
+              ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: TypeParams
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] ArenaVector<Type *> &TypeParams() noexcept'
+        return_type:
+          name: ArenaVector
+          prefix: '[[nodiscard]]'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: Type
+              ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Params
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const ArenaVector<varbinder::LocalVariable
+          *> &Params() const noexcept'
+        return_type:
+          name: ArenaVector
+          prefix: '[[nodiscard]] const'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: LocalVariable
+              namespace: varbinder
+              ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Params
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] ArenaVector<varbinder::LocalVariable *> &Params()
+          noexcept'
+        return_type:
+          name: ArenaVector
+          prefix: '[[nodiscard]]'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: LocalVariable
+              namespace: varbinder
+              ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: ReturnType
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const Type *ReturnType() const noexcept'
+        return_type:
+          name: Type
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: ReturnType
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] Type *ReturnType() noexcept'
+        return_type:
+          name: Type
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: MinArgCount
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] uint32_t MinArgCount() const noexcept'
+        return_type:
+          name: uint32_t
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: ArgCount
+        postfix: const
+        raw_declaration: '[[nodiscard]] size_t ArgCount() const'
+        return_type:
+          name: size_t
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args:
+        - name: type
+          type:
+            name: Type
+            ptr_depth: 1
+        name: SetReturnType
+        postfix: noexcept
+        raw_declaration: void SetReturnType(Type *type) noexcept
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: owner
+          type:
+            name: ETSObjectType
+            ptr_depth: 1
+        name: SetOwner
+        postfix: noexcept
+        raw_declaration: void SetOwner(ETSObjectType *owner) noexcept
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: owner
+          type:
+            name: Variable
+            namespace: varbinder
+            ptr_depth: 1
+        name: SetOwnerVar
+        postfix: noexcept
+        raw_declaration: void SetOwnerVar(varbinder::Variable *owner) noexcept
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: HasFunction
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool HasFunction() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - args: []
+        name: Function
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] ir::ScriptFunction *Function() noexcept'
+        return_type:
+          name: ScriptFunction
+          namespace: ir
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - args: []
+        name: Function
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const ir::ScriptFunction *Function() const
+          noexcept'
+        return_type:
+          name: ScriptFunction
+          namespace: ir
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: internalName
+          type:
+            name: StringView
+            namespace: util
+        name: SetInternalName
+        raw_declaration: void SetInternalName(util::StringView internalName)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Owner
+        raw_declaration: '[[nodiscard]] ETSObjectType *Owner()'
+        return_type:
+          name: ETSObjectType
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Owner
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const ETSObjectType *Owner() const noexcept'
+        return_type:
+          name: ETSObjectType
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: OwnerVar
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] varbinder::Variable *OwnerVar() noexcept'
+        return_type:
+          name: Variable
+          namespace: varbinder
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: RestVar
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const varbinder::LocalVariable *RestVar()
+          const noexcept'
+        return_type:
+          name: LocalVariable
+          namespace: varbinder
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: RestVar
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] varbinder::LocalVariable *RestVar() noexcept'
+        return_type:
+          name: LocalVariable
+          namespace: varbinder
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - args: []
+        name: ProtectionFlag
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] uint8_t ProtectionFlag() const noexcept'
+        return_type:
+          name: uint8_t
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: Flags
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] SignatureFlags Flags() const noexcept'
+        return_type:
+          name: SignatureFlags
+          prefix: '[[nodiscard]]'
+      - additional_attributes: set
+        args:
+        - name: flag
+          type:
+            name: SignatureFlags
+            other_modifiers: const
+            postfix: const
+        name: AddSignatureFlag
+        postfix: noexcept
+        raw_declaration: void AddSignatureFlag(SignatureFlags const flag) noexcept
+        return_type:
+          name: void
+      - args:
+        - name: flag
+          type:
+            name: SignatureFlags
+            other_modifiers: const
+            postfix: const
+        name: RemoveSignatureFlag
+        postfix: noexcept
+        raw_declaration: void RemoveSignatureFlag(SignatureFlags const flag) noexcept
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - name: flag
+          type:
+            name: SignatureFlags
+            other_modifiers: const
+            postfix: const
+        name: HasSignatureFlag
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool HasSignatureFlag(SignatureFlags const
+          flag) const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: HasRestParameter
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool HasRestParameter() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: set
+        args:
+        - name: restVar
+          type:
+            name: LocalVariable
+            namespace: varbinder
+            ptr_depth: 1
+        name: SetRestVar
+        raw_declaration: void SetRestVar(varbinder::LocalVariable *restVar)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: IsFinal
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsFinal() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsExtensionFunction
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsExtensionFunction() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsExtensionAccessor
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsExtensionAccessor() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - args:
+        - name: ss
+          type:
+            name: stringstream
+            namespace: std
+            ref_depth: 1
+        name: ToAssemblerType
+        postfix: const
+        raw_declaration: void ToAssemblerType(std::stringstream &ss) const
+        return_type:
+          name: void
+      - args: []
+        name: InternalName
+        postfix: const
+        raw_declaration: '[[nodiscard]] util::StringView InternalName() const'
+        return_type:
+          name: StringView
+          namespace: util
+          prefix: '[[nodiscard]]'
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: globalTypes
+          type:
+            name: GlobalTypesHolder
+            ptr_depth: 1
+        name: Copy
+        postfix: const
+        raw_declaration: "[[nodiscard]] Signature *Copy(ArenaAllocator *allocator,\
+          \ TypeRelation *relation,\n                                  GlobalTypesHolder\
+          \ *globalTypes) const"
+        return_type:
+          name: Signature
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: substitution
+          type:
+            name: Substitution
+            prefix: const
+            ptr_depth: 1
+        name: Substitute
+        raw_declaration: '[[nodiscard]] Signature *Substitute(TypeRelation *relation,
+          const Substitution *substitution)'
+        return_type:
+          name: Signature
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - args:
+        - name: ss
+          type:
+            name: stringstream
+            namespace: std
+            ref_depth: 1
+        - name: variable
+          type:
+            name: Variable
+            namespace: varbinder
+            prefix: const
+            ptr_depth: 1
+        - default_value: 'false'
+          name: printAsMethod
+          type:
+            name: bool
+        - default_value: 'false'
+          name: precise
+          type:
+            name: bool
+        name: ToString
+        postfix: const
+        raw_declaration: "void ToString(std::stringstream &ss, const varbinder::Variable\
+          \ *variable, bool printAsMethod = false,\n                  bool precise\
+          \ = false) const"
+        return_type:
+          name: void
+      - args: []
+        name: ToString
+        postfix: const
+        raw_declaration: std::string ToString() const
+        return_type:
+          name: string
+          namespace: std
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: super
+          type:
+            name: Signature
+            other_modifiers: const
+            ptr_depth: 1
+        name: IsSubtypeOf
+        postfix: const
+        raw_declaration: void IsSubtypeOf(TypeRelation *relation, Signature const
+          *super) const
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: super
+          type:
+            name: Signature
+            ptr_depth: 1
+        name: IsCoveredBy
+        raw_declaration: void IsCoveredBy(TypeRelation *relation, Signature *super)
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: source
+          type:
+            name: Signature
+            ptr_depth: 1
+        name: AssignmentTarget
+        raw_declaration: void AssignmentTarget(TypeRelation *relation, Signature *source)
+        return_type:
+          name: void
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            ptr_depth: 1
+        name: ToArrowSignature
+        raw_declaration: '[[nodiscard]] Signature *ToArrowSignature(ETSChecker *checker)'
+        return_type:
+          name: Signature
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+include:
+- '"ir/ets/etsParameterExpression.h"'
+- '"type.h"'
+- '"varbinder/declaration.h"'
+- '"varbinder/variable.h"'
+macros:
+- name: ES2PANDA_COMPILER_CHECKER_TYPES_SIGNATURE_H
+public_lib:
+  structs:
+  - name: Context
+structs:
+- members: []
+  name: enumbitops::IsAllowedType<ark::es2panda::checker::SignatureFlags>

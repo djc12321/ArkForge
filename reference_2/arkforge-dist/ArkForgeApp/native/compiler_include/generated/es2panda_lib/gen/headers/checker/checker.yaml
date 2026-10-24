@@ -1,0 +1,1283 @@
+checker:
+  class_definitions:
+  - friends:
+    - ScopeContext
+    - TypeStackElement
+    - SavedCheckerContext
+    known_macroses:
+    - NO_COPY_SEMANTIC(Checker);
+    - NO_MOVE_SEMANTIC(Checker);
+    name: Checker
+    private: {}
+    protected: {}
+    public:
+      constructors:
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: diagnosticEngine
+          type:
+            name: DiagnosticEngine
+            namespace: util
+            ref_depth: 1
+        name: Checker
+        raw_declaration: explicit Checker(ArenaAllocator *allocator, util::DiagnosticEngine
+          &diagnosticEngine)
+        return_type:
+          prefix: explicit
+      destructors:
+      - args: []
+        name: ~Checker
+        postfix: = default
+        raw_declaration: virtual ~Checker() = default
+        return_type:
+          prefix: virtual
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Allocator
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] ArenaAllocator *Allocator() noexcept'
+        return_type:
+          name: ArenaAllocator
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Scope
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] varbinder::Scope *Scope() const noexcept'
+        return_type:
+          name: Scope
+          namespace: varbinder
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Context
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] CheckerContext &Context() noexcept'
+        return_type:
+          name: CheckerContext
+          prefix: '[[nodiscard]]'
+          ref_depth: 1
+      - additional_attributes: get
+        args:
+        - name: status
+          type:
+            name: CheckerStatus
+        name: HasStatus
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] bool HasStatus(CheckerStatus status) noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - args:
+        - name: status
+          type:
+            name: CheckerStatus
+        name: RemoveStatus
+        postfix: noexcept
+        raw_declaration: void RemoveStatus(CheckerStatus status) noexcept
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: status
+          type:
+            name: CheckerStatus
+        name: AddStatus
+        postfix: noexcept
+        raw_declaration: void AddStatus(CheckerStatus status) noexcept
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Relation
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] TypeRelation *Relation() const noexcept'
+        return_type:
+          name: TypeRelation
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - args: []
+        name: InitGlobalTypes
+        raw_declaration: void InitGlobalTypes()
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: GetGlobalTypesHolder
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] GlobalTypesHolder *GetGlobalTypesHolder()
+          const noexcept'
+        return_type:
+          name: GlobalTypesHolder
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: globalTypes
+          type:
+            name: GlobalTypesHolder
+            ptr_depth: 1
+        name: SetGlobalTypesHolder
+        raw_declaration: void SetGlobalTypesHolder(GlobalTypesHolder *globalTypes)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: IdenticalResults
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] RelationHolder &IdenticalResults() noexcept'
+        return_type:
+          name: RelationHolder
+          prefix: '[[nodiscard]]'
+          ref_depth: 1
+      - additional_attributes: get
+        args: []
+        name: AssignableResults
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] RelationHolder &AssignableResults() noexcept'
+        return_type:
+          name: RelationHolder
+          prefix: '[[nodiscard]]'
+          ref_depth: 1
+      - additional_attributes: get
+        args: []
+        name: ComparableResults
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] RelationHolder &ComparableResults() noexcept'
+        return_type:
+          name: RelationHolder
+          prefix: '[[nodiscard]]'
+          ref_depth: 1
+      - additional_attributes: get
+        args: []
+        name: UncheckedCastableResult
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] RelationHolder &UncheckedCastableResult()
+          noexcept'
+        return_type:
+          name: RelationHolder
+          prefix: '[[nodiscard]]'
+          ref_depth: 1
+      - additional_attributes: get
+        args: []
+        name: SupertypeResults
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] RelationHolder &SupertypeResults() noexcept'
+        return_type:
+          name: RelationHolder
+          prefix: '[[nodiscard]]'
+          ref_depth: 1
+      - additional_attributes: get
+        args: []
+        name: TypeStack
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] std::unordered_map<const void *, Type *> &TypeStack()
+          noexcept'
+        return_type:
+          name: unordered_map
+          namespace: std
+          other_modifiers: const
+          prefix: '[[nodiscard]]'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: void
+              prefix: const
+              ptr_depth: 1
+          - type:
+              name: Type
+              ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: IsETSChecker
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] virtual bool IsETSChecker() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]] virtual'
+      - args: []
+        name: AsETSChecker
+        raw_declaration: '[[nodiscard]] ETSChecker *AsETSChecker()'
+        return_type:
+          name: ETSChecker
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - args: []
+        name: AsETSChecker
+        postfix: const
+        raw_declaration: '[[nodiscard]] const ETSChecker *AsETSChecker() const'
+        return_type:
+          name: ETSChecker
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - args:
+        - name: varbinder
+          type:
+            name: VarBinder
+            namespace: varbinder
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        - name: options
+          type:
+            name: Options
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        name: StartChecker
+        postfix: = 0
+        raw_declaration: virtual bool StartChecker([[maybe_unused]] varbinder::VarBinder
+          *varbinder, const util::Options &options) = 0
+        return_type:
+          name: bool
+          prefix: virtual
+      - args:
+        - name: expr
+          type:
+            name: Expression
+            namespace: ir
+            ptr_depth: 1
+        name: CheckTypeCached
+        postfix: = 0
+        raw_declaration: virtual Type *CheckTypeCached(ir::Expression *expr) = 0
+        return_type:
+          name: Type
+          prefix: virtual
+          ptr_depth: 1
+      - args:
+        - name: var
+          type:
+            name: Variable
+            namespace: varbinder
+            ptr_depth: 1
+        name: GetTypeOfVariable
+        postfix: = 0
+        raw_declaration: virtual Type *GetTypeOfVariable(varbinder::Variable *var)
+          = 0
+        return_type:
+          name: Type
+          prefix: virtual
+          ptr_depth: 1
+      - args:
+        - name: type
+          type:
+            name: Type
+            ptr_depth: 1
+        name: ResolveStructuredTypeMembers
+        postfix: = 0
+        raw_declaration: virtual void ResolveStructuredTypeMembers(Type *type) = 0
+        return_type:
+          name: void
+          prefix: virtual
+      - args:
+        - name: diagnostic
+          type:
+            name: DiagnosticKind
+            namespace: diagnostic
+            prefix: const
+            ref_depth: 1
+        - default_value: '{}'
+          name: diagnosticParams
+          type:
+            name: DiagnosticMessageParams
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        name: LogError
+        raw_declaration: "void LogError(const diagnostic::DiagnosticKind &diagnostic,\n\
+          \                  const util::DiagnosticMessageParams &diagnosticParams\
+          \ = {})"
+        return_type:
+          name: void
+      - args:
+        - name: diagnostic
+          type:
+            name: DiagnosticKind
+            namespace: diagnostic
+            prefix: const
+            ref_depth: 1
+        - name: diagnosticParams
+          type:
+            name: DiagnosticMessageParams
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        - name: pos
+          type:
+            name: SourcePosition
+            namespace: lexer
+            prefix: const
+            ref_depth: 1
+        name: LogError
+        raw_declaration: "void LogError(const diagnostic::DiagnosticKind &diagnostic,\
+          \ const util::DiagnosticMessageParams &diagnosticParams,\n             \
+          \     const lexer::SourcePosition &pos)"
+        return_type:
+          name: void
+      - args:
+        - name: diagnostic
+          type:
+            name: DiagnosticKind
+            namespace: diagnostic
+            prefix: const
+            ref_depth: 1
+        - name: pos
+          type:
+            name: SourcePosition
+            namespace: lexer
+            prefix: const
+            ref_depth: 1
+        name: LogError
+        raw_declaration: void LogError(const diagnostic::DiagnosticKind &diagnostic,
+          const lexer::SourcePosition &pos)
+        return_type:
+          name: void
+      - args:
+        - name: message
+          type:
+            name: string_view
+            namespace: std
+        - name: pos
+          type:
+            name: SourcePosition
+            namespace: lexer
+            prefix: const
+            ref_depth: 1
+        name: LogTypeError
+        raw_declaration: void LogTypeError(std::string_view message, const lexer::SourcePosition
+          &pos)
+        return_type:
+          name: void
+      - args:
+        - name: list
+          type:
+            name: DiagnosticMessageParams
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        - name: pos
+          type:
+            name: SourcePosition
+            namespace: lexer
+            prefix: const
+            ref_depth: 1
+        name: LogTypeError
+        raw_declaration: void LogTypeError(const util::DiagnosticMessageParams &list,
+          const lexer::SourcePosition &pos)
+        return_type:
+          name: void
+      - args:
+        - name: kind
+          type:
+            name: DiagnosticKind
+            namespace: diagnostic
+            prefix: const
+            ref_depth: 1
+        - name: list
+          type:
+            name: DiagnosticMessageParams
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        - name: pos
+          type:
+            name: SourcePosition
+            namespace: lexer
+            prefix: const
+            ref_depth: 1
+        name: LogDiagnostic
+        raw_declaration: "void LogDiagnostic(const diagnostic::DiagnosticKind &kind,\
+          \ const util::DiagnosticMessageParams &list,\n                       const\
+          \ lexer::SourcePosition &pos)"
+        return_type:
+          name: void
+      - args:
+        - name: kind
+          type:
+            name: DiagnosticKind
+            namespace: diagnostic
+            prefix: const
+            ref_depth: 1
+        - name: pos
+          type:
+            name: SourcePosition
+            namespace: lexer
+            prefix: const
+            ref_depth: 1
+        name: LogDiagnostic
+        raw_declaration: void LogDiagnostic(const diagnostic::DiagnosticKind &kind,
+          const lexer::SourcePosition &pos)
+        return_type:
+          name: void
+      - args:
+        - name: source
+          type:
+            name: Type
+            ptr_depth: 1
+        - name: target
+          type:
+            name: Type
+            ptr_depth: 1
+        name: IsTypeIdenticalTo
+        raw_declaration: bool IsTypeIdenticalTo(Type *source, Type *target)
+        return_type:
+          name: bool
+      - args:
+        - name: source
+          type:
+            name: Type
+            ptr_depth: 1
+        - name: target
+          type:
+            name: Type
+            ptr_depth: 1
+        - name: diagKind
+          type:
+            name: DiagnosticKind
+            namespace: diagnostic
+            prefix: const
+            ref_depth: 1
+        - name: diagParams
+          type:
+            name: DiagnosticMessageParams
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        - name: errPos
+          type:
+            name: SourcePosition
+            namespace: lexer
+            prefix: const
+            ref_depth: 1
+        name: IsTypeIdenticalTo
+        raw_declaration: "bool IsTypeIdenticalTo(Type *source, Type *target, const\
+          \ diagnostic::DiagnosticKind &diagKind,\n                           const\
+          \ util::DiagnosticMessageParams &diagParams, const lexer::SourcePosition\
+          \ &errPos)"
+        return_type:
+          name: bool
+      - args:
+        - name: source
+          type:
+            name: Type
+            ptr_depth: 1
+        - name: target
+          type:
+            name: Type
+            ptr_depth: 1
+        - name: diagKind
+          type:
+            name: DiagnosticKind
+            namespace: diagnostic
+            prefix: const
+            ref_depth: 1
+        - name: errPos
+          type:
+            name: SourcePosition
+            namespace: lexer
+            prefix: const
+            ref_depth: 1
+        name: IsTypeIdenticalTo
+        raw_declaration: "bool IsTypeIdenticalTo(Type *source, Type *target, const\
+          \ diagnostic::DiagnosticKind &diagKind,\n                           const\
+          \ lexer::SourcePosition &errPos)"
+        return_type:
+          name: bool
+      - args:
+        - name: source
+          type:
+            name: Type
+            ptr_depth: 1
+        - name: target
+          type:
+            name: Type
+            ptr_depth: 1
+        name: IsTypeAssignableTo
+        raw_declaration: bool IsTypeAssignableTo(Type *source, Type *target)
+        return_type:
+          name: bool
+      - args:
+        - name: source
+          type:
+            name: Type
+            ptr_depth: 1
+        - name: target
+          type:
+            name: Type
+            ptr_depth: 1
+        - name: diagKind
+          type:
+            name: DiagnosticKind
+            namespace: diagnostic
+            prefix: const
+            ref_depth: 1
+        - name: list
+          type:
+            name: DiagnosticMessageParams
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        - name: errPos
+          type:
+            name: SourcePosition
+            namespace: lexer
+            prefix: const
+            ref_depth: 1
+        name: IsTypeAssignableTo
+        raw_declaration: "bool IsTypeAssignableTo(Type *source, Type *target, const\
+          \ diagnostic::DiagnosticKind &diagKind,\n                            const\
+          \ util::DiagnosticMessageParams &list, const lexer::SourcePosition &errPos)"
+        return_type:
+          name: bool
+      - args:
+        - name: source
+          type:
+            name: Type
+            ptr_depth: 1
+        - name: target
+          type:
+            name: Type
+            ptr_depth: 1
+        name: IsTypeComparableTo
+        raw_declaration: bool IsTypeComparableTo(Type *source, Type *target)
+        return_type:
+          name: bool
+      - args:
+        - name: source
+          type:
+            name: Type
+            ptr_depth: 1
+        - name: target
+          type:
+            name: Type
+            ptr_depth: 1
+        - name: diagKind
+          type:
+            name: DiagnosticKind
+            namespace: diagnostic
+            prefix: const
+            ref_depth: 1
+        - name: list
+          type:
+            name: DiagnosticMessageParams
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        - name: errPos
+          type:
+            name: SourcePosition
+            namespace: lexer
+            prefix: const
+            ref_depth: 1
+        name: IsTypeComparableTo
+        raw_declaration: "bool IsTypeComparableTo(Type *source, Type *target, const\
+          \ diagnostic::DiagnosticKind &diagKind,\n                            const\
+          \ util::DiagnosticMessageParams &list, const lexer::SourcePosition &errPos)"
+        return_type:
+          name: bool
+      - args:
+        - name: source
+          type:
+            name: Type
+            ptr_depth: 1
+        - name: target
+          type:
+            name: Type
+            ptr_depth: 1
+        name: AreTypesComparable
+        raw_declaration: bool AreTypesComparable(Type *source, Type *target)
+        return_type:
+          name: bool
+      - args:
+        - name: source
+          type:
+            name: Type
+            ptr_depth: 1
+        - name: target
+          type:
+            name: Type
+            ptr_depth: 1
+        name: IsTypeEqualityComparableTo
+        raw_declaration: bool IsTypeEqualityComparableTo(Type *source, Type *target)
+        return_type:
+          name: bool
+      - args:
+        - name: source
+          type:
+            name: Type
+            ptr_depth: 1
+        - name: target
+          type:
+            name: Type
+            ptr_depth: 1
+        name: IsAllTypesAssignableTo
+        raw_declaration: bool IsAllTypesAssignableTo(Type *source, Type *target)
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - name: analyzer
+          type:
+            name: SemanticAnalyzer
+            ptr_depth: 1
+        name: SetAnalyzer
+        raw_declaration: void SetAnalyzer(SemanticAnalyzer *analyzer)
+        return_type:
+          name: void
+      - args: []
+        name: GetAnalyzer
+        postfix: const
+        raw_declaration: checker::SemanticAnalyzer *GetAnalyzer() const
+        return_type:
+          name: SemanticAnalyzer
+          namespace: checker
+          ptr_depth: 1
+      - args: []
+        name: VarBinder
+        postfix: const
+        raw_declaration: varbinder::VarBinder *VarBinder() const
+        return_type:
+          name: VarBinder
+          namespace: varbinder
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: DiagnosticEngine
+        raw_declaration: util::DiagnosticEngine &DiagnosticEngine()
+        return_type:
+          name: DiagnosticEngine
+          namespace: util
+          ref_depth: 1
+      - additional_attributes: get
+        args: []
+        name: GetPositionForDiagnostic
+        postfix: const
+        raw_declaration: lexer::SourcePosition GetPositionForDiagnostic() const
+        return_type:
+          name: SourcePosition
+          namespace: lexer
+      - args:
+        - name: varbinder
+          type:
+            name: VarBinder
+            namespace: varbinder
+            ptr_depth: 1
+        name: Initialize
+        raw_declaration: void Initialize(varbinder::VarBinder *varbinder)
+        return_type:
+          name: void
+      - args: []
+        name: IsAnyError
+        raw_declaration: '[[nodiscard]] bool IsAnyError()'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - args: []
+        name: CleanUp
+        raw_declaration: virtual void CleanUp()
+        return_type:
+          name: void
+          prefix: virtual
+      - additional_attributes: get
+        args: []
+        name: ProgramAllocator
+        raw_declaration: '[[nodiscard]] ArenaAllocator *ProgramAllocator()'
+        return_type:
+          name: ArenaAllocator
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - args: []
+        name: IsDeclForDynamicStaticInterop
+        postfix: const
+        raw_declaration: bool IsDeclForDynamicStaticInterop() const
+        return_type:
+          name: bool
+  - known_macroses:
+    - NO_COPY_SEMANTIC(TypeStackElement);
+    - NO_MOVE_SEMANTIC(TypeStackElement);
+    name: TypeStackElement
+    private: {}
+    public:
+      constructors:
+      - args:
+        - initializer_for: checker_
+          name: checker
+          type:
+            name: Checker
+            ptr_depth: 1
+        - initializer_for: element_
+          name: element
+          type:
+            name: void
+            prefix: const
+            ptr_depth: 1
+        - name: diag
+          type:
+            name: optional
+            namespace: std
+            prefix: const
+            ref_depth: 1
+            template_args:
+            - type:
+                name: DiagnosticWithParams
+                namespace: util
+        - name: pos
+          type:
+            name: SourcePosition
+            namespace: lexer
+            prefix: const
+            ref_depth: 1
+        - default_value: 'false'
+          initializer_for: isRecursive_
+          name: isRecursive
+          type:
+            name: bool
+        name: TypeStackElement
+        raw_declaration: "explicit TypeStackElement(Checker *checker, const void *element,\n\
+          \                              const std::optional<util::DiagnosticWithParams>\
+          \ &diag, const lexer::SourcePosition &pos,\n                           \
+          \   bool isRecursive = false)"
+        return_type:
+          prefix: explicit
+      destructors:
+      - args: []
+        name: ~TypeStackElement
+        raw_declaration: ~TypeStackElement()
+      methods:
+      - args: []
+        name: HasTypeError
+        raw_declaration: bool HasTypeError()
+        return_type:
+          name: bool
+      - args: []
+        name: GetElementType
+        raw_declaration: Type *GetElementType()
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: type
+          type:
+            name: Type
+            ptr_depth: 1
+        name: SetElementType
+        raw_declaration: void SetElementType(Type *type)
+        return_type:
+          name: void
+  - known_macroses:
+    - NO_COPY_SEMANTIC(RecursionPreserver);
+    - NO_MOVE_SEMANTIC(RecursionPreserver);
+    name: RecursionPreserver
+    private: {}
+    public:
+      constructors:
+      - args:
+        - initializer_for: elementStack_
+          name: elementStack
+          type:
+            name: unordered_set
+            namespace: std
+            ref_depth: 1
+            template_args:
+            - type:
+                name: T
+                ptr_depth: 1
+        - initializer_for: element_
+          name: element
+          type:
+            name: T
+            ptr_depth: 1
+        name: RecursionPreserver
+        raw_declaration: explicit RecursionPreserver(std::unordered_set<T *> &elementStack,
+          T *element)
+        return_type:
+          prefix: explicit
+      destructors:
+      - args: []
+        name: ~RecursionPreserver
+        raw_declaration: ~RecursionPreserver()
+    template: typename T
+  - known_macroses:
+    - NO_COPY_SEMANTIC(ScopeContext);
+    - NO_MOVE_SEMANTIC(ScopeContext);
+    name: ScopeContext
+    private: {}
+    public:
+      constructors:
+      - args:
+        - name: checker
+          type:
+            name: Checker
+            ptr_depth: 1
+        - name: newScope
+          type:
+            name: Scope
+            namespace: varbinder
+            ptr_depth: 1
+        name: ScopeContext
+        raw_declaration: explicit ScopeContext(Checker *checker, varbinder::Scope
+          *newScope)
+        return_type:
+          prefix: explicit
+      destructors:
+      - args: []
+        name: ~ScopeContext
+        raw_declaration: ~ScopeContext()
+  - known_macroses:
+    - NO_COPY_SEMANTIC(SavedCheckerContext);
+    name: SavedCheckerContext
+    private: {}
+    public:
+      constructors:
+      - args:
+        - name: checker
+          type:
+            name: Checker
+            ptr_depth: 1
+        - name: newStatus
+          type:
+            name: CheckerStatus
+        name: SavedCheckerContext
+        other_initializers:
+        - class_field: SavedCheckerContext
+          init_value: checker, newStatus, nullptr
+        raw_declaration: explicit SavedCheckerContext(Checker *checker, CheckerStatus
+          newStatus)
+        return_type:
+          prefix: explicit
+      - args:
+        - name: checker
+          type:
+            name: Checker
+            ptr_depth: 1
+        - name: newStatus
+          type:
+            name: CheckerStatus
+        - name: containingClass
+          type:
+            name: ETSObjectType
+            prefix: const
+            ptr_depth: 1
+        name: SavedCheckerContext
+        other_initializers:
+        - class_field: SavedCheckerContext
+          init_value: checker, newStatus, containingClass, nullptr
+        raw_declaration: explicit SavedCheckerContext(Checker *checker, CheckerStatus
+          newStatus, const ETSObjectType *containingClass)
+        return_type:
+          prefix: explicit
+      - args:
+        - initializer_for: checker_
+          name: checker
+          type:
+            name: Checker
+            ptr_depth: 1
+        - name: newStatus
+          type:
+            name: CheckerStatus
+        - name: containingClass
+          type:
+            name: ETSObjectType
+            prefix: const
+            ptr_depth: 1
+        - name: containingSignature
+          type:
+            name: Signature
+            ptr_depth: 1
+        name: SavedCheckerContext
+        other_initializers:
+        - class_field: prev_
+          init_value: checker->context_
+        raw_declaration: "explicit SavedCheckerContext(Checker *checker, CheckerStatus\
+          \ newStatus, const ETSObjectType *containingClass,\n                   \
+          \              Signature *containingSignature)"
+        return_type:
+          prefix: explicit
+      - args:
+        - name: other
+          type:
+            name: SavedCheckerContext
+            ref_depth: 2
+        name: SavedCheckerContext
+        other_initializers:
+        - class_field: checker_
+          init_value: other.checker_
+        - class_field: prev_
+          init_value: std::move(other.prev_)
+        postfix: noexcept
+        raw_declaration: explicit SavedCheckerContext(SavedCheckerContext &&other)
+          noexcept
+        return_type:
+          prefix: explicit
+      destructors:
+      - args: []
+        name: ~SavedCheckerContext
+        raw_declaration: ~SavedCheckerContext()
+      fields:
+      - default_value: "(SavedCheckerContext &&other) noexcept\n    {\n        if\
+          \ (this != &other) {\n            checker_ = other.checker_"
+        name: operator
+        type:
+          name: SavedCheckerContext
+          ref_depth: 1
+      - default_value: nullptr
+        type:
+          name: other.checker_
+      - default_value: std::move(other.prev_)
+        type:
+          name: prev_
+      - name: this
+        type:
+          name: return
+          ptr_depth: 1
+  - known_macroses:
+    - DEFAULT_MOVE_SEMANTIC(VerifiedType);
+    - DEFAULT_COPY_SEMANTIC(VerifiedType);
+    name: VerifiedType
+    private: {}
+    public:
+      constructors:
+      - args: []
+        name: VerifiedType
+        postfix: = delete
+        raw_declaration: VerifiedType() = delete
+      - args:
+        - name: node
+          type:
+            name: AstNode
+            namespace: ir
+            other_modifiers: const
+            postfix: const
+            prefix: '[[maybe_unused]] const'
+            ptr_depth: 1
+        - initializer_for: type_
+          name: type
+          type:
+            name: Type
+            ptr_depth: 1
+        name: VerifiedType
+        raw_declaration: VerifiedType([[maybe_unused]] const ir::AstNode *const node,
+          Type *type)
+      destructors:
+      - args: []
+        name: ~VerifiedType
+        postfix: = default
+        raw_declaration: ~VerifiedType() = default
+      fields:
+      - default_value: "(const VerifiedType &l, const std::nullptr_t &r)\n    {\n\
+          \        return !(l == r)"
+        name: operator!
+        type:
+          name: friend
+          postfix: bool
+      - default_value: "(const VerifiedType &l, const VerifiedType &r)\n    {\n  \
+          \      return !(l == r)"
+        name: operator!
+        type:
+          name: friend
+          postfix: bool
+  - known_macroses:
+    - NO_COPY_SEMANTIC(InferMatchContext);
+    - NO_MOVE_SEMANTIC(InferMatchContext);
+    name: InferMatchContext
+    private: {}
+    public:
+      constructors:
+      - args:
+        - name: checker
+          type:
+            name: Checker
+            ptr_depth: 1
+        - initializer_for: diagnosticKind_
+          name: diagnosticKind
+          type:
+            name: DiagnosticType
+            namespace: util
+        - initializer_for: range_
+          name: range
+          type:
+            name: SourceRange
+            namespace: lexer
+            other_modifiers: const
+            ref_depth: 1
+        - default_value: 'true'
+          initializer_for: isLogError_
+          name: isLogError
+          type:
+            name: bool
+        name: InferMatchContext
+        other_initializers:
+        - class_field: diagnosticEngine_
+          init_value: checker->DiagnosticEngine()
+        - class_field: diagnosticCheckpoint_
+          init_value: ''
+        raw_declaration: "explicit InferMatchContext(Checker *checker, util::DiagnosticType\
+          \ diagnosticKind, lexer::SourceRange const &range,\n                   \
+          \            bool isLogError = true)"
+        return_type:
+          prefix: explicit
+      destructors:
+      - args: []
+        name: ~InferMatchContext
+        postfix: noexcept
+        raw_declaration: ~InferMatchContext() noexcept
+      methods:
+      - args: []
+        name: ValidMatchStatus
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] bool ValidMatchStatus() noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - args:
+        - name: excludedRanges
+          type:
+            name: ArenaVector
+            prefix: const
+            ref_depth: 1
+            template_args:
+            - type:
+                name: SourceRange
+                namespace: lexer
+        name: ValidMatchStatus
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] bool ValidMatchStatus(const ArenaVector<lexer::SourceRange>
+          &excludedRanges) noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - args: []
+        name: CheckErrorInRange
+        postfix: noexcept
+        raw_declaration: void CheckErrorInRange() noexcept
+        return_type:
+          name: void
+      - args:
+        - name: errorLog
+          type:
+            name: DiagnosticBase
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        name: IsErrorInRange
+        postfix: const noexcept
+        raw_declaration: bool IsErrorInRange(const util::DiagnosticBase &errorLog)
+          const noexcept
+        return_type:
+          name: bool
+      - args:
+        - name: errorLog
+          type:
+            name: DiagnosticBase
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        - name: excludedRanges
+          type:
+            name: ArenaVector
+            prefix: const
+            ref_depth: 1
+            template_args:
+            - type:
+                name: SourceRange
+                namespace: lexer
+        name: IsErrorInExcludedRange
+        postfix: const noexcept
+        raw_declaration: "bool IsErrorInExcludedRange(const util::DiagnosticBase &errorLog,\n\
+          \                                const ArenaVector<lexer::SourceRange> &excludedRanges)\
+          \ const noexcept"
+        return_type:
+          name: bool
+  - known_macroses:
+    - NO_COPY_SEMANTIC(SignatureCollectContext);
+    - NO_MOVE_SEMANTIC(SignatureCollectContext);
+    name: SignatureCollectContext
+    private: {}
+    public:
+      constructors:
+      - args:
+        - initializer_for: checker_
+          name: checker
+          type:
+            name: Checker
+            ptr_depth: 1
+        - name: overloadDeclaration
+          type:
+            name: LocalVariable
+            namespace: varbinder
+            ptr_depth: 1
+        - default_value: 'false'
+          initializer_for: isCreateSyntheticVar_
+          name: isCreateSyntheticVar
+          type:
+            name: bool
+        name: SignatureCollectContext
+        raw_declaration: "explicit SignatureCollectContext(Checker *checker, varbinder::LocalVariable\
+          \ *overloadDeclaration,\n                                     bool isCreateSyntheticVar\
+          \ = false)"
+        return_type:
+          prefix: explicit
+      destructors:
+      - args: []
+        name: ~SignatureCollectContext
+        raw_declaration: ~SignatureCollectContext()
+      methods:
+      - additional_attributes: get
+        args: []
+        name: IsOverloadDeclarationCall
+        raw_declaration: bool IsOverloadDeclarationCall()
+        return_type:
+          name: bool
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        name: CreateSyntheticVar
+        raw_declaration: varbinder::LocalVariable *CreateSyntheticVar(ArenaAllocator
+          *const allocator)
+        return_type:
+          name: LocalVariable
+          namespace: varbinder
+          ptr_depth: 1
+  class_forward_declaration:
+  - ETSChecker
+  - InterfaceType
+  - GlobalTypesHolder
+  - SemanticAnalyzer
+  usings:
+  - name: StringLiteralPool
+    type:
+      name: unordered_map
+      namespace: std
+      template_args:
+      - type:
+          name: StringView
+          namespace: util
+      - type:
+          name: Type
+          ptr_depth: 1
+  - name: NumberLiteralPool
+    type:
+      name: unordered_map
+      namespace: std
+      template_args:
+      - type:
+          name: double
+      - type:
+          name: Type
+          ptr_depth: 1
+  - name: FunctionParamsResolveResult
+    type:
+      name: variant
+      namespace: std
+      template_args:
+      - type:
+          name: vector
+          namespace: std
+          ref_depth: 1
+          template_args:
+          - type:
+              name: LocalVariable
+              namespace: varbinder
+              ptr_depth: 1
+      - type:
+          name: bool
+  - name: InterfacePropertyMap
+    type:
+      name: unordered_map
+      namespace: std
+      template_args:
+      - type:
+          name: StringView
+          namespace: util
+      - type:
+          name: pair
+          namespace: std
+          template_args:
+          - type:
+              name: LocalVariable
+              namespace: varbinder
+              ptr_depth: 1
+          - type:
+              name: InterfaceType
+              ptr_depth: 1
+  - name: TypeOrNode
+    type:
+      name: variant
+      namespace: std
+      template_args:
+      - type:
+          name: Type
+          ptr_depth: 1
+      - type:
+          name: AstNode
+          namespace: ir
+          ptr_depth: 1
+  - name: IndexInfoTypePair
+    type:
+      name: pair
+      namespace: std
+      template_args:
+      - type:
+          name: Type
+          ptr_depth: 1
+      - type:
+          name: Type
+          ptr_depth: 1
+  - name: PropertyMap
+    type:
+      name: unordered_map
+      namespace: std
+      template_args:
+      - type:
+          name: StringView
+          namespace: util
+      - type:
+          name: LocalVariable
+          namespace: varbinder
+          ptr_depth: 1
+  - name: ArgRange
+    type:
+      name: pair
+      namespace: std
+      template_args:
+      - type:
+          name: uint32_t
+      - type:
+          name: uint32_t
+include:
+- '"checker/checkerContext.h"'
+- '"checker/SemanticAnalyzer.h"'
+- '"checker/types/globalTypesHolder.h"'
+- '"util/diagnosticEngine.h"'
+ir:
+  class_forward_declaration:
+  - AstNode
+  - Expression
+  - BlockStatement
+macros:
+- name: ES2PANDA_CHECKER_CHECKER_H
+parser:
+  class_forward_declaration:
+  - Program
+util:
+  class_forward_declaration:
+  - Options
+varbinder:
+  class_forward_declaration:
+  - VarBinder
+  - Decl
+  - EnumVariable
+  - FunctionDecl
+  - LocalVariable
+  - Scope
+  - Variable

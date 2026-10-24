@@ -1,0 +1,239 @@
+checker:
+  class_forward_declaration:
+  - TSAnalyzer
+  - ETSAnalyzer
+include:
+- '"ir/expression.h"'
+- '"generated/tokenType.h"'
+ir:
+  class_definitions:
+  - extends: public Expression
+    friends:
+    - checker::TSAnalyzer
+    - checker::ETSAnalyzer
+    known_macroses:
+    - NO_COPY_SEMANTIC(UpdateExpression);
+    - NO_MOVE_SEMANTIC(UpdateExpression);
+    name: UpdateExpression
+    private: {}
+    public:
+      constructors:
+      - additional_attributes: set
+        args: []
+        name: UpdateExpression
+        postfix: = delete
+        raw_declaration: UpdateExpression() = delete
+      - additional_attributes: set
+        args:
+        - initializer_for: argument_
+          name: argument
+          type:
+            name: Expression
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        - initializer_for: operator_
+          name: updateOperator
+          type:
+            name: TokenType
+            namespace: lexer
+            other_modifiers: const
+            postfix: const
+        - initializer_for: prefix_
+          name: isPrefix
+          type:
+            name: bool
+            other_modifiers: const
+            postfix: const
+        name: UpdateExpression
+        other_initializers:
+        - class_field: Expression
+          init_value: AstNodeType::UPDATE_EXPRESSION
+        raw_declaration: explicit UpdateExpression(Expression *const argument, lexer::TokenType
+          const updateOperator, bool const isPrefix)
+        return_type:
+          prefix: explicit
+      destructors:
+      - args: []
+        name: ~UpdateExpression
+        postfix: override = default
+        raw_declaration: ~UpdateExpression() override = default
+      methods:
+      - additional_attributes: get
+        args: []
+        name: OperatorType
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] lexer::TokenType OperatorType() const noexcept'
+        return_type:
+          name: TokenType
+          namespace: lexer
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: Argument
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] Expression *Argument() noexcept'
+        return_type:
+          name: Expression
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Argument
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const Expression *Argument() const noexcept'
+        return_type:
+          name: Expression
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: argument
+          type:
+            name: Expression
+            ptr_depth: 1
+        name: SetArgument
+        raw_declaration: void SetArgument(Expression *argument)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: IsPrefix
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsPrefix() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: parent
+          type:
+            name: AstNode
+            ptr_depth: 1
+        name: Clone
+        postfix: override
+        raw_declaration: '[[nodiscard]] UpdateExpression *Clone(ArenaAllocator *allocator,
+          AstNode *parent) override'
+        return_type:
+          name: UpdateExpression
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - args:
+        - name: cb
+          type:
+            name: NodeTransformer
+            prefix: const
+            ref_depth: 1
+        - name: transformationName
+          type:
+            name: string_view
+            namespace: std
+        name: TransformChildren
+        postfix: override
+        raw_declaration: void TransformChildren(const NodeTransformer &cb, std::string_view
+          transformationName) override
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: NodeTraverser
+            prefix: const
+            ref_depth: 1
+        name: Iterate
+        postfix: const override
+        raw_declaration: void Iterate(const NodeTraverser &cb) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: AstDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::AstDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: SrcDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::SrcDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: pg
+          type:
+            name: PandaGen
+            namespace: compiler
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile([[maybe_unused]] compiler::PandaGen *pg) const
+          override
+        return_type:
+          name: void
+      - args:
+        - name: etsg
+          type:
+            name: ETSGen
+            namespace: compiler
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile([[maybe_unused]] compiler::ETSGen *etsg) const
+          override
+        return_type:
+          name: void
+      - args:
+        - name: checker
+          type:
+            name: TSChecker
+            namespace: checker
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::Type *Check([[maybe_unused]] checker::TSChecker
+          *checker) override
+        return_type:
+          name: Type
+          namespace: checker
+          ptr_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            namespace: checker
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::VerifiedType Check([[maybe_unused]] checker::ETSChecker
+          *checker) override
+        return_type:
+          name: VerifiedType
+          namespace: checker
+      - args:
+        - name: v
+          type:
+            name: ASTVisitorT
+            ptr_depth: 1
+        name: Accept
+        postfix: override
+        raw_declaration: void Accept(ASTVisitorT *v) override
+        return_type:
+          name: void
+macros:
+- name: ES2PANDA_IR_EXPRESSION_UPDATE_EXPRESSION_H

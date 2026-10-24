@@ -1,0 +1,1223 @@
+include:
+- '"varbinder/scope.h"'
+- '"varbinder/variable.h"'
+- '"ir/srcDump.h"'
+- '"ir/annotationAllowed.h"'
+- '"ir/astNode.h"'
+- '"ir/astNodeHistory.h"'
+- '"ir/expressions/identifier.h"'
+- '"ir/statements/annotationUsage.h"'
+- '"ir/statements/classDeclaration.h"'
+- '"util/language.h"'
+- '"util/nameMangler.h"'
+ir:
+  class_definitions:
+  - extends: public AnnotationAllowed<TypedAstNode>
+    known_macroses:
+    - NO_COPY_SEMANTIC(ClassDefinition);
+    - NO_MOVE_SEMANTIC(ClassDefinition);
+    name: ClassDefinition
+    private: {}
+    protected: {}
+    public:
+      constructors:
+      - args: []
+        name: ClassDefinition
+        postfix: = delete
+        raw_declaration: ClassDefinition() = delete
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - initializer_for: ident_
+          name: ident
+          type:
+            name: Identifier
+            ptr_depth: 1
+        - initializer_for: typeParams_
+          name: typeParams
+          type:
+            name: TSTypeParameterDeclaration
+            ptr_depth: 1
+        - initializer_for: superTypeParams_
+          name: superTypeParams
+          type:
+            name: TSTypeParameterInstantiation
+            ptr_depth: 1
+        - name: implements
+          type:
+            name: ArenaVector
+            ref_depth: 2
+            template_args:
+            - type:
+                name: TSClassImplements
+                ptr_depth: 1
+        - initializer_for: ctor_
+          name: ctor
+          type:
+            name: MethodDefinition
+            ptr_depth: 1
+        - initializer_for: superClass_
+          name: superClass
+          type:
+            name: Expression
+            ptr_depth: 1
+        - name: body
+          type:
+            name: ArenaVector
+            ref_depth: 2
+            template_args:
+            - type:
+                name: AstNode
+                ptr_depth: 1
+        - initializer_for: modifiers_
+          name: modifiers
+          type:
+            name: ClassDefinitionModifiers
+        - name: flags
+          type:
+            name: ModifierFlags
+        - initializer_for: lang_
+          name: lang
+          type:
+            name: Language
+        name: ClassDefinition
+        other_initializers:
+        - class_field: AnnotationAllowed<TypedAstNode>
+          init_value: AstNodeType::CLASS_DEFINITION, flags, allocator
+        - class_field: implements_
+          init_value: std::move(implements)
+        - class_field: body_
+          init_value: std::move(body)
+        - class_field: capturedVars_
+          init_value: body_.get_allocator()
+        - class_field: localVariableIsNeeded_
+          init_value: body_.get_allocator()
+        - class_field: localIndex_
+          init_value: classCounter_++
+        - class_field: localPrefix_
+          init_value: '"$" + std::to_string(localIndex_)'
+        - class_field: exportedClasses_
+          init_value: body_.get_allocator()
+        raw_declaration: "explicit ClassDefinition(ArenaAllocator *allocator, Identifier\
+          \ *ident, TSTypeParameterDeclaration *typeParams,\n                    \
+          \         TSTypeParameterInstantiation *superTypeParams,\n             \
+          \                ArenaVector<TSClassImplements *> &&implements, MethodDefinition\
+          \ *ctor,\n                             Expression *superClass, ArenaVector<AstNode\
+          \ *> &&body, ClassDefinitionModifiers modifiers,\n                     \
+          \        ModifierFlags flags, Language lang)"
+        return_type:
+          prefix: explicit
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - initializer_for: ident_
+          name: ident
+          type:
+            name: Identifier
+            ptr_depth: 1
+        - name: body
+          type:
+            name: ArenaVector
+            ref_depth: 2
+            template_args:
+            - type:
+                name: AstNode
+                ptr_depth: 1
+        - initializer_for: modifiers_
+          name: modifiers
+          type:
+            name: ClassDefinitionModifiers
+        - name: flags
+          type:
+            name: ModifierFlags
+        - initializer_for: lang_
+          name: lang
+          type:
+            name: Language
+        name: ClassDefinition
+        other_initializers:
+        - class_field: AnnotationAllowed<TypedAstNode>
+          init_value: AstNodeType::CLASS_DEFINITION, flags, allocator
+        - class_field: implements_
+          init_value: allocator->Adapter()
+        - class_field: body_
+          init_value: std::move(body)
+        - class_field: capturedVars_
+          init_value: allocator->Adapter()
+        - class_field: localVariableIsNeeded_
+          init_value: allocator->Adapter()
+        - class_field: localIndex_
+          init_value: classCounter_++
+        - class_field: localPrefix_
+          init_value: '"$" + std::to_string(localIndex_)'
+        - class_field: exportedClasses_
+          init_value: body_.get_allocator()
+        raw_declaration: "explicit ClassDefinition(ArenaAllocator *allocator, Identifier\
+          \ *ident, ArenaVector<AstNode *> &&body,\n                             ClassDefinitionModifiers\
+          \ modifiers, ModifierFlags flags, Language lang)"
+        return_type:
+          prefix: explicit
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - initializer_for: ident_
+          name: ident
+          type:
+            name: Identifier
+            ptr_depth: 1
+        - initializer_for: modifiers_
+          name: modifiers
+          type:
+            name: ClassDefinitionModifiers
+        - name: flags
+          type:
+            name: ModifierFlags
+        - initializer_for: lang_
+          name: lang
+          type:
+            name: Language
+        name: ClassDefinition
+        other_initializers:
+        - class_field: AnnotationAllowed<TypedAstNode>
+          init_value: AstNodeType::CLASS_DEFINITION, flags, allocator
+        - class_field: implements_
+          init_value: allocator->Adapter()
+        - class_field: body_
+          init_value: allocator->Adapter()
+        - class_field: capturedVars_
+          init_value: allocator->Adapter()
+        - class_field: localVariableIsNeeded_
+          init_value: allocator->Adapter()
+        - class_field: localIndex_
+          init_value: classCounter_++
+        - class_field: localPrefix_
+          init_value: '"$" + std::to_string(localIndex_)'
+        - class_field: exportedClasses_
+          init_value: body_.get_allocator()
+        raw_declaration: "explicit ClassDefinition(ArenaAllocator *allocator, Identifier\
+          \ *ident, ClassDefinitionModifiers modifiers,\n                        \
+          \     ModifierFlags flags, Language lang)"
+        return_type:
+          prefix: explicit
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - initializer_for: ident_
+          name: ident
+          type:
+            name: Identifier
+            ptr_depth: 1
+        - name: body
+          type:
+            name: ArenaVector
+            ref_depth: 2
+            template_args:
+            - type:
+                name: AstNode
+                ptr_depth: 1
+        - initializer_for: modifiers_
+          name: modifiers
+          type:
+            name: ClassDefinitionModifiers
+        - name: flags
+          type:
+            name: ModifierFlags
+        - initializer_for: lang_
+          name: lang
+          type:
+            name: Language
+        - name: history
+          type:
+            name: AstNodeHistory
+            ptr_depth: 1
+        name: ClassDefinition
+        other_initializers:
+        - class_field: AnnotationAllowed<TypedAstNode>
+          init_value: AstNodeType::CLASS_DEFINITION, flags, allocator
+        - class_field: implements_
+          init_value: allocator->Adapter()
+        - class_field: body_
+          init_value: std::move(body)
+        - class_field: capturedVars_
+          init_value: allocator->Adapter()
+        - class_field: localVariableIsNeeded_
+          init_value: allocator->Adapter()
+        - class_field: localIndex_
+          init_value: classCounter_++
+        - class_field: localPrefix_
+          init_value: '"$" + std::to_string(localIndex_)'
+        - class_field: exportedClasses_
+          init_value: body_.get_allocator()
+        raw_declaration: "explicit ClassDefinition(ArenaAllocator *allocator, Identifier\
+          \ *ident, ArenaVector<AstNode *> &&body,\n                             ClassDefinitionModifiers\
+          \ modifiers, ModifierFlags flags, Language lang,\n                     \
+          \        AstNodeHistory *history)"
+        return_type:
+          prefix: explicit
+      destructors:
+      - args: []
+        name: ~ClassDefinition
+        postfix: override = default
+        raw_declaration: ~ClassDefinition() override = default
+      methods:
+      - additional_attributes: get
+        args: []
+        name: IsScopeBearer
+        postfix: const noexcept override
+        raw_declaration: '[[nodiscard]] bool IsScopeBearer() const noexcept override'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: Scope
+        postfix: const noexcept override
+        raw_declaration: '[[nodiscard]] varbinder::LocalScope *Scope() const noexcept
+          override'
+        return_type:
+          name: LocalScope
+          namespace: varbinder
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - args: []
+        name: ClearScope
+        postfix: noexcept override
+        raw_declaration: void ClearScope() noexcept override
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Ident
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const Identifier *Ident() const noexcept'
+        return_type:
+          name: Identifier
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Ident
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] Identifier *Ident() noexcept'
+        return_type:
+          name: Identifier
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: ident
+          type:
+            name: Identifier
+            namespace: ir
+            ptr_depth: 1
+        name: SetIdent
+        postfix: noexcept
+        raw_declaration: void SetIdent(ir::Identifier *ident) noexcept
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: InternalName
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const util::StringView &InternalName() const
+          noexcept'
+        return_type:
+          name: StringView
+          namespace: util
+          prefix: '[[nodiscard]] const'
+          ref_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Super
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] Expression *Super() noexcept'
+        return_type:
+          name: Expression
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Super
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const Expression *Super() const noexcept'
+        return_type:
+          name: Expression
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: superClass
+          type:
+            name: Expression
+            ptr_depth: 1
+        name: SetSuper
+        raw_declaration: void SetSuper(Expression *superClass)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: IsGlobal
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsGlobal() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsLocal
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsLocal() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsExtern
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsExtern() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsFromExternal
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsFromExternal() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsInner
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsInner() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsGlobalInitialized
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsGlobalInitialized() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsClassDefinitionChecked
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsClassDefinitionChecked() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsAnonymous
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsAnonymous() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsNumericEnumTransformed
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsNumericEnumTransformed() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsStringEnumTransformed
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsStringEnumTransformed() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsEnumTransformed
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsEnumTransformed() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsNamespaceTransformed
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsNamespaceTransformed() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsLazyImportObjectClass
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsLazyImportObjectClass() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsFromStruct
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsFromStruct() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsInitInCctor
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsInitInCctor() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsModule
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsModule() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsFromLambda
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsFromLambda() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: Language
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] es2panda::Language Language() const noexcept'
+        return_type:
+          name: Language
+          namespace: es2panda
+          prefix: '[[nodiscard]]'
+      - additional_attributes: set
+        args: []
+        name: SetGlobalInitialized
+        postfix: noexcept
+        raw_declaration: void SetGlobalInitialized() noexcept
+        return_type:
+          name: void
+      - additional_attributes: set
+        args: []
+        name: SetInnerModifier
+        postfix: noexcept
+        raw_declaration: void SetInnerModifier() noexcept
+        return_type:
+          name: void
+      - additional_attributes: set
+        args: []
+        name: SetClassDefinitionChecked
+        postfix: noexcept
+        raw_declaration: void SetClassDefinitionChecked() noexcept
+        return_type:
+          name: void
+      - additional_attributes: set
+        args: []
+        name: SetAnonymousModifier
+        postfix: noexcept
+        raw_declaration: void SetAnonymousModifier() noexcept
+        return_type:
+          name: void
+      - additional_attributes: set
+        args: []
+        name: SetNamespaceTransformed
+        postfix: noexcept
+        raw_declaration: void SetNamespaceTransformed() noexcept
+        return_type:
+          name: void
+      - additional_attributes: set
+        args: []
+        name: SetLazyImportObjectClass
+        postfix: noexcept
+        raw_declaration: void SetLazyImportObjectClass() noexcept
+        return_type:
+          name: void
+      - additional_attributes: set
+        args: []
+        name: SetFromStructModifier
+        postfix: noexcept
+        raw_declaration: void SetFromStructModifier() noexcept
+        return_type:
+          name: void
+      - additional_attributes: set
+        args: []
+        name: SetInitInCctor
+        raw_declaration: void SetInitInCctor()
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Modifiers
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] ClassDefinitionModifiers Modifiers() const
+          noexcept'
+        return_type:
+          name: ClassDefinitionModifiers
+          prefix: '[[nodiscard]]'
+      - additional_attributes: set
+        args:
+        - name: body
+          type:
+            name: ArenaVector
+            ref_depth: 2
+            template_args:
+            - type:
+                name: AstNode
+                ptr_depth: 1
+        name: AddProperties
+        raw_declaration: void AddProperties(ArenaVector<AstNode *> &&body)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Body
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const ArenaVector<AstNode *> &Body() const
+          noexcept'
+        return_type:
+          name: ArenaVector
+          prefix: '[[nodiscard]] const'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: AstNode
+              ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Ctor
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] MethodDefinition *Ctor() noexcept'
+        return_type:
+          name: MethodDefinition
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Implements
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const ArenaVector<ir::TSClassImplements *>
+          &Implements() const noexcept'
+        return_type:
+          name: ArenaVector
+          prefix: '[[nodiscard]] const'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: TSClassImplements
+              namespace: ir
+              ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: TypeParams
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const ir::TSTypeParameterDeclaration *TypeParams()
+          const noexcept'
+        return_type:
+          name: TSTypeParameterDeclaration
+          namespace: ir
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: TypeParams
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] ir::TSTypeParameterDeclaration *TypeParams()
+          noexcept'
+        return_type:
+          name: TSTypeParameterDeclaration
+          namespace: ir
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: SuperTypeParams
+        postfix: const
+        raw_declaration: const TSTypeParameterInstantiation *SuperTypeParams() const
+        return_type:
+          name: TSTypeParameterInstantiation
+          prefix: const
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: SuperTypeParams
+        raw_declaration: TSTypeParameterInstantiation *SuperTypeParams()
+        return_type:
+          name: TSTypeParameterInstantiation
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: superTypeParams
+          type:
+            name: TSTypeParameterInstantiation
+            ptr_depth: 1
+        name: SetSuperTypeParams
+        raw_declaration: void SetSuperTypeParams(TSTypeParameterInstantiation *superTypeParams)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: LocalTypeCounter
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] static int LocalTypeCounter() noexcept'
+        return_type:
+          name: int
+          prefix: '[[nodiscard]] static'
+      - additional_attributes: get
+        args: []
+        name: LocalIndex
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] int LocalIndex() const noexcept'
+        return_type:
+          name: int
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: FunctionalReferenceReferencedMethod
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] MethodDefinition *FunctionalReferenceReferencedMethod()
+          const noexcept'
+        return_type:
+          name: MethodDefinition
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: functionalReferenceReferencedMethod
+          type:
+            name: MethodDefinition
+            ptr_depth: 1
+        name: SetFunctionalReferenceReferencedMethod
+        raw_declaration: void SetFunctionalReferenceReferencedMethod(MethodDefinition
+          *functionalReferenceReferencedMethod)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: LocalPrefix
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const std::string &LocalPrefix() const noexcept'
+        return_type:
+          name: string
+          namespace: std
+          prefix: '[[nodiscard]] const'
+          ref_depth: 1
+      - args:
+        - name: var
+          type:
+            name: Variable
+            namespace: varbinder
+            ptr_depth: 1
+        name: CaptureVariable
+        raw_declaration: bool CaptureVariable(varbinder::Variable *var)
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - name: var
+          type:
+            name: Variable
+            namespace: varbinder
+            ptr_depth: 1
+        name: AddToLocalVariableIsNeeded
+        raw_declaration: bool AddToLocalVariableIsNeeded(varbinder::Variable *var)
+        return_type:
+          name: bool
+      - args:
+        - name: var
+          type:
+            name: Variable
+            namespace: varbinder
+            ptr_depth: 1
+        name: IsLocalVariableNeeded
+        postfix: const
+        raw_declaration: bool IsLocalVariableNeeded(varbinder::Variable *var) const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args: []
+        name: CapturedVariables
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const ArenaSet<varbinder::Variable *> &CapturedVariables()
+          const noexcept'
+        return_type:
+          name: ArenaSet
+          prefix: '[[nodiscard]] const'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: Variable
+              namespace: varbinder
+              ptr_depth: 1
+      - args:
+        - name: var
+          type:
+            name: Variable
+            namespace: varbinder
+            ptr_depth: 1
+        name: EraseCapturedVariable
+        raw_declaration: bool EraseCapturedVariable(varbinder::Variable *var)
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args: []
+        name: OrigEnumDecl
+        postfix: const
+        raw_declaration: ir::TSEnumDeclaration *OrigEnumDecl() const
+        return_type:
+          name: TSEnumDeclaration
+          namespace: ir
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: GetAnonClass
+        postfix: noexcept
+        raw_declaration: ClassDeclaration *GetAnonClass() noexcept
+        return_type:
+          name: ClassDeclaration
+          ptr_depth: 1
+      - args: []
+        name: Ctor
+        postfix: const
+        raw_declaration: const FunctionExpression *Ctor() const
+        return_type:
+          name: FunctionExpression
+          prefix: const
+          ptr_depth: 1
+      - args: []
+        name: HasPrivateMethod
+        postfix: const
+        raw_declaration: bool HasPrivateMethod() const
+        return_type:
+          name: bool
+      - args: []
+        name: HasNativeMethod
+        postfix: const
+        raw_declaration: bool HasNativeMethod() const
+        return_type:
+          name: bool
+      - args: []
+        name: HasComputedInstanceField
+        postfix: const
+        raw_declaration: bool HasComputedInstanceField() const
+        return_type:
+          name: bool
+      - args:
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        name: HasMatchingPrivateKey
+        postfix: const
+        raw_declaration: bool HasMatchingPrivateKey(const util::StringView &name)
+          const
+        return_type:
+          name: bool
+      - args:
+        - name: cb
+          type:
+            name: NodeTransformer
+            prefix: const
+            ref_depth: 1
+        - name: transformationName
+          type:
+            name: string_view
+            namespace: std
+        name: TransformBase
+        raw_declaration: void TransformBase(const NodeTransformer &cb, std::string_view
+          transformationName)
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: NodeTransformer
+            prefix: const
+            ref_depth: 1
+        - name: transformationName
+          type:
+            name: string_view
+            namespace: std
+        name: TransformChildren
+        postfix: override
+        raw_declaration: void TransformChildren(const NodeTransformer &cb, std::string_view
+          transformationName) override
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: NodeTraverser
+            prefix: const
+            ref_depth: 1
+        name: Iterate
+        postfix: const override
+        raw_declaration: void Iterate(const NodeTraverser &cb) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: AstDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::AstDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: SrcDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::SrcDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: pg
+          type:
+            name: PandaGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::PandaGen *pg) const override
+        return_type:
+          name: void
+      - args:
+        - name: etsg
+          type:
+            name: ETSGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::ETSGen *etsg) const override
+        return_type:
+          name: void
+      - args:
+        - name: checker
+          type:
+            name: TSChecker
+            namespace: checker
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::Type *Check(checker::TSChecker *checker) override
+        return_type:
+          name: Type
+          namespace: checker
+          ptr_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            namespace: checker
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::VerifiedType Check(checker::ETSChecker *checker)
+          override
+        return_type:
+          name: VerifiedType
+          namespace: checker
+      - args:
+        - name: v
+          type:
+            name: ASTVisitorT
+            ptr_depth: 1
+        name: Accept
+        postfix: override
+        raw_declaration: void Accept(ASTVisitorT *v) override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: SrcDumper
+            namespace: ir
+            ptr_depth: 1
+        - name: prefix
+          type:
+            name: string
+            namespace: std
+            prefix: const
+            ref_depth: 1
+        - name: items
+          type:
+            name: ArenaVector
+            prefix: const
+            ref_depth: 1
+            template_args:
+            - type:
+                name: T
+                ptr_depth: 1
+        name: DumpItems
+        raw_declaration: static void DumpItems(ir::SrcDumper *dumper, const std::string
+          &prefix, const ArenaVector<T *> &items)
+        return_type:
+          name: void
+          prefix: static
+        template: typename T
+      - args: []
+        name: CleanUp
+        postfix: override
+        raw_declaration: void CleanUp() override
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: cls
+          type:
+            name: ClassDeclaration
+            namespace: ir
+            prefix: const
+            ptr_depth: 1
+        name: AddToExportedClasses
+        raw_declaration: void AddToExportedClasses(const ir::ClassDeclaration *cls)
+        return_type:
+          name: void
+      - args:
+        - name: classes
+          type:
+            name: ArenaVector
+            other_modifiers: const
+            prefix: const
+            ref_depth: 1
+            template_args:
+            - type:
+                name: ClassDeclaration
+                namespace: ir
+                prefix: const
+                ptr_depth: 1
+        name: BatchAddToExportedClasses
+        raw_declaration: void BatchAddToExportedClasses(const ArenaVector<const ir::ClassDeclaration
+          *> &classes)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: ExportedClasses
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const ArenaVector<const ir::ClassDeclaration
+          *> &ExportedClasses() const noexcept'
+        return_type:
+          name: ArenaVector
+          other_modifiers: const
+          prefix: '[[nodiscard]] const'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: ClassDeclaration
+              namespace: ir
+              prefix: const
+              ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: scope
+          type:
+            name: LocalScope
+            namespace: varbinder
+            ptr_depth: 1
+        name: SetScope
+        raw_declaration: void SetScope(varbinder::LocalScope *scope)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: modifiers
+          type:
+            name: ClassDefinitionModifiers
+        name: SetModifiers
+        raw_declaration: void SetModifiers(ClassDefinitionModifiers modifiers)
+        return_type:
+          name: void
+      - args:
+        - name: body
+          type:
+            name: AstNode
+            ptr_depth: 1
+        name: EmplaceBody
+        raw_declaration: void EmplaceBody(AstNode *body)
+        return_type:
+          name: void
+      - args: []
+        name: ClearBody
+        raw_declaration: void ClearBody()
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: body
+          type:
+            name: AstNode
+            ptr_depth: 1
+        - name: index
+          type:
+            name: size_t
+        name: SetValueBody
+        raw_declaration: void SetValueBody(AstNode *body, size_t index)
+        return_type:
+          name: void
+      - args: []
+        name: Body
+        raw_declaration: const ArenaVector<AstNode *> &Body()
+        return_type:
+          name: ArenaVector
+          prefix: const
+          ref_depth: 1
+          template_args:
+          - type:
+              name: AstNode
+              ptr_depth: 1
+      - args: []
+        name: BodyForUpdate
+        raw_declaration: '[[nodiscard]] ArenaVector<AstNode *> &BodyForUpdate()'
+        return_type:
+          name: ArenaVector
+          prefix: '[[nodiscard]]'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: AstNode
+              ptr_depth: 1
+      - args:
+        - name: implements
+          type:
+            name: TSClassImplements
+            ptr_depth: 1
+        name: EmplaceImplements
+        raw_declaration: void EmplaceImplements(TSClassImplements *implements)
+        return_type:
+          name: void
+      - args: []
+        name: ClearImplements
+        raw_declaration: void ClearImplements()
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: implements
+          type:
+            name: TSClassImplements
+            ptr_depth: 1
+        - name: index
+          type:
+            name: size_t
+        name: SetValueImplements
+        raw_declaration: void SetValueImplements(TSClassImplements *implements, size_t
+          index)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: implementsList
+          type:
+            name: ArenaVector
+            ref_depth: 2
+            template_args:
+            - type:
+                name: TSClassImplements
+                ptr_depth: 1
+        name: SetImplements
+        raw_declaration: void SetImplements(ArenaVector<TSClassImplements *> &&implementsList)
+        return_type:
+          name: void
+      - args: []
+        name: Implements
+        raw_declaration: const ArenaVector<TSClassImplements *> &Implements()
+        return_type:
+          name: ArenaVector
+          prefix: const
+          ref_depth: 1
+          template_args:
+          - type:
+              name: TSClassImplements
+              ptr_depth: 1
+      - args: []
+        name: ImplementsForUpdate
+        raw_declaration: ArenaVector<TSClassImplements *> &ImplementsForUpdate()
+        return_type:
+          name: ArenaVector
+          ref_depth: 1
+          template_args:
+          - type:
+              name: TSClassImplements
+              ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: ctor
+          type:
+            name: MethodDefinition
+            ptr_depth: 1
+        name: SetCtor
+        raw_declaration: void SetCtor(MethodDefinition *ctor)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: typeParams
+          type:
+            name: TSTypeParameterDeclaration
+            ptr_depth: 1
+        name: SetTypeParams
+        raw_declaration: void SetTypeParams(TSTypeParameterDeclaration *typeParams)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: origEnumDecl
+          type:
+            name: TSEnumDeclaration
+            ptr_depth: 1
+        name: SetOrigEnumDecl
+        raw_declaration: void SetOrigEnumDecl(TSEnumDeclaration *origEnumDecl)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: anonClass
+          type:
+            name: ClassDeclaration
+            ptr_depth: 1
+        name: SetAnonClass
+        raw_declaration: void SetAnonClass(ClassDeclaration *anonClass)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: internalName
+          type:
+            name: StringView
+            namespace: util
+        name: SetInternalName
+        raw_declaration: void SetInternalName(util::StringView internalName)
+        return_type:
+          name: void
+macros:
+- name: ES2PANDA_PARSER_INCLUDE_AST_CLASS_DEFINITION_H
+structs:
+- members: []
+  name: enumbitops::IsAllowedType<ark::es2panda::ir::ClassDefinitionModifiers>

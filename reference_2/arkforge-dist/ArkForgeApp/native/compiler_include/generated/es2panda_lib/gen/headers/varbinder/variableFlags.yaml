@@ -1,0 +1,245 @@
+enumbitops:
+  structs:
+  - members: []
+    name: IsAllowedType<ark::es2panda::varbinder::ResolveBindingOptions>
+  - members: []
+    name: IsAllowedType<ark::es2panda::varbinder::VariableFlags>
+  - members: []
+    name: IsAllowedType<ark::es2panda::varbinder::ScopeFlags>
+include:
+- <cstdint>
+- '"util/enumbitops.h"'
+macros:
+- name: ES2PANDA_COMPILER_SCOPES_VARIABLE_FLAGS_H
+varbinder:
+  enums:
+  - flag_unions:
+    - flags:
+      - VARIABLES
+      - STATIC_VARIABLES
+      name: ALL_VARIABLES
+    - flags:
+      - METHODS
+      - STATIC_METHODS
+      name: ALL_METHOD
+    - flags:
+      - DECLARATION
+      - STATIC_DECLARATION
+      name: ALL_DECLARATION
+    - flags:
+      - STATIC_VARIABLES
+      - STATIC_METHODS
+      - STATIC_DECLARATION
+      name: ALL_STATIC
+    - flags:
+      - VARIABLES
+      - METHODS
+      - DECLARATION
+      name: ALL_NON_STATIC
+    - flags:
+      - TYPE_ALIASES
+      name: LAST
+    flags:
+    - BINDINGS
+    - INTERFACES
+    - VARIABLES
+    - METHODS
+    - DECLARATION
+    - STATIC_VARIABLES
+    - STATIC_METHODS
+    - STATIC_DECLARATION
+    - TYPE_ALIASES
+    - ALL
+    kind: flags
+    name: ResolveBindingOptions
+    namespace: varbinder
+  - flags:
+    - NONE
+    - VAR
+    - LEXICAL
+    - FUNCTION
+    - MODULE
+    kind: simple
+    name: VariableKind
+    namespace: varbinder
+  - flag_unions:
+    - flags:
+      - HOIST
+      - VAR
+      name: HOIST_VAR
+    - flags:
+      - CLASS
+      - INTERFACE
+      name: CLASS_OR_INTERFACE
+    - flags:
+      - CLASS_OR_INTERFACE
+      - ENUM_LITERAL
+      name: CLASS_OR_INTERFACE_OR_ENUM
+    flags:
+    - NONE
+    - OPTIONAL
+    - PROPERTY
+    - METHOD
+    - TYPE_ALIAS
+    - INTERFACE
+    - ENUM_LITERAL
+    - READONLY
+    - COMPUTED
+    - COMPUTED_IDENT
+    - INFERRED_IN_PATTERN
+    - REST_ARG
+    - NUMERIC_NAME
+    - TYPE
+    - LOCAL_EXPORT
+    - TYPE_PARAMETER
+    - STATIC
+    - CLASS
+    - EXPLICIT_INIT_REQUIRED
+    - PUBLIC
+    - PROTECTED
+    - PRIVATE
+    - SYNTHETIC
+    - LOCAL
+    - LEXICAL
+    - LOOP_DECL
+    - PER_ITERATION
+    - LEXICAL_VAR
+    - HOIST
+    - VAR
+    - INITIALIZED
+    - LEXICAL_BOUND
+    - BUILTIN_TYPE
+    - CAPTURED_MODIFIED
+    - ANNOTATIONDECL
+    - ANNOTATIONUSAGE
+    - NAMESPACE
+    - INIT_IN_STATIC_BLOCK
+    - DYNAMIC
+    - OVERLOAD
+    - IMPORT_BINDING
+    kind: flags
+    name: VariableFlags
+    namespace: varbinder
+  - flags:
+    - INITIALIZED
+    - UNINITIALIZED
+    kind: simple
+    name: LetOrConstStatus
+    namespace: varbinder
+  - flag_unions:
+    - flags:
+      - DECL_SCOPE
+      - STATIC
+      name: STATIC_DECL_SCOPE
+    - flags:
+      - FIELD_SCOPE
+      - STATIC
+      name: STATIC_FIELD_SCOPE
+    - flags:
+      - METHOD_SCOPE
+      - STATIC
+      name: STATIC_METHOD_SCOPE
+    flags:
+    - NONE
+    - SET_LEXICAL_FUNCTION
+    - USE_ARGS
+    - USE_SUPER
+    - INNER_ARROW
+    - NO_REG_STORE
+    - DECL_SCOPE
+    - FIELD_SCOPE
+    - METHOD_SCOPE
+    - STATIC
+    - TYPE_ALIAS
+    - LOOP_SCOPE
+    kind: flags
+    name: ScopeFlags
+    namespace: varbinder
+  macros:
+  - arguments: _
+    name: DECLARATION_KINDS
+    values:
+    - - VAR
+      - VarDecl
+    - - LET
+      - LetDecl
+    - - CONST
+      - ConstDecl
+    - - LABEL
+      - LabelDecl
+    - - READONLY
+      - ReadonlyDecl
+    - - FUNC
+      - FunctionDecl
+    - - PARAM
+      - ParameterDecl
+    - - IMPORT
+      - ImportDecl
+    - - DYNAMIC_IMPORT
+      - DynamicImportDecl
+    - - EXPORT
+      - ExportDecl
+    - - ANNOTATIONDECL
+      - AnnotationDecl
+    - - ANNOTATIONUSAGE
+      - AnnotationUsage
+    - - TYPE_ALIAS
+      - TypeAliasDecl
+    - - NAMESPACE
+      - NameSpaceDecl
+    - - INTERFACE
+      - InterfaceDecl
+    - - ENUM_LITERAL
+      - EnumLiteralDecl
+    - - TYPE_PARAMETER
+      - TypeParameterDecl
+    - - PROPERTY
+      - PropertyDecl
+    - - CLASS
+      - ClassDecl
+    - - METHOD
+      - MethodDecl
+    - - ENUM
+      - EnumDecl
+  - arguments: _
+    name: SCOPE_TYPES
+    values:
+    - - PARAM
+      - ParamScope
+    - - CATCH_PARAM
+      - CatchParamScope
+    - - FUNCTION_PARAM
+      - FunctionParamScope
+    - - CATCH
+      - CatchScope
+    - - CLASS
+      - ClassScope
+    - - ANNOTATION
+      - AnnotationScope
+    - - ANNOTATIONPARAMSCOPE
+      - AnnotationParamScope
+    - - LOCAL
+      - LocalScope
+    - - LOOP
+      - LoopScope
+    - - LOOP_DECL
+      - LoopDeclarationScope
+    - - FUNCTION
+      - FunctionScope
+    - - GLOBAL
+      - GlobalScope
+    - - MODULE
+      - ModuleScope
+  - arguments: _
+    name: VARIABLE_TYPES
+    values:
+    - - LOCAL
+      - LocalVariable
+    - - GLOBAL
+      - GlobalVariable
+    - - MODULE
+      - ModuleVariable
+    - - ENUM
+      - EnumVariable
+  usings:
+  - name: ENUMBITOPS_OPERATORS

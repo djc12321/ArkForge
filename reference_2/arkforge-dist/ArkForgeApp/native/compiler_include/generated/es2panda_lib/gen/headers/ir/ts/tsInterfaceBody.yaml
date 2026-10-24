@@ -1,0 +1,208 @@
+include:
+- '"ir/expression.h"'
+ir:
+  class_definitions:
+  - extends: public Expression
+    known_macroses:
+    - NO_COPY_SEMANTIC(TSInterfaceBody);
+    - NO_MOVE_SEMANTIC(TSInterfaceBody);
+    name: TSInterfaceBody
+    private: {}
+    public:
+      constructors:
+      - args: []
+        name: TSInterfaceBody
+        postfix: = delete
+        raw_declaration: TSInterfaceBody() = delete
+      - args:
+        - name: body
+          type:
+            name: ArenaVector
+            ref_depth: 2
+            template_args:
+            - type:
+                name: AstNode
+                ptr_depth: 1
+        name: TSInterfaceBody
+        other_initializers:
+        - class_field: Expression
+          init_value: AstNodeType::TS_INTERFACE_BODY
+        - class_field: body_
+          init_value: std::move(body)
+        raw_declaration: explicit TSInterfaceBody(ArenaVector<AstNode *> &&body)
+        return_type:
+          prefix: explicit
+      destructors:
+      - args: []
+        name: ~TSInterfaceBody
+        postfix: override = default
+        raw_declaration: ~TSInterfaceBody() override = default
+      methods:
+      - additional_attributes: get
+        args: []
+        name: BodyPtr
+        raw_declaration: '[[nodiscard]] ArenaVector<AstNode *> *BodyPtr()'
+        return_type:
+          name: ArenaVector
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+          template_args:
+          - type:
+              name: AstNode
+              ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Body
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] ArenaVector<AstNode *> &Body() noexcept'
+        return_type:
+          name: ArenaVector
+          prefix: '[[nodiscard]]'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: AstNode
+              ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Body
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] ArenaVector<AstNode *> const &Body() const
+          noexcept'
+        return_type:
+          name: ArenaVector
+          other_modifiers: const
+          prefix: '[[nodiscard]]'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: AstNode
+              ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: statementList
+          type:
+            name: ArenaVector
+            ref_depth: 2
+            template_args:
+            - type:
+                name: AstNode
+                ptr_depth: 1
+        name: SetBody
+        raw_declaration: void SetBody(ArenaVector<AstNode *> &&statementList)
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: NodeTransformer
+            prefix: const
+            ref_depth: 1
+        - name: transformationName
+          type:
+            name: string_view
+            namespace: std
+        name: TransformChildren
+        postfix: override
+        raw_declaration: void TransformChildren(const NodeTransformer &cb, std::string_view
+          transformationName) override
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: NodeTraverser
+            prefix: const
+            ref_depth: 1
+        name: Iterate
+        postfix: const override
+        raw_declaration: void Iterate(const NodeTraverser &cb) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: AstDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::AstDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: SrcDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::SrcDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: pg
+          type:
+            name: PandaGen
+            namespace: compiler
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile([[maybe_unused]] compiler::PandaGen *pg) const
+          override
+        return_type:
+          name: void
+      - args:
+        - name: etsg
+          type:
+            name: ETSGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::ETSGen *etsg) const override
+        return_type:
+          name: void
+      - args:
+        - name: checker
+          type:
+            name: TSChecker
+            namespace: checker
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::Type *Check([[maybe_unused]] checker::TSChecker
+          *checker) override
+        return_type:
+          name: Type
+          namespace: checker
+          ptr_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            namespace: checker
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::VerifiedType Check([[maybe_unused]] checker::ETSChecker
+          *checker) override
+        return_type:
+          name: VerifiedType
+          namespace: checker
+      - args:
+        - name: v
+          type:
+            name: ASTVisitorT
+            ptr_depth: 1
+        name: Accept
+        postfix: override
+        raw_declaration: void Accept(ASTVisitorT *v) override
+        return_type:
+          name: void
+macros:
+- name: ES2PANDA_IR_TS_INTERFACE_BODY_H

@@ -1,0 +1,243 @@
+include:
+- '"ir/statements/loopStatement.h"'
+ir:
+  class_definitions:
+  - extends: public LoopStatement
+    name: ForInStatement
+    private: {}
+    public:
+      constructors:
+      - args:
+        - initializer_for: left_
+          name: left
+          type:
+            name: AstNode
+            ptr_depth: 1
+        - initializer_for: right_
+          name: right
+          type:
+            name: Expression
+            ptr_depth: 1
+        - initializer_for: body_
+          name: body
+          type:
+            name: Statement
+            ptr_depth: 1
+        name: ForInStatement
+        other_initializers:
+        - class_field: LoopStatement
+          init_value: AstNodeType::FOR_IN_STATEMENT
+        raw_declaration: explicit ForInStatement(AstNode *left, Expression *right,
+          Statement *body)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Left
+        raw_declaration: AstNode *Left()
+        return_type:
+          name: AstNode
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Left
+        postfix: const
+        raw_declaration: const AstNode *Left() const
+        return_type:
+          name: AstNode
+          prefix: const
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: left
+          type:
+            name: AstNode
+            ptr_depth: 1
+        name: SetLeft
+        raw_declaration: void SetLeft(AstNode *left)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Right
+        raw_declaration: Expression *Right()
+        return_type:
+          name: Expression
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Right
+        postfix: const
+        raw_declaration: const Expression *Right() const
+        return_type:
+          name: Expression
+          prefix: const
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: right
+          type:
+            name: Expression
+            ptr_depth: 1
+        name: SetRight
+        raw_declaration: void SetRight(Expression *right)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Body
+        raw_declaration: Statement *Body()
+        return_type:
+          name: Statement
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Body
+        postfix: const
+        raw_declaration: const Statement *Body() const
+        return_type:
+          name: Statement
+          prefix: const
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: body
+          type:
+            name: Statement
+            ptr_depth: 1
+        name: SetBody
+        raw_declaration: void SetBody(Statement *body)
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: NodeTransformer
+            prefix: const
+            ref_depth: 1
+        - name: transformationName
+          type:
+            name: string_view
+            namespace: std
+        name: TransformChildren
+        postfix: override
+        raw_declaration: void TransformChildren(const NodeTransformer &cb, std::string_view
+          transformationName) override
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: NodeTraverser
+            prefix: const
+            ref_depth: 1
+        name: Iterate
+        postfix: const override
+        raw_declaration: void Iterate(const NodeTraverser &cb) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: AstDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::AstDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: SrcDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::SrcDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: pg
+          type:
+            name: PandaGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::PandaGen *pg) const override
+        return_type:
+          name: void
+      - args:
+        - name: etsg
+          type:
+            name: ETSGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::ETSGen *etsg) const override
+        return_type:
+          name: void
+      - args:
+        - name: checker
+          type:
+            name: TSChecker
+            namespace: checker
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::Type *Check(checker::TSChecker *checker) override
+        return_type:
+          name: Type
+          namespace: checker
+          ptr_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            namespace: checker
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::VerifiedType Check(checker::ETSChecker *checker)
+          override
+        return_type:
+          name: VerifiedType
+          namespace: checker
+      - args:
+        - name: v
+          type:
+            name: ASTVisitorT
+            ptr_depth: 1
+        name: Accept
+        postfix: override
+        raw_declaration: void Accept(ASTVisitorT *v) override
+        return_type:
+          name: void
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: parent
+          type:
+            name: AstNode
+            ptr_depth: 1
+        name: Clone
+        postfix: override
+        raw_declaration: '[[nodiscard]] ForInStatement *Clone(ArenaAllocator *allocator,
+          AstNode *parent) override'
+        return_type:
+          name: ForInStatement
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+  class_forward_declaration:
+  - Expression
+macros:
+- name: ES2PANDA_IR_STATEMENT_FOR_IN_STATEMENT_H
+varbinder:
+  class_forward_declaration:
+  - LoopScope

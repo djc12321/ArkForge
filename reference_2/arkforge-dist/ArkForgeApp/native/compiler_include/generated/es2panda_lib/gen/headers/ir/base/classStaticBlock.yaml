@@ -1,0 +1,210 @@
+include:
+- '"ir/base/classElement.h"'
+ir:
+  class_definitions:
+  - extends: public ClassElement
+    name: ClassStaticBlock
+    private: {}
+    public:
+      constructors:
+      - args:
+        - name: value
+          type:
+            name: Expression
+            ptr_depth: 1
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: ClassStaticBlock
+        other_initializers:
+        - class_field: ClassElement
+          init_value: AstNodeType::CLASS_STATIC_BLOCK, nullptr, value, ModifierFlags::NONE,
+            allocator, false
+        raw_declaration: explicit ClassStaticBlock(Expression *value, [[maybe_unused]]
+          ArenaAllocator *allocator)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args:
+        - name: isStatic
+          type:
+            name: bool
+            prefix: '[[maybe_unused]]'
+        name: ToPrivateFieldKind
+        postfix: const override
+        raw_declaration: PrivateFieldKind ToPrivateFieldKind([[maybe_unused]] bool
+          isStatic) const override
+        return_type:
+          name: PrivateFieldKind
+      - args: []
+        name: Function
+        raw_declaration: ir::ScriptFunction *Function()
+        return_type:
+          name: ScriptFunction
+          namespace: ir
+          ptr_depth: 1
+      - args: []
+        name: Function
+        postfix: const
+        raw_declaration: const ir::ScriptFunction *Function() const
+        return_type:
+          name: ScriptFunction
+          namespace: ir
+          prefix: const
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: function
+          type:
+            name: ScriptFunction
+            namespace: ir
+            ptr_depth: 1
+        name: SetFunction
+        raw_declaration: void SetFunction(ir::ScriptFunction *function)
+        return_type:
+          name: void
+      - args: []
+        name: Name
+        postfix: const
+        raw_declaration: const util::StringView &Name() const
+        return_type:
+          name: StringView
+          namespace: util
+          prefix: const
+          ref_depth: 1
+      - args:
+        - name: cb
+          type:
+            name: NodeTransformer
+            prefix: const
+            ref_depth: 1
+        - name: transformationName
+          type:
+            name: string_view
+            namespace: std
+        name: TransformChildren
+        postfix: override
+        raw_declaration: void TransformChildren(const NodeTransformer &cb, std::string_view
+          transformationName) override
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: NodeTraverser
+            prefix: const
+            ref_depth: 1
+        name: Iterate
+        postfix: const override
+        raw_declaration: void Iterate(const NodeTraverser &cb) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: AstDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::AstDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: SrcDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::SrcDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: pg
+          type:
+            name: PandaGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::PandaGen *pg) const override
+        return_type:
+          name: void
+      - args:
+        - name: etsg
+          type:
+            name: ETSGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::ETSGen *etsg) const override
+        return_type:
+          name: void
+      - args:
+        - name: checker
+          type:
+            name: TSChecker
+            namespace: checker
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::Type *Check(checker::TSChecker *checker) override
+        return_type:
+          name: Type
+          namespace: checker
+          ptr_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            namespace: checker
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::VerifiedType Check(checker::ETSChecker *checker)
+          override
+        return_type:
+          name: VerifiedType
+          namespace: checker
+      - args:
+        - name: v
+          type:
+            name: ASTVisitorT
+            ptr_depth: 1
+        name: Accept
+        postfix: override
+        raw_declaration: void Accept(ASTVisitorT *v) override
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        name: Construct
+        postfix: override
+        raw_declaration: ClassStaticBlock *Construct(ArenaAllocator *allocator) override
+        return_type:
+          name: ClassStaticBlock
+          ptr_depth: 1
+      - args:
+        - name: other
+          type:
+            name: AstNode
+            ptr_depth: 1
+        name: CopyTo
+        postfix: const override
+        raw_declaration: void CopyTo(AstNode *other) const override
+        return_type:
+          name: void
+  class_forward_declaration:
+  - Expression
+macros:
+- name: ES2PANDA_PARSER_INCLUDE_AST_CLASS_STATIC_BLOCK_H

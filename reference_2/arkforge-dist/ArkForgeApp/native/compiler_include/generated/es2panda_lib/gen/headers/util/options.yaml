@@ -1,0 +1,345 @@
+include:
+- '"libarkbase/os/file.h"'
+- '"libarkbase/utils/logger.h"'
+- '"util/helpers.h"'
+- '"libarkbase/utils/pandargs.h"'
+- '"arktsconfig.h"'
+- '"es2panda.h"'
+- <exception>
+- <fstream>
+- <iostream>
+- <variant>
+macros:
+- name: ES2PANDA_UTIL_OPTIONS_H
+util:
+  class_definitions:
+  - extends: public gen::Options
+    known_macroses:
+    - NO_COPY_SEMANTIC(Options);
+    - NO_MOVE_SEMANTIC(Options);
+    name: Options
+    private: {}
+    public:
+      constructors:
+      - args:
+        - name: execPath
+          type:
+            name: string_view
+            namespace: std
+        - initializer_for: diagnosticEngine_
+          name: diagnosticEngine
+          type:
+            name: DiagnosticEngine
+            namespace: util
+            ref_depth: 1
+        name: Options
+        other_initializers:
+        - class_field: gen::Options
+          init_value: std::string(execPath)
+        raw_declaration: explicit Options(std::string_view execPath, util::DiagnosticEngine
+          &diagnosticEngine)
+        return_type:
+          prefix: explicit
+      destructors:
+      - args: []
+        name: ~Options
+        postfix: = default
+        raw_declaration: ~Options() = default
+      methods:
+      - args:
+        - name: args
+          type:
+            name: Span
+            other_modifiers: const
+            template_args:
+            - type:
+                name: char
+                other_modifiers: const
+                postfix: const
+                prefix: const
+                ptr_depth: 1
+        name: Parse
+        raw_declaration: bool Parse(Span<const char *const> args)
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args: []
+        name: GetExtension
+        postfix: const
+        raw_declaration: ScriptExtension GetExtension() const
+        return_type:
+          name: ScriptExtension
+      - additional_attributes: get
+        args: []
+        name: CStrParserInputContents
+        postfix: const
+        raw_declaration: std::pair<const char *, size_t> CStrParserInputContents()
+          const
+        return_type:
+          name: pair
+          namespace: std
+          other_modifiers: const
+          template_args:
+          - type:
+              name: char
+              prefix: const
+              ptr_depth: 1
+          - type:
+              name: size_t
+      - additional_attributes: get
+        args: []
+        name: ArkTSConfig
+        postfix: const
+        raw_declaration: const ArkTsConfig &ArkTSConfig() const
+        return_type:
+          name: ArkTsConfig
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: get
+        args: []
+        name: LogLevel
+        postfix: const
+        raw_declaration: Logger::Level LogLevel() const
+        return_type:
+          name: Level
+          namespace: Logger
+      - args: []
+        name: DetermineCompilationMode
+        raw_declaration: void DetermineCompilationMode()
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: GetCompilationMode
+        postfix: const
+        raw_declaration: CompilationMode GetCompilationMode() const
+        return_type:
+          name: CompilationMode
+      - args: []
+        name: InitForEval
+        raw_declaration: void InitForEval()
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: evalModeStr
+          type:
+            name: string_view
+            namespace: std
+        name: SetEvalMode
+        raw_declaration: void SetEvalMode(std::string_view evalModeStr)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: IsEval
+        postfix: const
+        raw_declaration: bool IsEval() const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args: []
+        name: IsDirectEval
+        postfix: const
+        raw_declaration: bool IsDirectEval() const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args: []
+        name: IsFunctionEval
+        postfix: const
+        raw_declaration: bool IsFunctionEval() const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args: []
+        name: SourceFileName
+        postfix: const
+        raw_declaration: std::string SourceFileName() const
+        return_type:
+          name: string
+          namespace: std
+      - additional_attributes: get
+        args: []
+        name: IsDynamic
+        postfix: const
+        raw_declaration: bool IsDynamic() const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args: []
+        name: GetAstVerifierWarnings
+        postfix: const
+        raw_declaration: const std::array<bool, gen::ast_verifier::COUNT> &GetAstVerifierWarnings()
+          const
+        return_type:
+          name: array
+          namespace: std
+          prefix: const
+          ref_depth: 1
+          template_args:
+          - type:
+              name: bool
+          - type:
+              name: COUNT
+              namespace: gen::ast_verifier
+      - additional_attributes: get
+        args: []
+        name: GetAstVerifierErrors
+        postfix: const
+        raw_declaration: const std::array<bool, gen::ast_verifier::COUNT> &GetAstVerifierErrors()
+          const
+        return_type:
+          name: array
+          namespace: std
+          prefix: const
+          ref_depth: 1
+          template_args:
+          - type:
+              name: bool
+          - type:
+              name: COUNT
+              namespace: gen::ast_verifier
+      - additional_attributes: get
+        args: []
+        name: GetSkipPhases
+        postfix: const
+        raw_declaration: const std::set<std::string> &GetSkipPhases() const
+        return_type:
+          name: set
+          namespace: std
+          prefix: const
+          ref_depth: 1
+          template_args:
+          - type:
+              name: string
+              namespace: std
+      - additional_attributes: get
+        args: []
+        name: GetDumpBeforePhases
+        postfix: const
+        raw_declaration: const std::set<std::string> &GetDumpBeforePhases() const
+        return_type:
+          name: set
+          namespace: std
+          prefix: const
+          ref_depth: 1
+          template_args:
+          - type:
+              name: string
+              namespace: std
+      - additional_attributes: get
+        args: []
+        name: GetDumpEtsSrcBeforePhases
+        postfix: const
+        raw_declaration: const std::set<std::string> &GetDumpEtsSrcBeforePhases()
+          const
+        return_type:
+          name: set
+          namespace: std
+          prefix: const
+          ref_depth: 1
+          template_args:
+          - type:
+              name: string
+              namespace: std
+      - additional_attributes: get
+        args: []
+        name: GetDumpAfterPhases
+        postfix: const
+        raw_declaration: const std::set<std::string> &GetDumpAfterPhases() const
+        return_type:
+          name: set
+          namespace: std
+          prefix: const
+          ref_depth: 1
+          template_args:
+          - type:
+              name: string
+              namespace: std
+      - additional_attributes: get
+        args: []
+        name: GetDumpEtsSrcAfterPhases
+        postfix: const
+        raw_declaration: const std::set<std::string> &GetDumpEtsSrcAfterPhases() const
+        return_type:
+          name: set
+          namespace: std
+          prefix: const
+          ref_depth: 1
+          template_args:
+          - type:
+              name: string
+              namespace: std
+      - additional_attributes: get
+        args: []
+        name: GetEtsWarningCollection
+        postfix: const
+        raw_declaration: const std::vector<ETSWarnings> &GetEtsWarningCollection()
+          const
+        return_type:
+          name: vector
+          namespace: std
+          prefix: const
+          ref_depth: 1
+          template_args:
+          - type:
+              name: ETSWarnings
+      - additional_attributes: get
+        args: []
+        name: IsAstVerifierBeforePhases
+        postfix: const
+        raw_declaration: bool IsAstVerifierBeforePhases() const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args: []
+        name: IsAstVerifierEachPhase
+        postfix: const
+        raw_declaration: bool IsAstVerifierEachPhase() const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args: []
+        name: IsAstVerifierAfterPhases
+        postfix: const
+        raw_declaration: bool IsAstVerifierAfterPhases() const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - name: phase
+          type:
+            name: string_view
+            namespace: std
+        name: HasVerifierPhase
+        postfix: const
+        raw_declaration: bool HasVerifierPhase(std::string_view phase) const
+        return_type:
+          name: bool
+  functions:
+  - additional_attributes: get
+    args:
+    - name: path
+      type:
+        name: T
+        other_modifiers: const
+        ref_depth: 1
+    name: BaseName
+    raw_declaration: T BaseName(T const &path)
+    return_type:
+      name: T
+    template: class T
+  usings:
+  - name: eval_mode
+    type:
+      name: eval_mode
+      namespace: gen
+  - name: extension
+    type:
+      name: extension
+      namespace: gen
+  - name: ets_warnings
+    type:
+      name: ets_warnings
+      namespace: gen

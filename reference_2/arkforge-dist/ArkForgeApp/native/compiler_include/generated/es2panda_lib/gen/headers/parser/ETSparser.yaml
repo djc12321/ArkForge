@@ -1,0 +1,653 @@
+include:
+- '"util/arktsconfig.h"'
+- '"util/importPathManager.h"'
+- '"innerSourceParser.h"'
+- '"TypedParser.h"'
+- '"ir/base/classDefinition.h"'
+- '"ir/module/importDeclaration.h"'
+- <utility>
+- '"parser/ETSparserTemplates.h"'
+ir:
+  class_forward_declaration:
+  - ETSPackageDeclaration
+macros:
+- name: ES2PANDA_PARSER_CORE_ETS_PARSER_H
+parser:
+  class_definitions:
+  - extends: public TypedParser
+    known_macroses:
+    - NO_COPY_SEMANTIC(ETSParser);
+    - NO_MOVE_SEMANTIC(ETSParser);
+    name: ETSParser
+    private: {}
+    public:
+      constructors:
+      - args:
+        - name: context
+          type:
+            name: Context
+            namespace: public_lib
+            ptr_depth: 1
+        - name: status
+          type:
+            name: ParserStatus
+        name: ETSParser
+        raw_declaration: ETSParser(public_lib::Context *context, ParserStatus status)
+      - args: []
+        name: ETSParser
+        postfix: = delete
+        raw_declaration: ETSParser() = delete
+      destructors:
+      - args: []
+        name: ~ETSParser
+        postfix: final = default
+        raw_declaration: ~ETSParser() final = default
+      fields:
+      - default_value: 'false'
+        name: STATIC_FALSE
+        template: typename
+        type:
+          name: bool
+          prefix: static constexpr
+      methods:
+      - args: []
+        name: GetGlobalProgram
+        postfix: const
+        raw_declaration: Program *GetGlobalProgram() const
+        return_type:
+          name: Program
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: GetImportPathManager
+        raw_declaration: util::ImportPathManager *GetImportPathManager()
+        return_type:
+          name: ImportPathManager
+          namespace: util
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: IsETSParser
+        postfix: const noexcept override
+        raw_declaration: bool IsETSParser() const noexcept override
+        return_type:
+          name: bool
+      - args:
+        - name: token
+          type:
+            name: Token
+            namespace: lexer
+            prefix: const
+            ref_depth: 1
+        name: IsValidIdentifierName
+        postfix: const noexcept override
+        raw_declaration: '[[nodiscard]] bool IsValidIdentifierName(const lexer::Token
+          &token) const noexcept override'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: set
+        args:
+        - name: directImportsFromMainSource
+          type:
+            name: vector
+            namespace: std
+            prefix: const
+            ref_depth: 1
+            template_args:
+            - type:
+                name: Program
+                ptr_depth: 1
+        name: AddDirectImportsToDirectExternalPrograms
+        postfix: const
+        raw_declaration: void AddDirectImportsToDirectExternalPrograms(const std::vector<Program
+          *> &directImportsFromMainSource) const
+        return_type:
+          name: void
+      - args:
+        - name: importSrc
+          type:
+            name: string
+            namespace: std
+            ref_depth: 2
+        name: IntroduceStdlibImportProgram
+        raw_declaration: Program *IntroduceStdlibImportProgram(std::string &&importSrc)
+        return_type:
+          name: Program
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: FormattingFileName
+        raw_declaration: std::string_view FormattingFileName()
+        return_type:
+          name: string_view
+          namespace: std
+      - args:
+        - name: sourceCode
+          type:
+            name: string_view
+            namespace: std
+            other_modifiers: const
+            postfix: const
+        name: CreateFormattedTypeAnnotation
+        raw_declaration: ir::TypeNode *CreateFormattedTypeAnnotation(std::string_view
+          const sourceCode)
+        return_type:
+          name: TypeNode
+          namespace: ir
+          ptr_depth: 1
+      - args:
+        - name: sourceCode
+          type:
+            name: string_view
+            namespace: std
+        - name: args
+          type:
+            name: vector
+            namespace: std
+            ref_depth: 1
+            template_args:
+            - type:
+                name: AstNode
+                namespace: ir
+                ptr_depth: 1
+        name: CreateFormattedTypeAnnotation
+        raw_declaration: ir::TypeNode *CreateFormattedTypeAnnotation(std::string_view
+          sourceCode, std::vector<ir::AstNode *> &args)
+        return_type:
+          name: TypeNode
+          namespace: ir
+          ptr_depth: 1
+      - args:
+        - name: sourceCode
+          type:
+            name: string_view
+            namespace: std
+        - default_value: ExpressionParseFlags::NO_OPTS
+          name: flags
+          type:
+            name: ExpressionParseFlags
+        name: CreateExpression
+        raw_declaration: "ir::Expression *CreateExpression(std::string_view sourceCode,\n\
+          \                                     ExpressionParseFlags flags = ExpressionParseFlags::NO_OPTS)"
+        return_type:
+          name: Expression
+          namespace: ir
+          ptr_depth: 1
+      - args:
+        - name: sourceCode
+          type:
+            name: string_view
+            namespace: std
+        - name: insertingNodes
+          type:
+            name: vector
+            namespace: std
+            ref_depth: 1
+            template_args:
+            - type:
+                name: AstNode
+                namespace: ir
+                ptr_depth: 1
+        name: CreateFormattedExpression
+        raw_declaration: ir::Expression *CreateFormattedExpression(std::string_view
+          sourceCode, std::vector<ir::AstNode *> &insertingNodes)
+        return_type:
+          name: Expression
+          namespace: ir
+          ptr_depth: 1
+      - args:
+        - name: sourceCode
+          type:
+            name: string_view
+            namespace: std
+            other_modifiers: const
+            postfix: const
+        - name: args
+          type:
+            name: ArenaVector
+            ref_depth: 1
+            template_args:
+            - type:
+                name: Expression
+                namespace: ir
+                ptr_depth: 1
+        name: CreateFormattedExpression
+        raw_declaration: ir::Expression *CreateFormattedExpression(std::string_view
+          const sourceCode, ArenaVector<ir::Expression *> &args)
+        return_type:
+          name: Expression
+          namespace: ir
+          ptr_depth: 1
+      - args:
+        - name: sourceCode
+          type:
+            name: string_view
+            namespace: std
+            other_modifiers: const
+            postfix: const
+        - name: args
+          type:
+            name: vector
+            namespace: std
+            ref_depth: 1
+            template_args:
+            - type:
+                name: Expression
+                namespace: ir
+                ptr_depth: 1
+        name: CreateFormattedExpression
+        raw_declaration: ir::Expression *CreateFormattedExpression(std::string_view
+          const sourceCode, std::vector<ir::Expression *> &args)
+        return_type:
+          name: Expression
+          namespace: ir
+          ptr_depth: 1
+      - args:
+        - name: sourceCode
+          type:
+            name: string_view
+            namespace: std
+        - name: insertingNodes
+          type:
+            name: vector
+            namespace: std
+            ref_depth: 1
+            template_args:
+            - type:
+                name: AstNode
+                namespace: ir
+                ptr_depth: 1
+        name: CreateFormattedStatement
+        raw_declaration: ir::Statement *CreateFormattedStatement(std::string_view
+          sourceCode, std::vector<ir::AstNode *> &insertingNodes)
+        return_type:
+          name: Statement
+          namespace: ir
+          ptr_depth: 1
+      - args:
+        - name: sourceCode
+          type:
+            name: string_view
+            namespace: std
+        name: CreateStatements
+        raw_declaration: ArenaVector<ir::Statement *> CreateStatements(std::string_view
+          sourceCode)
+        return_type:
+          name: ArenaVector
+          template_args:
+          - type:
+              name: Statement
+              namespace: ir
+              ptr_depth: 1
+      - args:
+        - name: sourceCode
+          type:
+            name: string_view
+            namespace: std
+        - name: insertingNodes
+          type:
+            name: vector
+            namespace: std
+            ref_depth: 1
+            template_args:
+            - type:
+                name: AstNode
+                namespace: ir
+                ptr_depth: 1
+        name: CreateFormattedStatements
+        raw_declaration: "ArenaVector<ir::Statement *> CreateFormattedStatements(std::string_view\
+          \ sourceCode,\n                                                        \
+          \   std::vector<ir::AstNode *> &insertingNodes)"
+        return_type:
+          name: ArenaVector
+          template_args:
+          - type:
+              name: Statement
+              namespace: ir
+              ptr_depth: 1
+      - args:
+        - name: memberModifiers
+          type:
+            name: ModifierFlags
+            namespace: ir
+        name: ParseTopLevelAnnotation
+        raw_declaration: ir::Statement *ParseTopLevelAnnotation(ir::ModifierFlags
+          memberModifiers)
+        return_type:
+          name: Statement
+          namespace: ir
+          ptr_depth: 1
+      - args:
+        - name: isTopLevelSt
+          type:
+            name: bool
+        name: ParseAnnotations
+        raw_declaration: ArenaVector<ir::AnnotationUsage *> ParseAnnotations(bool
+          isTopLevelSt)
+        return_type:
+          name: ArenaVector
+          template_args:
+          - type:
+              name: AnnotationUsage
+              namespace: ir
+              ptr_depth: 1
+      - args:
+        - name: sourceCode
+          type:
+            name: string_view
+            namespace: std
+        - name: insertingNodes
+          type:
+            name: vector
+            namespace: std
+            ref_depth: 1
+            template_args:
+            - type:
+                name: AstNode
+                namespace: ir
+                ptr_depth: 1
+        - default_value: 'false'
+          name: allowStatic
+          type:
+            name: bool
+        name: CreateFormattedClassDeclaration
+        raw_declaration: "ir::Statement *CreateFormattedClassDeclaration(std::string_view\
+          \ sourceCode,\n                                                   std::vector<ir::AstNode\
+          \ *> &insertingNodes,\n                                                \
+          \   bool allowStatic = false)"
+        return_type:
+          name: Statement
+          namespace: ir
+          ptr_depth: 1
+      - args:
+        - name: sourceCode
+          type:
+            name: string_view
+            namespace: std
+        - name: insertingNodes
+          type:
+            name: vector
+            namespace: std
+            ref_depth: 1
+            template_args:
+            - type:
+                name: AstNode
+                namespace: ir
+                ptr_depth: 1
+        - name: properties
+          type:
+            name: ArenaVector
+            prefix: const
+            ref_depth: 1
+            template_args:
+            - type:
+                name: AstNode
+                namespace: ir
+                ptr_depth: 1
+        - name: modifiers
+          type:
+            name: ClassDefinitionModifiers
+            namespace: ir
+        name: CreateFormattedClassElement
+        raw_declaration: "ir::AstNode *CreateFormattedClassElement(std::string_view\
+          \ sourceCode, std::vector<ir::AstNode *> &insertingNodes,\n            \
+          \                                 const ArenaVector<ir::AstNode *> &properties,\n\
+          \                                             ir::ClassDefinitionModifiers\
+          \ modifiers)"
+        return_type:
+          name: AstNode
+          namespace: ir
+          ptr_depth: 1
+      - args:
+        - name: sourceCode
+          type:
+            name: string_view
+            namespace: std
+        - name: insertingNodes
+          type:
+            name: vector
+            namespace: std
+            ref_depth: 1
+            template_args:
+            - type:
+                name: AstNode
+                namespace: ir
+                ptr_depth: 1
+        name: CreateFormattedClassFieldDefinition
+        raw_declaration: "ir::AstNode *CreateFormattedClassFieldDefinition(std::string_view\
+          \ sourceCode,\n                                                     std::vector<ir::AstNode\
+          \ *> &insertingNodes)"
+        return_type:
+          name: AstNode
+          namespace: ir
+          ptr_depth: 1
+      - args:
+        - name: sourceCode
+          type:
+            name: string_view
+            namespace: std
+        - name: insertingNodes
+          type:
+            name: vector
+            namespace: std
+            ref_depth: 1
+            template_args:
+            - type:
+                name: AstNode
+                namespace: ir
+                ptr_depth: 1
+        name: CreateFormattedClassMethodDefinition
+        raw_declaration: "ir::AstNode *CreateFormattedClassMethodDefinition(std::string_view\
+          \ sourceCode,\n                                                      std::vector<ir::AstNode\
+          \ *> &insertingNodes)"
+        return_type:
+          name: AstNode
+          namespace: ir
+          ptr_depth: 1
+      - args:
+        - name: sourceCode
+          type:
+            name: string_view
+            namespace: std
+        - name: insertingNodes
+          type:
+            name: vector
+            namespace: std
+            ref_depth: 1
+            template_args:
+            - type:
+                name: AstNode
+                namespace: ir
+                ptr_depth: 1
+        name: CreateFormattedTopLevelStatement
+        raw_declaration: "ir::Statement *CreateFormattedTopLevelStatement(std::string_view\
+          \ sourceCode,\n                                                    std::vector<ir::AstNode\
+          \ *> &insertingNodes)"
+        return_type:
+          name: Statement
+          namespace: ir
+          ptr_depth: 1
+      - args:
+        - name: node
+          type:
+            name: AstNode
+            namespace: ir
+            ptr_depth: 1
+        - name: annotations
+          type:
+            name: ArenaVector
+            ref_depth: 2
+            template_args:
+            - type:
+                name: AnnotationUsage
+                namespace: ir
+                ptr_depth: 1
+        - name: pos
+          type:
+            name: SourcePosition
+            namespace: lexer
+        - default_value: TypeAnnotationParsingOptions::NO_OPTS
+          name: options
+          type:
+            name: TypeAnnotationParsingOptions
+        name: ApplyAnnotationsToNode
+        raw_declaration: "void ApplyAnnotationsToNode(ir::AstNode *node, ArenaVector<ir::AnnotationUsage\
+          \ *> &&annotations,\n                                lexer::SourcePosition\
+          \ pos,\n                                TypeAnnotationParsingOptions options\
+          \ = TypeAnnotationParsingOptions::NO_OPTS)"
+        return_type:
+          name: void
+      - args: []
+        name: IsInitializerBlockStart
+        postfix: const
+        raw_declaration: '[[nodiscard]] bool IsInitializerBlockStart() const'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - args:
+        - name: importKind
+          type:
+            name: ImportKinds
+            namespace: ir
+        - name: specifiers
+          type:
+            name: ArenaVector
+            ref_depth: 2
+            template_args:
+            - type:
+                name: AstNode
+                namespace: ir
+                ptr_depth: 1
+        - name: pathToResolve
+          type:
+            name: StringLiteral
+            namespace: ir
+            ptr_depth: 1
+        - name: program
+          type:
+            name: Program
+            namespace: parser
+            ptr_depth: 1
+        name: BuildImportDeclaration
+        raw_declaration: "ir::ETSImportDeclaration *BuildImportDeclaration(ir::ImportKinds\
+          \ importKind,\n                                                     ArenaVector<ir::AstNode\
+          \ *> &&specifiers,\n                                                   \
+          \  ir::StringLiteral *pathToResolve, parser::Program *program)"
+        return_type:
+          name: ETSImportDeclaration
+          namespace: ir
+          ptr_depth: 1
+      - args: []
+        name: ParseSources
+        raw_declaration: void ParseSources()
+        return_type:
+          name: void
+      - args: []
+        name: ParseInSimultMode
+        raw_declaration: void ParseInSimultMode()
+        return_type:
+          name: void
+      - args: []
+        name: IncrementalParse
+        raw_declaration: void IncrementalParse()
+        return_type:
+          name: void
+  - known_macroses:
+    - NO_COPY_SEMANTIC(ExternalSourceParser);
+    - NO_MOVE_SEMANTIC(ExternalSourceParser);
+    name: ExternalSourceParser
+    private: {}
+    public:
+      constructors:
+      - args:
+        - name: parser
+          type:
+            name: ETSParser
+            ptr_depth: 1
+        - name: newProgram
+          type:
+            name: Program
+            ptr_depth: 1
+        name: ExternalSourceParser
+        raw_declaration: explicit ExternalSourceParser(ETSParser *parser, Program
+          *newProgram)
+        return_type:
+          prefix: explicit
+      destructors:
+      - args: []
+        name: ~ExternalSourceParser
+        raw_declaration: ~ExternalSourceParser()
+  - known_macroses:
+    - NO_COPY_SEMANTIC(SavedFormattingFileName);
+    - NO_MOVE_SEMANTIC(SavedFormattingFileName);
+    name: SavedFormattingFileName
+    private: {}
+    public:
+      constructors:
+      - args:
+        - initializer_for: parser_
+          name: parser
+          type:
+            name: ETSParser
+            ptr_depth: 1
+        - name: fname
+          type:
+            name: string_view
+            namespace: std
+        name: SavedFormattingFileName
+        other_initializers:
+        - class_field: savedFname_
+          init_value: parser->FormattingFileName()
+        raw_declaration: SavedFormattingFileName(ETSParser *parser, std::string_view
+          fname)
+      destructors:
+      - args: []
+        name: ~SavedFormattingFileName
+        raw_declaration: ~SavedFormattingFileName()
+  structs:
+  - members:
+    - name: result
+      type:
+        name: ArenaVector
+        template_args:
+        - type:
+            name: ImportSpecifier
+            namespace: ir
+            ptr_depth: 1
+    - name: resultDefault
+      type:
+        name: ArenaVector
+        template_args:
+        - type:
+            name: ImportDefaultSpecifier
+            namespace: ir
+            ptr_depth: 1
+    - name: resultExportDefault
+      type:
+        name: ArenaVector
+        template_args:
+        - type:
+            name: ExportSpecifier
+            namespace: ir
+            ptr_depth: 1
+    - default_constructor: ''
+      name: rightBackPos
+      type:
+        name: SourcePosition
+        namespace: lexer
+    name: SpecifiersInfo
+  - members:
+    - name: openParens
+      type:
+        name: size_t
+    - name: openBraces
+      type:
+        name: size_t
+    - name: openBrackets
+      type:
+        name: size_t
+    - name: expectIdentifier
+      type:
+        name: bool
+    name: ArrowParamState

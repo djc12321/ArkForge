@@ -1,0 +1,33 @@
+# Local build state and installed dependencies
+**/build/
+**/.cxx/
+**/.hvigor/
+**/.idea/
+**/oh_modules/
+**/node_modules/
+**/__pycache__/
+**/.workbench-build/
+**/.workbench-tools/
+**/.checker-bundle-probe/
+# Personal signing materials and credentials
+**/.env
+**/.env.*
+*.p12
+*.pfx
+*.p7b
+*.cer
+*.jks
+*.keystore
+local.properties
+# Local evidence and diagnostics
+*.log
+*.jsonl
+*.pyc
+.repro/
+evidence/
+backups/
+# Release packages belong in GitHub Releases; rawfile HAP fixtures are build inputs
+*.hap
+!**/src/main/resources/rawfile/backend/*.hap
+# Upstream workbench source is restored at the pinned revision when needed
+/_vendor/vscode/

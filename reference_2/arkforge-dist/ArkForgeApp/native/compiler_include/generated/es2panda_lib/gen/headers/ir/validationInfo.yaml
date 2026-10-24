@@ -1,0 +1,49 @@
+include:
+- '"lexer/token/sourceLocation.h"'
+- '"util/ustring.h"'
+ir:
+  class_definitions:
+  - name: ValidationInfo
+    public:
+      constructors:
+      - args: []
+        name: ValidationInfo
+        postfix: noexcept = default
+        raw_declaration: ValidationInfo() noexcept = default
+      - args:
+        - initializer_for: msg
+          name: m
+          type:
+            name: StringView
+            namespace: util
+        - initializer_for: pos
+          name: p
+          type:
+            name: SourcePosition
+            namespace: lexer
+        name: ValidationInfo
+        postfix: noexcept
+        raw_declaration: ValidationInfo(util::StringView m, lexer::SourcePosition
+          p) noexcept
+      fields:
+      - default_constructor: ''
+        name: msg
+        type:
+          name: StringView
+          namespace: util
+      - default_constructor: ''
+        name: pos
+        type:
+          name: SourcePosition
+          namespace: lexer
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Fail
+        postfix: const
+        raw_declaration: inline bool Fail() const
+        return_type:
+          name: bool
+          prefix: inline
+macros:
+- name: ES2PANDA_IR_VALIDATION_INFO_H

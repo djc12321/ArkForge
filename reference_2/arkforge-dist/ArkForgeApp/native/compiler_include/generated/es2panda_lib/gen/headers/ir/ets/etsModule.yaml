@@ -1,0 +1,265 @@
+include:
+- '"ir/statements/blockStatement.h"'
+- '"ir/annotationAllowed.h"'
+- '"ir/expressions/identifier.h"'
+- '"ir/srcDump.h"'
+ir:
+  class_definitions:
+  - extends: public AnnotationAllowed<BlockStatement>
+    name: ETSModule
+    private: {}
+    public:
+      constructors:
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: statementList
+          type:
+            name: ArenaVector
+            ref_depth: 2
+            template_args:
+            - type:
+                name: Statement
+                ptr_depth: 1
+        - initializer_for: ident_
+          name: ident
+          type:
+            name: Identifier
+            ptr_depth: 1
+        - initializer_for: flag_
+          name: flag
+          type:
+            name: ModuleFlag
+        - initializer_for: lang_
+          name: lang
+          type:
+            name: Language
+        - initializer_for: program_
+          name: program
+          type:
+            name: Program
+            namespace: parser
+            ptr_depth: 1
+        name: ETSModule
+        other_initializers:
+        - class_field: AnnotationAllowed<BlockStatement>
+          init_value: allocator, std::move(statementList)
+        raw_declaration: "explicit ETSModule(ArenaAllocator *allocator, ArenaVector<Statement\
+          \ *> &&statementList, Identifier *ident,\n                       ModuleFlag\
+          \ flag, Language lang, parser::Program *program)"
+        return_type:
+          prefix: explicit
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: statementList
+          type:
+            name: ArenaVector
+            ref_depth: 2
+            template_args:
+            - type:
+                name: Statement
+                ptr_depth: 1
+        - initializer_for: ident_
+          name: ident
+          type:
+            name: Identifier
+            ptr_depth: 1
+        - initializer_for: flag_
+          name: flag
+          type:
+            name: ModuleFlag
+        - initializer_for: lang_
+          name: lang
+          type:
+            name: Language
+        - initializer_for: program_
+          name: program
+          type:
+            name: Program
+            namespace: parser
+            ptr_depth: 1
+        - name: history
+          type:
+            name: AstNodeHistory
+            ptr_depth: 1
+        name: ETSModule
+        other_initializers:
+        - class_field: AnnotationAllowed<BlockStatement>
+          init_value: allocator, std::move(statementList)
+        raw_declaration: "explicit ETSModule(ArenaAllocator *allocator, ArenaVector<Statement\
+          \ *> &&statementList, Identifier *ident,\n                       ModuleFlag\
+          \ flag, Language lang, parser::Program *program, AstNodeHistory *history)"
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Ident
+        raw_declaration: ir::Identifier *Ident()
+        return_type:
+          name: Identifier
+          namespace: ir
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Ident
+        postfix: const
+        raw_declaration: const ir::Identifier *Ident() const
+        return_type:
+          name: Identifier
+          namespace: ir
+          prefix: const
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: ident
+          type:
+            name: Identifier
+            namespace: ir
+            ptr_depth: 1
+        name: SetIdent
+        raw_declaration: void SetIdent(ir::Identifier *ident)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Program
+        raw_declaration: parser::Program *Program()
+        return_type:
+          name: Program
+          namespace: parser
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: GlobalClass
+        postfix: const
+        raw_declaration: const ir::ClassDefinition *GlobalClass() const
+        return_type:
+          name: ClassDefinition
+          namespace: ir
+          prefix: const
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Language
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] es2panda::Language Language() const noexcept'
+        return_type:
+          name: Language
+          namespace: es2panda
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: GlobalClass
+        raw_declaration: ir::ClassDefinition *GlobalClass()
+        return_type:
+          name: ClassDefinition
+          namespace: ir
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: globalClass
+          type:
+            name: ClassDefinition
+            namespace: ir
+            ptr_depth: 1
+        name: SetGlobalClass
+        raw_declaration: void SetGlobalClass(ir::ClassDefinition *globalClass)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: IsETSScript
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsETSScript() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsNamespace
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsNamespace() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsNamespaceChainLastNode
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsNamespaceChainLastNode() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: set
+        args: []
+        name: SetNamespaceChainLastNode
+        postfix: noexcept
+        raw_declaration: void SetNamespaceChainLastNode() noexcept
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Program
+        postfix: const
+        raw_declaration: const parser::Program *Program() const
+        return_type:
+          name: Program
+          namespace: parser
+          prefix: const
+          ptr_depth: 1
+      - args:
+        - name: dumper
+          type:
+            name: SrcDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::SrcDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: v
+          type:
+            name: ASTVisitorT
+            ptr_depth: 1
+        name: Accept
+        postfix: override
+        raw_declaration: void Accept(ASTVisitorT *v) override
+        return_type:
+          name: void
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        name: Construct
+        postfix: override
+        raw_declaration: ETSModule *Construct(ArenaAllocator *allocator) override
+        return_type:
+          name: ETSModule
+          ptr_depth: 1
+      - args:
+        - name: other
+          type:
+            name: AstNode
+            ptr_depth: 1
+        name: CopyTo
+        postfix: const override
+        raw_declaration: void CopyTo(AstNode *other) const override
+        return_type:
+          name: void
+macros:
+- name: ES2PANDA_IR_ETS_MODULE_H
+parser:
+  class_forward_declaration:
+  - Program
+structs:
+- members: []
+  name: enumbitops::IsAllowedType<ark::es2panda::ir::ModuleFlag>

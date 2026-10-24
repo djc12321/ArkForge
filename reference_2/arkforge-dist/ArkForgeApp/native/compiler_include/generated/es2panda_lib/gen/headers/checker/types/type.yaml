@@ -1,0 +1,807 @@
+checker:
+  class_definitions:
+  - known_macroses:
+    - NO_COPY_SEMANTIC(Type);
+    - NO_MOVE_SEMANTIC(Type);
+    - TYPE_MAPPING(TYPE_IS_CHECKS)
+    - TYPE_MAPPING(TYPE_AS_CASTS)
+    macros:
+    - arguments: typeFlag, typeName
+      name: TYPE_IS_CHECKS
+    - arguments: typeFlag, typeName
+      name: TYPE_AS_CASTS
+    name: Type
+    protected: {}
+    public:
+      constructors:
+      - args:
+        - initializer_for: typeFlags_
+          name: flag
+          type:
+            name: TypeFlag
+        name: Type
+        raw_declaration: explicit Type(TypeFlag flag)
+        return_type:
+          prefix: explicit
+      destructors:
+      - args: []
+        name: ~Type
+        postfix: = default
+        raw_declaration: virtual ~Type() = default
+        return_type:
+          prefix: virtual
+      methods:
+      - args: []
+        name: IsETSResizableArrayType
+        postfix: const
+        raw_declaration: bool IsETSResizableArrayType() const
+        return_type:
+          name: bool
+      - args: []
+        name: IsETSReadonlyArrayType
+        postfix: const
+        raw_declaration: bool IsETSReadonlyArrayType() const
+        return_type:
+          name: bool
+      - args: []
+        name: IsETSStringType
+        postfix: const
+        raw_declaration: bool IsETSStringType() const
+        return_type:
+          name: bool
+      - args:
+        - name: target
+          type:
+            name: Type
+            prefix: const
+            ptr_depth: 1
+        - name: source
+          type:
+            name: Type
+            prefix: const
+            ptr_depth: 1
+        name: IsReadonlyArrayOrTupleMismatch
+        raw_declaration: static bool IsReadonlyArrayOrTupleMismatch(const Type *target,
+          const Type *source)
+        return_type:
+          name: bool
+          prefix: static
+      - args: []
+        name: IsETSCharType
+        postfix: const
+        raw_declaration: bool IsETSCharType() const
+        return_type:
+          name: bool
+      - args: []
+        name: IsETSBigIntType
+        postfix: const
+        raw_declaration: bool IsETSBigIntType() const
+        return_type:
+          name: bool
+      - args: []
+        name: IsETSArrowType
+        postfix: const
+        raw_declaration: bool IsETSArrowType() const
+        return_type:
+          name: bool
+      - args: []
+        name: IsETSMethodType
+        postfix: const
+        raw_declaration: bool IsETSMethodType() const
+        return_type:
+          name: bool
+      - args: []
+        name: IsETSRelaxedAnyType
+        postfix: const
+        raw_declaration: bool IsETSRelaxedAnyType() const
+        return_type:
+          name: bool
+      - args: []
+        name: IsETSPrimitiveType
+        postfix: const
+        raw_declaration: bool IsETSPrimitiveType() const
+        return_type:
+          name: bool
+      - args: []
+        name: IsETSReferenceType
+        postfix: const
+        raw_declaration: bool IsETSReferenceType() const
+        return_type:
+          name: bool
+      - args: []
+        name: IsETSUnboxableObject
+        postfix: const
+        raw_declaration: bool IsETSUnboxableObject() const
+        return_type:
+          name: bool
+      - args: []
+        name: PossiblyETSNull
+        postfix: const
+        raw_declaration: bool PossiblyETSNull() const
+        return_type:
+          name: bool
+      - args: []
+        name: PossiblyETSUndefined
+        postfix: const
+        raw_declaration: bool PossiblyETSUndefined() const
+        return_type:
+          name: bool
+      - args: []
+        name: PossiblyETSNullish
+        postfix: const
+        raw_declaration: bool PossiblyETSNullish() const
+        return_type:
+          name: bool
+      - args: []
+        name: DefinitelyETSNullish
+        postfix: const
+        raw_declaration: bool DefinitelyETSNullish() const
+        return_type:
+          name: bool
+      - args: []
+        name: DefinitelyNotETSNullish
+        postfix: const
+        raw_declaration: bool DefinitelyNotETSNullish() const
+        return_type:
+          name: bool
+      - args: []
+        name: PossiblyETSString
+        postfix: const
+        raw_declaration: bool PossiblyETSString() const
+        return_type:
+          name: bool
+      - args: []
+        name: PossiblyETSValueTyped
+        postfix: const
+        raw_declaration: bool PossiblyETSValueTyped() const
+        return_type:
+          name: bool
+      - args: []
+        name: PossiblyETSValueTypedExceptNullish
+        postfix: const
+        raw_declaration: bool PossiblyETSValueTypedExceptNullish() const
+        return_type:
+          name: bool
+      - args: []
+        name: PossiblyInForeignDomain
+        postfix: const
+        raw_declaration: bool PossiblyInForeignDomain() const
+        return_type:
+          name: bool
+      - args: []
+        name: AsETSStringType
+        raw_declaration: ETSStringType *AsETSStringType()
+        return_type:
+          name: ETSStringType
+          ptr_depth: 1
+      - args: []
+        name: AsETSStringType
+        postfix: const
+        raw_declaration: const ETSStringType *AsETSStringType() const
+        return_type:
+          name: ETSStringType
+          prefix: const
+          ptr_depth: 1
+      - args: []
+        name: AsETSBigIntType
+        postfix: const
+        raw_declaration: const ETSBigIntType *AsETSBigIntType() const
+        return_type:
+          name: ETSBigIntType
+          prefix: const
+          ptr_depth: 1
+      - args: []
+        name: AsETSResizableArrayType
+        raw_declaration: ETSResizableArrayType *AsETSResizableArrayType()
+        return_type:
+          name: ETSResizableArrayType
+          ptr_depth: 1
+      - args: []
+        name: AsETSResizableArrayType
+        postfix: const
+        raw_declaration: const ETSResizableArrayType *AsETSResizableArrayType() const
+        return_type:
+          name: ETSResizableArrayType
+          prefix: const
+          ptr_depth: 1
+      - args: []
+        name: IsBuiltinNumeric
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsBuiltinNumeric() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsConstantType
+        postfix: const
+        raw_declaration: bool IsConstantType() const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args: []
+        name: IsAnyETSArrayOrTupleType
+        postfix: const
+        raw_declaration: bool IsAnyETSArrayOrTupleType() const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args: []
+        name: TypeFlags
+        postfix: const
+        raw_declaration: TypeFlag TypeFlags() const
+        return_type:
+          name: TypeFlag
+      - additional_attributes: get
+        args:
+        - name: typeFlag
+          type:
+            name: TypeFlag
+        name: HasTypeFlag
+        postfix: const
+        raw_declaration: bool HasTypeFlag(TypeFlag typeFlag) const
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - name: typeFlag
+          type:
+            name: TypeFlag
+        name: AddTypeFlag
+        raw_declaration: void AddTypeFlag(TypeFlag typeFlag)
+        return_type:
+          name: void
+      - args:
+        - name: typeFlag
+          type:
+            name: TypeFlag
+        name: RemoveTypeFlag
+        raw_declaration: void RemoveTypeFlag(TypeFlag typeFlag)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Id
+        postfix: const
+        raw_declaration: uint32_t Id() const
+        return_type:
+          name: uint32_t
+      - additional_attributes: set
+        args:
+        - name: variable
+          type:
+            name: Variable
+            namespace: varbinder
+            ptr_depth: 1
+        name: SetVariable
+        raw_declaration: void SetVariable(varbinder::Variable *variable)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Variable
+        raw_declaration: varbinder::Variable *Variable()
+        return_type:
+          name: Variable
+          namespace: varbinder
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Variable
+        postfix: const
+        raw_declaration: const varbinder::Variable *Variable() const
+        return_type:
+          name: Variable
+          namespace: varbinder
+          prefix: const
+          ptr_depth: 1
+      - args: []
+        name: ToAssemblerName
+        postfix: const
+        raw_declaration: std::stringstream ToAssemblerName() const
+        return_type:
+          name: stringstream
+          namespace: std
+      - args: []
+        name: IsLambdaObject
+        postfix: const
+        raw_declaration: bool IsLambdaObject() const
+        return_type:
+          name: bool
+      - args:
+        - name: ss
+          type:
+            name: stringstream
+            namespace: std
+            ref_depth: 1
+        - name: precise
+          type:
+            name: bool
+        name: ToString
+        postfix: const = 0
+        raw_declaration: virtual void ToString(std::stringstream &ss, bool precise)
+          const = 0
+        return_type:
+          name: void
+          prefix: virtual
+      - args:
+        - name: ss
+          type:
+            name: stringstream
+            namespace: std
+            ref_depth: 1
+        name: ToString
+        postfix: const
+        raw_declaration: void ToString(std::stringstream &ss) const
+        return_type:
+          name: void
+      - args: []
+        name: ToString
+        postfix: const
+        raw_declaration: '[[nodiscard]] std::string ToString() const'
+        return_type:
+          name: string
+          namespace: std
+          prefix: '[[nodiscard]]'
+      - args: []
+        name: ToStringPrecise
+        postfix: const
+        raw_declaration: '[[nodiscard]] std::string ToStringPrecise() const'
+        return_type:
+          name: string
+          namespace: std
+          prefix: '[[nodiscard]]'
+      - args:
+        - name: ss
+          type:
+            name: stringstream
+            namespace: std
+            ref_depth: 1
+        name: ToStringAsSrc
+        postfix: const
+        raw_declaration: virtual void ToStringAsSrc(std::stringstream &ss) const
+        return_type:
+          name: void
+          prefix: virtual
+      - args: []
+        name: ToStringAsSrc
+        postfix: const
+        raw_declaration: std::string ToStringAsSrc() const
+        return_type:
+          name: string
+          namespace: std
+      - args: []
+        name: GetTypeFacts
+        postfix: const
+        raw_declaration: virtual TypeFacts GetTypeFacts() const
+        return_type:
+          name: TypeFacts
+          prefix: virtual
+      - args:
+        - name: ss
+          type:
+            name: stringstream
+            namespace: std
+            prefix: '[[maybe_unused]]'
+            ref_depth: 1
+        name: ToAssemblerType
+        postfix: const
+        raw_declaration: virtual void ToAssemblerType([[maybe_unused]] std::stringstream
+          &ss) const
+        return_type:
+          name: void
+          prefix: virtual
+      - args:
+        - name: ss
+          type:
+            name: stringstream
+            namespace: std
+            prefix: '[[maybe_unused]]'
+            ref_depth: 1
+        name: ToDebugInfoType
+        postfix: const
+        raw_declaration: virtual void ToDebugInfoType([[maybe_unused]] std::stringstream
+          &ss) const
+        return_type:
+          name: void
+          prefix: virtual
+      - args:
+        - name: ss
+          type:
+            name: stringstream
+            namespace: std
+            prefix: '[[maybe_unused]]'
+            ref_depth: 1
+        name: ToAssemblerTypeWithRank
+        postfix: const
+        raw_declaration: virtual void ToAssemblerTypeWithRank([[maybe_unused]] std::stringstream
+          &ss) const
+        return_type:
+          name: void
+          prefix: virtual
+      - args: []
+        name: ToAssemblerType
+        postfix: const
+        raw_declaration: std::string ToAssemblerType() const
+        return_type:
+          name: string
+          namespace: std
+      - args: []
+        name: ToAssemblerTypeWithRank
+        postfix: const
+        raw_declaration: std::string ToAssemblerTypeWithRank() const
+        return_type:
+          name: string
+          namespace: std
+      - additional_attributes: get
+        args: []
+        name: Rank
+        postfix: const
+        raw_declaration: virtual uint32_t Rank() const
+        return_type:
+          name: uint32_t
+          prefix: virtual
+      - args:
+        - name: func
+          type:
+            name: TypeTraverser
+            prefix: '[[maybe_unused]] const'
+            ref_depth: 1
+        name: Iterate
+        postfix: const
+        raw_declaration: virtual void Iterate([[maybe_unused]] const TypeTraverser
+          &func) const
+        return_type:
+          name: void
+          prefix: virtual
+      - args:
+        - name: func
+          type:
+            name: TypeTraverser
+            other_modifiers: const
+            ref_depth: 1
+        name: IterateRecursively
+        postfix: const
+        raw_declaration: void IterateRecursively(TypeTraverser const &func) const
+        return_type:
+          name: void
+      - args:
+        - name: func
+          type:
+            name: TypeTraverser
+            other_modifiers: const
+            ref_depth: 1
+        name: IterateRecursivelyPreorder
+        postfix: const
+        raw_declaration: void IterateRecursivelyPreorder(TypeTraverser const &func)
+          const
+        return_type:
+          name: void
+      - args:
+        - name: func
+          type:
+            name: TypeTraverser
+            other_modifiers: const
+            ref_depth: 1
+        name: IterateRecursivelyPostorder
+        postfix: const
+        raw_declaration: void IterateRecursivelyPostorder(TypeTraverser const &func)
+          const
+        return_type:
+          name: void
+      - args:
+        - name: pred
+          type:
+            name: TypePredicate
+            other_modifiers: const
+            ref_depth: 1
+        name: TypeExpressionContains
+        postfix: const
+        raw_declaration: '[[nodiscard]] bool TypeExpressionContains(TypePredicate
+          const &pred) const'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: other
+          type:
+            name: Type
+            ptr_depth: 1
+        name: Identical
+        raw_declaration: virtual void Identical(TypeRelation *relation, Type *other)
+        return_type:
+          name: void
+          prefix: virtual
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: source
+          type:
+            name: Type
+            ptr_depth: 1
+        name: AssignmentTarget
+        postfix: = 0
+        raw_declaration: virtual void AssignmentTarget(TypeRelation *relation, Type
+          *source) = 0
+        return_type:
+          name: void
+          prefix: virtual
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: target
+          type:
+            name: Type
+            ptr_depth: 1
+        name: AssignmentSource
+        raw_declaration: virtual bool AssignmentSource(TypeRelation *relation, Type
+          *target)
+        return_type:
+          name: bool
+          prefix: virtual
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: other
+          type:
+            name: Type
+            ptr_depth: 1
+        name: Compare
+        raw_declaration: virtual void Compare(TypeRelation *relation, Type *other)
+        return_type:
+          name: void
+          prefix: virtual
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: target
+          type:
+            name: Type
+            ptr_depth: 1
+        name: Cast
+        raw_declaration: virtual void Cast(TypeRelation *relation, Type *target)
+        return_type:
+          name: void
+          prefix: virtual
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: source
+          type:
+            name: Type
+            ptr_depth: 1
+        name: CastTarget
+        raw_declaration: virtual void CastTarget(TypeRelation *relation, Type *source)
+        return_type:
+          name: void
+          prefix: virtual
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: source
+          type:
+            name: Type
+            ptr_depth: 1
+        name: IsSupertypeOf
+        raw_declaration: virtual void IsSupertypeOf(TypeRelation *relation, Type *source)
+        return_type:
+          name: void
+          prefix: virtual
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: target
+          type:
+            name: Type
+            ptr_depth: 1
+        name: IsSubtypeOf
+        raw_declaration: virtual void IsSubtypeOf(TypeRelation *relation, Type *target)
+        return_type:
+          name: void
+          prefix: virtual
+      - args:
+        - name: checker
+          type:
+            name: Checker
+            ptr_depth: 1
+        - name: sourceVar
+          type:
+            name: Variable
+            namespace: varbinder
+            ptr_depth: 1
+        name: AsSuper
+        raw_declaration: virtual Type *AsSuper(Checker *checker, varbinder::Variable
+          *sourceVar)
+        return_type:
+          name: Type
+          prefix: virtual
+          ptr_depth: 1
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        - name: varianceFlag
+          type:
+            name: VarianceFlag
+            prefix: '[[maybe_unused]]'
+        name: CheckVarianceRecursively
+        raw_declaration: "virtual void CheckVarianceRecursively([[maybe_unused]] TypeRelation\
+          \ *relation,\n                                          [[maybe_unused]]\
+          \ VarianceFlag varianceFlag)"
+        return_type:
+          name: void
+          prefix: virtual
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: globalTypes
+          type:
+            name: GlobalTypesHolder
+            ptr_depth: 1
+        name: Instantiate
+        raw_declaration: virtual Type *Instantiate(ArenaAllocator *allocator, TypeRelation
+          *relation, GlobalTypesHolder *globalTypes)
+        return_type:
+          name: Type
+          prefix: virtual
+          ptr_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: Checker
+            ptr_depth: 1
+        name: Clone
+        raw_declaration: '[[nodiscard]] virtual Type *Clone(Checker *checker)'
+        return_type:
+          name: Type
+          prefix: '[[nodiscard]] virtual'
+          ptr_depth: 1
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: substitution
+          type:
+            name: Substitution
+            prefix: const
+            ptr_depth: 1
+        name: Substitute
+        raw_declaration: virtual Type *Substitute(TypeRelation *relation, const Substitution
+          *substitution)
+        return_type:
+          name: Type
+          prefix: virtual
+          ptr_depth: 1
+  class_forward_declaration:
+  - ObjectDescriptor
+  - GlobalTypesHolder
+  - ETSChecker
+  - ETSTypeParameter
+  - ETSEnumType
+  - ETSStringType
+  - ETSBigIntType
+  - ETSResizableArrayType
+  functions:
+  - args:
+    - name: t
+      type:
+        name: Type
+        ptr_depth: 1
+    name: TypeStatsHook
+    raw_declaration: extern void TypeStatsHook(Type *t)
+    return_type:
+      name: void
+      prefix: extern
+  - args:
+    - name: tp
+      type:
+        name: Type
+        other_modifiers: const
+        ptr_depth: 1
+    name: IsTypeError
+    raw_declaration: bool IsTypeError(Type const *tp)
+    return_type:
+      name: bool
+  - args:
+    - name: type
+      type:
+        name: Type
+        other_modifiers: const
+        ptr_depth: 1
+    name: ContainsTypeError
+    raw_declaration: bool ContainsTypeError(Type const *type)
+    return_type:
+      name: bool
+  known_macroses:
+  - TYPE_MAPPING(DECLARE_TYPENAMES)
+  macros:
+  - arguments: typeFlag, typeName
+    body: class typeName;
+    name: DECLARE_TYPENAMES
+  usings:
+  - name: Substitution
+    type:
+      name: map
+      namespace: std
+      template_args:
+      - type:
+          name: ETSTypeParameter
+          ptr_depth: 1
+      - type:
+          name: Type
+          ptr_depth: 1
+  - name: ArenaSubstitution
+    type:
+      name: ArenaMap
+      template_args:
+      - type:
+          name: ETSTypeParameter
+          ptr_depth: 1
+      - type:
+          name: Type
+          ptr_depth: 1
+  - name: TypeTraverser
+    type:
+      name: function
+      namespace: std
+      other_modifiers: const
+      template_args:
+      - type:
+          cast_from:
+          - type:
+              name: Type
+              other_modifiers: const
+              ptr_depth: 1
+          name: void
+          other_modifiers: const
+  - name: TypePredicate
+    type:
+      name: function
+      namespace: std
+      other_modifiers: const
+      template_args:
+      - type:
+          cast_from:
+          - type:
+              name: Type
+              other_modifiers: const
+              ptr_depth: 1
+          name: bool
+          other_modifiers: const
+include:
+- '"generated/signatures.h"'
+- '"checker/types/typeMapping.h"'
+- '"checker/types/typeRelation.h"'
+- '"checker/types/typeFacts.h"'
+macros:
+- name: ES2PANDA_COMPILER_CHECKER_TYPES_TYPE_H
+varbinder:
+  class_forward_declaration:
+  - Variable

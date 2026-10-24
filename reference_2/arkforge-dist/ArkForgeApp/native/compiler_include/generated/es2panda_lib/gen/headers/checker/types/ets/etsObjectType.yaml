@@ -1,0 +1,1575 @@
+checker:
+  class_definitions:
+  - extends: public Type
+    name: ETSObjectType
+    private: {}
+    protected: {}
+    public:
+      constructors:
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+        - name: internalName
+          type:
+            name: StringView
+            namespace: util
+        - name: declNode
+          type:
+            name: AstNode
+            namespace: ir
+            ptr_depth: 1
+        - name: flags
+          type:
+            name: ETSObjectFlags
+        name: ETSObjectType
+        other_initializers:
+        - class_field: ETSObjectType
+          init_value: "allocator, name, internalName, std::make_tuple(declNode, flags,\
+            \ nullptr),\n                        std::make_index_sequence<static_cast<size_t>(PropertyType::COUNT)>\
+            \ {}"
+        raw_declaration: "explicit ETSObjectType(ArenaAllocator *allocator, util::StringView\
+          \ name, util::StringView internalName,\n                           ir::AstNode\
+          \ *declNode, ETSObjectFlags flags)"
+        return_type:
+          prefix: explicit
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+        - name: internalName
+          type:
+            name: StringView
+            namespace: util
+        - name: info
+          type:
+            name: tuple
+            namespace: std
+            template_args:
+            - type:
+                name: AstNode
+                namespace: ir
+                ptr_depth: 1
+            - type:
+                name: ETSObjectFlags
+            - type:
+                name: TypeRelation
+                ptr_depth: 1
+        name: ETSObjectType
+        other_initializers:
+        - class_field: ETSObjectType
+          init_value: "allocator, name, internalName, info,\n                    \
+            \    std::make_index_sequence<static_cast<size_t>(PropertyType::COUNT)>\
+            \ {}"
+        raw_declaration: "explicit ETSObjectType(ArenaAllocator *allocator, util::StringView\
+          \ name, util::StringView internalName,\n                           std::tuple<ir::AstNode\
+          \ *, ETSObjectFlags, TypeRelation *> info)"
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: set
+        args:
+        - name: signature
+          type:
+            name: Signature
+            ptr_depth: 1
+        name: AddConstructSignature
+        raw_declaration: void AddConstructSignature(Signature *signature)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: signatures
+          type:
+            name: ArenaVector
+            prefix: const
+            ref_depth: 1
+            template_args:
+            - type:
+                name: Signature
+                ptr_depth: 1
+        name: AddConstructSignature
+        postfix: const
+        raw_declaration: void AddConstructSignature(const ArenaVector<Signature *>
+          &signatures) const
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: interfaceType
+          type:
+            name: ETSObjectType
+            ptr_depth: 1
+        name: AddInterface
+        raw_declaration: void AddInterface(ETSObjectType *interfaceType)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: super
+          type:
+            name: ETSObjectType
+            ptr_depth: 1
+        name: SetSuperType
+        raw_declaration: void SetSuperType(ETSObjectType *super)
+        return_type:
+          name: void
+      - args: []
+        name: GetETSChecker
+        raw_declaration: ETSChecker *GetETSChecker()
+        return_type:
+          name: ETSChecker
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: typeArgs
+          type:
+            name: ArenaVector
+            ref_depth: 2
+            template_args:
+            - type:
+                name: Type
+                ptr_depth: 1
+        name: SetTypeArguments
+        raw_declaration: void SetTypeArguments(ArenaVector<Type *> &&typeArgs)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: enclosingType
+          type:
+            name: ETSObjectType
+            ptr_depth: 1
+        name: SetEnclosingType
+        raw_declaration: void SetEnclosingType(ETSObjectType *enclosingType)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        name: SetRelation
+        raw_declaration: void SetRelation(TypeRelation *relation)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: GetRelation
+        postfix: const
+        raw_declaration: TypeRelation *GetRelation() const
+        return_type:
+          name: TypeRelation
+          ptr_depth: 1
+      - args: []
+        name: InstanceMethods
+        postfix: const
+        raw_declaration: PropertyMap &InstanceMethods() const
+        return_type:
+          name: PropertyMap
+          ref_depth: 1
+      - args: []
+        name: InstanceFields
+        postfix: const
+        raw_declaration: PropertyMap &InstanceFields() const
+        return_type:
+          name: PropertyMap
+          ref_depth: 1
+      - args: []
+        name: InstanceDecls
+        postfix: const
+        raw_declaration: PropertyMap &InstanceDecls() const
+        return_type:
+          name: PropertyMap
+          ref_depth: 1
+      - args: []
+        name: StaticMethods
+        postfix: const
+        raw_declaration: PropertyMap &StaticMethods() const
+        return_type:
+          name: PropertyMap
+          ref_depth: 1
+      - args: []
+        name: StaticFields
+        postfix: const
+        raw_declaration: PropertyMap &StaticFields() const
+        return_type:
+          name: PropertyMap
+          ref_depth: 1
+      - args: []
+        name: StaticDecls
+        postfix: const
+        raw_declaration: PropertyMap &StaticDecls() const
+        return_type:
+          name: PropertyMap
+          ref_depth: 1
+      - additional_attributes: get
+        args: []
+        name: TypeArguments
+        postfix: const
+        raw_declaration: const ArenaVector<Type *> &TypeArguments() const
+        return_type:
+          name: ArenaVector
+          prefix: const
+          ref_depth: 1
+          template_args:
+          - type:
+              name: Type
+              ptr_depth: 1
+      - args: []
+        name: ConstructSignatures
+        postfix: const
+        raw_declaration: const ArenaVector<Signature *> &ConstructSignatures() const
+        return_type:
+          name: ArenaVector
+          prefix: const
+          ref_depth: 1
+          template_args:
+          - type:
+              name: Signature
+              ptr_depth: 1
+      - args: []
+        name: ConstructSignatures
+        raw_declaration: ArenaVector<Signature *> &ConstructSignatures()
+        return_type:
+          name: ArenaVector
+          ref_depth: 1
+          template_args:
+          - type:
+              name: Signature
+              ptr_depth: 1
+      - args: []
+        name: Interfaces
+        postfix: const
+        raw_declaration: const ArenaVector<ETSObjectType *> &Interfaces() const
+        return_type:
+          name: ArenaVector
+          prefix: const
+          ref_depth: 1
+          template_args:
+          - type:
+              name: ETSObjectType
+              ptr_depth: 1
+      - args: []
+        name: Interfaces
+        raw_declaration: const ArenaVector<ETSObjectType *> &Interfaces()
+        return_type:
+          name: ArenaVector
+          prefix: const
+          ref_depth: 1
+          template_args:
+          - type:
+              name: ETSObjectType
+              ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: GetDeclNode
+        postfix: const
+        raw_declaration: ir::AstNode *GetDeclNode() const
+        return_type:
+          name: AstNode
+          namespace: ir
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: SuperType
+        postfix: const
+        raw_declaration: const ETSObjectType *SuperType() const
+        return_type:
+          name: ETSObjectType
+          prefix: const
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: SuperType
+        raw_declaration: ETSObjectType *SuperType()
+        return_type:
+          name: ETSObjectType
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: EnclosingType
+        postfix: const
+        raw_declaration: const ETSObjectType *EnclosingType() const
+        return_type:
+          name: ETSObjectType
+          prefix: const
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: EnclosingType
+        raw_declaration: ETSObjectType *EnclosingType()
+        return_type:
+          name: ETSObjectType
+          ptr_depth: 1
+      - args: []
+        name: OutermostClass
+        raw_declaration: ETSObjectType *OutermostClass()
+        return_type:
+          name: ETSObjectType
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: baseType
+          type:
+            name: ETSObjectType
+            ptr_depth: 1
+        name: SetBaseType
+        raw_declaration: void SetBaseType(ETSObjectType *baseType)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: GetBaseType
+        postfix: noexcept
+        raw_declaration: ETSObjectType *GetBaseType() noexcept
+        return_type:
+          name: ETSObjectType
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: GetBaseType
+        postfix: const noexcept
+        raw_declaration: const ETSObjectType *GetBaseType() const noexcept
+        return_type:
+          name: ETSObjectType
+          prefix: const
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: TransitiveSupertypes
+        postfix: const noexcept
+        raw_declaration: const ArenaSet<ETSObjectType *> &TransitiveSupertypes() const
+          noexcept
+        return_type:
+          name: ArenaSet
+          prefix: const
+          ref_depth: 1
+          template_args:
+          - type:
+              name: ETSObjectType
+              ptr_depth: 1
+      - args: []
+        name: GetConstOriginalBaseType
+        postfix: const noexcept
+        raw_declaration: ETSObjectType const *GetConstOriginalBaseType() const noexcept
+        return_type:
+          name: ETSObjectType
+          other_modifiers: const
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: GetOriginalBaseType
+        postfix: const noexcept
+        raw_declaration: ETSObjectType *GetOriginalBaseType() const noexcept
+        return_type:
+          name: ETSObjectType
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: IsGlobalETSObjectType
+        postfix: const noexcept
+        raw_declaration: bool IsGlobalETSObjectType() const noexcept
+        return_type:
+          name: bool
+      - args:
+        - name: var
+          type:
+            name: Variable
+            namespace: varbinder
+            prefix: const
+            ptr_depth: 1
+        name: IsPropertyInherited
+        raw_declaration: bool IsPropertyInherited(const varbinder::Variable *var)
+        return_type:
+          name: bool
+      - args:
+        - name: var
+          type:
+            name: Variable
+            namespace: varbinder
+            prefix: const
+            ptr_depth: 1
+        name: IsPropertyOfAscendant
+        postfix: const
+        raw_declaration: bool IsPropertyOfAscendant(const varbinder::Variable *var)
+          const
+        return_type:
+          name: bool
+      - args:
+        - name: signature
+          type:
+            name: Signature
+            ptr_depth: 1
+        name: IsSignatureInherited
+        raw_declaration: bool IsSignatureInherited(Signature *signature)
+        return_type:
+          name: bool
+      - args:
+        - name: ascendant
+          type:
+            name: ETSObjectType
+            prefix: const
+            ptr_depth: 1
+        name: IsDescendantOf
+        postfix: const
+        raw_declaration: bool IsDescendantOf(const ETSObjectType *ascendant) const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args: []
+        name: Name
+        postfix: const
+        raw_declaration: util::StringView Name() const
+        return_type:
+          name: StringView
+          namespace: util
+      - args: []
+        name: AssemblerName
+        postfix: const
+        raw_declaration: util::StringView AssemblerName() const
+        return_type:
+          name: StringView
+          namespace: util
+      - additional_attributes: get
+        args: []
+        name: ObjectFlags
+        postfix: const
+        raw_declaration: ETSObjectFlags ObjectFlags() const
+        return_type:
+          name: ETSObjectFlags
+      - additional_attributes: set
+        args:
+        - name: flag
+          type:
+            name: ETSObjectFlags
+        name: AddObjectFlag
+        raw_declaration: void AddObjectFlag(ETSObjectFlags flag)
+        return_type:
+          name: void
+      - args:
+        - name: flag
+          type:
+            name: ETSObjectFlags
+        name: RemoveObjectFlag
+        raw_declaration: void RemoveObjectFlag(ETSObjectFlags flag)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - name: flag
+          type:
+            name: ETSObjectFlags
+        name: HasObjectFlag
+        postfix: const
+        raw_declaration: bool HasObjectFlag(ETSObjectFlags flag) const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args: []
+        name: IsInterface
+        postfix: const
+        raw_declaration: bool IsInterface() const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args: []
+        name: IsGradual
+        postfix: const
+        raw_declaration: bool IsGradual() const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args: []
+        name: IsETSStringLiteralType
+        postfix: const
+        raw_declaration: bool IsETSStringLiteralType() const
+        return_type:
+          name: bool
+      - args: []
+        name: GetFunctionalInterfaceInvokeType
+        postfix: const
+        raw_declaration: ETSFunctionType *GetFunctionalInterfaceInvokeType() const
+        return_type:
+          name: ETSFunctionType
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: BuiltInKind
+        postfix: const
+        raw_declaration: ETSObjectFlags BuiltInKind() const
+        return_type:
+          name: ETSObjectFlags
+      - additional_attributes: get
+        args: []
+        name: UnboxableKind
+        postfix: const
+        raw_declaration: ETSObjectFlags UnboxableKind() const
+        return_type:
+          name: ETSObjectFlags
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            ptr_depth: 1
+        - name: hash
+          type:
+            name: string
+            namespace: std
+            other_modifiers: const
+            ref_depth: 1
+        name: GetTypeInstantiation
+        raw_declaration: ETSObjectType *GetTypeInstantiation(ETSChecker *checker,
+          std::string const &hash)
+        return_type:
+          name: ETSObjectType
+          ptr_depth: 1
+      - args: []
+        name: GetTypeParams
+        postfix: const
+        raw_declaration: ir::TSTypeParameterDeclaration *GetTypeParams() const
+        return_type:
+          name: TSTypeParameterDeclaration
+          namespace: ir
+          ptr_depth: 1
+      - args: []
+        name: GetTypeArgumentScope
+        postfix: const
+        raw_declaration: varbinder::Scope *GetTypeArgumentScope() const
+        return_type:
+          name: Scope
+          namespace: varbinder
+          ptr_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            ptr_depth: 1
+        - name: hash
+          type:
+            name: string
+            namespace: std
+            ref_depth: 1
+        - name: value
+          type:
+            name: ETSObjectType
+            ptr_depth: 1
+        name: InsertTypeInstantiation
+        raw_declaration: void InsertTypeInstantiation(ETSChecker *checker, std::string
+          &hash, ETSObjectType *value)
+        return_type:
+          name: void
+      - args:
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+            prefix: const
+        name: GetOwnProperty
+        postfix: const
+        raw_declaration: varbinder::LocalVariable *GetOwnProperty(const util::StringView
+          name) const
+        return_type:
+          name: LocalVariable
+          namespace: varbinder
+          ptr_depth: 1
+        template: PropertyType TYPE
+      - additional_attributes: set
+        args:
+        - name: prop
+          type:
+            name: LocalVariable
+            namespace: varbinder
+            ptr_depth: 1
+        name: AddProperty
+        postfix: const
+        raw_declaration: void AddProperty(varbinder::LocalVariable *prop) const
+        return_type:
+          name: void
+        template: PropertyType TYPE
+      - additional_attributes: set
+        args:
+        - name: prop
+          type:
+            name: LocalVariable
+            namespace: varbinder
+            ptr_depth: 1
+        - name: localName
+          type:
+            name: StringView
+            namespace: util
+        name: AddProperty
+        postfix: const
+        raw_declaration: void AddProperty(varbinder::LocalVariable *prop, util::StringView
+          localName) const
+        return_type:
+          name: void
+        template: PropertyType TYPE
+      - args:
+        - name: prop
+          type:
+            name: LocalVariable
+            namespace: varbinder
+            ptr_depth: 1
+        name: RemoveProperty
+        raw_declaration: void RemoveProperty(varbinder::LocalVariable *prop)
+        return_type:
+          name: void
+        template: PropertyType TYPE
+      - additional_attributes: get
+        args: []
+        name: IsGeneric
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsGeneric() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsPartial
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsPartial() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - args: []
+        name: ForeignProperties
+        postfix: const
+        raw_declaration: std::vector<const varbinder::LocalVariable *> ForeignProperties()
+          const
+        return_type:
+          name: vector
+          namespace: std
+          other_modifiers: const
+          template_args:
+          - type:
+              name: LocalVariable
+              namespace: varbinder
+              prefix: const
+              ptr_depth: 1
+      - args:
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+        - name: flags
+          type:
+            name: PropertySearchFlags
+        name: GetProperty
+        postfix: const
+        raw_declaration: varbinder::LocalVariable *GetProperty(util::StringView name,
+          PropertySearchFlags flags) const
+        return_type:
+          name: LocalVariable
+          namespace: varbinder
+          ptr_depth: 1
+      - args: []
+        name: GetAllProperties
+        postfix: const
+        raw_declaration: std::vector<varbinder::LocalVariable *> GetAllProperties()
+          const
+        return_type:
+          name: vector
+          namespace: std
+          template_args:
+          - type:
+              name: LocalVariable
+              namespace: varbinder
+              ptr_depth: 1
+      - args:
+        - name: cb
+          type:
+            name: PropertyTraverser
+            prefix: const
+            ref_depth: 1
+        name: ForEachAllOwnProperties
+        postfix: const
+        raw_declaration: void ForEachAllOwnProperties(const PropertyTraverser &cb)
+          const
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: PropertyTraverser
+            prefix: const
+            ref_depth: 1
+        name: ForEachAllNonOwnProperties
+        postfix: const
+        raw_declaration: void ForEachAllNonOwnProperties(const PropertyTraverser &cb)
+          const
+        return_type:
+          name: void
+      - args:
+        - name: prop
+          type:
+            name: LocalVariable
+            namespace: varbinder
+            ptr_depth: 1
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: globalTypes
+          type:
+            name: GlobalTypesHolder
+            ptr_depth: 1
+        name: CopyProperty
+        raw_declaration: "varbinder::LocalVariable *CopyProperty(varbinder::LocalVariable\
+          \ *prop, ArenaAllocator *allocator,\n                                  \
+          \         TypeRelation *relation, GlobalTypesHolder *globalTypes)"
+        return_type:
+          name: LocalVariable
+          namespace: varbinder
+          ptr_depth: 1
+      - args: []
+        name: Methods
+        postfix: const
+        raw_declaration: std::vector<varbinder::LocalVariable *> Methods() const
+        return_type:
+          name: vector
+          namespace: std
+          template_args:
+          - type:
+              name: LocalVariable
+              namespace: varbinder
+              ptr_depth: 1
+      - args: []
+        name: Fields
+        postfix: const
+        raw_declaration: std::vector<varbinder::LocalVariable *> Fields() const
+        return_type:
+          name: vector
+          namespace: std
+          template_args:
+          - type:
+              name: LocalVariable
+              namespace: varbinder
+              ptr_depth: 1
+      - args: []
+        name: Overloads
+        postfix: const
+        raw_declaration: std::vector<varbinder::LocalVariable *> Overloads() const
+        return_type:
+          name: vector
+          namespace: std
+          template_args:
+          - type:
+              name: LocalVariable
+              namespace: varbinder
+              ptr_depth: 1
+      - args:
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        - name: flags
+          type:
+            name: PropertySearchFlags
+        name: CreateSyntheticVarFromEverySignature
+        postfix: const
+        raw_declaration: "varbinder::LocalVariable *CreateSyntheticVarFromEverySignature(const\
+          \ util::StringView &name,\n                                            \
+          \                       PropertySearchFlags flags) const"
+        return_type:
+          name: LocalVariable
+          namespace: varbinder
+          ptr_depth: 1
+      - args:
+        - name: signatures
+          type:
+            name: vector
+            namespace: std
+            ref_depth: 1
+            template_args:
+            - type:
+                name: Signature
+                ptr_depth: 1
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        - name: flags
+          type:
+            name: PropertySearchFlags
+        name: CollectSignaturesForSyntheticType
+        postfix: const
+        raw_declaration: "varbinder::LocalVariable *CollectSignaturesForSyntheticType(std::vector<Signature\
+          \ *> &signatures,\n                                                    \
+          \            const util::StringView &name,\n                           \
+          \                                     PropertySearchFlags flags) const"
+        return_type:
+          name: LocalVariable
+          namespace: varbinder
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: signatures
+          type:
+            name: vector
+            namespace: std
+            ref_depth: 1
+            template_args:
+            - type:
+                name: Signature
+                ptr_depth: 1
+        - name: flags
+          type:
+            name: PropertySearchFlags
+        - name: checker
+          type:
+            name: ETSChecker
+            ptr_depth: 1
+        - name: found
+          type:
+            name: LocalVariable
+            namespace: varbinder
+            ptr_depth: 1
+        name: AddSignatureFromFunction
+        postfix: const
+        raw_declaration: "void AddSignatureFromFunction(std::vector<Signature *> &signatures,\
+          \ PropertySearchFlags flags, ETSChecker *checker,\n                    \
+          \              varbinder::LocalVariable *found) const"
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: signatures
+          type:
+            name: vector
+            namespace: std
+            ref_depth: 1
+            template_args:
+            - type:
+                name: Signature
+                ptr_depth: 1
+        - name: flags
+          type:
+            name: PropertySearchFlags
+        - name: found
+          type:
+            name: LocalVariable
+            namespace: varbinder
+            ptr_depth: 1
+        name: AddSignatureFromOverload
+        postfix: const
+        raw_declaration: "void AddSignatureFromOverload(std::vector<Signature *> &signatures,\
+          \ PropertySearchFlags flags,\n                                  varbinder::LocalVariable\
+          \ *found) const"
+        return_type:
+          name: void
+      - args:
+        - name: signatures
+          type:
+            name: vector
+            namespace: std
+            ref_depth: 1
+            template_args:
+            - type:
+                name: Signature
+                ptr_depth: 1
+        - name: flags
+          type:
+            name: PropertySearchFlags
+        - name: overloadVar
+          type:
+            name: LocalVariable
+            namespace: varbinder
+            ptr_depth: 1
+        - name: skipSameNameItem
+          type:
+            name: bool
+        name: CollectSignaturesFromOverloadDeclaration
+        postfix: const
+        raw_declaration: "void CollectSignaturesFromOverloadDeclaration(std::vector<Signature\
+          \ *> &signatures, PropertySearchFlags flags,\n                         \
+          \                         varbinder::LocalVariable *overloadVar, bool skipSameNameItem)\
+          \ const"
+        return_type:
+          name: void
+      - args:
+        - name: signatures
+          type:
+            name: vector
+            namespace: std
+            ref_depth: 1
+            template_args:
+            - type:
+                name: Signature
+                ptr_depth: 1
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        - name: flags
+          type:
+            name: PropertySearchFlags
+        - name: overloadVars
+          type:
+            name: vector
+            namespace: std
+            prefix: const
+            ref_depth: 1
+            template_args:
+            - type:
+                name: LocalVariable
+                namespace: varbinder
+                ptr_depth: 1
+        name: CollectInheritedOverloadSignatures
+        postfix: const
+        raw_declaration: "void CollectInheritedOverloadSignatures(std::vector<Signature\
+          \ *> &signatures, const util::StringView &name,\n                      \
+          \                      PropertySearchFlags flags,\n                    \
+          \                        const std::vector<varbinder::LocalVariable *> &overloadVars)\
+          \ const"
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: signatures
+          type:
+            name: vector
+            namespace: std
+            ref_depth: 1
+            template_args:
+            - type:
+                name: Signature
+                ptr_depth: 1
+        - name: found
+          type:
+            name: LocalVariable
+            namespace: varbinder
+            ptr_depth: 1
+        name: AddSignatureFromConstructor
+        postfix: const
+        raw_declaration: void AddSignatureFromConstructor(std::vector<Signature *>
+          &signatures, varbinder::LocalVariable *found) const
+        return_type:
+          name: void
+      - args:
+        - name: signatures
+          type:
+            name: vector
+            namespace: std
+            ref_depth: 1
+            template_args:
+            - type:
+                name: Signature
+                ptr_depth: 1
+        - name: sigToInsert
+          type:
+            name: Signature
+            ptr_depth: 1
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        name: ReplaceArgumentInSignature
+        postfix: const
+        raw_declaration: "bool ReplaceArgumentInSignature(std::vector<Signature *>\
+          \ &signatures, Signature *sigToInsert,\n                               \
+          \     TypeRelation *relation) const"
+        return_type:
+          name: bool
+      - args:
+        - name: other
+          type:
+            name: ETSObjectType
+            ptr_depth: 1
+        name: CheckIdenticalFlags
+        postfix: const
+        raw_declaration: bool CheckIdenticalFlags(ETSObjectType *other) const
+        return_type:
+          name: bool
+      - args:
+        - name: cb
+          type:
+            name: PropertyTraverser
+            prefix: const
+            ref_depth: 1
+        name: IterateProperties
+        postfix: const
+        raw_declaration: void IterateProperties(const PropertyTraverser &cb) const
+        return_type:
+          name: void
+      - args:
+        - name: ss
+          type:
+            name: stringstream
+            namespace: std
+            ref_depth: 1
+        - name: precise
+          type:
+            name: bool
+        name: ToString
+        postfix: const override
+        raw_declaration: void ToString(std::stringstream &ss, bool precise) const
+          override
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: other
+          type:
+            name: Type
+            ptr_depth: 1
+        name: Identical
+        postfix: override
+        raw_declaration: void Identical(TypeRelation *relation, Type *other) override
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: target
+          type:
+            name: Type
+            ptr_depth: 1
+        name: AssignmentSource
+        postfix: override
+        raw_declaration: bool AssignmentSource(TypeRelation *relation, Type *target)
+          override
+        return_type:
+          name: bool
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: source
+          type:
+            name: Type
+            ptr_depth: 1
+        name: AssignmentTarget
+        postfix: override
+        raw_declaration: void AssignmentTarget(TypeRelation *relation, Type *source)
+          override
+        return_type:
+          name: void
+      - args: []
+        name: IsBoxedPrimitive
+        postfix: const
+        raw_declaration: bool IsBoxedPrimitive() const
+        return_type:
+          name: bool
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: globalTypes
+          type:
+            name: GlobalTypesHolder
+            ptr_depth: 1
+        name: Instantiate
+        postfix: override
+        raw_declaration: Type *Instantiate(ArenaAllocator *allocator, TypeRelation
+          *relation, GlobalTypesHolder *globalTypes) override
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: func
+          type:
+            name: PropertyProcesser
+            other_modifiers: const
+            ref_depth: 1
+        name: UpdateTypeProperties
+        raw_declaration: void UpdateTypeProperties(PropertyProcesser const &func)
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: substitution
+          type:
+            name: Substitution
+            prefix: const
+            ptr_depth: 1
+        name: Substitute
+        postfix: override
+        raw_declaration: ETSObjectType *Substitute(TypeRelation *relation, const Substitution
+          *substitution) override
+        return_type:
+          name: ETSObjectType
+          ptr_depth: 1
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: substitution
+          type:
+            name: Substitution
+            prefix: const
+            ptr_depth: 1
+        - name: cache
+          type:
+            name: bool
+        - default_value: 'false'
+          name: isExtensionFunctionType
+          type:
+            name: bool
+        name: Substitute
+        raw_declaration: "ETSObjectType *Substitute(TypeRelation *relation, const\
+          \ Substitution *substitution, bool cache,\n                            \
+          \  bool isExtensionFunctionType = false)"
+        return_type:
+          name: ETSObjectType
+          ptr_depth: 1
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: arguments
+          type:
+            name: ArenaVector
+            other_modifiers: const
+            ref_depth: 1
+            template_args:
+            - type:
+                name: Type
+                ptr_depth: 1
+        name: SubstituteArguments
+        raw_declaration: ETSObjectType *SubstituteArguments(TypeRelation *relation,
+          ArenaVector<Type *> const &arguments)
+        return_type:
+          name: ETSObjectType
+          ptr_depth: 1
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: target
+          type:
+            name: Type
+            ptr_depth: 1
+        name: Cast
+        postfix: override
+        raw_declaration: void Cast(TypeRelation *relation, Type *target) override
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: target
+          type:
+            name: Type
+            ptr_depth: 1
+        name: CastNumericObject
+        raw_declaration: bool CastNumericObject(TypeRelation *relation, Type *target)
+        return_type:
+          name: bool
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: source
+          type:
+            name: Type
+            ptr_depth: 1
+        name: IsSupertypeOf
+        postfix: override
+        raw_declaration: void IsSupertypeOf(TypeRelation *relation, Type *source)
+          override
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: target
+          type:
+            name: Type
+            ptr_depth: 1
+        name: IsSubtypeOf
+        postfix: override
+        raw_declaration: void IsSubtypeOf(TypeRelation *relation, Type *target) override
+        return_type:
+          name: void
+      - args:
+        - name: extendsSet
+          type:
+            name: unordered_set
+            namespace: std
+            ptr_depth: 1
+            template_args:
+            - type:
+                name: Type
+                ptr_depth: 1
+        name: ProcessInterfaceBaseType
+        raw_declaration: ETSObjectType *ProcessInterfaceBaseType(std::unordered_set<Type
+          *> *extendsSet)
+        return_type:
+          name: ETSObjectType
+          ptr_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: Checker
+            ptr_depth: 1
+        - name: sourceVar
+          type:
+            name: Variable
+            namespace: varbinder
+            ptr_depth: 1
+        name: AsSuper
+        postfix: override
+        raw_declaration: Type *AsSuper(Checker *checker, varbinder::Variable *sourceVar)
+          override
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args:
+        - name: ss
+          type:
+            name: stringstream
+            namespace: std
+            prefix: '[[maybe_unused]]'
+            ref_depth: 1
+        name: ToAssemblerType
+        postfix: const override
+        raw_declaration: void ToAssemblerType([[maybe_unused]] std::stringstream &ss)
+          const override
+        return_type:
+          name: void
+      - args:
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+        name: NameToDescriptor
+        raw_declaration: static std::string NameToDescriptor(util::StringView name)
+        return_type:
+          name: string
+          namespace: std
+          prefix: static
+      - args:
+        - name: ss
+          type:
+            name: stringstream
+            namespace: std
+            ref_depth: 1
+        name: ToDebugInfoType
+        postfix: const override
+        raw_declaration: void ToDebugInfoType(std::stringstream &ss) const override
+        return_type:
+          name: void
+      - args:
+        - name: ss
+          type:
+            name: stringstream
+            namespace: std
+            ref_depth: 1
+        name: ToDebugInfoSignatureType
+        postfix: const
+        raw_declaration: void ToDebugInfoSignatureType(std::stringstream &ss) const
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: varianceFlag
+          type:
+            name: VarianceFlag
+        name: CheckVarianceRecursively
+        postfix: override
+        raw_declaration: void CheckVarianceRecursively(TypeRelation *relation, VarianceFlag
+          varianceFlag) override
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: reExport
+          type:
+            name: ETSObjectType
+            ptr_depth: 1
+        name: AddReExports
+        raw_declaration: void AddReExports(ETSObjectType *reExport)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: StringView
+            namespace: util
+            other_modifiers: const
+            ref_depth: 1
+        - name: key
+          type:
+            name: StringView
+            namespace: util
+            other_modifiers: const
+            ref_depth: 1
+        name: AddReExportAlias
+        raw_declaration: void AddReExportAlias(util::StringView const &value, util::StringView
+          const &key)
+        return_type:
+          name: void
+      - args:
+        - name: key
+          type:
+            name: StringView
+            namespace: util
+            other_modifiers: const
+            ref_depth: 1
+        name: GetReExportAliasValue
+        postfix: const
+        raw_declaration: util::StringView GetReExportAliasValue(util::StringView const
+          &key) const
+        return_type:
+          name: StringView
+          namespace: util
+      - args:
+        - name: key
+          type:
+            name: StringView
+            namespace: util
+            other_modifiers: const
+            ref_depth: 1
+        name: IsReExportHaveAliasValue
+        postfix: const
+        raw_declaration: bool IsReExportHaveAliasValue(util::StringView const &key)
+          const
+        return_type:
+          name: bool
+      - args: []
+        name: ReExports
+        postfix: const
+        raw_declaration: const ArenaVector<ETSObjectType *> &ReExports() const
+        return_type:
+          name: ArenaVector
+          prefix: const
+          ref_depth: 1
+          template_args:
+          - type:
+              name: ETSObjectType
+              ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: surface
+          type:
+            name: ExportSurfaceId
+            namespace: varbinder
+        name: SetExportSurface
+        raw_declaration: void SetExportSurface(varbinder::ExportSurfaceId surface)
+        return_type:
+          name: void
+      - args: []
+        name: ExportSurface
+        postfix: const
+        raw_declaration: const varbinder::ExportSurfaceId &ExportSurface() const
+        return_type:
+          name: ExportSurfaceId
+          namespace: varbinder
+          prefix: const
+          ref_depth: 1
+      - args: []
+        name: HasExportSurface
+        postfix: const
+        raw_declaration: bool HasExportSurface() const
+        return_type:
+          name: bool
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: other
+          type:
+            name: Type
+            other_modifiers: const
+            ptr_depth: 1
+        name: IsSameBasedGeneric
+        postfix: const
+        raw_declaration: bool IsSameBasedGeneric(TypeRelation *relation, Type const
+          *other) const
+        return_type:
+          name: bool
+      - args:
+        - name: func
+          type:
+            name: TypeTraverser
+            prefix: const
+            ref_depth: 1
+        name: Iterate
+        postfix: const override
+        raw_declaration: void Iterate(const TypeTraverser &func) const override
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Allocator
+        postfix: const
+        raw_declaration: ArenaAllocator *Allocator() const
+        return_type:
+          name: ArenaAllocator
+          ptr_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            namespace: checker
+            ptr_depth: 1
+        - name: type
+          type:
+            name: ETSObjectType
+            other_modifiers: const
+            ptr_depth: 1
+        name: GetPrecedence
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] static std::uint32_t GetPrecedence(checker::ETSChecker
+          *checker, ETSObjectType const *type) noexcept'
+        return_type:
+          name: uint32_t
+          namespace: std
+          prefix: '[[nodiscard]] static'
+      - additional_attributes: get
+        args: []
+        name: IsPropertiesInstantiated
+        postfix: const
+        raw_declaration: bool IsPropertiesInstantiated() const
+        return_type:
+          name: bool
+      - args: []
+        name: EnsureTransitiveSupertypesInitialized
+        postfix: const
+        raw_declaration: void EnsureTransitiveSupertypesInitialized() const
+        return_type:
+          name: void
+      usings:
+      - name: PropertyMap
+        type:
+          name: ArenaUnorderedMap
+          template_args:
+          - type:
+              name: StringView
+              namespace: util
+          - type:
+              name: EPtr
+              template_args:
+              - type:
+                  name: LocalVariable
+                  namespace: varbinder
+      - name: InstantiationMap
+        type:
+          name: ArenaUnorderedMap
+          template_args:
+          - type:
+              name: StringView
+              namespace: util
+          - type:
+              name: EPtr
+              template_args:
+              - type:
+                  name: ETSObjectType
+      - name: PropertyTraverser
+        type:
+          name: function
+          namespace: std
+          other_modifiers: const
+          template_args:
+          - type:
+              cast_from:
+              - type:
+                  name: LocalVariable
+                  namespace: varbinder
+                  prefix: const
+                  ptr_depth: 1
+              name: void
+              other_modifiers: const
+      - name: PropertyHolder
+        type:
+          name: array
+          namespace: std
+          other_modifiers: static
+          template_args:
+          - type:
+              name: EPtr
+              template_args:
+              - type:
+                  name: PropertyMap
+          - type:
+              name: static_cast
+              postfix: (PropertyType::COUNT)
+              template_args:
+              - type:
+                  name: size_t
+  usings:
+  - name: PropertyProcesser
+    type:
+      name: function
+      namespace: std
+      template_args:
+      - type:
+          cast_from:
+          - type:
+              name: LocalVariable
+              namespace: varbinder
+              ptr_depth: 1
+          - type:
+              name: Type
+              ptr_depth: 1
+          name: LocalVariable
+          namespace: varbinder
+  vars:
+  - default_value: '"%%partial-"'
+    name: PARTIAL_CLASS_PREFIX
+    type:
+      name: auto
+      prefix: inline constexpr
+      ptr_depth: 1
+include:
+- '"checker/checker.h"'
+- '"checker/types/type.h"'
+- '"checker/types/ets/etsObjectTypeConstants.h"'
+- '"checker/types/signature.h"'
+- '"ir/ts/tsInterfaceDeclaration.h"'
+- '"ir/ts/tsTypeParameterDeclaration.h"'
+- '"varbinder/exportFacts.h"'
+- '"varbinder/scope.h"'
+- '"ir/base/classDefinition.h"'
+macros:
+- name: ES2PANDA_COMPILER_CHECKER_TYPES_ETS_OBJECT_TYPE_H

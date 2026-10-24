@@ -1,0 +1,257 @@
+include:
+- '"ir/expression.h"'
+- '"ir/visitor/AstVisitor.h"'
+ir:
+  class_definitions:
+  - extends: public Expression
+    known_macroses:
+    - NO_COPY_SEMANTIC(ETSIntrinsicNode);
+    - NO_MOVE_SEMANTIC(ETSIntrinsicNode);
+    name: ETSIntrinsicNode
+    private: {}
+    public:
+      constructors:
+      - args: []
+        name: ETSIntrinsicNode
+        postfix: = delete
+        raw_declaration: ETSIntrinsicNode() = delete
+      - args:
+        - name: other
+          type:
+            name: ETSIntrinsicNode
+            other_modifiers: const
+            ref_depth: 1
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        name: ETSIntrinsicNode
+        raw_declaration: explicit ETSIntrinsicNode(ETSIntrinsicNode const &other,
+          ArenaAllocator *const allocator)
+        return_type:
+          prefix: explicit
+      - args:
+        - name: id
+          type:
+            name: StringView
+            namespace: util
+        - name: arguments
+          type:
+            name: ArenaVector
+            ref_depth: 2
+            template_args:
+            - type:
+                name: Expression
+                namespace: ir
+                ptr_depth: 1
+        name: ETSIntrinsicNode
+        raw_declaration: explicit ETSIntrinsicNode(util::StringView id, ArenaVector<ir::Expression
+          *> &&arguments)
+        return_type:
+          prefix: explicit
+      destructors:
+      - args: []
+        name: ~ETSIntrinsicNode
+        postfix: override = default
+        raw_declaration: ~ETSIntrinsicNode() override = default
+      methods:
+      - args: []
+        name: Id
+        postfix: const
+        raw_declaration: util::StringView Id() const
+        return_type:
+          name: StringView
+          namespace: util
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            namespace: checker
+            ptr_depth: 1
+        - name: idx
+          type:
+            name: size_t
+        name: ExpectedTypeAt
+        postfix: const
+        raw_declaration: checker::Type *ExpectedTypeAt(checker::ETSChecker *checker,
+          size_t idx) const
+        return_type:
+          name: Type
+          namespace: checker
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Arguments
+        postfix: const
+        raw_declaration: ArenaVector<ir::Expression *> const &Arguments() const
+        return_type:
+          name: ArenaVector
+          other_modifiers: const
+          ref_depth: 1
+          template_args:
+          - type:
+              name: Expression
+              namespace: ir
+              ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Arguments
+        raw_declaration: ArenaVector<ir::Expression *> &Arguments()
+        return_type:
+          name: ArenaVector
+          ref_depth: 1
+          template_args:
+          - type:
+              name: Expression
+              namespace: ir
+              ptr_depth: 1
+      - args:
+        - name: cb
+          type:
+            name: NodeTransformer
+            prefix: const
+            ref_depth: 1
+        - name: transformationName
+          type:
+            name: string_view
+            namespace: std
+        name: TransformChildren
+        postfix: override
+        raw_declaration: void TransformChildren(const NodeTransformer &cb, std::string_view
+          transformationName) override
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: NodeTraverser
+            prefix: const
+            ref_depth: 1
+        name: Iterate
+        postfix: const override
+        raw_declaration: void Iterate(const NodeTraverser &cb) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: AstDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::AstDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: SrcDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::SrcDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: pg
+          type:
+            name: PandaGen
+            namespace: compiler
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile([[maybe_unused]] compiler::PandaGen *pg) const
+          override
+        return_type:
+          name: void
+      - args:
+        - name: etsg
+          type:
+            name: ETSGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::ETSGen *etsg) const override
+        return_type:
+          name: void
+      - args:
+        - name: checker
+          type:
+            name: TSChecker
+            namespace: checker
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::Type *Check([[maybe_unused]] checker::TSChecker
+          *checker) override
+        return_type:
+          name: Type
+          namespace: checker
+          ptr_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            namespace: checker
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::VerifiedType Check([[maybe_unused]] checker::ETSChecker
+          *checker) override
+        return_type:
+          name: VerifiedType
+          namespace: checker
+      - args:
+        - name: v
+          type:
+            name: ASTVisitorT
+            ptr_depth: 1
+        name: Accept
+        postfix: override
+        raw_declaration: void Accept(ASTVisitorT *v) override
+        return_type:
+          name: void
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: parent
+          type:
+            name: AstNode
+            ptr_depth: 1
+        name: Clone
+        postfix: override
+        raw_declaration: '[[nodiscard]] ETSIntrinsicNode *Clone(ArenaAllocator *allocator,
+          AstNode *parent) override'
+        return_type:
+          name: ETSIntrinsicNode
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+  class_forward_declaration:
+  - EtsIntrinsicInfo
+  functions:
+  - args:
+    - name: node
+      type:
+        name: ETSIntrinsicNode
+        other_modifiers: const
+        ptr_depth: 1
+    name: GetIntrinsicInfoFor
+    raw_declaration: extern EtsIntrinsicInfo const *GetIntrinsicInfoFor(ETSIntrinsicNode
+      const *node)
+    return_type:
+      name: EtsIntrinsicInfo
+      other_modifiers: const
+      prefix: extern
+      ptr_depth: 1
+macros:
+- name: ES2PANDA_IR_ETS_INTRINSIC_NODE_H

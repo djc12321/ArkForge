@@ -1,0 +1,196 @@
+include:
+- '"util/ustring.h"'
+macros:
+- name: ES2PANDA_UTIL_PATH_H
+util:
+  class_definitions:
+  - known_macroses:
+    - DEFAULT_COPY_SEMANTIC(Path);
+    - DEFAULT_MOVE_SEMANTIC(Path);
+    name: Path
+    private: {}
+    public:
+      constructors:
+      - args: []
+        name: Path
+        postfix: = delete
+        raw_declaration: Path() = delete
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        name: Path
+        raw_declaration: explicit Path(ArenaAllocator *allocator)
+        return_type:
+          prefix: explicit
+      - args:
+        - name: absolutePath
+          type:
+            name: string
+            namespace: std
+            prefix: const
+            ref_depth: 1
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        name: Path
+        raw_declaration: explicit Path(const std::string &absolutePath, ArenaAllocator
+          *allocator)
+        return_type:
+          prefix: explicit
+      - args:
+        - name: relativePath
+          type:
+            name: string
+            namespace: std
+            prefix: const
+            ref_depth: 1
+        - name: basePath
+          type:
+            name: string
+            namespace: std
+            prefix: const
+            ref_depth: 1
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        name: Path
+        raw_declaration: explicit Path(const std::string &relativePath, const std::string
+          &basePath, ArenaAllocator *allocator)
+        return_type:
+          prefix: explicit
+      - args:
+        - name: absolutePath
+          type:
+            name: StringView
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        name: Path
+        raw_declaration: explicit Path(const util::StringView &absolutePath, ArenaAllocator
+          *allocator)
+        return_type:
+          prefix: explicit
+      - args:
+        - name: relativePath
+          type:
+            name: StringView
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        - name: basePath
+          type:
+            name: StringView
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        name: Path
+        raw_declaration: explicit Path(const util::StringView &relativePath, const
+          util::StringView &basePath, ArenaAllocator *allocator)
+        return_type:
+          prefix: explicit
+      destructors:
+      - args: []
+        name: ~Path
+        postfix: = default
+        raw_declaration: ~Path() = default
+      methods:
+      - args: []
+        name: IsRelative
+        raw_declaration: bool IsRelative()
+        return_type:
+          name: bool
+      - args: []
+        name: IsAbsolute
+        raw_declaration: bool IsAbsolute()
+        return_type:
+          name: bool
+      - args: []
+        name: GetPath
+        postfix: const
+        raw_declaration: const util::StringView &GetPath() const
+        return_type:
+          name: StringView
+          namespace: util
+          prefix: const
+          ref_depth: 1
+      - args: []
+        name: GetAbsolutePath
+        postfix: const
+        raw_declaration: const util::StringView &GetAbsolutePath() const
+        return_type:
+          name: StringView
+          namespace: util
+          prefix: const
+          ref_depth: 1
+      - args: []
+        name: GetExtension
+        postfix: const
+        raw_declaration: const util::StringView &GetExtension() const
+        return_type:
+          name: StringView
+          namespace: util
+          prefix: const
+          ref_depth: 1
+      - args: []
+        name: GetFileName
+        postfix: const
+        raw_declaration: const util::StringView &GetFileName() const
+        return_type:
+          name: StringView
+          namespace: util
+          prefix: const
+          ref_depth: 1
+      - args: []
+        name: GetFileNameWithExtension
+        postfix: const
+        raw_declaration: const util::StringView &GetFileNameWithExtension() const
+        return_type:
+          name: StringView
+          namespace: util
+          prefix: const
+          ref_depth: 1
+      - args: []
+        name: GetParentFolder
+        postfix: const
+        raw_declaration: const util::StringView &GetParentFolder() const
+        return_type:
+          name: StringView
+          namespace: util
+          prefix: const
+          ref_depth: 1
+      - args: []
+        name: GetAbsoluteParentFolder
+        postfix: const
+        raw_declaration: const util::StringView &GetAbsoluteParentFolder() const
+        return_type:
+          name: StringView
+          namespace: util
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: get
+        args: []
+        name: GetPathDelimiter
+        raw_declaration: constexpr static char GetPathDelimiter()
+        return_type:
+          name: char
+          prefix: constexpr static
+  vars:
+  - default_value: "\n#ifdef _WIN32\n    '\\\\'"
+    name: PATH_DELIMITER
+    type:
+      name: char
+      prefix: const
+  - type:
+      name: '''/'''

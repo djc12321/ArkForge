@@ -1,0 +1,126 @@
+# Copyright (c) 2022 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import("//build/ohos.gni")
+import("//build/test.gni")
+import("./restool.gni")
+
+ohos_executable("restool") {
+  sources = [
+    "src/append_compiler.cpp",
+    "src/binary_file_packer.cpp",
+    "src/cmd/cmd_parser.cpp",
+    "src/cmd/dump_parser.cpp",
+    "src/cmd/package_parser.cpp",
+    "src/compression_parser.cpp",
+    "src/config_parser.cpp",
+    "src/file_entry.cpp",
+    "src/file_manager.cpp",
+    "src/generic_compiler.cpp",
+    "src/header.cpp",
+    "src/i_resource_compiler.cpp",
+    "src/id_defined_parser.cpp",
+    "src/id_worker.cpp",
+    "src/json_compiler.cpp",
+    "src/key_parser.cpp",
+    "src/overlap_binary_file_packer.cpp",
+    "src/overlap_compiler.cpp",
+    "src/reference_parser.cpp",
+    "src/resconfig_parser.cpp",
+    "src/resource_append.cpp",
+    "src/resource_check.cpp",
+    "src/resource_compiler_factory.cpp",
+    "src/resource_directory.cpp",
+    "src/resource_dumper.cpp",
+    "src/resource_item.cpp",
+    "src/resource_merge.cpp",
+    "src/resource_module.cpp",
+    "src/resource_overlap.cpp",
+    "src/resource_pack.cpp",
+    "src/resource_packer_factory.cpp",
+    "src/resource_table.cpp",
+    "src/resource_util.cpp",
+    "src/restool.cpp",
+    "src/restool_errors.cpp",
+    "src/select_compile_parse.cpp",
+    "src/thread_pool.cpp",
+    "src/translatable_parser.cpp",
+  ]
+
+  include_dirs = [
+    "include",
+    "//third_party/bounds_checking_function/include",
+  ]
+
+  deps = [
+    "//third_party/bounds_checking_function:libsec_static",
+    "//third_party/cJSON:cjson_static",
+    "//third_party/libpng:libpng_static",
+  ]
+
+  if (is_arkui_x) {
+    deps += [ "//third_party/zlib:libz" ]
+  } else {
+    external_deps = [ "zlib:libz" ]
+  }
+  use_exceptions = true
+  cflags = [ "-std=c++17" ]
+  if (is_mingw) {
+    ldflags = [
+      "-static",
+      "-lws2_32",
+      "-lshlwapi",
+    ]
+  }
+  if (is_linux) {
+    defines = [ "__LINUX__" ]
+  }
+  if (is_mac) {
+    defines = [ "__MAC__" ]
+  }
+  subsystem_name = "developtools"
+  part_name = "global_resource_tool"
+}
+
+ohos_unittest_py("restool_test") {
+  sources = [ "test/test.py" ]
+}
+
+ohos_copy("restool_id_defined") {
+  sources = [ "${id_defined_path}" ]
+  outputs = [ get_label_info(":restool($host_toolchain)", "root_out_dir") +
+              "/developtools/global_resource_tool/{{source_file_part}}" ]
+  deps = [ ":restool($host_toolchain)" ]
+  subsystem_name = "developtools"
+  part_name = "global_resource_tool"
+}
+
+ohos_prebuilt_etc("restool_systemres") {
+  source = "${id_defined_path}"
+  subsystem_name = "developtools"
+  part_name = "global_resource_tool"
+}
+
+ohos_prebuilt_etc("restool_faq") {
+  source = "${restool_faq_path}"
+  subsystem_name = "developtools"
+  part_name = "global_resource_tool"
+  install_enable = false
+}
+
+ohos_prebuilt_etc("restool_ids_schema") {
+  source = "${ids_schema_path}"
+  subsystem_name = "developtools"
+  part_name = "global_resource_tool"
+  install_enable = false
+}

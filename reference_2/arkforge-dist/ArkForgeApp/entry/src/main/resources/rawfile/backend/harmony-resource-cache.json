@@ -1,0 +1,35 @@
+{
+  "module": "harmony_demo",
+  "compilerSha256": "200776894b3748a9186c0e25c0f19a2b66e80e9805d70cf242eb067649692243",
+  "kind": "incremental-resource-cache",
+  "files": [
+    {
+      "path": "AppScope/app.json5",
+      "sha256": "c011e8b85e73adb00a1b88c0ffa5da843a9d65b00530b8252f6dad1baca323b5"
+    },
+    {
+      "path": "AppScope/resources/base/element/string.json",
+      "sha256": "979b7880b4ab089c67219577ad5a04b0dd3bf79c3b0f0468b1640bfdc66963b6"
+    },
+    {
+      "path": "AppScope/resources/base/media/app_icon.svg",
+      "sha256": "eb2c02c1bf35f99d985c83a817cd7f3b9d6193717028759d5c800e30aca5ea6c"
+    },
+    {
+      "path": "harmony_demo/src/main/module.json5",
+      "sha256": "7c0a645f31b9a5d17b8b117a03bac2f3999c8a21ac4a48a823004fb2976d8149"
+    },
+    {
+      "path": "harmony_demo/src/main/resources/base/element/color.json",
+      "sha256": "fff3d61ee5987d552194284ea529d4f905ca76ac2af4c913389954f9613e8f09"
+    },
+    {
+      "path": "harmony_demo/src/main/resources/base/element/string.json",
+      "sha256": "893363323d1b3609643f70a161bebf087702afdd8f2a9672e3caaf1d026378a2"
+    },
+    {
+      "path": "harmony_demo/src/main/resources/base/profile/main_pages.json",
+      "sha256": "621d1c271cf89755a64364b8e70c65745d9049ebaf18efa3eba95a2ae0b4558d"
+    }
+  ]
+}

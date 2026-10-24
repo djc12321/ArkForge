@@ -1,0 +1,108 @@
+compiler:
+  class_forward_declaration:
+  - JSCompiler
+include:
+- '"ir/expressions/callExpression.h"'
+ir:
+  class_definitions:
+  - extends: public CallExpression
+    friends:
+    - compiler::JSCompiler
+    name: DirectEvalExpression
+    private: {}
+    public:
+      constructors:
+      - args:
+        - name: callee
+          type:
+            name: Expression
+            ptr_depth: 1
+        - name: arguments
+          type:
+            name: ArenaVector
+            ref_depth: 2
+            template_args:
+            - type:
+                name: Expression
+                ptr_depth: 1
+        - name: typeParams
+          type:
+            name: TSTypeParameterInstantiation
+            ptr_depth: 1
+        - name: optional
+          type:
+            name: bool
+        - initializer_for: parserStatus_
+          name: parserStatus
+          type:
+            name: uint32_t
+        name: DirectEvalExpression
+        other_initializers:
+        - class_field: CallExpression
+          init_value: callee, std::move(arguments), typeParams, optional
+        raw_declaration: "explicit DirectEvalExpression(Expression *callee, ArenaVector<Expression\
+          \ *> &&arguments,\n                                  TSTypeParameterInstantiation\
+          \ *typeParams, bool optional, uint32_t parserStatus)"
+        return_type:
+          prefix: explicit
+      methods:
+      - args:
+        - name: pg
+          type:
+            name: PandaGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::PandaGen *pg) const override
+        return_type:
+          name: void
+      - args:
+        - name: etsg
+          type:
+            name: ETSGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::ETSGen *etsg) const override
+        return_type:
+          name: void
+      - args:
+        - name: checker
+          type:
+            name: TSChecker
+            namespace: checker
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::Type *Check(checker::TSChecker *checker) override
+        return_type:
+          name: Type
+          namespace: checker
+          ptr_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            namespace: checker
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::VerifiedType Check(checker::ETSChecker *checker)
+          override
+        return_type:
+          name: VerifiedType
+          namespace: checker
+      - args:
+        - name: v
+          type:
+            name: ASTVisitorT
+            ptr_depth: 1
+        name: Accept
+        postfix: override
+        raw_declaration: void Accept(ASTVisitorT *v) override
+        return_type:
+          name: void
+macros:
+- name: ES2PANDA_IR_EXPRESSION_DIRECT_EVAL_H

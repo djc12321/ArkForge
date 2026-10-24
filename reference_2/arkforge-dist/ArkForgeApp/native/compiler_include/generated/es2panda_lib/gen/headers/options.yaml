@@ -1,0 +1,3137 @@
+gen:
+  ast_verifier:
+    enums:
+    - flag_unions:
+      - flags:
+        - NODE_HAS_PARENT
+        name: BASE_FIRST
+      - flags:
+        - EVERY_CHILD_IN_PARENT_RANGE
+        name: BASE_LAST
+      - flags:
+        - CHECK_STRUCT_DECLARATION
+        name: AFTER_PLUGINS_AFTER_PARSE_FIRST
+      - flags:
+        - CHECK_STRUCT_DECLARATION
+        name: AFTER_PLUGINS_AFTER_PARSE_LAST
+      - flags:
+        - VARIABLE_HAS_SCOPE
+        name: AFTER_SCOPES_INIT_PHASE_FIRST
+      - flags:
+        - VARIABLE_HAS_SCOPE
+        name: AFTER_SCOPES_INIT_PHASE_LAST
+      - flags:
+        - NODE_HAS_TYPE
+        name: AFTER_CHECKER_PHASE_FIRST
+      - flags:
+        - CHECK_CONST_PROPERTIES
+        name: AFTER_CHECKER_PHASE_LAST
+      - flags:
+        - NODE_HAS_PARENT
+        name: FIRST
+      - flags:
+        - CHECK_CONST_PROPERTIES
+        name: LAST
+      - flags:
+        - COUNT
+        name: INVALID
+      flags:
+      - NODE_HAS_PARENT
+      - NODE_HAS_SOURCE_RANGE
+      - EVERY_CHILD_HAS_VALID_PARENT
+      - EVERY_CHILD_IN_PARENT_RANGE
+      - CHECK_STRUCT_DECLARATION
+      - VARIABLE_HAS_SCOPE
+      - NODE_HAS_TYPE
+      - NO_PRIMITIVE_TYPES
+      - ENUM_HAS_CORRECT_TYPE
+      - IDENTIFIER_HAS_VARIABLE
+      - REFERENCE_TYPE_ANNOTATION_IS_NULL
+      - ARITHMETIC_OPERATION_VALID
+      - SEQUENCE_EXPRESSION_HAS_LAST_TYPE
+      - FOR_LOOP_CORRECTLY_INITIALIZED
+      - VARIABLE_HAS_ENCLOSING_SCOPE
+      - MODIFIER_ACCESS_VALID
+      - VARIABLE_NAME_IDENTIFIER_NAME_SAME
+      - CHECK_ABSTRACT_METHOD
+      - GETTER_SETTER_VALIDATION
+      - CHECK_SCOPE_DECLARATION
+      - CHECK_CONST_PROPERTIES
+      - COUNT
+      kind: simple
+      name: Enum
+      namespace: ast_verifier
+    functions:
+    - args:
+      - name: str
+        type:
+          name: string_view
+          namespace: std
+      name: FromString
+      raw_declaration: inline auto FromString(std::string_view str)
+      return_type:
+        name: auto
+        prefix: inline
+    - args:
+      - name: e
+        type:
+          name: Enum
+      name: ToString
+      raw_declaration: constexpr std::string_view ToString(Enum e)
+      return_type:
+        name: string_view
+        namespace: std
+        prefix: constexpr
+  class_definitions:
+  - class_definitions:
+    - name: Error
+      private: {}
+      public:
+        methods:
+        - args:
+          - name: msg
+            type:
+              name: string
+              namespace: std
+          name: Error
+          other_initializers:
+          - class_field: msg_
+            init_value: std::move(msg)
+          raw_declaration: explicit Error(std::string msg)
+          return_type:
+            prefix: explicit
+        - additional_attributes: get
+          args: []
+          name: GetMessage
+          raw_declaration: std::string GetMessage()
+          return_type:
+            name: string
+            namespace: std
+    name: Options
+    private: {}
+    public:
+      constructors:
+      - args:
+        - name: exe_path
+          type:
+            name: string
+            namespace: std
+            prefix: const
+            ref_depth: 1
+        name: Options
+        other_initializers:
+        - class_field: exe_dir_
+          init_value: GetExeDir(exe_path)
+        raw_declaration: explicit Options(const std::string &exe_path)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: set
+        args:
+        - name: parser
+          type:
+            name: PandArgParser
+            ptr_depth: 1
+        name: AddOptions
+        raw_declaration: void AddOptions(PandArgParser *parser)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: IsHelp
+        postfix: const
+        raw_declaration: bool IsHelp([[maybe_unused]] std::string_view lang = "")
+          const
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: bool
+        name: SetHelp
+        raw_declaration: void SetHelp(bool value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetHelp
+        postfix: const
+        raw_declaration: bool WasSetHelp([[maybe_unused]] std::string_view lang =
+          "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: IsVersion
+        postfix: const
+        raw_declaration: bool IsVersion([[maybe_unused]] std::string_view lang = "")
+          const
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: bool
+        name: SetVersion
+        raw_declaration: void SetVersion(bool value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetVersion
+        postfix: const
+        raw_declaration: bool WasSetVersion([[maybe_unused]] std::string_view lang
+          = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: GetTargetApiVersion
+        postfix: const
+        raw_declaration: int GetTargetApiVersion([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: int
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: int
+        name: SetTargetApiVersion
+        raw_declaration: void SetTargetApiVersion(int value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetTargetApiVersion
+        postfix: const
+        raw_declaration: bool WasSetTargetApiVersion([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: GetArktsconfig
+        postfix: const
+        raw_declaration: const std::string &GetArktsconfig([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: string
+          namespace: std
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: string
+            namespace: std
+        name: SetArktsconfig
+        raw_declaration: void SetArktsconfig(std::string value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetArktsconfig
+        postfix: const
+        raw_declaration: bool WasSetArktsconfig([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: GetExtension
+        postfix: const
+        raw_declaration: const std::string &GetExtension([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: string
+          namespace: std
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: string
+            namespace: std
+        name: SetExtension
+        raw_declaration: void SetExtension(std::string value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetExtension
+        postfix: const
+        raw_declaration: bool WasSetExtension([[maybe_unused]] std::string_view lang
+          = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: IsModule
+        postfix: const
+        raw_declaration: bool IsModule([[maybe_unused]] std::string_view lang = "")
+          const
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: bool
+        name: SetModule
+        raw_declaration: void SetModule(bool value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetModule
+        postfix: const
+        raw_declaration: bool WasSetModule([[maybe_unused]] std::string_view lang
+          = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: IsParseOnly
+        postfix: const
+        raw_declaration: bool IsParseOnly([[maybe_unused]] std::string_view lang =
+          "") const
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: bool
+        name: SetParseOnly
+        raw_declaration: void SetParseOnly(bool value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetParseOnly
+        postfix: const
+        raw_declaration: bool WasSetParseOnly([[maybe_unused]] std::string_view lang
+          = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: GetDumpAstOutput
+        postfix: const
+        raw_declaration: const std::string &GetDumpAstOutput([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: string
+          namespace: std
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: string
+            namespace: std
+        name: SetDumpAstOutput
+        raw_declaration: void SetDumpAstOutput(std::string value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetDumpAstOutput
+        postfix: const
+        raw_declaration: bool WasSetDumpAstOutput([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: IsDumpAst
+        postfix: const
+        raw_declaration: bool IsDumpAst([[maybe_unused]] std::string_view lang = "")
+          const
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: bool
+        name: SetDumpAst
+        raw_declaration: void SetDumpAst(bool value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetDumpAst
+        postfix: const
+        raw_declaration: bool WasSetDumpAst([[maybe_unused]] std::string_view lang
+          = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: IsDumpCfg
+        postfix: const
+        raw_declaration: bool IsDumpCfg([[maybe_unused]] std::string_view lang = "")
+          const
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: bool
+        name: SetDumpCfg
+        raw_declaration: void SetDumpCfg(bool value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetDumpCfg
+        postfix: const
+        raw_declaration: bool WasSetDumpCfg([[maybe_unused]] std::string_view lang
+          = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: IsDumpDynamicAst
+        postfix: const
+        raw_declaration: bool IsDumpDynamicAst([[maybe_unused]] std::string_view lang
+          = "") const
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: bool
+        name: SetDumpDynamicAst
+        raw_declaration: void SetDumpDynamicAst(bool value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetDumpDynamicAst
+        postfix: const
+        raw_declaration: bool WasSetDumpDynamicAst([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: IsDumpAstOnlySilent
+        postfix: const
+        raw_declaration: bool IsDumpAstOnlySilent([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: bool
+        name: SetDumpAstOnlySilent
+        raw_declaration: void SetDumpAstOnlySilent(bool value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetDumpAstOnlySilent
+        postfix: const
+        raw_declaration: bool WasSetDumpAstOnlySilent([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: IsListFiles
+        postfix: const
+        raw_declaration: bool IsListFiles([[maybe_unused]] std::string_view lang =
+          "") const
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: bool
+        name: SetListFiles
+        raw_declaration: void SetListFiles(bool value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetListFiles
+        postfix: const
+        raw_declaration: bool WasSetListFiles([[maybe_unused]] std::string_view lang
+          = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: IsDumpAssembly
+        postfix: const
+        raw_declaration: bool IsDumpAssembly([[maybe_unused]] std::string_view lang
+          = "") const
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: bool
+        name: SetDumpAssembly
+        raw_declaration: void SetDumpAssembly(bool value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetDumpAssembly
+        postfix: const
+        raw_declaration: bool WasSetDumpAssembly([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: IsDebugInfo
+        postfix: const
+        raw_declaration: bool IsDebugInfo([[maybe_unused]] std::string_view lang =
+          "") const
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: bool
+        name: SetDebugInfo
+        raw_declaration: void SetDebugInfo(bool value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetDebugInfo
+        postfix: const
+        raw_declaration: bool WasSetDebugInfo([[maybe_unused]] std::string_view lang
+          = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: IsDumpDebugInfo
+        postfix: const
+        raw_declaration: bool IsDumpDebugInfo([[maybe_unused]] std::string_view lang
+          = "") const
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: bool
+        name: SetDumpDebugInfo
+        raw_declaration: void SetDumpDebugInfo(bool value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetDumpDebugInfo
+        postfix: const
+        raw_declaration: bool WasSetDumpDebugInfo([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: GetOptLevel
+        postfix: const
+        raw_declaration: int GetOptLevel([[maybe_unused]] std::string_view lang =
+          "") const
+        return_type:
+          name: int
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: int
+        name: SetOptLevel
+        raw_declaration: void SetOptLevel(int value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetOptLevel
+        postfix: const
+        raw_declaration: bool WasSetOptLevel([[maybe_unused]] std::string_view lang
+          = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: IsEtsModule
+        postfix: const
+        raw_declaration: bool IsEtsModule([[maybe_unused]] std::string_view lang =
+          "") const
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: bool
+        name: SetEtsModule
+        raw_declaration: void SetEtsModule(bool value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetEtsModule
+        postfix: const
+        raw_declaration: bool WasSetEtsModule([[maybe_unused]] std::string_view lang
+          = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: GetEvalMode
+        postfix: const
+        raw_declaration: const std::string &GetEvalMode([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: string
+          namespace: std
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: string
+            namespace: std
+        name: SetEvalMode
+        raw_declaration: void SetEvalMode(std::string value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetEvalMode
+        postfix: const
+        raw_declaration: bool WasSetEvalMode([[maybe_unused]] std::string_view lang
+          = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: IsEtsWarningsWerror
+        postfix: const
+        raw_declaration: bool IsEtsWarningsWerror([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: bool
+        name: SetEtsWarningsWerror
+        raw_declaration: void SetEtsWarningsWerror(bool value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetEtsWarningsWerror
+        postfix: const
+        raw_declaration: bool WasSetEtsWarningsWerror([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: GetEtsWarningsEnable
+        postfix: const
+        raw_declaration: const arg_list_t &GetEtsWarningsEnable([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: arg_list_t
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: arg_list_t
+        name: SetEtsWarningsEnable
+        raw_declaration: void SetEtsWarningsEnable(arg_list_t value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetEtsWarningsEnable
+        postfix: const
+        raw_declaration: bool WasSetEtsWarningsEnable([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: GetEtsWarningsDisable
+        postfix: const
+        raw_declaration: const arg_list_t &GetEtsWarningsDisable([[maybe_unused]]
+          std::string_view lang = "") const
+        return_type:
+          name: arg_list_t
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: arg_list_t
+        name: SetEtsWarningsDisable
+        raw_declaration: void SetEtsWarningsDisable(arg_list_t value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetEtsWarningsDisable
+        postfix: const
+        raw_declaration: bool WasSetEtsWarningsDisable([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: GetEtsWarningsBasePath
+        postfix: const
+        raw_declaration: const std::string &GetEtsWarningsBasePath([[maybe_unused]]
+          std::string_view lang = "") const
+        return_type:
+          name: string
+          namespace: std
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: string
+            namespace: std
+        name: SetEtsWarningsBasePath
+        raw_declaration: void SetEtsWarningsBasePath(std::string value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetEtsWarningsBasePath
+        postfix: const
+        raw_declaration: bool WasSetEtsWarningsBasePath([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: GetEtsWarningsDiagnosticFormat
+        postfix: const
+        raw_declaration: const std::string &GetEtsWarningsDiagnosticFormat([[maybe_unused]]
+          std::string_view lang = "") const
+        return_type:
+          name: string
+          namespace: std
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: string
+            namespace: std
+        name: SetEtsWarningsDiagnosticFormat
+        raw_declaration: void SetEtsWarningsDiagnosticFormat(std::string value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetEtsWarningsDiagnosticFormat
+        postfix: const
+        raw_declaration: bool WasSetEtsWarningsDiagnosticFormat([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: IsEtsWarnings
+        postfix: const
+        raw_declaration: bool IsEtsWarnings([[maybe_unused]] std::string_view lang
+          = "") const
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: bool
+        name: SetEtsWarnings
+        raw_declaration: void SetEtsWarnings(bool value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetEtsWarnings
+        postfix: const
+        raw_declaration: bool WasSetEtsWarnings([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: GetDebuggerEvalLine
+        postfix: const
+        raw_declaration: uint64_t GetDebuggerEvalLine([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: uint64_t
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: uint64_t
+        name: SetDebuggerEvalLine
+        raw_declaration: void SetDebuggerEvalLine(uint64_t value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetDebuggerEvalLine
+        postfix: const
+        raw_declaration: bool WasSetDebuggerEvalLine([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: GetDebuggerEvalSource
+        postfix: const
+        raw_declaration: const std::string &GetDebuggerEvalSource([[maybe_unused]]
+          std::string_view lang = "") const
+        return_type:
+          name: string
+          namespace: std
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: string
+            namespace: std
+        name: SetDebuggerEvalSource
+        raw_declaration: void SetDebuggerEvalSource(std::string value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetDebuggerEvalSource
+        postfix: const
+        raw_declaration: bool WasSetDebuggerEvalSource([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: GetDebuggerEvalPandaFiles
+        postfix: const
+        raw_declaration: const arg_list_t &GetDebuggerEvalPandaFiles([[maybe_unused]]
+          std::string_view lang = "") const
+        return_type:
+          name: arg_list_t
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: arg_list_t
+        name: SetDebuggerEvalPandaFiles
+        raw_declaration: void SetDebuggerEvalPandaFiles(arg_list_t value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetDebuggerEvalPandaFiles
+        postfix: const
+        raw_declaration: bool WasSetDebuggerEvalPandaFiles([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: IsDebuggerEval
+        postfix: const
+        raw_declaration: bool IsDebuggerEval([[maybe_unused]] std::string_view lang
+          = "") const
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: bool
+        name: SetDebuggerEval
+        raw_declaration: void SetDebuggerEval(bool value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetDebuggerEval
+        postfix: const
+        raw_declaration: bool WasSetDebuggerEval([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: IsGenerateDeclEnabled
+        postfix: const
+        raw_declaration: bool IsGenerateDeclEnabled([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: bool
+        name: SetGenerateDeclEnabled
+        raw_declaration: void SetGenerateDeclEnabled(bool value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetGenerateDeclEnabled
+        postfix: const
+        raw_declaration: bool WasSetGenerateDeclEnabled([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: GetGenerateDeclPath
+        postfix: const
+        raw_declaration: const std::string &GetGenerateDeclPath([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: string
+          namespace: std
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: string
+            namespace: std
+        name: SetGenerateDeclPath
+        raw_declaration: void SetGenerateDeclPath(std::string value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetGenerateDeclPath
+        postfix: const
+        raw_declaration: bool WasSetGenerateDeclPath([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: GetGenerateDeclNamecachepath
+        postfix: const
+        raw_declaration: const std::string &GetGenerateDeclNamecachepath([[maybe_unused]]
+          std::string_view lang = "") const
+        return_type:
+          name: string
+          namespace: std
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: string
+            namespace: std
+        name: SetGenerateDeclNamecachepath
+        raw_declaration: void SetGenerateDeclNamecachepath(std::string value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetGenerateDeclNamecachepath
+        postfix: const
+        raw_declaration: bool WasSetGenerateDeclNamecachepath([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: IsGenerateDecl
+        postfix: const
+        raw_declaration: bool IsGenerateDecl([[maybe_unused]] std::string_view lang
+          = "") const
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: bool
+        name: SetGenerateDecl
+        raw_declaration: void SetGenerateDecl(bool value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetGenerateDecl
+        postfix: const
+        raw_declaration: bool WasSetGenerateDecl([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: IsEmitDeclaration
+        postfix: const
+        raw_declaration: bool IsEmitDeclaration([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: bool
+        name: SetEmitDeclaration
+        raw_declaration: void SetEmitDeclaration(bool value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetEmitDeclaration
+        postfix: const
+        raw_declaration: bool WasSetEmitDeclaration([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: IsUnusedVarsAnalyzer
+        postfix: const
+        raw_declaration: bool IsUnusedVarsAnalyzer([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: bool
+        name: SetUnusedVarsAnalyzer
+        raw_declaration: void SetUnusedVarsAnalyzer(bool value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetUnusedVarsAnalyzer
+        postfix: const
+        raw_declaration: bool WasSetUnusedVarsAnalyzer([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: GetThread
+        postfix: const
+        raw_declaration: int GetThread([[maybe_unused]] std::string_view lang = "")
+          const
+        return_type:
+          name: int
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: int
+        name: SetThread
+        raw_declaration: void SetThread(int value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetThread
+        postfix: const
+        raw_declaration: bool WasSetThread([[maybe_unused]] std::string_view lang
+          = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: IsDumpSizeStat
+        postfix: const
+        raw_declaration: bool IsDumpSizeStat([[maybe_unused]] std::string_view lang
+          = "") const
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: bool
+        name: SetDumpSizeStat
+        raw_declaration: void SetDumpSizeStat(bool value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetDumpSizeStat
+        postfix: const
+        raw_declaration: bool WasSetDumpSizeStat([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: GetOutput
+        postfix: const
+        raw_declaration: const std::string &GetOutput([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: string
+          namespace: std
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: string
+            namespace: std
+        name: SetOutput
+        raw_declaration: void SetOutput(std::string value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetOutput
+        postfix: const
+        raw_declaration: bool WasSetOutput([[maybe_unused]] std::string_view lang
+          = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: GetLogLevel
+        postfix: const
+        raw_declaration: const std::string &GetLogLevel([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: string
+          namespace: std
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: string
+            namespace: std
+        name: SetLogLevel
+        raw_declaration: void SetLogLevel(std::string value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetLogLevel
+        postfix: const
+        raw_declaration: bool WasSetLogLevel([[maybe_unused]] std::string_view lang
+          = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: GetStdlib
+        postfix: const
+        raw_declaration: const std::string &GetStdlib([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: string
+          namespace: std
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: string
+            namespace: std
+        name: SetStdlib
+        raw_declaration: void SetStdlib(std::string value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetStdlib
+        postfix: const
+        raw_declaration: bool WasSetStdlib([[maybe_unused]] std::string_view lang
+          = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: IsGenStdlib
+        postfix: const
+        raw_declaration: bool IsGenStdlib([[maybe_unused]] std::string_view lang =
+          "") const
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: bool
+        name: SetGenStdlib
+        raw_declaration: void SetGenStdlib(bool value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetGenStdlib
+        postfix: const
+        raw_declaration: bool WasSetGenStdlib([[maybe_unused]] std::string_view lang
+          = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: GetPlugins
+        postfix: const
+        raw_declaration: const arg_list_t &GetPlugins([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: arg_list_t
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: arg_list_t
+        name: SetPlugins
+        raw_declaration: void SetPlugins(arg_list_t value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetPlugins
+        postfix: const
+        raw_declaration: bool WasSetPlugins([[maybe_unused]] std::string_view lang
+          = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: GetSkipPhases
+        postfix: const
+        raw_declaration: const arg_list_t &GetSkipPhases([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: arg_list_t
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: arg_list_t
+        name: SetSkipPhases
+        raw_declaration: void SetSkipPhases(arg_list_t value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetSkipPhases
+        postfix: const
+        raw_declaration: bool WasSetSkipPhases([[maybe_unused]] std::string_view lang
+          = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: GetAstVerifierWarnings
+        postfix: const
+        raw_declaration: const arg_list_t &GetAstVerifierWarnings([[maybe_unused]]
+          std::string_view lang = "") const
+        return_type:
+          name: arg_list_t
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: arg_list_t
+        name: SetAstVerifierWarnings
+        raw_declaration: void SetAstVerifierWarnings(arg_list_t value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetAstVerifierWarnings
+        postfix: const
+        raw_declaration: bool WasSetAstVerifierWarnings([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: GetAstVerifierErrors
+        postfix: const
+        raw_declaration: const arg_list_t &GetAstVerifierErrors([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: arg_list_t
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: arg_list_t
+        name: SetAstVerifierErrors
+        raw_declaration: void SetAstVerifierErrors(arg_list_t value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetAstVerifierErrors
+        postfix: const
+        raw_declaration: bool WasSetAstVerifierErrors([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: GetAstVerifierPhases
+        postfix: const
+        raw_declaration: const arg_list_t &GetAstVerifierPhases([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: arg_list_t
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: arg_list_t
+        name: SetAstVerifierPhases
+        raw_declaration: void SetAstVerifierPhases(arg_list_t value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetAstVerifierPhases
+        postfix: const
+        raw_declaration: bool WasSetAstVerifierPhases([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: IsAstVerifierFullProgram
+        postfix: const
+        raw_declaration: bool IsAstVerifierFullProgram([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: bool
+        name: SetAstVerifierFullProgram
+        raw_declaration: void SetAstVerifierFullProgram(bool value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetAstVerifierFullProgram
+        postfix: const
+        raw_declaration: bool WasSetAstVerifierFullProgram([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: IsAstVerifierJson
+        postfix: const
+        raw_declaration: bool IsAstVerifierJson([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: bool
+        name: SetAstVerifierJson
+        raw_declaration: void SetAstVerifierJson(bool value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetAstVerifierJson
+        postfix: const
+        raw_declaration: bool WasSetAstVerifierJson([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: GetAstVerifierJsonPath
+        postfix: const
+        raw_declaration: const std::string &GetAstVerifierJsonPath([[maybe_unused]]
+          std::string_view lang = "") const
+        return_type:
+          name: string
+          namespace: std
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: string
+            namespace: std
+        name: SetAstVerifierJsonPath
+        raw_declaration: void SetAstVerifierJsonPath(std::string value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetAstVerifierJsonPath
+        postfix: const
+        raw_declaration: bool WasSetAstVerifierJsonPath([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: IsAstVerifier
+        postfix: const
+        raw_declaration: bool IsAstVerifier([[maybe_unused]] std::string_view lang
+          = "") const
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: bool
+        name: SetAstVerifier
+        raw_declaration: void SetAstVerifier(bool value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetAstVerifier
+        postfix: const
+        raw_declaration: bool WasSetAstVerifier([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: IsListPhases
+        postfix: const
+        raw_declaration: bool IsListPhases([[maybe_unused]] std::string_view lang
+          = "") const
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: bool
+        name: SetListPhases
+        raw_declaration: void SetListPhases(bool value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetListPhases
+        postfix: const
+        raw_declaration: bool WasSetListPhases([[maybe_unused]] std::string_view lang
+          = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: IsEtsUnnamed
+        postfix: const
+        raw_declaration: bool IsEtsUnnamed([[maybe_unused]] std::string_view lang
+          = "") const
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: bool
+        name: SetEtsUnnamed
+        raw_declaration: void SetEtsUnnamed(bool value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetEtsUnnamed
+        postfix: const
+        raw_declaration: bool WasSetEtsUnnamed([[maybe_unused]] std::string_view lang
+          = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: GetEtsPath
+        postfix: const
+        raw_declaration: const std::string &GetEtsPath([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: string
+          namespace: std
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: string
+            namespace: std
+        name: SetEtsPath
+        raw_declaration: void SetEtsPath(std::string value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetEtsPath
+        postfix: const
+        raw_declaration: bool WasSetEtsPath([[maybe_unused]] std::string_view lang
+          = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: GetExitBeforePhase
+        postfix: const
+        raw_declaration: const std::string &GetExitBeforePhase([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: string
+          namespace: std
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: string
+            namespace: std
+        name: SetExitBeforePhase
+        raw_declaration: void SetExitBeforePhase(std::string value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetExitBeforePhase
+        postfix: const
+        raw_declaration: bool WasSetExitBeforePhase([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: GetExitAfterPhase
+        postfix: const
+        raw_declaration: const std::string &GetExitAfterPhase([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: string
+          namespace: std
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: string
+            namespace: std
+        name: SetExitAfterPhase
+        raw_declaration: void SetExitAfterPhase(std::string value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetExitAfterPhase
+        postfix: const
+        raw_declaration: bool WasSetExitAfterPhase([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: GetDumpBeforePhases
+        postfix: const
+        raw_declaration: const arg_list_t &GetDumpBeforePhases([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: arg_list_t
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: arg_list_t
+        name: SetDumpBeforePhases
+        raw_declaration: void SetDumpBeforePhases(arg_list_t value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetDumpBeforePhases
+        postfix: const
+        raw_declaration: bool WasSetDumpBeforePhases([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: GetDumpAfterPhases
+        postfix: const
+        raw_declaration: const arg_list_t &GetDumpAfterPhases([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: arg_list_t
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: arg_list_t
+        name: SetDumpAfterPhases
+        raw_declaration: void SetDumpAfterPhases(arg_list_t value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetDumpAfterPhases
+        postfix: const
+        raw_declaration: bool WasSetDumpAfterPhases([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: GetDumpEtsSrcBeforePhases
+        postfix: const
+        raw_declaration: const arg_list_t &GetDumpEtsSrcBeforePhases([[maybe_unused]]
+          std::string_view lang = "") const
+        return_type:
+          name: arg_list_t
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: arg_list_t
+        name: SetDumpEtsSrcBeforePhases
+        raw_declaration: void SetDumpEtsSrcBeforePhases(arg_list_t value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetDumpEtsSrcBeforePhases
+        postfix: const
+        raw_declaration: bool WasSetDumpEtsSrcBeforePhases([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: GetDumpEtsSrcAfterPhases
+        postfix: const
+        raw_declaration: const arg_list_t &GetDumpEtsSrcAfterPhases([[maybe_unused]]
+          std::string_view lang = "") const
+        return_type:
+          name: arg_list_t
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: arg_list_t
+        name: SetDumpEtsSrcAfterPhases
+        raw_declaration: void SetDumpEtsSrcAfterPhases(arg_list_t value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetDumpEtsSrcAfterPhases
+        postfix: const
+        raw_declaration: bool WasSetDumpEtsSrcAfterPhases([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: GetBcoOptimizer
+        postfix: const
+        raw_declaration: const arg_list_t &GetBcoOptimizer([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: arg_list_t
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: arg_list_t
+        name: SetBcoOptimizer
+        raw_declaration: void SetBcoOptimizer(arg_list_t value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetBcoOptimizer
+        postfix: const
+        raw_declaration: bool WasSetBcoOptimizer([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: GetBcoCompiler
+        postfix: const
+        raw_declaration: const arg_list_t &GetBcoCompiler([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: arg_list_t
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: arg_list_t
+        name: SetBcoCompiler
+        raw_declaration: void SetBcoCompiler(arg_list_t value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetBcoCompiler
+        postfix: const
+        raw_declaration: bool WasSetBcoCompiler([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: IsDumpPerfMetrics
+        postfix: const
+        raw_declaration: bool IsDumpPerfMetrics([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: bool
+        name: SetDumpPerfMetrics
+        raw_declaration: void SetDumpPerfMetrics(bool value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetDumpPerfMetrics
+        postfix: const
+        raw_declaration: bool WasSetDumpPerfMetrics([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: IsSimultaneous
+        postfix: const
+        raw_declaration: bool IsSimultaneous([[maybe_unused]] std::string_view lang
+          = "") const
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: bool
+        name: SetSimultaneous
+        raw_declaration: void SetSimultaneous(bool value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetSimultaneous
+        postfix: const
+        raw_declaration: bool WasSetSimultaneous([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: IsStoreDeclarationCacheDirectlyInMemory
+        postfix: const
+        raw_declaration: bool IsStoreDeclarationCacheDirectlyInMemory([[maybe_unused]]
+          std::string_view lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: bool
+        name: SetStoreDeclarationCacheDirectlyInMemory
+        raw_declaration: void SetStoreDeclarationCacheDirectlyInMemory(bool value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetStoreDeclarationCacheDirectlyInMemory
+        postfix: const
+        raw_declaration: bool WasSetStoreDeclarationCacheDirectlyInMemory([[maybe_unused]]
+          std::string_view lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: IsEtsStringsConcat
+        postfix: const
+        raw_declaration: bool IsEtsStringsConcat([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: bool
+        name: SetEtsStringsConcat
+        raw_declaration: void SetEtsStringsConcat(bool value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetEtsStringsConcat
+        postfix: const
+        raw_declaration: bool WasSetEtsStringsConcat([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: IsPermitRelaxedAny
+        postfix: const
+        raw_declaration: bool IsPermitRelaxedAny([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: bool
+        name: SetPermitRelaxedAny
+        raw_declaration: void SetPermitRelaxedAny(bool value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetPermitRelaxedAny
+        postfix: const
+        raw_declaration: bool WasSetPermitRelaxedAny([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: IsEmitMetadata
+        postfix: const
+        raw_declaration: bool IsEmitMetadata([[maybe_unused]] std::string_view lang
+          = "") const
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: bool
+        name: SetEmitMetadata
+        raw_declaration: void SetEmitMetadata(bool value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetEmitMetadata
+        postfix: const
+        raw_declaration: bool WasSetEmitMetadata([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: IsStacklessCoros
+        postfix: const
+        raw_declaration: bool IsStacklessCoros([[maybe_unused]] std::string_view lang
+          = "") const
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: bool
+        name: SetStacklessCoros
+        raw_declaration: void SetStacklessCoros(bool value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetStacklessCoros
+        postfix: const
+        raw_declaration: bool WasSetStacklessCoros([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: IsIncremental
+        postfix: const
+        raw_declaration: bool IsIncremental([[maybe_unused]] std::string_view lang
+          = "") const
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: bool
+        name: SetIncremental
+        raw_declaration: void SetIncremental(bool value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetIncremental
+        postfix: const
+        raw_declaration: bool WasSetIncremental([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: IsReadMetadata
+        postfix: const
+        raw_declaration: bool IsReadMetadata([[maybe_unused]] std::string_view lang
+          = "") const
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: bool
+        name: SetReadMetadata
+        raw_declaration: void SetReadMetadata(bool value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetReadMetadata
+        postfix: const
+        raw_declaration: bool WasSetReadMetadata([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: IsColdReload
+        postfix: const
+        raw_declaration: bool IsColdReload([[maybe_unused]] std::string_view lang
+          = "") const
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: bool
+        name: SetColdReload
+        raw_declaration: void SetColdReload(bool value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetColdReload
+        postfix: const
+        raw_declaration: bool WasSetColdReload([[maybe_unused]] std::string_view lang
+          = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: IsHotReload
+        postfix: const
+        raw_declaration: bool IsHotReload([[maybe_unused]] std::string_view lang =
+          "") const
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: bool
+        name: SetHotReload
+        raw_declaration: void SetHotReload(bool value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetHotReload
+        postfix: const
+        raw_declaration: bool WasSetHotReload([[maybe_unused]] std::string_view lang
+          = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: GetDumpSymbolTable
+        postfix: const
+        raw_declaration: const std::string &GetDumpSymbolTable([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: string
+          namespace: std
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: string
+            namespace: std
+        name: SetDumpSymbolTable
+        raw_declaration: void SetDumpSymbolTable(std::string value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetDumpSymbolTable
+        postfix: const
+        raw_declaration: bool WasSetDumpSymbolTable([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: GetInputSymbolTable
+        postfix: const
+        raw_declaration: const std::string &GetInputSymbolTable([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: string
+          namespace: std
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: set
+        args:
+        - name: value
+          type:
+            name: string
+            namespace: std
+        name: SetInputSymbolTable
+        raw_declaration: void SetInputSymbolTable(std::string value)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args:
+        - default_value: '""'
+          name: lang
+          type:
+            name: string_view
+            namespace: std
+            prefix: '[[maybe_unused]]'
+        name: WasSetInputSymbolTable
+        postfix: const
+        raw_declaration: bool WasSetInputSymbolTable([[maybe_unused]] std::string_view
+          lang = "") const
+        return_type:
+          name: bool
+      - args: []
+        name: Validate
+        postfix: const
+        raw_declaration: std::optional<Error> Validate() const
+        return_type:
+          name: optional
+          namespace: std
+          template_args:
+          - type:
+              name: Error
+  ets_warnings:
+    enums:
+    - flag_unions:
+      - flags:
+        - ETS_PROHIBIT_TOP_LEVEL_STATEMENTS
+        name: SUBSET_AWARE_FIRST
+      - flags:
+        - ETS_ANNOTATION_UNUSED_GENERIC_ALIAS_WARN
+        name: SUBSET_AWARE_LAST
+      - flags:
+        - ETS_SUGGEST_FINAL
+        name: SUBSET_UNAWARE_FIRST
+      - flags:
+        - ETS_REMOVE_ASYNC
+        name: SUBSET_UNAWARE_LAST
+      - flags:
+        - ETS_PROHIBIT_TOP_LEVEL_STATEMENTS
+        name: FIRST
+      - flags:
+        - ETS_REMOVE_ASYNC
+        name: LAST
+      - flags:
+        - COUNT
+        name: INVALID
+      flags:
+      - ETS_PROHIBIT_TOP_LEVEL_STATEMENTS
+      - ETS_BOOST_EQUALITY_STATEMENT
+      - ETS_REMOVE_LAMBDA
+      - ETS_IMPLICIT_BOXING_UNBOXING
+      - ETS_ANNOTATION_UNUSED_GENERIC_ALIAS_WARN
+      - ETS_SUGGEST_FINAL
+      - ETS_REMOVE_ASYNC
+      - COUNT
+      kind: simple
+      name: Enum
+      namespace: ets_warnings
+    functions:
+    - args:
+      - name: str
+        type:
+          name: string_view
+          namespace: std
+      name: FromString
+      raw_declaration: inline auto FromString(std::string_view str)
+      return_type:
+        name: auto
+        prefix: inline
+    - args:
+      - name: e
+        type:
+          name: Enum
+      name: ToString
+      raw_declaration: constexpr std::string_view ToString(Enum e)
+      return_type:
+        name: string_view
+        namespace: std
+        prefix: constexpr
+  eval_mode:
+    enums:
+    - flag_unions:
+      - flags:
+        - NONE
+        name: FIRST
+      - flags:
+        - FUNCTION
+        name: LAST
+      - flags:
+        - COUNT
+        name: INVALID
+      flags:
+      - NONE
+      - DEFAULT
+      - DIRECT
+      - FUNCTION
+      - COUNT
+      kind: simple
+      name: Enum
+      namespace: eval_mode
+    functions:
+    - args:
+      - name: str
+        type:
+          name: string_view
+          namespace: std
+      name: FromString
+      raw_declaration: inline auto FromString(std::string_view str)
+      return_type:
+        name: auto
+        prefix: inline
+    - args:
+      - name: e
+        type:
+          name: Enum
+      name: ToString
+      raw_declaration: constexpr std::string_view ToString(Enum e)
+      return_type:
+        name: string_view
+        namespace: std
+        prefix: constexpr
+  extension:
+    enums:
+    - flag_unions:
+      - flags:
+        - JS
+        name: FIRST
+      - flags:
+        - ETS
+        name: LAST
+      - flags:
+        - COUNT
+        name: INVALID
+      flags:
+      - JS
+      - TS
+      - AS
+      - ETS
+      - COUNT
+      kind: simple
+      name: Enum
+      namespace: extension
+    functions:
+    - args:
+      - name: str
+        type:
+          name: string_view
+          namespace: std
+      name: FromString
+      raw_declaration: inline auto FromString(std::string_view str)
+      return_type:
+        name: auto
+        prefix: inline
+    - args:
+      - name: e
+        type:
+          name: Enum
+      name: ToString
+      raw_declaration: constexpr std::string_view ToString(Enum e)
+      return_type:
+        name: string_view
+        namespace: std
+        prefix: constexpr
+include:
+- '"libarkbase/utils/pandargs.h"'
+- '"platforms/target_defaults/default_target_options.h"'
+- '"libarkbase/macros.h"'
+- <optional>
+- <string>
+- <unordered_set>
+- <vector>
+macros:
+- name: PANDA_ES2PANDA_OPTIONS_GEN_H

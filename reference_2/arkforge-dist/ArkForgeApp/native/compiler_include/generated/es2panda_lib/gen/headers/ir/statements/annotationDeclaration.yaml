@@ -1,0 +1,501 @@
+include:
+- '"ir/annotationAllowed.h"'
+- '"varbinder/scope.h"'
+- '"varbinder/variable.h"'
+- '"ir/statement.h"'
+- '"ir/astNode.h"'
+- '"ir/expressions/identifier.h"'
+ir:
+  class_definitions:
+  - extends: public AnnotationAllowed<Statement>
+    name: AnnotationDeclaration
+    private: {}
+    public:
+      constructors:
+      - args:
+        - initializer_for: expr_
+          name: expr
+          type:
+            name: Expression
+            ptr_depth: 1
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        name: AnnotationDeclaration
+        other_initializers:
+        - class_field: AnnotationAllowed<Statement>
+          init_value: AstNodeType::ANNOTATION_DECLARATION, allocator
+        - class_field: properties_
+          init_value: allocator->Adapter()
+        - class_field: targets_
+          init_value: allocator->Adapter()
+        - class_field: metadataAccessRestrictionModules_
+          init_value: allocator->Adapter()
+        raw_declaration: explicit AnnotationDeclaration(Expression *expr, ArenaAllocator
+          *allocator)
+        return_type:
+          prefix: explicit
+      - args:
+        - initializer_for: expr_
+          name: expr
+          type:
+            name: Expression
+            ptr_depth: 1
+        - name: properties
+          type:
+            name: ArenaVector
+            ref_depth: 2
+            template_args:
+            - type:
+                name: AstNode
+                ptr_depth: 1
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        name: AnnotationDeclaration
+        other_initializers:
+        - class_field: AnnotationAllowed<Statement>
+          init_value: AstNodeType::ANNOTATION_DECLARATION, allocator
+        - class_field: properties_
+          init_value: std::move(properties)
+        - class_field: targets_
+          init_value: allocator->Adapter()
+        - class_field: metadataAccessRestrictionModules_
+          init_value: allocator->Adapter()
+        raw_declaration: explicit AnnotationDeclaration(Expression *expr, ArenaVector<AstNode
+          *> &&properties, ArenaAllocator *allocator)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: InternalName
+        postfix: const
+        raw_declaration: const util::StringView &InternalName() const
+        return_type:
+          name: StringView
+          namespace: util
+          prefix: const
+          ref_depth: 1
+      - additional_attributes: set
+        args:
+        - name: internalName
+          type:
+            name: StringView
+            namespace: util
+        name: SetInternalName
+        raw_declaration: void SetInternalName(util::StringView internalName)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Expr
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const Expression *Expr() const noexcept'
+        return_type:
+          name: Expression
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Expr
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] Expression *Expr() noexcept'
+        return_type:
+          name: Expression
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - args: []
+        name: Properties
+        raw_declaration: '[[nodiscard]] const ArenaVector<AstNode *> &Properties()'
+        return_type:
+          name: ArenaVector
+          prefix: '[[nodiscard]] const'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: AstNode
+              ptr_depth: 1
+      - args: []
+        name: PropertiesForUpdate
+        raw_declaration: '[[nodiscard]] ArenaVector<AstNode *> &PropertiesForUpdate()'
+        return_type:
+          name: ArenaVector
+          prefix: '[[nodiscard]]'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: AstNode
+              ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Properties
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const ArenaVector<AstNode *> &Properties()
+          const noexcept'
+        return_type:
+          name: ArenaVector
+          prefix: '[[nodiscard]] const'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: AstNode
+              ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: PropertiesPtr
+        postfix: const
+        raw_declaration: '[[nodiscard]] const ArenaVector<AstNode *> *PropertiesPtr()
+          const'
+        return_type:
+          name: ArenaVector
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+          template_args:
+          - type:
+              name: AstNode
+              ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: properties
+          type:
+            name: ArenaVector
+            ref_depth: 2
+            template_args:
+            - type:
+                name: AstNode
+                ptr_depth: 1
+        name: AddProperties
+        raw_declaration: void AddProperties(ArenaVector<AstNode *> &&properties)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: IsSourceRetention
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsSourceRetention() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsBytecodeRetention
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsBytecodeRetention() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsRuntimeRetention
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsRuntimeRetention() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: set
+        args: []
+        name: SetSourceRetention
+        postfix: noexcept
+        raw_declaration: void SetSourceRetention() noexcept
+        return_type:
+          name: void
+      - additional_attributes: set
+        args: []
+        name: SetBytecodeRetention
+        postfix: noexcept
+        raw_declaration: void SetBytecodeRetention() noexcept
+        return_type:
+          name: void
+      - additional_attributes: set
+        args: []
+        name: SetRuntimeRetention
+        postfix: noexcept
+        raw_declaration: void SetRuntimeRetention() noexcept
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Targets
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const ArenaVector<AnnotationTargets> &Targets()
+          const noexcept'
+        return_type:
+          name: ArenaVector
+          prefix: '[[nodiscard]] const'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: AnnotationTargets
+      - additional_attributes: set
+        args:
+        - name: targets
+          type:
+            name: ArenaVector
+            ref_depth: 2
+            template_args:
+            - type:
+                name: AnnotationTargets
+        name: AddTargets
+        raw_declaration: void AddTargets(ArenaVector<AnnotationTargets> &&targets)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: MetadataAccessRestrictionModules
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const MetadataAccessRestrictionModuleList
+          &MetadataAccessRestrictionModules() const noexcept'
+        return_type:
+          name: MetadataAccessRestrictionModuleList
+          prefix: '[[nodiscard]] const'
+          ref_depth: 1
+      - additional_attributes: set
+        args:
+        - name: modules
+          type:
+            name: MetadataAccessRestrictionModuleList
+            ref_depth: 2
+        name: SetMetadataAccessRestrictionModules
+        raw_declaration: void SetMetadataAccessRestrictionModules(MetadataAccessRestrictionModuleList
+          &&modules)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: MetadataAccessRestrictionAnnotationName
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const util::StringView &MetadataAccessRestrictionAnnotationName()
+          const noexcept'
+        return_type:
+          name: StringView
+          namespace: util
+          prefix: '[[nodiscard]] const'
+          ref_depth: 1
+      - additional_attributes: set
+        args:
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+        name: SetMetadataAccessRestrictionAnnotationName
+        raw_declaration: void SetMetadataAccessRestrictionAnnotationName(util::StringView
+          name)
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: NodeTransformer
+            prefix: const
+            ref_depth: 1
+        - name: transformationName
+          type:
+            name: string_view
+            namespace: std
+        name: TransformChildren
+        postfix: override
+        raw_declaration: void TransformChildren(const NodeTransformer &cb, std::string_view
+          transformationName) override
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: NodeTraverser
+            prefix: const
+            ref_depth: 1
+        name: Iterate
+        postfix: const override
+        raw_declaration: void Iterate(const NodeTraverser &cb) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: AstDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::AstDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: SrcDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::SrcDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: pg
+          type:
+            name: PandaGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::PandaGen *pg) const override
+        return_type:
+          name: void
+      - args:
+        - name: etsg
+          type:
+            name: ETSGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::ETSGen *etsg) const override
+        return_type:
+          name: void
+      - args:
+        - name: checker
+          type:
+            name: TSChecker
+            namespace: checker
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::Type *Check(checker::TSChecker *checker) override
+        return_type:
+          name: Type
+          namespace: checker
+          ptr_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            namespace: checker
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::VerifiedType Check(checker::ETSChecker *checker)
+          override
+        return_type:
+          name: VerifiedType
+          namespace: checker
+      - args:
+        - name: v
+          type:
+            name: ASTVisitorT
+            ptr_depth: 1
+        name: Accept
+        postfix: override
+        raw_declaration: void Accept(ASTVisitorT *v) override
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: IsScopeBearer
+        postfix: const noexcept override
+        raw_declaration: '[[nodiscard]] bool IsScopeBearer() const noexcept override'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: Scope
+        postfix: const noexcept override
+        raw_declaration: '[[nodiscard]] varbinder::LocalScope *Scope() const noexcept
+          override'
+        return_type:
+          name: LocalScope
+          namespace: varbinder
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: scope
+          type:
+            name: LocalScope
+            namespace: varbinder
+            ptr_depth: 1
+        name: SetScope
+        raw_declaration: void SetScope(varbinder::LocalScope *scope)
+        return_type:
+          name: void
+      - args: []
+        name: ClearScope
+        postfix: noexcept override
+        raw_declaration: void ClearScope() noexcept override
+        return_type:
+          name: void
+      - args: []
+        name: GetBaseName
+        postfix: const
+        raw_declaration: Identifier *GetBaseName() const
+        return_type:
+          name: Identifier
+          ptr_depth: 1
+      - args:
+        - name: properties
+          type:
+            name: AstNode
+            ptr_depth: 1
+        name: EmplaceProperties
+        raw_declaration: void EmplaceProperties(AstNode *properties)
+        return_type:
+          name: void
+      - args: []
+        name: ClearProperties
+        raw_declaration: void ClearProperties()
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: properties
+          type:
+            name: AstNode
+            ptr_depth: 1
+        - name: index
+          type:
+            name: size_t
+        name: SetValueProperties
+        raw_declaration: void SetValueProperties(AstNode *properties, size_t index)
+        return_type:
+          name: void
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        name: Construct
+        postfix: override
+        raw_declaration: AnnotationDeclaration *Construct(ArenaAllocator *allocator)
+          override
+        return_type:
+          name: AnnotationDeclaration
+          ptr_depth: 1
+      - args:
+        - name: other
+          type:
+            name: AstNode
+            ptr_depth: 1
+        name: CopyTo
+        postfix: const override
+        raw_declaration: void CopyTo(AstNode *other) const override
+        return_type:
+          name: void
+  usings:
+  - name: MetadataAccessRestrictionModuleList
+    type:
+      name: ArenaVector
+      template_args:
+      - type:
+          name: StringView
+          namespace: util
+macros:
+- name: ES2PANDA_IR_STATEMENT_ANNOTATION_DECLARATION_H
+structs:
+- members: []
+  name: enumbitops::IsAllowedType<ark::es2panda::ir::RetentionPolicy>
+- members: []
+  name: enumbitops::IsAllowedType<ark::es2panda::ir::AnnotationTargets>

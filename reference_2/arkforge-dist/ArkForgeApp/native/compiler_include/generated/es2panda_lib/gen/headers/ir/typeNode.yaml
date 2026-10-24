@@ -1,0 +1,96 @@
+checker:
+  class_forward_declaration:
+  - TSChecker
+  - Type
+include:
+- '"ir/expression.h"'
+- '"ir/annotationAllowed.h"'
+ir:
+  class_definitions:
+  - extends: public AnnotationAllowed<Expression>
+    known_macroses:
+    - NO_COPY_SEMANTIC(TypeNode);
+    - NO_MOVE_SEMANTIC(TypeNode);
+    name: TypeNode
+    protected: {}
+    public:
+      constructors:
+      - args: []
+        name: TypeNode
+        postfix: = delete
+        raw_declaration: TypeNode() = delete
+      destructors:
+      - args: []
+        name: ~TypeNode
+        postfix: override = default
+        raw_declaration: ~TypeNode() override = default
+      methods:
+      - additional_attributes: get
+        args: []
+        name: IsTypeNode
+        postfix: const noexcept override
+        raw_declaration: '[[nodiscard]] bool IsTypeNode() const noexcept override'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args:
+        - name: checker
+          type:
+            name: TSChecker
+            namespace: checker
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: GetType
+        raw_declaration: '[[nodiscard]] virtual checker::Type *GetType([[maybe_unused]]
+          checker::TSChecker *checker)'
+        return_type:
+          name: Type
+          namespace: checker
+          prefix: '[[nodiscard]] virtual'
+          ptr_depth: 1
+      - additional_attributes: get
+        args:
+        - name: checker
+          type:
+            name: ETSChecker
+            namespace: checker
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: GetType
+        raw_declaration: '[[nodiscard]] virtual checker::Type *GetType([[maybe_unused]]
+          checker::ETSChecker *checker)'
+        return_type:
+          name: Type
+          namespace: checker
+          prefix: '[[nodiscard]] virtual'
+          ptr_depth: 1
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: parent
+          type:
+            name: AstNode
+            ptr_depth: 1
+        name: Clone
+        postfix: override
+        raw_declaration: '[[nodiscard]] TypeNode *Clone(ArenaAllocator *allocator,
+          AstNode *parent) override'
+        return_type:
+          name: TypeNode
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - args:
+        - name: other
+          type:
+            name: AstNode
+            ptr_depth: 1
+        name: CopyTo
+        postfix: const override
+        raw_declaration: void CopyTo(AstNode *other) const override
+        return_type:
+          name: void
+macros:
+- name: ES2PANDA_IR_TYPE_NODE_H

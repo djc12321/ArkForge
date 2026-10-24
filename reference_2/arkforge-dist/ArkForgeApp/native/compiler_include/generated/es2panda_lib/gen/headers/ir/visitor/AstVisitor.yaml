@@ -1,0 +1,29 @@
+include:
+- <ir/astNodeMapping.h>
+- '"util/es2pandaMacros.h"'
+- <tuple>
+ir:
+  known_macroses:
+  - AST_NODE_MAPPING(DECLARE_CLASSES)
+  - AST_NODE_REINTERPRET_MAPPING(DECLARE_AST_NODE_CHECK_METHOD)
+  macros:
+  - arguments: nodeType, className
+    body: class className;
+    name: DECLARE_CLASSES
+  - arguments: _, __, nodeType, ___
+    body: class nodeType;
+    name: DECLARE_AST_NODE_CHECK_METHOD
+  visitor:
+    class_definitions:
+    - known_macroses:
+      - AST_NODE_MAPPING(DECLARE_CLASSES)
+      - AST_NODE_REINTERPRET_MAPPING(DECLARE_AST_NODE_CHECK_METHOD)
+      macros:
+      - arguments: nodeType, className
+        name: DECLARE_CLASSES
+      - arguments: nodeType1, nodeType2, baseClass, reinterpretClass
+        name: DECLARE_AST_NODE_CHECK_METHOD
+      name: ASTAbstractVisitor
+      public: {}
+macros:
+- name: ES2PANDA_COMPILER_CORE_AST_VISITOR_H

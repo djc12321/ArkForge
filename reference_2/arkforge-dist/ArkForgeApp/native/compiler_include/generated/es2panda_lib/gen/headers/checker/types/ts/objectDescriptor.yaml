@@ -1,0 +1,115 @@
+checker:
+  class_definitions:
+  - known_macroses:
+    - NO_COPY_SEMANTIC(ObjectDescriptor);
+    - NO_MOVE_SEMANTIC(ObjectDescriptor);
+    name: ObjectDescriptor
+    public:
+      constructors:
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        name: ObjectDescriptor
+        other_initializers:
+        - class_field: properties
+          init_value: allocator->Adapter()
+        - class_field: callSignatures
+          init_value: allocator->Adapter()
+        - class_field: constructSignatures
+          init_value: allocator->Adapter()
+        raw_declaration: explicit ObjectDescriptor(ArenaAllocator *allocator)
+        return_type:
+          prefix: explicit
+      destructors:
+      - args: []
+        name: ~ObjectDescriptor
+        postfix: = default
+        raw_declaration: ~ObjectDescriptor() = default
+      fields:
+      - name: properties
+        type:
+          name: ArenaVector
+          template_args:
+          - type:
+              name: LocalVariable
+              namespace: varbinder
+              ptr_depth: 1
+      - name: callSignatures
+        type:
+          name: ArenaVector
+          template_args:
+          - type:
+              name: Signature
+              ptr_depth: 1
+      - name: constructSignatures
+        type:
+          name: ArenaVector
+          template_args:
+          - type:
+              name: Signature
+              ptr_depth: 1
+      - default_constructor: ''
+        name: stringIndexInfo
+        type:
+          name: IndexInfo
+          ptr_depth: 1
+      - default_constructor: ''
+        name: numberIndexInfo
+        type:
+          name: IndexInfo
+          ptr_depth: 1
+      methods:
+      - args:
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        name: FindProperty
+        postfix: const
+        raw_declaration: varbinder::LocalVariable *FindProperty(const util::StringView
+          &name) const
+        return_type:
+          name: LocalVariable
+          namespace: varbinder
+          ptr_depth: 1
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: copiedDesc
+          type:
+            name: ObjectDescriptor
+            ptr_depth: 1
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: globalTypes
+          type:
+            name: GlobalTypesHolder
+            ptr_depth: 1
+        name: Copy
+        raw_declaration: "void Copy(ArenaAllocator *allocator, ObjectDescriptor *copiedDesc,\
+          \ TypeRelation *relation,\n              GlobalTypesHolder *globalTypes)"
+        return_type:
+          name: void
+  class_forward_declaration:
+  - Signature
+  - IndexInfo
+  - Type
+  - TypeRelation
+  - GlobalTypesHolder
+include:
+- '"util/es2pandaMacros.h"'
+- '"util/ustring.h"'
+- <vector>
+macros:
+- name: ES2PANDA_COMPILER_CHECKER_TYPES_TS_OBJECT_DESCRIPTOR_H
+varbinder:
+  class_forward_declaration:
+  - LocalVariable

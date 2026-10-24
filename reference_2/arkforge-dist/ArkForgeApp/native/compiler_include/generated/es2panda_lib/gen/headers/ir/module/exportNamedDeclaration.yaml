@@ -1,0 +1,273 @@
+include:
+- '"ir/statement.h"'
+ir:
+  class_definitions:
+  - extends: public Statement
+    name: ExportNamedDeclaration
+    private: {}
+    public:
+      constructors:
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        - initializer_for: source_
+          name: source
+          type:
+            name: StringLiteral
+            ptr_depth: 1
+        - name: specifiers
+          type:
+            name: ArenaVector
+            ref_depth: 2
+            template_args:
+            - type:
+                name: ExportSpecifier
+                ptr_depth: 1
+        name: ExportNamedDeclaration
+        other_initializers:
+        - class_field: Statement
+          init_value: AstNodeType::EXPORT_NAMED_DECLARATION
+        - class_field: specifiers_
+          init_value: std::move(specifiers)
+        raw_declaration: "explicit ExportNamedDeclaration([[maybe_unused]] ArenaAllocator\
+          \ *allocator, StringLiteral *source,\n                                 \
+          \   ArenaVector<ExportSpecifier *> &&specifiers)"
+        return_type:
+          prefix: explicit
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        - initializer_for: decl_
+          name: decl
+          type:
+            name: AstNode
+            ptr_depth: 1
+        - name: specifiers
+          type:
+            name: ArenaVector
+            ref_depth: 2
+            template_args:
+            - type:
+                name: ExportSpecifier
+                ptr_depth: 1
+        name: ExportNamedDeclaration
+        other_initializers:
+        - class_field: Statement
+          init_value: AstNodeType::EXPORT_NAMED_DECLARATION
+        - class_field: specifiers_
+          init_value: std::move(specifiers)
+        raw_declaration: "explicit ExportNamedDeclaration([[maybe_unused]] ArenaAllocator\
+          \ *allocator, AstNode *decl,\n                                    ArenaVector<ExportSpecifier\
+          \ *> &&specifiers)"
+        return_type:
+          prefix: explicit
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        - initializer_for: decl_
+          name: decl
+          type:
+            name: AstNode
+            ptr_depth: 1
+        name: ExportNamedDeclaration
+        other_initializers:
+        - class_field: Statement
+          init_value: AstNodeType::EXPORT_NAMED_DECLARATION
+        - class_field: specifiers_
+          init_value: allocator->Adapter()
+        raw_declaration: explicit ExportNamedDeclaration([[maybe_unused]] ArenaAllocator
+          *allocator, AstNode *decl)
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Decl
+        postfix: const
+        raw_declaration: const AstNode *Decl() const
+        return_type:
+          name: AstNode
+          prefix: const
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Source
+        postfix: const
+        raw_declaration: const StringLiteral *Source() const
+        return_type:
+          name: StringLiteral
+          prefix: const
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Specifiers
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const ArenaVector<ExportSpecifier *> &Specifiers()
+          const noexcept'
+        return_type:
+          name: ArenaVector
+          prefix: '[[nodiscard]] const'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: ExportSpecifier
+              ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Specifiers
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] ArenaVector<ExportSpecifier *> &Specifiers()
+          noexcept'
+        return_type:
+          name: ArenaVector
+          prefix: '[[nodiscard]]'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: ExportSpecifier
+              ptr_depth: 1
+      - args:
+        - name: specifiers
+          type:
+            name: ArenaVector
+            ref_depth: 1
+            template_args:
+            - type:
+                name: ExportSpecifier
+                ptr_depth: 1
+        name: ReplaceSpecifiers
+        raw_declaration: void ReplaceSpecifiers(ArenaVector<ExportSpecifier *> &specifiers)
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: NodeTransformer
+            prefix: const
+            ref_depth: 1
+        - name: transformationName
+          type:
+            name: string_view
+            namespace: std
+        name: TransformChildren
+        postfix: override
+        raw_declaration: void TransformChildren(const NodeTransformer &cb, std::string_view
+          transformationName) override
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: NodeTraverser
+            prefix: const
+            ref_depth: 1
+        name: Iterate
+        postfix: const override
+        raw_declaration: void Iterate(const NodeTraverser &cb) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: AstDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::AstDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: SrcDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::SrcDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: pg
+          type:
+            name: PandaGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::PandaGen *pg) const override
+        return_type:
+          name: void
+      - args:
+        - name: etsg
+          type:
+            name: ETSGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::ETSGen *etsg) const override
+        return_type:
+          name: void
+      - args:
+        - name: checker
+          type:
+            name: TSChecker
+            namespace: checker
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::Type *Check(checker::TSChecker *checker) override
+        return_type:
+          name: Type
+          namespace: checker
+          ptr_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            namespace: checker
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::VerifiedType Check(checker::ETSChecker *checker)
+          override
+        return_type:
+          name: VerifiedType
+          namespace: checker
+      - args:
+        - name: v
+          type:
+            name: ASTVisitorT
+            ptr_depth: 1
+        name: Accept
+        postfix: override
+        raw_declaration: void Accept(ASTVisitorT *v) override
+        return_type:
+          name: void
+      - args:
+        - name: hasDefaultExport
+          type:
+            name: bool
+        name: HasDumpData
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool HasDumpData(bool hasDefaultExport) const
+          noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+  class_forward_declaration:
+  - StringLiteral
+  - ExportSpecifier
+macros:
+- name: ES2PANDA_IR_MODULE_EXPORT_DECLARATION_H

@@ -1,0 +1,400 @@
+compiler:
+  class_definitions:
+  - name: FormatItem
+    private: {}
+    public:
+      constructors:
+      - args:
+        - initializer_for: kind_
+          name: kind
+          type:
+            name: OperandKind
+        - initializer_for: bitWidth_
+          name: bitWidth
+          type:
+            name: uint32_t
+        name: FormatItem
+        raw_declaration: constexpr FormatItem(OperandKind kind, uint32_t bitWidth)
+        return_type:
+          prefix: constexpr
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Kind
+        postfix: const
+        raw_declaration: OperandKind Kind() const
+        return_type:
+          name: OperandKind
+      - additional_attributes: get
+        args: []
+        name: IsVReg
+        postfix: const
+        raw_declaration: bool constexpr IsVReg() const
+        return_type:
+          name: bool
+          other_modifiers: const constexpr
+          postfix: constexpr
+      - additional_attributes: get
+        args: []
+        name: BitWidth
+        postfix: const
+        raw_declaration: uint32_t BitWidth() const
+        return_type:
+          name: uint32_t
+  - name: Format
+    private: {}
+    public:
+      constructors:
+      - args:
+        - initializer_for: item_
+          name: item
+          type:
+            name: FormatItem
+            prefix: const
+            ptr_depth: 1
+        - initializer_for: size_
+          name: size
+          type:
+            name: size_t
+        name: Format
+        raw_declaration: constexpr Format(const FormatItem *item, size_t size)
+        return_type:
+          prefix: constexpr
+      methods:
+      - additional_attributes: get
+        args: []
+        name: GetFormatItem
+        postfix: const
+        raw_declaration: ark::Span<const FormatItem> GetFormatItem() const
+        return_type:
+          name: Span
+          namespace: ark
+          other_modifiers: const
+          template_args:
+          - type:
+              name: FormatItem
+              prefix: const
+  - known_macroses:
+    - NO_COPY_SEMANTIC(IRNode);
+    - NO_MOVE_SEMANTIC(IRNode);
+    name: IRNode
+    private: {}
+    public:
+      constructors:
+      - args:
+        - initializer_for: node_
+          name: node
+          type:
+            name: AstNode
+            namespace: ir
+            prefix: const
+            ptr_depth: 1
+        name: IRNode
+        raw_declaration: explicit IRNode(const ir::AstNode *node)
+        return_type:
+          prefix: explicit
+      destructors:
+      - args: []
+        name: ~IRNode
+        postfix: = default
+        raw_declaration: virtual ~IRNode() = default
+        return_type:
+          prefix: virtual
+      fields:
+      - default_value: '5'
+        name: MAX_REG_OPERAND
+        type:
+          name: auto
+          prefix: static constexpr
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Node
+        postfix: const
+        raw_declaration: const ir::AstNode *Node() const
+        return_type:
+          name: AstNode
+          namespace: ir
+          prefix: const
+          ptr_depth: 1
+      - args:
+        - name: reg
+          type:
+            name: uint32_t
+        - name: totalRegs
+          type:
+            name: uint32_t
+        name: MapRegister
+        raw_declaration: static uint16_t MapRegister(uint32_t reg, uint32_t totalRegs)
+        return_type:
+          name: uint16_t
+          prefix: static
+      - args:
+        - name: idx
+          type:
+            name: size_t
+            prefix: '[[maybe_unused]]'
+        name: GetOperandRegType
+        postfix: const = 0
+        raw_declaration: virtual OperandType GetOperandRegType([[maybe_unused]] size_t
+          idx) const = 0
+        return_type:
+          name: OperandType
+          prefix: virtual
+      - additional_attributes: get
+        args:
+        - name: idx
+          type:
+            name: size_t
+        name: GetParamTypeAt
+        postfix: const
+        raw_declaration: virtual OperandType GetParamTypeAt(size_t idx) const
+        return_type:
+          name: OperandType
+          prefix: virtual
+      - args: []
+        name: GetRegLimit
+        postfix: const noexcept = 0
+        raw_declaration: virtual uint32_t GetRegLimit() const noexcept = 0
+        return_type:
+          name: uint32_t
+          prefix: virtual
+      - args:
+        - name: idx
+          type:
+            name: size_t
+        name: GetOperandRegKind
+        postfix: const = 0
+        raw_declaration: virtual OperandKind GetOperandRegKind(size_t idx) const =
+          0
+        return_type:
+          name: OperandKind
+          prefix: virtual
+      - additional_attributes: get
+        args: []
+        name: FirstArgIsThis
+        postfix: const noexcept
+        raw_declaration: virtual bool FirstArgIsThis() const noexcept
+        return_type:
+          name: bool
+          prefix: virtual
+      - args: []
+        name: GetFormats
+        postfix: const = 0
+        raw_declaration: virtual Formats GetFormats() const = 0
+        return_type:
+          name: Formats
+          prefix: virtual
+      - args:
+        - name: regs
+          type:
+            name: array
+            namespace: std
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+            template_args:
+            - type:
+                name: VReg
+                ptr_depth: 1
+            - type:
+                name: MAX_REG_OPERAND
+        name: Registers
+        postfix: = 0
+        raw_declaration: virtual size_t Registers([[maybe_unused]] std::array<VReg
+          *, MAX_REG_OPERAND> *regs) = 0
+        return_type:
+          name: size_t
+          prefix: virtual
+      - args:
+        - name: regs
+          type:
+            name: array
+            namespace: std
+            other_modifiers: const
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+            template_args:
+            - type:
+                name: VReg
+                prefix: const
+                ptr_depth: 1
+            - type:
+                name: MAX_REG_OPERAND
+        name: Registers
+        postfix: const = 0
+        raw_declaration: virtual size_t Registers([[maybe_unused]] std::array<const
+          VReg *, MAX_REG_OPERAND> *regs) const = 0
+        return_type:
+          name: size_t
+          prefix: virtual
+      - args:
+        - name: regs
+          type:
+            name: array
+            namespace: std
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+            template_args:
+            - type:
+                name: OutVReg
+            - type:
+                name: MAX_REG_OPERAND
+        name: OutRegisters
+        postfix: const = 0
+        raw_declaration: virtual size_t OutRegisters([[maybe_unused]] std::array<OutVReg,
+          MAX_REG_OPERAND> *regs) const = 0
+        return_type:
+          name: size_t
+          prefix: virtual
+      - args:
+        - name: ins
+          type:
+            name: Ins
+            namespace: ark::pandasm
+            ptr_depth: 1
+        - name: programElement
+          type:
+            name: ProgramElement
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        - name: totalRegs
+          type:
+            name: uint32_t
+            prefix: '[[maybe_unused]]'
+        name: Transform
+        postfix: const = 0
+        raw_declaration: "virtual void Transform(ark::pandasm::Ins *ins, [[maybe_unused]]\
+          \ ProgramElement *programElement,\n                           [[maybe_unused]]\
+          \ uint32_t totalRegs) const = 0"
+        return_type:
+          name: void
+          prefix: virtual
+      - additional_attributes: get
+        args: []
+        name: IsDevirtual
+        postfix: const
+        raw_declaration: bool IsDevirtual() const
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args: []
+        name: SetDevirtual
+        raw_declaration: void SetDevirtual()
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: GetRealRegCount
+        postfix: const
+        raw_declaration: uint32_t GetRealRegCount() const
+        return_type:
+          name: uint32_t
+      - additional_attributes: set
+        args:
+        - name: s
+          type:
+            name: uint32_t
+        name: SetRealRegCount
+        raw_declaration: void SetRealRegCount(uint32_t s)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: IsRangeInst
+        postfix: const
+        raw_declaration: bool IsRangeInst() const
+        return_type:
+          name: bool
+      - additional_attributes: set
+        args: []
+        name: SetIsRangeInst
+        raw_declaration: void SetIsRangeInst()
+        return_type:
+          name: void
+  class_forward_declaration:
+  - Label
+  - IRNode
+  enums:
+  - flags:
+    - SRC_VREG
+    - DST_VREG
+    - SRC_DST_VREG
+    - IMM
+    - ID
+    - STRING_ID
+    - LABEL
+    - NONE
+    kind: simple
+    name: OperandKind
+    namespace: compiler
+  - flags:
+    - REF
+    - B32
+    - B64
+    - ANY
+    - NONE
+    kind: simple
+    name: OperandType
+    namespace: compiler
+  macros:
+  - body: (reinterpret_cast<ir::AstNode *>(0x1))
+    name: FIRST_NODE_OF_FUNCTION
+  structs:
+  - members:
+    - name: reg
+      type:
+        name: VReg
+        prefix: const
+        ptr_depth: 1
+    - name: type
+      type:
+        name: OperandType
+    name: OutVReg
+  usings:
+  - name: Formats
+    type:
+      name: Span
+      namespace: ark
+      other_modifiers: const
+      template_args:
+      - type:
+          name: Format
+          prefix: const
+  - name: Operand
+    type:
+      name: variant
+      namespace: std
+      template_args:
+      - type:
+          name: VReg
+          namespace: compiler
+      - type:
+          name: double
+      - type:
+          name: int64_t
+      - type:
+          name: StringView
+          namespace: util
+      - type:
+          name: Label
+          ptr_depth: 1
+include:
+- '"compiler/base/literals.h"'
+- '"compiler/core/vReg.h"'
+- '"compiler/core/programElement.h"'
+- '"lexer/token/sourceLocation.h"'
+- '"util/es2pandaMacros.h"'
+- '"util/ustring.h"'
+- '"libarkbase/utils/span.h"'
+- <cstdint>
+- <list>
+- <limits>
+- <sstream>
+- <utility>
+- <variant>
+- <vector>
+ir:
+  class_forward_declaration:
+  - AstNode
+macros:
+- name: ES2PANDA_COMPILER_IR_IRNODE_H

@@ -1,0 +1,13 @@
+{
+  "upstream": "https://busybox.net/downloads/busybox-1.37.0.tar.bz2",
+  "version": "1.37.0",
+  "sourceSha256": "3311dff32e746499f4df0d5df04d7eb396382d7e108bb9250e7b519b837043a4",
+  "sourceChanges": [],
+  "shell": "BusyBox ash",
+  "license": "GPL-2.0",
+  "adapter": "native/git_exec_bridge.c",
+  "adapterSha256": "be75d138f1fb65e900a9a0aad067be05d96a353eca16b7219ee7c9ffaa107895",
+  "configSha256": "f4431bc92dadc66c76f6da402c0ccb7279f339bdb822e3aca4b6a43b636fde2a",
+  "librarySha256": "a341cb0f3fe9874d2fe48fc23c04c18416317ea36d7a70598e3eb9a1ae70cb50",
+  "buildScript": "native/build_busybox.sh"
+}

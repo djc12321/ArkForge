@@ -1,0 +1,1409 @@
+checker:
+  class_forward_declaration:
+  - TSChecker
+  - ETSChecker
+  - Type
+  - VerifiedType
+compiler:
+  class_forward_declaration:
+  - PandaGen
+  - ETSGen
+es2panda:
+  functions:
+  - args:
+    - name: node
+      type:
+        name: AstNode
+        namespace: ir
+        ptr_depth: 1
+    name: Cast
+    raw_declaration: NodeT *Cast(ir::AstNode *node)
+    return_type:
+      name: NodeT
+      ptr_depth: 1
+    template: typename NodeT
+  known_macroses:
+  - AST_NODE_MAPPING(REGISTER_MAPPING)
+  - AST_NODE_REINTERPRET_MAPPING(REGISTER_MAPPING)
+  macros:
+  - arguments: nodeType, className
+    name: REGISTER_MAPPING
+  - arguments: nodeType1, nodeType2, baseClass, reinterpretClass
+    name: REGISTER_MAPPING
+  structs:
+  - name: Node2Enum
+    template: typename NodeT
+include:
+- '"es2panda.h"'
+- '"astNodeFlags.h"'
+- '"astNodeMapping.h"'
+- '"compiler/lowering/phase_id.h"'
+- '"ir/visitor/AstVisitor.h"'
+- '"lexer/token/sourceLocation.h"'
+- '"util/es2pandaMacros.h"'
+- '"libarkbase/utils/bit_field.h"'
+ir:
+  class_definitions:
+  - known_macroses:
+    - NO_MOVE_SEMANTIC(AstNode);
+    - AST_NODE_MAPPING(DECLARE_IS_CHECKS)
+    - AST_NODE_REINTERPRET_MAPPING(DECLARE_IS_CHECKS)
+    - AST_NODE_MAPPING(DECLARE_AS_CASTS)
+    - AST_NODE_REINTERPRET_MAPPING(DECLARE_AS_CASTS)
+    - DECLARE_BITFIELD_FLAG_OPERATIONS(AstNodeFlags, astNodeFlags_);
+    - DECLARE_BITFIELD_FLAG_OPERATIONS(AstNodeFlags, bitFields_)
+    macros:
+    - arguments: nodeType, className
+      name: DECLARE_IS_CHECKS
+    - arguments: nodeType1, nodeType2, baseClass, reinterpretClass
+      name: DECLARE_IS_CHECKS
+    - arguments: nodeType, className
+      name: DECLARE_AS_CASTS
+    - arguments: nodeType1, nodeType2, baseClass, reinterpretClass
+      name: DECLARE_AS_CASTS
+    - arguments: flag_type, member_name
+      name: DECLARE_BITFIELD_FLAG_OPERATIONS
+    - arguments: flag_type, member_name
+      name: DECLARE_BITFIELD_FLAG_OPERATIONS
+    name: AstNode
+    private: {}
+    protected: {}
+    public:
+      constructors:
+      - args:
+        - initializer_for: type_
+          name: type
+          type:
+            name: AstNodeType
+        name: AstNode
+        raw_declaration: explicit AstNode(AstNodeType type)
+        return_type:
+          prefix: explicit
+      - args:
+        - initializer_for: type_
+          name: type
+          type:
+            name: AstNodeType
+        - initializer_for: flags_
+          name: flags
+          type:
+            name: ModifierFlags
+        name: AstNode
+        raw_declaration: explicit AstNode(AstNodeType type, ModifierFlags flags)
+        return_type:
+          prefix: explicit
+      - args:
+        - name: type
+          type:
+            name: AstNodeType
+        name: AstNode
+        other_initializers:
+        - class_field: bitFields_
+          init_value: "FlagsField::Encode(0) | AstNodeFlagsField::Encode(0) |\n  \
+            \                   TypeField::Encode(static_cast<uint64_t>(type))"
+        raw_declaration: explicit AstNode(AstNodeType type)
+        return_type:
+          prefix: explicit
+      - args:
+        - name: type
+          type:
+            name: AstNodeType
+        - name: flags
+          type:
+            name: ModifierFlags
+        name: AstNode
+        other_initializers:
+        - class_field: bitFields_
+          init_value: "FlagsField::Encode(static_cast<uint64_t>(flags)) | AstNodeFlagsField::Encode(0)\
+            \ |\n                     TypeField::Encode(static_cast<uint64_t>(type))"
+        raw_declaration: explicit AstNode(AstNodeType type, ModifierFlags flags)
+        return_type:
+          prefix: explicit
+      - args: []
+        name: AstNode
+        postfix: = delete
+        raw_declaration: AstNode() = delete
+      destructors:
+      - args: []
+        name: ~AstNode
+        postfix: = default
+        raw_declaration: virtual ~AstNode() = default
+        return_type:
+          prefix: virtual
+      methods:
+      - additional_attributes: get
+        args: []
+        name: IsProgram
+        postfix: const
+        raw_declaration: bool IsProgram() const
+        return_type:
+          name: bool
+      - additional_attributes: get
+        args: []
+        name: IsStatement
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] virtual bool IsStatement() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]] virtual'
+      - additional_attributes: get
+        args: []
+        name: IsExpression
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] virtual bool IsExpression() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]] virtual'
+      - additional_attributes: get
+        args: []
+        name: IsTyped
+        postfix: const
+        raw_declaration: virtual bool IsTyped() const
+        return_type:
+          name: bool
+          prefix: virtual
+      - args: []
+        name: AsTyped
+        raw_declaration: Typed<AstNode> *AsTyped()
+        return_type:
+          name: Typed
+          ptr_depth: 1
+          template_args:
+          - type:
+              name: AstNode
+      - args: []
+        name: AsTyped
+        postfix: const
+        raw_declaration: Typed<AstNode> const *AsTyped() const
+        return_type:
+          name: Typed
+          other_modifiers: const
+          ptr_depth: 1
+          template_args:
+          - type:
+              name: AstNode
+      - additional_attributes: get
+        args: []
+        name: IsBrokenStatement
+        postfix: const
+        raw_declaration: bool IsBrokenStatement() const
+        return_type:
+          name: bool
+      - args: []
+        name: AsExpression
+        raw_declaration: Expression *AsExpression()
+        return_type:
+          name: Expression
+          ptr_depth: 1
+      - args: []
+        name: AsExpression
+        postfix: const
+        raw_declaration: const Expression *AsExpression() const
+        return_type:
+          name: Expression
+          prefix: const
+          ptr_depth: 1
+      - args: []
+        name: AsStatement
+        raw_declaration: Statement *AsStatement()
+        return_type:
+          name: Statement
+          ptr_depth: 1
+      - args: []
+        name: AsStatement
+        postfix: const
+        raw_declaration: const Statement *AsStatement() const
+        return_type:
+          name: Statement
+          prefix: const
+          ptr_depth: 1
+      - args:
+        - name: loc
+          type:
+            name: SourceRange
+            namespace: lexer
+            prefix: const
+            ref_depth: 1
+        name: SetRange
+        postfix: noexcept
+        raw_declaration: void SetRange(const lexer::SourceRange &loc) noexcept
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: program
+          type:
+            name: Program
+            namespace: parser
+            prefix: const
+            ptr_depth: 1
+        name: SetProgram
+        postfix: noexcept
+        raw_declaration: void SetProgram(const parser::Program *program) noexcept
+        return_type:
+          name: void
+      - args:
+        - name: start
+          type:
+            name: SourcePosition
+            namespace: lexer
+            prefix: const
+            ref_depth: 1
+        name: SetStart
+        postfix: noexcept
+        raw_declaration: void SetStart(const lexer::SourcePosition &start) noexcept
+        return_type:
+          name: void
+      - args:
+        - name: end
+          type:
+            name: SourcePosition
+            namespace: lexer
+            prefix: const
+            ref_depth: 1
+        name: SetEnd
+        postfix: noexcept
+        raw_declaration: void SetEnd(const lexer::SourcePosition &end) noexcept
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Program
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const parser::Program *Program() const noexcept'
+        return_type:
+          name: Program
+          namespace: parser
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Start
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] lexer::SourcePosition Start() const noexcept'
+        return_type:
+          name: SourcePosition
+          namespace: lexer
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: End
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] lexer::SourcePosition End() const noexcept'
+        return_type:
+          name: SourcePosition
+          namespace: lexer
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: Range
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] lexer::SourceRange Range() const noexcept'
+        return_type:
+          name: SourceRange
+          namespace: lexer
+          prefix: '[[nodiscard]]'
+      - args: []
+        name: Type
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] AstNodeType Type() const noexcept'
+        return_type:
+          name: AstNodeType
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: Parent
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] AstNode *Parent() noexcept'
+        return_type:
+          name: AstNode
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Parent
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const AstNode *Parent() const noexcept'
+        return_type:
+          name: AstNode
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - args:
+        - name: parent
+          type:
+            name: AstNode
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        name: SetParent
+        postfix: noexcept
+        raw_declaration: void SetParent(AstNode *const parent) noexcept
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Variable
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] varbinder::Variable *Variable() const noexcept'
+        return_type:
+          name: Variable
+          namespace: varbinder
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: variable
+          type:
+            name: Variable
+            namespace: varbinder
+            ptr_depth: 1
+        name: SetVariable
+        postfix: noexcept
+        raw_declaration: void SetVariable(varbinder::Variable *variable) noexcept
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: DecoratorsPtr
+        postfix: const
+        raw_declaration: virtual const ArenaVector<ir::Decorator *> *DecoratorsPtr()
+          const
+        return_type:
+          name: ArenaVector
+          prefix: virtual const
+          ptr_depth: 1
+          template_args:
+          - type:
+              name: Decorator
+              namespace: ir
+              ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: decorators
+          type:
+            name: ArenaVector
+            prefix: '[[maybe_unused]]'
+            ref_depth: 2
+            template_args:
+            - type:
+                name: Decorator
+                namespace: ir
+                ptr_depth: 1
+        name: AddDecorators
+        raw_declaration: virtual void AddDecorators([[maybe_unused]] ArenaVector<ir::Decorator
+          *> &&decorators)
+        return_type:
+          name: void
+          prefix: virtual
+      - additional_attributes: get
+        args:
+        - name: inTs
+          type:
+            name: bool
+            prefix: '[[maybe_unused]]'
+        name: CanHaveDecorator
+        postfix: const
+        raw_declaration: virtual bool CanHaveDecorator([[maybe_unused]] bool inTs)
+          const
+        return_type:
+          name: bool
+          prefix: virtual
+      - args: []
+        name: IsReadonly
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsReadonly() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - args: []
+        name: IsReadonlyType
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsReadonlyType() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - args: []
+        name: IsOptionalDeclaration
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsOptionalDeclaration() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - args: []
+        name: IsDefinite
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsDefinite() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - args: []
+        name: IsConstructor
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsConstructor() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - args: []
+        name: IsOverride
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsOverride() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: set
+        args: []
+        name: SetOverride
+        postfix: noexcept
+        raw_declaration: void SetOverride() noexcept
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: IsAsync
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsAsync() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsSynchronized
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsSynchronized() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsNative
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsNative() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsConst
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsConst() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsStatic
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsStatic() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsFinal
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsFinal() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsAbstract
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsAbstract() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsPublic
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsPublic() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsProtected
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsProtected() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsPrivate
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsPrivate() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - args: []
+        name: IsExported
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsExported() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - args: []
+        name: IsDefaultExported
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsDefaultExported() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - args: []
+        name: IsExportedType
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsExportedType() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsDeclare
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsDeclare() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsIn
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsIn() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsOut
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsOut() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsSetter
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsSetter() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: set
+        args:
+        - name: flags
+          type:
+            name: ModifierFlags
+            other_modifiers: const
+            postfix: const
+        name: AddModifier
+        postfix: noexcept
+        raw_declaration: void AddModifier(ModifierFlags const flags) noexcept
+        return_type:
+          name: void
+      - args:
+        - name: flags
+          type:
+            name: ModifierFlags
+            other_modifiers: const
+            postfix: const
+        name: ClearModifier
+        postfix: noexcept
+        raw_declaration: void ClearModifier(ModifierFlags const flags) noexcept
+        return_type:
+          name: void
+      - args: []
+        name: Modifiers
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] ModifierFlags Modifiers() noexcept'
+        return_type:
+          name: ModifierFlags
+          prefix: '[[nodiscard]]'
+      - args: []
+        name: Modifiers
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] ModifierFlags Modifiers() const noexcept'
+        return_type:
+          name: ModifierFlags
+          prefix: '[[nodiscard]]'
+      - args: []
+        name: HasExportAlias
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool HasExportAlias() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - args: []
+        name: Flags
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] AstNodeFlags Flags() noexcept'
+        return_type:
+          name: AstNodeFlags
+          prefix: '[[nodiscard]]'
+      - args: []
+        name: Flags
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] AstNodeFlags Flags() const noexcept'
+        return_type:
+          name: AstNodeFlags
+          prefix: '[[nodiscard]]'
+      - args: []
+        name: AsClassElement
+        raw_declaration: ir::ClassElement *AsClassElement()
+        return_type:
+          name: ClassElement
+          namespace: ir
+          ptr_depth: 1
+      - args: []
+        name: AsClassElement
+        postfix: const
+        raw_declaration: const ir::ClassElement *AsClassElement() const
+        return_type:
+          name: ClassElement
+          namespace: ir
+          prefix: const
+          ptr_depth: 1
+      - args:
+        - name: expr
+          type:
+            name: AstNode
+            namespace: ir
+            prefix: const
+            ptr_depth: 1
+        name: EnclosingScope
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] static varbinder::Scope *EnclosingScope(const
+          ir::AstNode *expr) noexcept'
+        return_type:
+          name: Scope
+          namespace: varbinder
+          prefix: '[[nodiscard]] static'
+          ptr_depth: 1
+      - args: []
+        name: IsScopeBearer
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] virtual bool IsScopeBearer() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]] virtual'
+      - args: []
+        name: Scope
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] virtual varbinder::Scope *Scope() const noexcept'
+        return_type:
+          name: Scope
+          namespace: varbinder
+          prefix: '[[nodiscard]] virtual'
+          ptr_depth: 1
+      - args: []
+        name: ClearScope
+        postfix: noexcept
+        raw_declaration: virtual void ClearScope() noexcept
+        return_type:
+          name: void
+          prefix: virtual
+      - args: []
+        name: GetTopStatement
+        raw_declaration: '[[nodiscard]] ir::BlockStatement *GetTopStatement()'
+        return_type:
+          name: BlockStatement
+          namespace: ir
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - args: []
+        name: GetTopStatement
+        postfix: const
+        raw_declaration: '[[nodiscard]] const ir::BlockStatement *GetTopStatement()
+          const'
+        return_type:
+          name: BlockStatement
+          namespace: ir
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        - name: parent
+          type:
+            name: AstNode
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        name: Clone
+        raw_declaration: '[[nodiscard]] virtual AstNode *Clone(ArenaAllocator *const
+          allocator, AstNode *const parent)'
+        return_type:
+          name: AstNode
+          prefix: '[[nodiscard]] virtual'
+          ptr_depth: 1
+      - args:
+        - name: cb
+          type:
+            name: NodeTransformer
+            prefix: const
+            ref_depth: 1
+        - name: transformationName
+          type:
+            name: string_view
+            namespace: std
+        name: TransformChildren
+        postfix: = 0
+        raw_declaration: virtual void TransformChildren(const NodeTransformer &cb,
+          std::string_view transformationName) = 0
+        return_type:
+          name: void
+          prefix: virtual
+      - args:
+        - name: cb
+          type:
+            name: NodeTraverser
+            prefix: const
+            ref_depth: 1
+        name: Iterate
+        postfix: const = 0
+        raw_declaration: virtual void Iterate(const NodeTraverser &cb) const = 0
+        return_type:
+          name: void
+          prefix: virtual
+      - args:
+        - name: cb
+          type:
+            name: F
+            prefix: const
+            ref_depth: 1
+        - name: transformationName
+          type:
+            name: string_view
+            namespace: std
+        name: TransformChildrenRecursively
+        raw_declaration: void TransformChildrenRecursively(const F &cb, std::string_view
+          transformationName)
+        return_type:
+          name: void
+        template: typename F
+      - additional_attributes: get
+        args:
+        - name: cb
+          type:
+            name: NodeTransformer
+            prefix: const
+            ref_depth: 1
+        - name: transformationName
+          type:
+            name: string_view
+            namespace: std
+        name: TransformChildrenRecursively
+        raw_declaration: void TransformChildrenRecursively(const NodeTransformer &cb,
+          std::string_view transformationName)
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: F
+            prefix: const
+            ref_depth: 1
+        - name: transformationName
+          type:
+            name: string_view
+            namespace: std
+        name: TransformChildrenRecursivelyPreorder
+        raw_declaration: void TransformChildrenRecursivelyPreorder(const F &cb, std::string_view
+          transformationName)
+        return_type:
+          name: void
+        template: typename F
+      - args:
+        - name: cb
+          type:
+            name: F
+            prefix: const
+            ref_depth: 1
+        - name: transformationName
+          type:
+            name: string_view
+            namespace: std
+        name: TransformChildrenRecursivelyPostorder
+        raw_declaration: void TransformChildrenRecursivelyPostorder(const F &cb, std::string_view
+          transformationName)
+        return_type:
+          name: void
+        template: typename F
+      - args:
+        - name: pre
+          type:
+            name: F1
+            prefix: const
+            ref_depth: 1
+        - name: post
+          type:
+            name: F2
+            prefix: const
+            ref_depth: 1
+        - name: transformationName
+          type:
+            name: string_view
+            namespace: std
+        name: PreTransformChildrenRecursively
+        raw_declaration: void PreTransformChildrenRecursively(const F1 &pre, const
+          F2 &post, std::string_view transformationName)
+        return_type:
+          name: void
+        template: typename F1, typename F2
+      - args:
+        - name: pre
+          type:
+            name: F1
+            prefix: const
+            ref_depth: 1
+        - name: post
+          type:
+            name: F2
+            prefix: const
+            ref_depth: 1
+        - name: transformationName
+          type:
+            name: string_view
+            namespace: std
+        name: PostTransformChildrenRecursively
+        raw_declaration: void PostTransformChildrenRecursively(const F1 &pre, const
+          F2 &post, std::string_view transformationName)
+        return_type:
+          name: void
+        template: typename F1, typename F2
+      - args:
+        - name: cb
+          type:
+            name: F
+            prefix: const
+            ref_depth: 1
+        name: IterateRecursively
+        postfix: const
+        raw_declaration: void IterateRecursively(const F &cb) const
+        return_type:
+          name: void
+        template: typename F
+      - args:
+        - name: cb
+          type:
+            name: F
+            prefix: const
+            ref_depth: 1
+        name: IterateRecursivelyPreorder
+        postfix: const
+        raw_declaration: void IterateRecursivelyPreorder(const F &cb) const
+        return_type:
+          name: void
+        template: typename F
+      - args:
+        - name: cb
+          type:
+            name: F
+            prefix: const
+            ref_depth: 1
+        name: IterateRecursivelyPostorder
+        postfix: const
+        raw_declaration: void IterateRecursivelyPostorder(const F &cb) const
+        return_type:
+          name: void
+        template: typename F
+      - args:
+        - name: cb
+          type:
+            name: F
+            prefix: const
+            ref_depth: 1
+        name: FindChild
+        postfix: const
+        raw_declaration: AstNode *FindChild(const F &cb) const
+        return_type:
+          name: AstNode
+          ptr_depth: 1
+        template: typename F
+      - additional_attributes: get
+        args:
+        - name: cb
+          type:
+            name: F
+            prefix: const
+            ref_depth: 1
+        name: IsAnyChild
+        postfix: const
+        raw_declaration: bool IsAnyChild(const F &cb) const
+        return_type:
+          name: bool
+        template: typename F
+      - additional_attributes: get
+        args:
+        - name: cb
+          type:
+            name: NodePredicate
+            prefix: const
+            ref_depth: 1
+        name: IsAnyChild
+        postfix: const
+        raw_declaration: bool IsAnyChild(const NodePredicate &cb) const
+        return_type:
+          name: bool
+      - args: []
+        name: DumpJSON
+        postfix: const
+        raw_declaration: std::string DumpJSON() const
+        return_type:
+          name: string
+          namespace: std
+      - args: []
+        name: DumpEtsSrc
+        postfix: const
+        raw_declaration: std::string DumpEtsSrc() const
+        return_type:
+          name: string
+          namespace: std
+      - args:
+        - name: context
+          type:
+            name: Context
+            namespace: public_lib
+            ptr_depth: 1
+        name: DumpDecl
+        postfix: const
+        raw_declaration: std::string DumpDecl(public_lib::Context *context) const
+        return_type:
+          name: string
+          namespace: std
+      - args: []
+        name: DumpEtsSrcWithJsdoc
+        postfix: const
+        raw_declaration: std::string DumpEtsSrcWithJsdoc() const
+        return_type:
+          name: string
+          namespace: std
+      - args:
+        - name: dumper
+          type:
+            name: AstDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const = 0
+        raw_declaration: virtual void Dump(ir::AstDumper *dumper) const = 0
+        return_type:
+          name: void
+          prefix: virtual
+      - args:
+        - name: dumper
+          type:
+            name: SrcDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const = 0
+        raw_declaration: virtual void Dump(ir::SrcDumper *dumper) const = 0
+        return_type:
+          name: void
+          prefix: virtual
+      - args:
+        - name: pg
+          type:
+            name: PandaGen
+            namespace: compiler
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Compile
+        postfix: const = 0
+        raw_declaration: virtual void Compile([[maybe_unused]] compiler::PandaGen
+          *pg) const = 0
+        return_type:
+          name: void
+          prefix: virtual
+      - args:
+        - name: etsg
+          type:
+            name: ETSGen
+            namespace: compiler
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Compile
+        postfix: const
+        raw_declaration: virtual void Compile([[maybe_unused]] compiler::ETSGen *etsg)
+          const
+        return_type:
+          name: void
+          prefix: virtual
+      - args:
+        - name: checker
+          type:
+            name: TSChecker
+            namespace: checker
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Check
+        postfix: = 0
+        raw_declaration: virtual checker::Type *Check([[maybe_unused]] checker::TSChecker
+          *checker) = 0
+        return_type:
+          name: Type
+          namespace: checker
+          prefix: virtual
+          ptr_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            namespace: checker
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: Check
+        postfix: = 0
+        raw_declaration: virtual checker::VerifiedType Check([[maybe_unused]] checker::ETSChecker
+          *checker) = 0
+        return_type:
+          name: VerifiedType
+          namespace: checker
+          prefix: virtual
+      - additional_attributes: set
+        args:
+        - name: transformationName
+          type:
+            name: string_view
+            namespace: std
+        - name: transformedNode
+          type:
+            name: AstNode
+            ptr_depth: 1
+        name: SetTransformedNode
+        raw_declaration: void SetTransformedNode(std::string_view transformationName,
+          AstNode *transformedNode)
+        return_type:
+          name: void
+      - args:
+        - name: v
+          type:
+            name: ASTVisitorT
+            ptr_depth: 1
+        name: Accept
+        postfix: = 0
+        raw_declaration: virtual void Accept(ASTVisitorT *v) = 0
+        return_type:
+          name: void
+          prefix: virtual
+      - args:
+        - name: originalNode
+          type:
+            name: AstNode
+            ptr_depth: 1
+        name: SetOriginalNode
+        postfix: noexcept
+        raw_declaration: void SetOriginalNode(AstNode *originalNode) noexcept
+        return_type:
+          name: void
+      - args: []
+        name: OriginalNode
+        postfix: const noexcept
+        raw_declaration: AstNode *OriginalNode() const noexcept
+        return_type:
+          name: AstNode
+          ptr_depth: 1
+      - args: []
+        name: CleanUp
+        raw_declaration: virtual void CleanUp()
+        return_type:
+          name: void
+          prefix: virtual
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        name: ShallowClone
+        raw_declaration: AstNode *ShallowClone(ArenaAllocator *allocator)
+        return_type:
+          name: AstNode
+          ptr_depth: 1
+      - args: []
+        name: IsValidInCurrentPhase
+        postfix: const
+        raw_declaration: bool IsValidInCurrentPhase() const
+        return_type:
+          name: bool
+      - args: []
+        name: GetHistoryNode
+        postfix: const
+        raw_declaration: AstNode *GetHistoryNode() const
+        return_type:
+          name: AstNode
+          ptr_depth: 1
+      - args: []
+        name: GetOrCreateHistoryNode
+        postfix: const
+        raw_declaration: AstNode *GetOrCreateHistoryNode() const
+        return_type:
+          name: AstNode
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: IsValidInCurrentPhase
+        postfix: const
+        raw_declaration: ALWAYS_INLINE bool IsValidInCurrentPhase() const
+        return_type:
+          name: ALWAYS_INLINE
+          postfix: bool
+      - additional_attributes: get
+        args: []
+        name: GetHistoryNode
+        postfix: const
+        raw_declaration: ALWAYS_INLINE AstNode *GetHistoryNode() const
+        return_type:
+          name: ALWAYS_INLINE
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: GetOrCreateHistoryNode
+        postfix: const
+        raw_declaration: ALWAYS_INLINE AstNode *GetOrCreateHistoryNode() const
+        return_type:
+          name: ALWAYS_INLINE
+          ptr_depth: 1
+      - args: []
+        name: CleanCheckInformation
+        raw_declaration: virtual void CleanCheckInformation()
+        return_type:
+          name: void
+          prefix: virtual
+      usings:
+      - name: ASTVisitorT
+        type:
+          name: ASTAbstractVisitor
+          namespace: visitor
+  - extends: public T
+    known_macroses:
+    - NO_MOVE_SEMANTIC(Annotated);
+    name: Annotated
+    private: {}
+    protected: {}
+    public:
+      constructors:
+      - args: []
+        name: Annotated
+        postfix: = delete
+        raw_declaration: Annotated() = delete
+      destructors:
+      - args: []
+        name: ~Annotated
+        postfix: override = default
+        raw_declaration: ~Annotated() override = default
+      fields:
+      - default_value: (const Annotated &) = delete
+        name: operator
+        type:
+          name: Annotated
+          ref_depth: 1
+      methods:
+      - additional_attributes: get
+        args: []
+        name: TypeAnnotation
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] TypeNode *TypeAnnotation() const noexcept'
+        return_type:
+          name: TypeNode
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: typeAnnotation
+          type:
+            name: TypeNode
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        name: SetTsTypeAnnotation
+        postfix: noexcept
+        raw_declaration: void SetTsTypeAnnotation(TypeNode *const typeAnnotation)
+          noexcept
+        return_type:
+          name: void
+      - args:
+        - name: other
+          type:
+            name: AstNode
+            ptr_depth: 1
+        name: CopyTo
+        postfix: const override
+        raw_declaration: void CopyTo(AstNode *other) const override
+        return_type:
+          name: void
+    template: typename T
+  - known_macroses:
+    - NO_COPY_SEMANTIC(VectorIterationGuard);
+    - NO_MOVE_SEMANTIC(VectorIterationGuard);
+    name: VectorIterationGuard
+    private: {}
+    public:
+      constructors:
+      - args:
+        - initializer_for: vector_
+          name: vector
+          type:
+            name: T
+            ref_depth: 1
+        name: VectorIterationGuard
+        other_initializers:
+        - class_field: data_
+          init_value: vector_.data(), vector_.size()
+        raw_declaration: explicit VectorIterationGuard(T &vector)
+        return_type:
+          prefix: explicit
+      destructors:
+      - args: []
+        name: ~VectorIterationGuard
+        raw_declaration: ~VectorIterationGuard()
+      methods:
+      - args:
+        - type:
+            name: is_same_v
+            namespace: std
+            other_modifiers: const
+            template_args:
+            - type:
+                name: remove_const_t
+                namespace: std
+                template_args:
+                - type:
+                    name: T
+            - type:
+                name: ArenaVector
+                template_args:
+                - type:
+                    name: ValueType
+        name: static_assert
+        raw_declaration: static_assert(std::is_same_v<std::remove_const_t<T>, ArenaVector<ValueType>>)
+      - additional_attributes: get
+        args: []
+        name: begin
+        raw_declaration: auto begin()
+        return_type:
+          name: auto
+      - additional_attributes: get
+        args: []
+        name: end
+        raw_declaration: auto end()
+        return_type:
+          name: auto
+      usings:
+      - name: ValueType
+        type:
+          name: value_type
+          namespace: T
+          prefix: typename
+    template: typename T
+  class_forward_declaration:
+  - AstNode
+  - TypeNode
+  - AstNodeHistory
+  - AstDumper
+  - Expression
+  - SrcDumper
+  - Declgen
+  - Statement
+  - ClassElement
+  - Typed
+  functions:
+  - args: []
+    name: DisableContextHistory
+    raw_declaration: '[[maybe_unused]] static void DisableContextHistory()'
+    return_type:
+      name: void
+      prefix: '[[maybe_unused]] static'
+  - args: []
+    name: EnableContextHistory
+    raw_declaration: '[[maybe_unused]] static void EnableContextHistory()'
+    return_type:
+      name: void
+      prefix: '[[maybe_unused]] static'
+  - args:
+    - name: nodeType
+      type:
+        name: AstNodeType
+    name: ToString
+    raw_declaration: inline std::string_view ToString(AstNodeType nodeType)
+    return_type:
+      name: string_view
+      namespace: std
+      prefix: inline
+  known_macroses:
+  - AST_NODE_MAPPING(DECLARE_CLASSES)
+  - AST_NODE_REINTERPRET_MAPPING(DECLARE_CLASSES)
+  macros:
+  - arguments: nodeType, className
+    name: STRING_FROM_NODE_TYPE
+  - arguments: nodeType1, nodeType2, baseClass, reinterpretClass
+    name: STRING_FROM_NODE_TYPE_REINTERPRET
+  - arguments: nodeType, className
+    body: class className;
+    name: DECLARE_CLASSES
+    template: typename T
+  - arguments: nodeType1, nodeType2, baseClass, reinterpretClass
+    body: class baseClass;
+    name: DECLARE_CLASSES
+  usings:
+  - name: NodeTransformer
+    type:
+      name: function
+      namespace: std
+      template_args:
+      - type:
+          cast_from:
+          - type:
+              name: AstNode
+              ptr_depth: 1
+          name: AstNode
+  - name: NodeTraverser
+    type:
+      name: function
+      namespace: std
+      template_args:
+      - type:
+          cast_from:
+          - type:
+              name: AstNode
+              ptr_depth: 1
+          name: void
+  - name: NodePredicate
+    type:
+      name: function
+      namespace: std
+      template_args:
+      - type:
+          cast_from:
+          - type:
+              name: AstNode
+              ptr_depth: 1
+          name: bool
+  vars:
+  - default_value: 'false'
+    name: g_enableContextHistory
+    type:
+      name: thread_local
+      postfix: bool
+      prefix: inline
+  - default_value: '"Unsuccessful allocation during cloning."'
+    name: CLONE_ALLOCATION_ERROR[]
+    type:
+      name: char
+      other_modifiers: const
+      postfix: const
+      prefix: inline constexpr
+macros:
+- name: ES2PANDA_IR_AST_NODE_H
+public_lib:
+  structs:
+  - name: Context
+varbinder:
+  class_forward_declaration:
+  - Variable
+  - Scope

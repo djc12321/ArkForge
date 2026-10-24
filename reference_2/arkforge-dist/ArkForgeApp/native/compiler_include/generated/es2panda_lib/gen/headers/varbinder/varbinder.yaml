@@ -1,0 +1,923 @@
+include:
+- '"lexer/token/sourceLocation.h"'
+- '"scope.h"'
+- '"varbinder/scope.h"'
+- <vector>
+ir:
+  class_forward_declaration:
+  - AstNode
+  - BlockStatement
+  - CatchClause
+  - ClassDefinition
+  - Expression
+  - ForUpdateStatement
+  - Identifier
+  - ScriptFunction
+  - Statement
+  - VariableDeclarator
+  - TSFunctionType
+  - ThisExpression
+  - MemberExpression
+  - ClassStaticBlock
+  - Identifier
+  - TSTypeAliasDeclaration
+  - ClassProperty
+macros:
+- name: ES2PANDA_VARBINDER_VARBINDER_H
+parser:
+  class_forward_declaration:
+  - Program
+public_lib:
+  structs:
+  - name: Context
+varbinder:
+  class_definitions:
+  - friends:
+    - LexicalScope
+    - TopScopeContext
+    known_macroses:
+    - NO_COPY_SEMANTIC(VarBinder);
+    - NO_MOVE_SEMANTIC(VarBinder);
+    name: VarBinder
+    private: {}
+    protected: {}
+    public:
+      constructors:
+      - args:
+        - name: context
+          type:
+            name: Context
+            namespace: public_lib
+            ptr_depth: 1
+        name: VarBinder
+        raw_declaration: explicit VarBinder(public_lib::Context *context)
+        return_type:
+          prefix: explicit
+      - args: []
+        name: VarBinder
+        postfix: = delete
+        raw_declaration: VarBinder() = delete
+      destructors:
+      - args: []
+        name: ~VarBinder
+        postfix: = default
+        raw_declaration: virtual ~VarBinder() = default
+        return_type:
+          prefix: virtual
+      fields:
+      - default_value: '"arguments"'
+        name: FUNCTION_ARGUMENTS
+        type:
+          name: string_view
+          namespace: std
+          other_modifiers: const
+          postfix: const
+          prefix: inline static constexpr
+      - default_value: '"=f"'
+        name: MANDATORY_PARAM_FUNC
+        type:
+          name: string_view
+          namespace: std
+          other_modifiers: const
+          postfix: const
+          prefix: inline static constexpr
+      - default_value: '"=nt"'
+        name: MANDATORY_PARAM_NEW_TARGET
+        type:
+          name: string_view
+          namespace: std
+          other_modifiers: const
+          postfix: const
+          prefix: inline static constexpr
+      - default_value: '"=t"'
+        name: MANDATORY_PARAM_THIS
+        type:
+          name: string_view
+          namespace: std
+          other_modifiers: const
+          postfix: const
+          prefix: inline static constexpr
+      - default_value: 0U
+        name: MANDATORY_PARAM_FUNC_REG
+        type:
+          name: uint32_t
+          namespace: std
+          other_modifiers: const
+          postfix: const
+          prefix: inline static constexpr
+      - default_value: 3U
+        name: MANDATORY_PARAMS_NUMBER
+        type:
+          name: uint32_t
+          namespace: std
+          other_modifiers: const
+          postfix: const
+          prefix: inline static constexpr
+      - default_value: '"!f"'
+        name: LEXICAL_MANDATORY_PARAM_FUNC
+        type:
+          name: string_view
+          namespace: std
+          other_modifiers: const
+          postfix: const
+          prefix: inline static constexpr
+      - default_value: '"!nt"'
+        name: LEXICAL_MANDATORY_PARAM_NEW_TARGET
+        type:
+          name: string_view
+          namespace: std
+          other_modifiers: const
+          postfix: const
+          prefix: inline static constexpr
+      - default_value: '"!t"'
+        name: LEXICAL_MANDATORY_PARAM_THIS
+        type:
+          name: string_view
+          namespace: std
+          other_modifiers: const
+          postfix: const
+          prefix: inline static constexpr
+      - default_value: '"=eval"'
+        name: LEXICAL_CONTEXT_PARAM
+        type:
+          name: string_view
+          namespace: std
+          other_modifiers: const
+          postfix: const
+          prefix: inline static constexpr
+      - default_value: '"main"'
+        name: MAIN
+        type:
+          name: string_view
+          namespace: std
+          other_modifiers: const
+          postfix: const
+          prefix: inline static constexpr
+      - default_value: MANDATORY_PARAMS_NUMBER
+        name: LEXICAL_CONTEXT_PARAM_REG
+        type:
+          name: uint32_t
+          namespace: std
+          other_modifiers: const
+          postfix: const
+          prefix: inline static constexpr
+      - default_value: '"*"'
+        name: STAR_IMPORT
+        type:
+          name: string_view
+          namespace: std
+          other_modifiers: const
+          postfix: const
+          prefix: inline static constexpr
+      methods:
+      - args: []
+        name: InitTopScope
+        raw_declaration: void InitTopScope()
+        return_type:
+          name: void
+      - args: []
+        name: IdentifierAnalysis
+        raw_declaration: virtual void IdentifierAnalysis()
+        return_type:
+          name: void
+          prefix: virtual
+      - additional_attributes: set
+        args:
+        - name: pos
+          type:
+            name: SourcePosition
+            namespace: lexer
+            prefix: const
+            ref_depth: 1
+        - name: '...args'
+          type:
+            name: Args
+            ref_depth: 2
+        name: AddDecl
+        raw_declaration: T *AddDecl(const lexer::SourcePosition &pos, Args &&...args)
+        return_type:
+          name: T
+          ptr_depth: 1
+        template: typename T, typename... Args
+      - additional_attributes: set
+        args:
+        - name: pos
+          type:
+            name: SourcePosition
+            namespace: lexer
+            prefix: const
+            ref_depth: 1
+        - name: '...args'
+          type:
+            name: Args
+            ref_depth: 2
+        name: AddTsDecl
+        raw_declaration: T *AddTsDecl(const lexer::SourcePosition &pos, Args &&...args)
+        return_type:
+          name: T
+          ptr_depth: 1
+        template: typename T, typename... Args
+      - args:
+        - name: pos
+          type:
+            name: SourcePosition
+            namespace: lexer
+            prefix: const
+            ref_depth: 1
+        - name: '...args'
+          type:
+            name: Args
+            ref_depth: 2
+        name: NewVarDecl
+        raw_declaration: std::tuple<T *, varbinder::Variable *> NewVarDecl(const lexer::SourcePosition
+          &pos, Args &&...args)
+        return_type:
+          name: tuple
+          namespace: std
+          template_args:
+          - type:
+              name: T
+              ptr_depth: 1
+          - type:
+              name: Variable
+              namespace: varbinder
+              ptr_depth: 1
+        template: typename T, typename... Args
+      - additional_attributes: set
+        args:
+        - name: param
+          type:
+            name: Expression
+            namespace: ir
+            ptr_depth: 1
+        - default_value: 'true'
+          name: throwRedeclaration
+          type:
+            name: bool
+        name: AddParamDecl
+        raw_declaration: Variable *AddParamDecl(ir::Expression *param, bool throwRedeclaration
+          = true)
+        return_type:
+          name: Variable
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: program
+          type:
+            name: Program
+            namespace: parser
+            ptr_depth: 1
+        name: SetProgram
+        postfix: noexcept
+        raw_declaration: void SetProgram(parser::Program *program) noexcept
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Program
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] parser::Program *Program() noexcept'
+        return_type:
+          name: Program
+          namespace: parser
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - args: []
+        name: Program
+        postfix: const
+        raw_declaration: '[[nodiscard]] const parser::Program *Program() const'
+        return_type:
+          name: Program
+          namespace: parser
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - args: []
+        name: GetContext
+        postfix: const
+        raw_declaration: '[[nodiscard]] public_lib::Context *GetContext() const'
+        return_type:
+          name: Context
+          namespace: public_lib
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: genStdLib
+          type:
+            name: bool
+        name: SetGenStdLib
+        postfix: noexcept
+        raw_declaration: void SetGenStdLib(bool genStdLib) noexcept
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: IsGenStdLib
+        postfix: noexcept
+        raw_declaration: '[[nodiscard]] bool IsGenStdLib() noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: GetScope
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] Scope *GetScope() const noexcept'
+        return_type:
+          name: Scope
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - args:
+        - name: topScope
+          type:
+            name: GlobalScope
+            ptr_depth: 1
+        - name: varScope
+          type:
+            name: VariableScope
+            ptr_depth: 1
+        - name: scope
+          type:
+            name: Scope
+            ptr_depth: 1
+        name: ResetAllScopes
+        postfix: noexcept
+        raw_declaration: void ResetAllScopes(GlobalScope *topScope, VariableScope
+          *varScope, Scope *scope) noexcept
+        return_type:
+          name: void
+      - args:
+        - name: topScope
+          type:
+            name: GlobalScope
+            ptr_depth: 1
+        name: ResetTopScope
+        raw_declaration: void ResetTopScope(GlobalScope *topScope)
+        return_type:
+          name: void
+      - additional_attributes: set
+        args:
+        - name: topScope
+          type:
+            name: GlobalScope
+            ptr_depth: 1
+        name: SetTopScope
+        postfix: noexcept
+        raw_declaration: void SetTopScope(GlobalScope *topScope) noexcept
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: TopScope
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] GlobalScope *TopScope() const noexcept'
+        return_type:
+          name: GlobalScope
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: VarScope
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] VariableScope *VarScope() const noexcept'
+        return_type:
+          name: VariableScope
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - args: []
+        name: CleanScopes
+        raw_declaration: void CleanScopes()
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: IsETSBinder
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] bool IsETSBinder() const noexcept'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - args: []
+        name: AsETSBinder
+        postfix: const
+        raw_declaration: '[[nodiscard]] const ETSBinder *AsETSBinder() const'
+        return_type:
+          name: ETSBinder
+          prefix: '[[nodiscard]] const'
+          ptr_depth: 1
+      - args: []
+        name: AsETSBinder
+        raw_declaration: '[[nodiscard]] ETSBinder *AsETSBinder()'
+        return_type:
+          name: ETSBinder
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - args:
+        - name: pos
+          type:
+            name: SourcePosition
+            namespace: lexer
+            prefix: const
+            ref_depth: 1
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        name: ThrowPrivateFieldMismatch
+        postfix: const
+        raw_declaration: void ThrowPrivateFieldMismatch(const lexer::SourcePosition
+          &pos, const util::StringView &name) const
+        return_type:
+          name: void
+      - args:
+        - name: pos
+          type:
+            name: SourcePosition
+            namespace: lexer
+            prefix: const
+            ref_depth: 1
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        - name: declType
+          type:
+            name: DeclType
+        name: ThrowRedeclaration
+        postfix: const
+        raw_declaration: void ThrowRedeclaration(const lexer::SourcePosition &pos,
+          const util::StringView &name, DeclType declType) const
+        return_type:
+          name: void
+      - args:
+        - name: pos
+          type:
+            name: SourcePosition
+            namespace: lexer
+            prefix: const
+            ref_depth: 1
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        name: ThrowLocalRedeclaration
+        postfix: const
+        raw_declaration: void ThrowLocalRedeclaration(const lexer::SourcePosition
+          &pos, const util::StringView &name) const
+        return_type:
+          name: void
+      - args:
+        - name: pos
+          type:
+            name: SourcePosition
+            namespace: lexer
+            prefix: const
+            ref_depth: 1
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        name: ThrowUnresolvableType
+        postfix: const
+        raw_declaration: void ThrowUnresolvableType(const lexer::SourcePosition &pos,
+          const util::StringView &name) const
+        return_type:
+          name: void
+      - args:
+        - name: pos
+          type:
+            name: SourcePosition
+            namespace: lexer
+            prefix: const
+            ref_depth: 1
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        name: ThrowTDZ
+        postfix: const
+        raw_declaration: void ThrowTDZ(const lexer::SourcePosition &pos, const util::StringView
+          &name) const
+        return_type:
+          name: void
+      - args:
+        - name: pos
+          type:
+            name: SourcePosition
+            namespace: lexer
+            prefix: const
+            ref_depth: 1
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        name: ThrowInvalidCapture
+        postfix: const
+        raw_declaration: void ThrowInvalidCapture(const lexer::SourcePosition &pos,
+          const util::StringView &name) const
+        return_type:
+          name: void
+      - args:
+        - name: pos
+          type:
+            name: SourcePosition
+            namespace: lexer
+            prefix: const
+            ref_depth: 1
+        - name: kind
+          type:
+            name: DiagnosticKind
+            namespace: diagnostic
+            prefix: const
+            ref_depth: 1
+        name: ThrowError
+        postfix: const
+        raw_declaration: void ThrowError(const lexer::SourcePosition &pos, const diagnostic::DiagnosticKind
+          &kind) const
+        return_type:
+          name: void
+      - args:
+        - name: pos
+          type:
+            name: SourcePosition
+            namespace: lexer
+            prefix: const
+            ref_depth: 1
+        - name: kind
+          type:
+            name: DiagnosticKind
+            namespace: diagnostic
+            prefix: const
+            ref_depth: 1
+        - name: params
+          type:
+            name: DiagnosticMessageParams
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        name: ThrowError
+        postfix: const
+        raw_declaration: "virtual void ThrowError(const lexer::SourcePosition &pos,\
+          \ const diagnostic::DiagnosticKind &kind,\n                            const\
+          \ util::DiagnosticMessageParams &params) const"
+        return_type:
+          name: void
+          prefix: virtual
+      - args:
+        - name: str
+          type:
+            name: StringView
+            namespace: util
+            prefix: const
+            ref_depth: 1
+        name: IsGlobalIdentifier
+        postfix: const
+        raw_declaration: virtual bool IsGlobalIdentifier(const util::StringView &str)
+          const
+        return_type:
+          name: bool
+          prefix: virtual
+      - args: []
+        name: PropagateDirectEval
+        postfix: const
+        raw_declaration: void PropagateDirectEval() const
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Allocator
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] ArenaAllocator *Allocator() const noexcept'
+        return_type:
+          name: ArenaAllocator
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+        template: typename T
+      - additional_attributes: get
+        args: []
+        name: CompilablePrograms
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] const ArenaUnorderedSet<parser::Program *>
+          &CompilablePrograms() const noexcept'
+        return_type:
+          name: ArenaUnorderedSet
+          prefix: '[[nodiscard]] const'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: Program
+              namespace: parser
+              ptr_depth: 1
+      - args:
+        - name: program
+          type:
+            name: Program
+            namespace: parser
+            ptr_depth: 1
+        name: RegisterCompilableProgram
+        raw_declaration: void RegisterCompilableProgram(parser::Program *program)
+        return_type:
+          name: void
+      - args: []
+        name: GetAllCompilableFunctionScopes
+        postfix: const
+        raw_declaration: '[[nodiscard]] std::vector<FunctionScope *> GetAllCompilableFunctionScopes()
+          const'
+        return_type:
+          name: vector
+          namespace: std
+          prefix: '[[nodiscard]]'
+          template_args:
+          - type:
+              name: FunctionScope
+              ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: funcScope
+          type:
+            name: FunctionScope
+            namespace: varbinder
+            ptr_depth: 1
+        - name: program
+          type:
+            name: Program
+            namespace: parser
+            ptr_depth: 1
+        name: AddCompilableFunctionScope
+        raw_declaration: void AddCompilableFunctionScope(varbinder::FunctionScope
+          *funcScope, parser::Program *program)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Extension
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] virtual ScriptExtension Extension() const
+          noexcept'
+        return_type:
+          name: ScriptExtension
+          prefix: '[[nodiscard]] virtual'
+      - additional_attributes: get
+        args: []
+        name: BindingOptions
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] virtual ResolveBindingOptions BindingOptions()
+          const noexcept'
+        return_type:
+          name: ResolveBindingOptions
+          prefix: '[[nodiscard]] virtual'
+      - additional_attributes: set
+        args:
+        - name: name
+          type:
+            name: string_view
+            namespace: std
+            prefix: const
+            ref_depth: 1
+        name: AddMandatoryParam
+        raw_declaration: LocalVariable *AddMandatoryParam(const std::string_view &name)
+        return_type:
+          name: LocalVariable
+          ptr_depth: 1
+      - args:
+        - name: childNode
+          type:
+            name: AstNode
+            namespace: ir
+            ptr_depth: 1
+        name: ResolveReferenceDoWhileHelper
+        raw_declaration: void ResolveReferenceDoWhileHelper(ir::AstNode *childNode)
+        return_type:
+          name: void
+      - args:
+        - name: childNode
+          type:
+            name: AstNode
+            namespace: ir
+            ptr_depth: 1
+        name: ResolveReferenceWhileHelper
+        raw_declaration: void ResolveReferenceWhileHelper(ir::AstNode *childNode)
+        return_type:
+          name: void
+      - args:
+        - name: childNode
+          type:
+            name: AstNode
+            namespace: ir
+            ptr_depth: 1
+        name: ResolveReference
+        raw_declaration: void ResolveReference(ir::AstNode *childNode)
+        return_type:
+          name: void
+  - known_macroses:
+    - DEFAULT_MOVE_SEMANTIC(LexicalScope);
+    name: LexicalScope
+    private: {}
+    public:
+      constructors:
+      - args:
+        - name: varbinder
+          type:
+            name: VarBinder
+            ptr_depth: 1
+        - name: '...args'
+          type:
+            name: Args
+            ref_depth: 2
+        name: LexicalScope
+        other_initializers:
+        - class_field: LexicalScope
+          init_value: "\n              varbinder->Allocator()->New<T>(varbinder->Allocator(),\
+            \ varbinder->scope_, std::forward<Args>(args)...),\n              varbinder"
+        raw_declaration: explicit LexicalScope(VarBinder *varbinder, Args &&...args)
+        return_type:
+          prefix: explicit
+        template: typename... Args
+      destructors:
+      - args: []
+        name: ~LexicalScope
+        raw_declaration: ~LexicalScope()
+      methods:
+      - additional_attributes: get
+        args: []
+        name: GetScope
+        postfix: const
+        raw_declaration: T *GetScope() const
+        return_type:
+          name: T
+          ptr_depth: 1
+      - args:
+        - name: varbinder
+          type:
+            name: VarBinder
+            ptr_depth: 1
+        - name: scope
+          type:
+            name: T
+            ptr_depth: 1
+        - default_value: 'true'
+          name: checkEval
+          type:
+            name: bool
+        name: Enter
+        raw_declaration: '[[nodiscard]] static LexicalScope<T> Enter(VarBinder *varbinder,
+          T *scope, bool checkEval = true)'
+        return_type:
+          name: LexicalScope
+          prefix: '[[nodiscard]] static'
+          template_args:
+          - type:
+              name: T
+    template: typename T
+  - name: TopScopeContext
+    private: {}
+    public:
+      constructors:
+      - args:
+        - initializer_for: varbinder_
+          name: varbinder
+          type:
+            name: VarBinder
+            ptr_depth: 1
+        - name: globalScope
+          type:
+            name: GlobalScope
+            ptr_depth: 1
+        name: TopScopeContext
+        other_initializers:
+        - class_field: prevTopscope_
+          init_value: varbinder->TopScope()
+        - class_field: prevScope_
+          init_value: varbinder->GetScope()
+        - class_field: prevVarScope_
+          init_value: varbinder->VarScope()
+        raw_declaration: TopScopeContext(VarBinder *varbinder, GlobalScope *globalScope)
+      destructors:
+      - args: []
+        name: ~TopScopeContext
+        raw_declaration: ~TopScopeContext()
+  - known_macroses:
+    - NO_COPY_SEMANTIC(GlobalScopeContext);
+    - NO_MOVE_SEMANTIC(GlobalScopeContext);
+    name: GlobalScopeContext
+    private: {}
+    public:
+      constructors:
+      - args:
+        - initializer_for: varbinder_
+          name: varbinder
+          type:
+            name: VarBinder
+            ptr_depth: 1
+        - name: extProgram
+          type:
+            name: Program
+            namespace: parser
+            ptr_depth: 1
+        - name: globalScope
+          type:
+            name: GlobalScope
+            ptr_depth: 1
+        name: GlobalScopeContext
+        other_initializers:
+        - class_field: savedProgram_
+          init_value: varbinder->Program()
+        - class_field: prevTopscope_
+          init_value: varbinder->TopScope()
+        raw_declaration: GlobalScopeContext(VarBinder *varbinder, parser::Program
+          *extProgram, GlobalScope *globalScope)
+      destructors:
+      - args: []
+        name: ~GlobalScopeContext
+        raw_declaration: ~GlobalScopeContext()
+  class_forward_declaration:
+  - ETSBinder
+  functions:
+  - args:
+    - name: params
+      type:
+        name: MandatoryParams
+        prefix: const
+        ref_depth: 1
+        template_args:
+        - type:
+            name: N
+    name: VarBinder::AddMandatoryParams
+    raw_declaration: void VarBinder::AddMandatoryParams(const MandatoryParams<N> &params)
+    return_type:
+      name: void
+    template: size_t N
+  - args:
+    - name: pos
+      type:
+        name: SourcePosition
+        namespace: lexer
+        prefix: const
+        ref_depth: 1
+    - name: '...args'
+      type:
+        name: Args
+        ref_depth: 2
+    name: VarBinder::AddTsDecl
+    raw_declaration: T *VarBinder::AddTsDecl(const lexer::SourcePosition &pos, Args
+      &&...args)
+    return_type:
+      name: T
+      ptr_depth: 1
+    template: typename T, typename... Args
+  - args:
+    - name: pos
+      type:
+        name: SourcePosition
+        namespace: lexer
+        prefix: const
+        ref_depth: 1
+    - name: '...args'
+      type:
+        name: Args
+        ref_depth: 2
+    name: VarBinder::AddDecl
+    raw_declaration: T *VarBinder::AddDecl(const lexer::SourcePosition &pos, Args
+      &&...args)
+    return_type:
+      name: T
+      ptr_depth: 1
+    template: typename T, typename... Args
+  - args:
+    - name: pos
+      type:
+        name: SourcePosition
+        namespace: lexer
+        prefix: const
+        ref_depth: 1
+    - name: '...args'
+      type:
+        name: Args
+        ref_depth: 2
+    name: VarBinder::NewVarDecl
+    raw_declaration: std::tuple<T *, varbinder::Variable *> VarBinder::NewVarDecl(const
+      lexer::SourcePosition &pos, Args &&...args)
+    return_type:
+      name: tuple
+      namespace: std
+      template_args:
+      - type:
+          name: T
+          ptr_depth: 1
+      - type:
+          name: Variable
+          namespace: varbinder
+          ptr_depth: 1
+    template: typename T, typename... Args

@@ -1,0 +1,386 @@
+include:
+- '"ir/typeNode.h"'
+ir:
+  class_definitions:
+  - extends: public TypeNode
+    name: ETSTypeReferencePart
+    private: {}
+    public:
+      constructors:
+      - args:
+        - initializer_for: name_
+          name: name
+          type:
+            name: Expression
+            namespace: ir
+            ptr_depth: 1
+        - initializer_for: typeParams_
+          name: typeParams
+          type:
+            name: TSTypeParameterInstantiation
+            namespace: ir
+            ptr_depth: 1
+        - initializer_for: prev_
+          name: prev
+          type:
+            name: ETSTypeReferencePart
+            namespace: ir
+            ptr_depth: 1
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        name: ETSTypeReferencePart
+        other_initializers:
+        - class_field: TypeNode
+          init_value: AstNodeType::ETS_TYPE_REFERENCE_PART, allocator
+        raw_declaration: "explicit ETSTypeReferencePart(ir::Expression *name, ir::TSTypeParameterInstantiation\
+          \ *typeParams,\n                                  ir::ETSTypeReferencePart\
+          \ *prev, ArenaAllocator *const allocator)"
+        return_type:
+          prefix: explicit
+      - args:
+        - initializer_for: name_
+          name: name
+          type:
+            name: Expression
+            namespace: ir
+            ptr_depth: 1
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        name: ETSTypeReferencePart
+        other_initializers:
+        - class_field: TypeNode
+          init_value: AstNodeType::ETS_TYPE_REFERENCE_PART, allocator
+        raw_declaration: explicit ETSTypeReferencePart(ir::Expression *name, ArenaAllocator
+          *const allocator)
+        return_type:
+          prefix: explicit
+      - args:
+        - initializer_for: name_
+          name: name
+          type:
+            name: Expression
+            namespace: ir
+            ptr_depth: 1
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        - name: history
+          type:
+            name: AstNodeHistory
+            ptr_depth: 1
+        name: ETSTypeReferencePart
+        other_initializers:
+        - class_field: TypeNode
+          init_value: AstNodeType::ETS_TYPE_REFERENCE_PART, allocator
+        raw_declaration: explicit ETSTypeReferencePart(ir::Expression *name, ArenaAllocator
+          *const allocator, AstNodeHistory *history)
+        return_type:
+          prefix: explicit
+      - args:
+        - initializer_for: name_
+          name: name
+          type:
+            name: Expression
+            namespace: ir
+            ptr_depth: 1
+        - initializer_for: typeParams_
+          name: typeParams
+          type:
+            name: TSTypeParameterInstantiation
+            namespace: ir
+            ptr_depth: 1
+        - initializer_for: prev_
+          name: prev
+          type:
+            name: ETSTypeReferencePart
+            namespace: ir
+            ptr_depth: 1
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            other_modifiers: const
+            postfix: const
+            ptr_depth: 1
+        - name: history
+          type:
+            name: AstNodeHistory
+            ptr_depth: 1
+        name: ETSTypeReferencePart
+        other_initializers:
+        - class_field: TypeNode
+          init_value: AstNodeType::ETS_TYPE_REFERENCE_PART, allocator
+        raw_declaration: "explicit ETSTypeReferencePart(ir::Expression *name, ir::TSTypeParameterInstantiation\
+          \ *typeParams,\n                                  ir::ETSTypeReferencePart\
+          \ *prev, ArenaAllocator *const allocator,\n                            \
+          \      AstNodeHistory *history)"
+        return_type:
+          prefix: explicit
+      methods:
+      - additional_attributes: get
+        args: []
+        name: Previous
+        raw_declaration: ir::ETSTypeReferencePart *Previous()
+        return_type:
+          name: ETSTypeReferencePart
+          namespace: ir
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Previous
+        postfix: const
+        raw_declaration: const ir::ETSTypeReferencePart *Previous() const
+        return_type:
+          name: ETSTypeReferencePart
+          namespace: ir
+          prefix: const
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: prev
+          type:
+            name: ETSTypeReferencePart
+            namespace: ir
+            ptr_depth: 1
+        name: SetPrevious
+        raw_declaration: void SetPrevious(ir::ETSTypeReferencePart *prev)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: Name
+        raw_declaration: ir::Expression *Name()
+        return_type:
+          name: Expression
+          namespace: ir
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: name
+          type:
+            name: Expression
+            namespace: ir
+            ptr_depth: 1
+        name: SetName
+        raw_declaration: void SetName(ir::Expression *name)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: TypeParams
+        raw_declaration: ir::TSTypeParameterInstantiation *TypeParams()
+        return_type:
+          name: TSTypeParameterInstantiation
+          namespace: ir
+          ptr_depth: 1
+      - additional_attributes: set
+        args:
+        - name: typeParams
+          type:
+            name: TSTypeParameterInstantiation
+            namespace: ir
+            ptr_depth: 1
+        name: SetTypeParams
+        raw_declaration: void SetTypeParams(ir::TSTypeParameterInstantiation *typeParams)
+        return_type:
+          name: void
+      - additional_attributes: get
+        args: []
+        name: TypeParams
+        postfix: const
+        raw_declaration: const ir::TSTypeParameterInstantiation *TypeParams() const
+        return_type:
+          name: TSTypeParameterInstantiation
+          namespace: ir
+          prefix: const
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: Name
+        postfix: const
+        raw_declaration: const ir::Expression *Name() const
+        return_type:
+          name: Expression
+          namespace: ir
+          prefix: const
+          ptr_depth: 1
+      - args:
+        - name: cb
+          type:
+            name: NodeTransformer
+            prefix: const
+            ref_depth: 1
+        - name: transformationName
+          type:
+            name: string_view
+            namespace: std
+        name: TransformChildren
+        postfix: override
+        raw_declaration: void TransformChildren(const NodeTransformer &cb, std::string_view
+          transformationName) override
+        return_type:
+          name: void
+      - args:
+        - name: cb
+          type:
+            name: NodeTraverser
+            prefix: const
+            ref_depth: 1
+        name: Iterate
+        postfix: const override
+        raw_declaration: void Iterate(const NodeTraverser &cb) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: AstDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::AstDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: dumper
+          type:
+            name: SrcDumper
+            namespace: ir
+            ptr_depth: 1
+        name: Dump
+        postfix: const override
+        raw_declaration: void Dump(ir::SrcDumper *dumper) const override
+        return_type:
+          name: void
+      - args:
+        - name: pg
+          type:
+            name: PandaGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::PandaGen *pg) const override
+        return_type:
+          name: void
+      - args:
+        - name: etsg
+          type:
+            name: ETSGen
+            namespace: compiler
+            ptr_depth: 1
+        name: Compile
+        postfix: const override
+        raw_declaration: void Compile(compiler::ETSGen *etsg) const override
+        return_type:
+          name: void
+      - args:
+        - name: checker
+          type:
+            name: TSChecker
+            namespace: checker
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::Type *Check(checker::TSChecker *checker) override
+        return_type:
+          name: Type
+          namespace: checker
+          ptr_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            namespace: checker
+            ptr_depth: 1
+        name: Check
+        postfix: override
+        raw_declaration: checker::VerifiedType Check(checker::ETSChecker *checker)
+          override
+        return_type:
+          name: VerifiedType
+          namespace: checker
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            namespace: checker
+            prefix: '[[maybe_unused]]'
+            ptr_depth: 1
+        name: GetType
+        postfix: override
+        raw_declaration: checker::Type *GetType([[maybe_unused]] checker::ETSChecker
+          *checker) override
+        return_type:
+          name: Type
+          namespace: checker
+          ptr_depth: 1
+      - args: []
+        name: GetIdent
+        raw_declaration: ir::Identifier *GetIdent()
+        return_type:
+          name: Identifier
+          namespace: ir
+          ptr_depth: 1
+      - args:
+        - name: v
+          type:
+            name: ASTVisitorT
+            ptr_depth: 1
+        name: Accept
+        postfix: override
+        raw_declaration: void Accept(ASTVisitorT *v) override
+        return_type:
+          name: void
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: parent
+          type:
+            name: AstNode
+            ptr_depth: 1
+        name: Clone
+        postfix: override
+        raw_declaration: '[[nodiscard]] ETSTypeReferencePart *Clone(ArenaAllocator
+          *allocator, AstNode *parent) override'
+        return_type:
+          name: ETSTypeReferencePart
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        name: Construct
+        postfix: override
+        raw_declaration: ETSTypeReferencePart *Construct(ArenaAllocator *allocator)
+          override
+        return_type:
+          name: ETSTypeReferencePart
+          ptr_depth: 1
+      - args:
+        - name: other
+          type:
+            name: AstNode
+            ptr_depth: 1
+        name: CopyTo
+        postfix: const override
+        raw_declaration: void CopyTo(AstNode *other) const override
+        return_type:
+          name: void
+macros:
+- name: ES2PANDA_IR_ETS_TYPE_REFERENCE_PART_H

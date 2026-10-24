@@ -1,0 +1,2594 @@
+varbinder::LocalScope *scope_ {nullptr};
+ArenaVector<ir::AstNode *> &properties);
+util::StringView absolutePath_ {};
+MANDATORY_PARAM_FUNC, MANDATORY_PARAM_NEW_TARGET, MANDATORY_PARAM_THIS, LEXICAL_CONTEXT_PARAM};
+TypeAnnotationParsingOptions options,
+ElementFlags combinedFlags_ {};
+ir::ExportNamedDeclaration *ParseExportNamedSpecifiers(const lexer::SourcePosition &startLoc);
+auto otherImpl = static_cast<AnnotationAllowed<T> *>(other);
+uint32_t evalBindings_ {};
+EPtr<TSEnumMember> enumMember_ {};
+RecordHolder record_ {nullptr};
+#ifndef ES2PANDA_COMPILER_SCOPES_VARIABLE_FLAGS_H
+EPtr<Identifier> ident_ {};
+const RelationHolder &ComparableResults() const noexcept;
+void DumpExplicitExportDirectives(const parser::Program *program);
+void UnixRegisterSourcesForPackageFromGlobbedDirectory(parser::ProgramAdapter<ModuleKind::PACKAGE> *pkg,
+std::set<std::string> dumpBeforePhases_ {};
+{Id::ETS, "ets", false},
+bool trailingComma_ {};
+FunctionInterfaceMap arrowToFuncInterfaces_;
+return enabled_[T::ID] && allowed_[T::ID];
+comparableResults_(Allocator()),
+PandArg<arg_list_t> ets_warnings_enable_{"enable", {R"(subset_aware)", R"(subset_unaware)"}, R"(Specify warnings to enable. Overrided by ':disable=' suboption. Possible values: ["subset_aware", "ets-prohibit-top-level-statements", "ets-boost-equality-statement", "ets-remove-lambda", "ets-implicit-boxing-unboxing", "ets-annotation-unused-generic-alias-warn", "subset_unaware", "ets-suggest-final", "ets-remove-async"]. Default: ["subset_aware", "subset_unaware"])", ":"};
+TypeRelationFlag prev_;
+void ValidateKeywordIn();
+void LogUnexpectedToken(lexer::Token const &token);
+friend class RecordTableContext;
+PandArg<bool> incremental_{"incremental", false, R"(Enable incremental build. Together with 'simultaneous' flag, the compiler produces several abc files, one for each input source file. Default: false)"};
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_ETS_VOID_TYPE_H
+parser::Program *program_;
+ir::Expression *leftNode, ExpressionParseFlags exprFlags, bool isAwait);
+#ifndef ES2PANDA_IR_STATEMENT_SWITCH_STATEMENT_H
+ir::FunctionDeclaration *ParseFunctionDeclaration(bool canBeAnonymous = false,
+virtual ir::ArrowFunctionExpression *ParsePotentialArrowExpression(ir::Expression **returnExpression,
+virtual void CopyTo(AstNode *other) const;
+char32_t beginningChar);
+ir::Expression *ParseDefaultPrimaryExpression(ExpressionParseFlags flags = ExpressionParseFlags::NO_OPTS);
+PandArg<arg_list_t> dump_after_phases_{"dump-after-phases", {}, R"(Generate program dump after running phases in the list. Default: [])", ","};
+ir::Identifier *ident_ {};
+appendExtensionOrIndexFileCache_;
+ir::TypeNode *CreateTypeAnnotation(TypeAnnotationParsingOptions *options, std::string_view sourceCode);
+void InitializeClassIdent(ir::ClassDefinition *classDef);
+#ifndef ES2PANDA_IR_STATEMENT_RETURN_STATEMENT_H
+bool CheckElementsIdentical(TypeRelation *relation, const ETSTupleType *other) const;
+bool RegisterUnexportedForDeclGen(ir::SrcDumper *dumper) const;
+static int NFTWCallBack(const char *fpath, const struct stat * , int tflag, struct FTW * );
+#ifndef ES2PANDA_IR_STATEMENT_LABELLED_STATEMENT_H
+const Variable *const variable, util::StringView localName);
+uint32_t capturingGroupCount_ {};
+ArenaVector<SwitchCaseStatement *> cases_;
+ES2PANDA_ASSERT(membersValues.size() == membersNames.size());
+ArenaUnorderedMap<util::StringView, bool> foreignBindings_;
+PandArg<bool> ets_unnamed_{"ets-unnamed", false, R"(Legacy option to compile a module as unnamed. Default: false)"};
+ir::Expression *ParseEnumExpression();
+virtual ir::AstNode *ParseClassElement(const ArenaVector<ir::AstNode *> &properties,
+ResolvedPathRes TryResolvePath(std::string resolvedPathPrototype) const;
+PandArg<arg_list_t> debugger_eval_panda_files_{"panda-files", {}, R"(Paths to evaluation mode (.abc) files, must be accessible. Default: [])", ":"};
+void DumpPrefix(ir::SrcDumper *dumper) const;
+void BuildForInOfLoop(varbinder::LoopScope *loopScope, ir::AstNode *left, ir::Expression *right,
+const lexer::SourcePosition &tokenStart,
+#ifndef ES2PANDA_IR_TS_TYPE_PARAMETER_DECLARATION_H
+util::Path sourceFile_;
+ArenaVector<ir::Expression *> &ParseExpressionsArrayFormatPlaceholder() override;
+void CheckItemCasesConstant(ArenaVector<ir::SwitchCaseStatement *> const &cases);
+ArenaVector<Expression *> arguments_;
+bool isTopLevelDeclInit_ = false;
+Scope *prevScope_ {};
+VarBinder *varbinder_ {};
+util::StringView internalName_ {};
+LocalScope *staticDeclScope_;
+: varbinder_(varbinder), scope_(scope), prevScope_(varbinder->scope_), prevVarScope_(varbinder->varScope_)
+#undef OBJECT_TYPE_AS_CASTS
+static constexpr const char *DEPENDENCIES = "dependencies";
+varbinder::LocalVariable *instantiateMethod);
+ir::Expression *CreateParameterThis(ir::TypeNode *typeAnnotation) override;
+virtual ir::Expression *ParsePropertyDefinition(
+void TryMatchDynamicResolvedPath(ResolvedPathRes *result, std::string_view importPath) const;
+AnnotatedStatement(AnnotatedStatement const &other)
+otherImpl->preferredType_ = preferredType_;
+void InitCompilerOptions();
+Typed(Typed const &other) : T(static_cast<T const &>(other)) {}
+return ret;
+Statement(Statement const &other) : AstNode(static_cast<AstNode const &>(other)) {}
+return allocator->New<ETSDestructuring>(std::move(elements));
+void ValidateDeclaratorId();
+util::StringView assemblerName_ {};
+CheckerContext *context_;
+std::tuple<bool, varbinder::Variable *, checker::Type *, varbinder::LocalVariable *> CheckPatternIsShorthand(
+bool *isChainExpression);
+varbinder::Scope *paramScope, const TypeSet &localTypeParams);
+ir::Statement *ParseDoWhileStatement();
+void LogUnexpectedToken(lexer::TokenType tokenType);
+char16_t const char_;
+assignableResults_(Allocator()),
+EPtr<Expression> argument_ {};
+ir::TypeNode *ParseETSTupleType(TypeAnnotationParsingOptions *options);
+const ir::ModifierFlags &modifiers);
+ir::TypeNode *expr_;
+InvArray<bool> enabled_ {};
+ir::Statement *ParseFunctionStatement(StatementParsingFlags flags) override;
+bool isDynamic_ = false;
+explicit AnnotationAllowed(ArenaAllocator *const allocator, ArenaVector<Statement *> &&statementList)
+ir::ModifierFlags modFlags = ir::ModifierFlags::NONE) override;
+Checker *checker_;
+template <typename T, typename... Args>
+bool CastWidening(TypeRelation *relation, Type *target, TypeFlag unboxFlags, TypeFlag wideningFlags);
+ir::AstNode *ParseImportDefaultSpecifier(ArenaVector<ir::AstNode *> *specifiers) override;
+GlobalScope *prevTopscope_ {};
+ir::MethodDefinition *ParseClassGetterSetterMethod(const ArenaVector<ir::AstNode *> &properties,
+ir::Statement *ParseStatementPunctuatorsHelper(StatementParsingFlags flags = StatementParsingFlags::NONE);
+virtual void ValidateRestParameter(ir::Expression *param);
+ir::FunctionDeclaration *ParseFunctionDeclaration(bool canBeAnonymous, ir::ModifierFlags modifiers);
+void ValidateInstanceOfExpression(ir::Expression *expr);
+size_t operator()(const ResolutionCacheKey &key) const noexcept
+#ifndef ES2PANDA_IR_ETS_NEW_CLASS_INSTANCE_EXPRESSION_H
+PandArg<std::string> ets_path_{"ets-path", R"()", R"(Legacy option to set global prefix path for all compiled modules. Default: "")"};
+std::set<std::string> dumpEtsSrcAfterPhases_ {};
+#ifndef ES2PANDA_IR_MODULE_IMPORT_DECLARATION_H
+void ValidateUpdateExpression(ir::Expression *returnExpression, bool isChainExpression);
+Expression *right_;
+TypeAnnotationParsingOptions *options);
+#ifndef ES2PANDA_IR_EXPRESSION_LITERAL_H
+const ir::AstNode *node_;
+void SetData(std::string textSource, parser::SelectCacheDataType<SelectCacheType<KIND>(), true> contents)
+#ifndef ES2PANDA_CHECKER_CHECKER_CONTEXT_H
+friend class BoundContext;
+bool IsDeclaration(ScriptExtension ext) const;
+RelationHolder &SupertypeResults() noexcept;
+#ifndef ES2PANDA_IR_STATEMENT_H
+do {
+ir::Expression *ParseHashMaskOperator();
+CheckerContext prev_;
+AssignmentExpression(AssignmentExpression const &other) : Expression(static_cast<Expression const &>(other))
+void ClearDeclarators();
+#ifndef ES2PANDA_IR_TS_ENUM_DECLARATION_H
+virtual ir::Statement *ParseInterfaceDeclaration([[maybe_unused]] bool isStatic)
+ir::Statement *ParseEnumStatement(StatementParsingFlags flags) override;
+ir::NullLiteral *ParseNullLiteral();
+void ParseNamedBackreference();
+Expression *tag_;
+void CheckRestrictedBinding(const util::StringView &ident, const lexer::SourcePosition &pos);
+std::optional<std::string> TryResolveWithDependencyAliases(std::string_view path) const;
+friend class ExternalSourceParser;
+RetentionPolicy policy_ = RetentionPolicy::BYTECODE;
+RecursiveContext typeRecursiveCtx_;
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_TS_NUMBER_LITERAL_TYPE_H
+return ParsePotentialExpressionStatement(flags);
+#ifndef ES2PANDA_IR_EXPRESSION_CHAIN_EXPRESSION_H
+mutable std::unordered_map<ResolutionCacheKey, ResolvedPathRes, ResolutionCacheKeyHash>
+operator_ = other.operator_;
+ir::AstNode *CreateClassElement(std::string_view sourceCode, const ArenaVector<ir::AstNode *> &properties,
+return;
+void SerializeArray(std::vector<const ir::AstNode *> array);
+explicit AnnotatedExpression(AnnotatedExpression const &other, ArenaAllocator *allocator);
+if (reExportAlias_ == nullptr) {
+explicit Decl(util::StringView name, ir::AstNode *declNode) : name_(name), node_(declNode) {}
+#ifndef ES2PANDA_PARSER_CORE_REGEXP_H
+uint8_t targetApiVersion_ {0};
+ArenaVector<Expression *> expressions_;
+ModuleFlag ModuleFlags() const
+ArenaVector<checker::Type *> typeParamTypes_;
+ir::Statement *ParseImportDeclarationHelper(lexer::SourcePosition startLoc, ArenaVector<ir::AstNode *> &specifiers,
+virtual ir::Statement *ParseFunctionStatement(StatementParsingFlags flags);
+interfaces_(nullptr),
+ir::ModifierFlags flags = ir::ModifierFlags::NONE);
+PandArg<arg_list_t> bco_compiler_{"bco-compiler", {}, R"(Bytecode optimizer's compiler arguments. Default: [])"};
+ArenaVector<ir::Expression *> params_;
+void SerializePropList(std::initializer_list<AstDumper::Property> props);
+ArenaVector<ParseInfo> parseQueue_;
+PandArg<bool> stackless_coros_{"stackless-coros", false, R"((experimental) Emit bytecode that supports stackless coroutines. Default: false)"};
+ir::Statement *CreateTopLevelStatement(std::string_view const sourceCode);
+static constexpr const char *BASE_URL = "baseUrl";
+ir::Expression *leftNode, ExpressionParseFlags exprFlags);
+static constexpr const char *FILES = "files";
+EPtr<MethodDefinition> ctor_ {};
+#ifndef ES2PANDA_PARSER_INCLUDE_AST_SPREAD_ELEMENT_H
+Annotated(Annotated const &other) : T(static_cast<T const &>(other)) {}
+#ifndef ES2PANDA_IR_STATEMENT_SWITCH_CASE_STATEMENT_H
+PandArg<bool> dump_size_stat_{"dump-size-stat", false, R"(Dump size statistics. Default: false)"};
+static constexpr int OPT_LEVEL_DEFAULT = 1;
+#ifndef ES2PANDA_IR_STATEMENT_CLASS_DECLARATION_H
+return {name, nullptr, 0, 0, nullptr};
+std::tuple<ir::Expression *, ir::Statement *> ParseForLoopInitializer();
+PandArg<bool> read_metadata_{"read-metadata", true, R"((experimental) Use metadata (if recorded) when importing the module with abc file provided. Default: true)"};
+PandArg<bool> generate_decl_enabled_{"enabled", false, R"(Whether to enable static declaration file generation. Default: false)"};
+ArenaMap<const parser::Program *, Scope::VariableMap *> foreignExportCache_;
+NamedTupleMemberPool namedMembers_;
+varbinder::Variable *enumLiteralVar_;
+lexer::Lexer *savedLexer_;
+void InitElementsShortcuts(ir::ClassDefinition *declNode)
+auto otherImpl = static_cast<Typed<T> *>(other);
+void AddModuleFlag(ModuleFlag flag) noexcept
+void SerializeNumber(size_t number);
+};
+AstNode *Construct(ArenaAllocator *allocator) override;
+void SetKey(Identifier *key);
+void EnsureReExportAliasInitialized() const
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_ETS_OBJECT_TYPE_CONSTANTS_H
+bool delegate_;
+Expression *discriminant_;
+void ParseIndexedSignature();
+UType value_ {'\0'};
+void ParseNamedSpecifiersDefaultExport(ArenaVector<ir::ImportSpecifier *> *result,
+void InstantiatePrivateContext(const ir::Identifier *ident) const;
+bool NeedCheckInvariant(const T & )
+identicalRelationStack_(Allocator()->Adapter()),
+#ifdef PANDA_TARGET_WINDOWS
+ir::Statement *ParseExpressionStatement(StatementParsingFlags flags = StatementParsingFlags::NONE);
+ir::Statement *ParseTypeDeclarationAbstractFinal(bool allowStatic, ir::ClassDefinitionModifiers modifiers);
+void LookupMemCache(ImportInfo *importInfo);
+PandArg<arg_list_t> skip_phases_{"skip-phases", {}, R"(Phases to skip. Default: [])", ","};
+PandArg<std::string> dump_ast_output_{"output", R"()", R"(Dump the parsed AST to the specified file. Default: "")"};
+ModuleEntry<ir::AstNode *, ExportDeclList> exports_;
+void ApplyAnnotationsToArrayType(ir::AstNode *node, ArenaVector<ir::AnnotationUsage *> &&annotations,
+bool TryCastFloating(TypeRelation *const relation, Type *const target);
+virtual ir::Expression *ParsePotentialExpressionSequence(ir::Expression *expr, ExpressionParseFlags flags);
+return !IsAbsolute(std::string(resolvedSource_));
+ArenaVector<AstNode *> properties_;
+LocalScope *scope_ {};
+ArenaVector<ir::AstNode *> &ParseAstNodesArrayFormatPlaceholder() override;
+explicit Typed(AstNodeType const type, ModifierFlags const flags) : T(type, flags) {}
+varbinder::Scope *scope_ {};
+void EnsureInterfacesInitialized() const
+ir::Statement *ParseExport(lexer::SourcePosition startLoc, ir::ModifierFlags modifiers);
+ScriptExtension ext_ {};
+: T(type, flags)
+void SetProgram(parser::Program *program);
+FileDependenciesMap fileDependencies_;
+const ImportPathManager *importPathManager_ {};
+ir::OverloadDeclaration *ParseClassOverloadDeclaration(ir::ModifierFlags modifiers);
+void LogParameterModifierError(ir::ModifierFlags status);
+virtual ir::Expression *ParseExpression(ExpressionParseFlags flags = ExpressionParseFlags::NO_OPTS);
+void SetSuperClass(Expression *superClass);
+otherImpl->type_ = type_;
+std::unordered_set<std::string> &visitedConfigs);
+ir::TSEnumDeclaration *ParseEnumMembers(ir::Identifier *key, const lexer::SourcePosition &enumStart, bool isConst,
+#undef DECLARE_BITFIELD_FLAG_OPERATIONS
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_TS_FUNCTION_TYPE_H
+void ParseFromKeywordImportSpecifier(ArenaVector<ir::AstNode *> *specifiers);
+const RelationHolder &AssignableResults() const noexcept;
+FunctionSignature ParseFunctionSignature(ParserStatus status);
+if (!All(Modifiers(), flags)) {
+#ifndef ES2PANDA_IR_TS_TYPE_REFERENCE_H
+friend class util::ImportPathManager;
+ObjectDescriptor *desc_ {};
+EPtr<Scope> scope_ {};
+[[maybe_unused]] ExpressionParseFlags flags = ExpressionParseFlags::NO_OPTS);
+Expression *key_;
+AstNodeHistory *history_ {nullptr};
+RelationHolder supertypeResults_ {Allocator()};
+EPtr<const ArenaSubstitution> effectiveSubstitution_ = nullptr;
+ir::FunctionExpression *ParseFunctionExpression(ParserStatus newStatus = ParserStatus::NO_OPTS);
+virtual ArenaVector<ir::Expression *> ParseFunctionParams();
+void Advance();
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_ETS_ARRAY_TYPE_H
+bool isAnonymous_;
+void LookupReference(const util::StringView &name);
+bool CheckTypeParamsRecursion(ir::TSTypeParameterInstantiation *typeParams,
+} else if (otherImpl->annotations_ != nullptr) {
+bool isLogError_;
+std::unordered_map<ir::TSTypeParameter *, ir::TSTypeParameter *> &substitution,
+Variable *AddFunction(ArenaAllocator *allocator, Variable *currentVariable, Decl *newDecl,
+bool ValidatePrivateIdentifier();
+GetOrCreateHistoryNode()->AsETSModule()->flag_ &= ~flag;
+#ifndef ES2PANDA_PARSER_INCLUDE_AST_TEMPLATE_LITERAL_H
+otherImpl->annotations_ = allocator_->New<ArenaVector<AnnotationUsage *>>(allocator_->Adapter());
+ArenaVector<TemplateElement *> quasis_;
+if (!All(IdFlags(), flags)) {
+const ImportInfo &importInfo);
+ir::AstNode *declNode, TypeRelation *relation, ETSObjectFlags const flag)
+const lexer::SourcePosition &tokenStart);
+ArenaVector<ir::Statement *> ParseTopLevelDeclaration();
+ETSObjectType *AsETSObjectType(Type *(GlobalTypesHolder::*typeFunctor)(Args...), Args... args) const;
+ir::ETSParameterExpression *ParseFunctionParameterTail(ir::AnnotatedExpression *paramIdent, bool defaultUndefined);
+ir::Expression *ParseKeywordExpression();
+ir::Statement *ParseStatementBasedOnTokenType(StatementParsingFlags flags);
+void RemoveSmartCasts(SmartCastArray const &otherSmartCasts) noexcept;
+Expression *name_;
+ir::ModifierFlags ParseTypeVarianceModifier(TypeAnnotationParsingOptions *const options);
+virtual void LookupIdentReference(ir::Identifier *ident);
+TypeRelationFlag flags_ {};
+#ifndef ES2PANDA_IR_TS_AS_EXPRESSION_H
+#ifndef ES2PANDA_IR_ETS_UNION_TYPE_H
+PandArg<bool> hot_reload_{"hot-reload", false, R"(Enable Hot Reload mode (allows function body changes without app restart). Default: false)"};
+ArenaVector<AstNode *> body_;
+: AnnotationAllowed<Expression>(type, allocator)
+void ParseGeneratorPropertyModifier(ExpressionParseFlags flags, ParserStatus *methodStatus);
+void ValidateGroupNameElement(char32_t cp);
+ir::Literal *ParseNumberLiteral();
+PandArg<bool> list_files_{"list-files", false, R"(Print names of files that are part of compilation. Default: false)"};
+#ifndef ES2PANDA_IR_STATEMENT_FOR_UPDATE_STATEMENT_H
+PandArg<bool> dump_perf_metrics_{"dump-perf-metrics", false, R"(Dump es2panda performance metrics. Default: false)"};
+auto index = static_cast<size_t>(type);
+ir::SuperExpression *ParseSuperExpression();
+ir::ImportKinds importKind);
+std::array<std::unordered_map<Type *, Type *>, static_cast<std::size_t>(UtilityType::TOTAL)> cachedUtilityTypes_ {};
+InitClass(allocator);
+#ifndef ES2PANDA_IR_STATEMENT_ANNOTATION_USAGE_H
+ir::Expression *CreateBinaryAssignmentExpression(ir::Expression *assignmentExpression,
+Signature *FindExtensionAccessorInMap(util::StringView name, ETSObjectType *type, ExtensionAccessorMap &maps) const;
+std::queue<std::function<void()>> taskQueue_ {};
+auto otherImpl = reinterpret_cast<ETSPrimitiveType *>(other);
+ir::TypeNode *ParseTsArrayType(ir::TypeNode *typeNode, TypeAnnotationParsingOptions *options);
+OverloadDeclaration *Construct(ArenaAllocator *allocator) override;
+std::vector<Type *> &&newTypeArgs, ETSObjectType *base);
+mutable PropertyHolder properties_ {};
+bool hasErrorChecker_ {false};
+varbinder::LocalVariable *SearchFieldsDecls(util::StringView name, PropertySearchFlags flags) const;
+void ValidateReadonlyProperty(const ir::MemberExpression *memberExpr, const ETSFunctionType *propType,
+void CheckAnnotations(const ArenaVector<ir::AnnotationUsage *> &annotations, bool isAnnoDecl);
+static constexpr int THREAD_DEFAULT = 0;
+util::StringView flagsStr_;
+ir::Expression *ParseAssignmentEqualExpression(lexer::TokenType tokenType, ir::Expression *lhsExpression,
+mutable ArenaString *cachedRelativePath_ {nullptr};
+EPtr<TSEnumDeclaration> origEnumDecl_ {};
+EPtr<TypeRelation> relation_ = nullptr;
+void EatTypeAnnotation();
+ModifierFlags const modifiers, ArenaAllocator *const allocator, bool const isComputed)
+bool isDeclaration_ {};
+Type **ref_;
+#undef TYPE_AS_CASTS
+RelationHolder &AssignableResults() noexcept;
+[[nodiscard]] std::unordered_map<Type *, Type *> &CachedUtilityTypes() noexcept
+void SerializeBoolean(bool boolean);
+ArenaVector<ir::AstNode *> properties_;
+#ifndef ES2PANDA_PARSER_INCLUDE_AST_META_PROPERTY_H
+[[maybe_unused]] std::index_sequence<IS...> s)
+std::string_view importPath) const;
+void ParseRightParenthesis(TypeAnnotationParsingOptions *options, ir::TypeNode *&typeAnnotation,
+bool ParseDependencies(const JsonObject::JsonObjPointer *options,
+ImportKinds importKinds_;
+bool isValueArray_;
+VariableScope *varScope_ {};
+#ifndef ES2PANDA_VARBINDER_ETSBINDER_H
+return GetHistoryNodeAs<ETSModule>()->flag_;
+ResolutionCacheKey BuildResolutionCacheKey(std::string_view path) const;
+void InitHistory();
+virtual void ParseTrailingBlock([[maybe_unused]] ir::CallExpression *callExpr) {}
+PandArg<std::string> stdlib_{"stdlib", R"()", R"(Path to standard library. Default: "")"};
+SignatureFlags flags_ {SignatureFlags::NO_OPTS};
+ir::TypeNode *ParseMultilineString();
+[[nodiscard]] std::unique_ptr<lexer::Lexer> InitLexer() override;
+ir::Statement *AllocBrokenStatement(const lexer::SourcePosition &pos);
+#undef DECLARE_CLASSES
+#ifndef ES2PANDA_CHECKER_CHECKER_H
+ir::Expression *ParseAssignmentExpression(ir::Expression *lhsExpression,
+EPtr<MethodDefinition> asyncPairMethod_;
+bool allowDefault = true);
+relation_(std::get<TypeRelation *>(info)),
+virtual ir::ClassElement *ParseClassStaticBlock();
+const ETSObjectType *containingClass_ {nullptr};
+virtual bool ValidateLabeledStatement(lexer::TokenType type);
+ir::Statement *body);
+void ValidateLvalueAssignmentTarget(ir::Expression *node);
+PandArg<bool> dump_assembly_{"dump-assembly", false, R"(Dump pandasm. Default: false)"};
+ir::Expression *ParseFunctionParameter() override;
+otherImpl->tsType_ = tsType_;
+bool IsBridgeContext(TypeRelation *relation) const;
+annotations_ = allocator->New<ArenaVector<AnnotationUsage *>>(allocator->Adapter());
+void AddList(T props)
+AstNode(AstNode const &other);
+iter = iter->Parent();
+EPtr<Expression> superClass_ {};
+bool operator==(const ResolutionCacheKey &other) const noexcept
+EPtr<Type> returnType_;
+ir::OverloadDeclaration *ParseInterfaceOverload(ir::ModifierFlags modifiers);
+target->allocator_ = allocator_;
+#undef OBJECT_TYPE_IS_CHECKS
+LocalExportNameMap localExports_;
+ir::AstNode *ParseInterfaceField();
+using MandatoryParams = std::array<std::string_view, N>;
+Expression *key_ = nullptr;
+void Indent();
+uint32_t parserStatus_ {};
+target->program_ = program_;
+bool ParsePropertyEnd();
+ir::Statement *ParseContinueStatement();
+std::unordered_set<ir::TSTypeAliasDeclaration *> elementStack_;
+de->LogDiagnostic(diagnostic::OPEN_FAILED, util::DiagnosticMessageParams {file});
+EPtr<MethodDefinition> baseOverloadMethod_;
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_TS_INDEX_INFO_H
+PropertySearchFlags methodFlags,
+void ApplyAnnotationsToSpecificNodeType(ir::AstNode *node, ArenaVector<ir::AnnotationUsage *> &&annotations,
+bool ignoreCallExpression, bool *isChainExpression);
+PandArg<bool> dump_ast_only_silent_{"dump-ast-only-silent", false, R"(Dump parsed AST with all dumpers available but don't print to stdout. Default: false)"};
+struct SinglePassVerifier;
+InsertResult InsertImpl(const util::StringView &name, Variable *var, InsertBindingFlags flags);
+std::optional<ir::Expression *> ParsePunctuatorLessThan(ir::Expression *returnExpression,
+NodeFormatType GetFormatPlaceholderType();
+checker::Type *CreateUnionIteratorTypes(checker::ETSChecker *checker, checker::ETSUnionType *exprType);
+{Id::TS, "ts", true},
+ArenaVector<AstNode *> specifiers_;
+ES2PANDA_ASSERT(membersValues[i]->IsStringLiteral() || membersValues[i]->IsNumberLiteral());
+#ifndef ES2PANDA_IR_EXPRESSION_ETS_PARAMETER_EXPRESSION_H
+PandArg<std::string> input_symbol_table_{"input-symbol-table", R"()", R"(Input symbol table file for Cold Reload compatibility check. Default: "")"};
+bool exportEquals_;
+ir::ETSModule *ParseNamespaceImp(ir::ModifierFlags flags);
+util::StringView pattern_;
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_TS_BOOLEAN_TYPE_H
+util::StringView const src_;
+MethodDefinition *Construct(ArenaAllocator *allocator) override;
+ir::TypeNode *ParseTypeAnnotationNoPreferParam(TypeAnnotationParsingOptions *options);
+ir::VariableDeclaration *ParseContextualLet(VariableParsingFlags flags,
+ir::Identifier *ParseNamedImport(lexer::Token *importedToken);
+Declgen::Lock ambientDeclarationLock_;
+ALWAYS_INLINE bool HistoryInitialized() const
+static std::string GetExeDir(const std::string &exe_path) {
+static ResultT FindImpl(ScopeT &&scope, const util::StringView &name, const ResolveBindingOptions options)
+ir::ClassDefinitionModifiers modifiers,
+ir::TSTypeParameterDeclaration *newTypeParams);
+RelationHolder identicalResults_ {Allocator()};
+((cb(std::get<ProgramsSubmap<KINDS_TO_VISIT>>(transitiveExternals_))), ...);
+explicit Annotated(AstNodeType const type, ModifierFlags const flags) : T(type, flags) {}
+name_(name),
+static inline ArenaAllocator *allocator_ = nullptr;
+void ValidateAssignmentIdentifier(ir::Identifier *const ident, Type *const type);
+virtual ArenaVector<ir::Statement *> &ParseStatementsArrayFormatPlaceholder();
+ir::BlockStatement *ParseBlockStatement();
+void DumpPrefixForDeclGen(ir::SrcDumper *dumper) const;
+ir::Statement *ParseClassDeclaration(ir::ClassDefinitionModifiers modifiers,
+parser::Program *LookupImportDataAndIntroduceProgram(ImportInfo *importInfo);
+ArenaVector<Expression *> elements(allocator->Adapter());
+void InitializeFileNameWithExtension();
+#ifndef ES2PANDA_COMPILER_SCOPES_DECLARATION_H
+PandArg<bool> simultaneous_{"simultaneous", false, R"(compile all the files to abc in once. Default: false)"};
+#ifndef ES2PANDA_IR_EXPRESSION_ARROW_FUNCTION_EXPRESSION_H
+Variable *AddLocalClassVariable(ArenaAllocator *allocator, Decl *newDecl);
+EPtr<checker::Type> preferredReturnType_ {};
+void InitializeClassBinding(ir::ClassDefinition *classDef);
+lexer::SourcePosition startLoc);
+uint32_t bitWidth_;
+ArenaVector<ir::Expression *> arguments_;
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_TS_OBJECT_TYPE_H
+bool isASTlowered_ {};
+ir::Statement *ParseStructStatement(StatementParsingFlags flags, ir::ClassDefinitionModifiers modifiers,
+for (auto *anno : *other.annotations_) {
+static constexpr int TARGET_API_VERSION_DEFAULT = 0;
+void AddClassModifiers(ClassDefinitionModifiers const flags) noexcept
+ir::Expression *ParseAsyncExpression();
+EPtr<TSTypeParameterInstantiation> typeParams_;
+mutable EPtr<ArenaVector<ETSObjectType *>> reExports_;
+#ifndef ES2PANDA_IR_EXPRESSION_LITERAL_NUMBER_LITERAL_H
+ignoreBox_ = other.ignoreBox_;
+const Type *const superPartialType, ir::Expression *superRef);
+enum UtilityType : std::uint_fast8_t { PARTIAL = 0U, READONLY, REQUIRED, AWAITED, RETURN_TYPE, TOTAL };
+Identifier *key_;
+ParserContext context_;
+ir::SpreadElement *ParseSpreadElement(ExpressionParseFlags flags = ExpressionParseFlags::NO_OPTS);
+static constexpr uint64_t LINE_DEFAULT = 0;
+TypeNode *type_;
+Type *element_;
+uint32_t ParseUnicodeDigits();
+EnumMemberResult value_ {};
+void SetEtsTextFileByExtension(ImportInfo *importInfo, const std::string &sourcePath) const;
+PandArg<std::string> generate_decl_nameCachePath_{"nameCachePath", R"()", R"(Output path for generated nameCache.json file. Default: "")"};
+void AddPrivateElement(const ir::ClassElement *elem);
+ArenaVector<ir::Statement *> &statements);
+computed_ = other.computed_;
+EPtr<Expression> result_ = nullptr;
+Type *constraint_;
+EnumLiteralTypeKind kind_;
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_TS_ENUM_TYPE_H
+RecursiveContext recursiveCtx_;
+ir::Statement *CreateClassDeclaration(std::string_view sourceCode, bool allowStatic = false);
+EPtr<ClassDeclaration> anonClass_ {nullptr};
+ir::AstNode *ParseTypeLiteralOrInterfaceMember() override;
+std::tuple<ir::Expression *, ir::Expression *> ParseForUpdate(bool isAwait);
+void UpdateMemberModifiers(ir::ModifierFlags &memberModifiers, bool &seenStatic);
+RecursiveContext &RecursiveCtx()
+void ResetAst()
+const char *key_;
+PandArg<std::string> extension_{"extension", R"(ets)", R"(Parse the input as the given extension. Possible values: ["js", "ts", "as", "ets"]. Default: "ets")"};
+static constexpr const char *COMPILER_OPTIONS = "compilerOptions";
+ArenaVector<Statement *> consequent_;
+#ifndef ES2PANDA_IR_EXPRESSION_H
+std::stringstream ss_;
+: Scope(allocator, parent), params_(allocator->Adapter())
+ETSFunctionType *funcType, PropertySearchFlags searchFlag);
+T *paramScope_;
+TemplateLiteral *quasi_;
+void CheckAccessorPair(const ArenaVector<ir::AstNode *> &properties, const ir::Expression *propName,
+using TypeSet = std::unordered_set<varbinder::Variable *>;
+ArenaVector<checker::Checker *> checkers_;
+topScope_ = nullptr;
+ETSPrimitiveType *Construct(ArenaAllocator *allocator) override
+Type *default_;
+if (otherImpl->annotations_ == nullptr) {
+AstNode *GetFromExistingHistory() const
+static constexpr MandatoryParams<MANDATORY_PARAMS_NUMBER + 1> EVAL_SCRIPT_MANDATORY_PARAMS = {
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_ETS_CHAR_TYPE_H
+: Expression(type, flags), optional_(optional)
+Expression *alternate_;
+void RemoveDependenciesToFiles(const std::unordered_set<std::string_view> &files);
+#if defined(PANDA_TARGET_WINDOWS)
+std::unordered_set<util::StringView> unionAssemblerTypes_;
+void ValidateNamedBackreference(bool isUnicode);
+Id id_;
+isShorthand_ = other.isShorthand_;
+CompilationMode compilationMode_ {};
+std::unordered_map<ir::TSTypeParameter *, ir::TSTypeParameter *> const &substitution,
+#else
+PandArg<bool> dump_debug_info_{"dump-debug-info", false, R"(Dump debug info. Default: false)"};
+: parent_(parent), decls_(allocator->Adapter()), bindings_(allocator->Adapter()), flags_(flags)
+virtual void ValidateClassMethodStart(ClassElementDescriptor *desc, ir::TypeNode *typeAnnotation);
+EPtr<ArenaVector<AnnotationUsage *>> annotations_ = nullptr;
+bool ParseAlternativeCharLeftParen();
+virtual bool ValidateBreakLabel(util::StringView label);
+void EnsurePropertyMapInitialized(PropertyType type) const
+ir::Statement *ParseTryStatement() override;
+ArenaVector<const ir::ClassDeclaration *> exportedClasses_;
+ir::TypeNode *ParseTypeReference(TypeAnnotationParsingOptions *options);
+TypeField::Set(static_cast<uint64_t>(type), &(GetOrCreateHistoryNode()->bitFields_));
+#ifndef ES2PANDA_COMPILER_SCOPES_VARIABLE_H
+bool hasReceiver_;
+bool isTrailingCall {false};
+void HandleExportedGlobalBinding(util::StringView bindingName, Variable *var, bool delegateMode, bool isStdLib);
+RegExp re_;
+util::StringView value_;
+bool isComputed_ = false;
+ir::BooleanLiteral *ParseBooleanLiteral();
+ir::Statement *ParseDefaultIfSingleExport(ir::ModifierFlags modifiers);
+EPtr<ETSObjectType> enclosingType_ {};
+void SetUpReferencedTypeParameterConstraints(ir::TSTypeParameter *param, ir::TypeNode *typeNode,
+ir::RegExpLiteral *ParseRegularExpression();
+util::ModuleInfo moduleInfo_;
+explicit AnnotationAllowed(AstNodeType const type, ModifierFlags const flags, ArenaAllocator *const allocator)
+LoopDeclarationScope *declScope_ {};
+lexer::SourcePosition pos);
+std::string_view sourceCode_ {};
+char32_t Next();
+virtual void CreateImplicitConstructor(ir::MethodDefinition *&ctor, ArenaVector<ir::AstNode *> &properties,
+TransitiveExternals transitiveExternals_;
+#ifndef ES2PANDA_IR_TS_MAPPED_TYPE_H
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_TYPE_RELATION_H
+std::ifstream inputStream {ark::os::file::File::GetExtendedFilePath(file)};
+ir::AstNode *ParseAnnotationsInInterfaceBody();
+#ifndef ES2PANDA_IR_TS_LITERAL_TYPE_H
+ExpressionParseFlags flags);
+util::StringView const nameOrAsmName_;
+bool prevAcquired_;
+#ifndef ES2PANDA_IR_ETS_TUPLE_H
+while (iter != nullptr) {
+explicit ETSObjectType(ArenaAllocator *allocator, util::StringView name, util::StringView assemblerName,
+identicalResults_(Allocator()),
+void DumpGlobalClass(ir::SrcDumper *dumper) const;
+virtual bool ParsePotentialNonNullExpression(ir::Expression **returnExpression, lexer::SourcePosition startLoc);
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_TS_STRING_TYPE_H
+ir::FunctionSignature signature_;
+Identifier *ident_ {};
+ExternalPrograms externalPrograms_;
+bool isMethod_ = false;
+[[nodiscard]] Expression *SuperClass()
+ArenaVector<ir::Statement *> statements_;
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_ETS_TUPLE_TYPE_H
+FunctionSignatureMap invokeToArrowSignatures_;
+virtual ArenaVector<ir::Expression *> &ParseExpressionsArrayFormatPlaceholder();
+uint32_t classId_ {};
+std::map<std::string, std::string, std::less<>> &mockMap, const std::string &baseUrl);
+PandArg<int> opt_level_{"opt-level", OPT_LEVEL_DEFAULT, R"(Compiler optimization level. Default: 1)", 0, 2};
+bool isDefault);
+util::StringView paramName_;
+Serialize(*it);
+#ifndef ES2PANDA_UTIL_IMPORT_PATH_MANAGER_H
+virtual ir::Expression *ParseNewExpression();
+ir::Expression *initializer_;
+{
+#ifndef ES2PANDA_IR_TS_INTERFACE_HERITAGE_H
+ir::TSTypeAliasDeclaration *ParseTypeAliasDeclaration() override;
+bool ValidateForInStatement() override;
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_ETS_TYPE_PARAMETER_TYPE_H
+EPtr<Expression> property_ = nullptr;
+bool ignoreCallExpression, bool *isChainExpression) override;
+ComputedAbstracts cachedComputedAbstracts_;
+std::recursive_mutex mtx_;
+properties_ {}
+bool astVerifierEachPhase_ {};
+T &vector_;
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_TS_NUMBER_TYPE_H
+void ResetOverloads();
+#ifndef ES2PANDA_IR_TS_QUALIFIED_NAME_H
+const char preferred_separator = '\\';
+ArenaVector<TypeNode *> typeAnnotationList_;
+MANDATORY_PARAM_FUNC, LEXICAL_MANDATORY_PARAM_NEW_TARGET, LEXICAL_MANDATORY_PARAM_THIS};
+void ValidateRestParameter(ir::Expression *param) override;
+#ifndef ES2PANDA_IR_TS_NEVER_KEYWORD_H
+std::optional<ArkTsConfig> ParseExtends(const std::string &extends, const std::string &configDir,
+FileOutputMatching outputMatching_;
+std::unordered_set<ETSChecker *> readdedChecker_;
+std::vector<std::string> alias_;
+void ValidateFieldModifiers(ir::ModifierFlags modifiers, bool optionalField, ir::Expression *initializer,
+ss_ << ',';
+#ifndef ES2PANDA_IR_ETS_FUNCTION_TYPE_H
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_ETS_DOUBLE_TYPE_H
+for (size_t i = 0; i < membersNames.size(); i++) {
+PandArg<bool> debug_info_{"debug-info", false, R"(Compile with debug info. Default: false)"};
+if (++it == props.end()) {
+if (annotations_ != nullptr && !annotations_->empty()) {
+ArenaVector<ir::Statement *> ParseStatementList(StatementParsingFlags flags = StatementParsingFlags::ALLOW_LEXICAL);
+#ifndef ES2PANDA_IR_EXPRESSION_CONDITIONAL_EXPRESSION_H
+std::string GetNameForETSUnionType(const ir::TypeNode *typeAnnotation) const;
+ir::TSTypeParameterInstantiation *CreateNewSuperPartialRefTypeParamsDecl(
+void SerializeNumber(lexer::Number number);
+void ClearIdFlags(IdentifierFlags const flags) noexcept
+bool backReference_ {};
+ir::ETSModule *ParseNamespaceStatement(ir::ModifierFlags memberModifiers);
+void LogExpectedToken(lexer::TokenType tokenType);
+PandArg<bool> list_phases_{"list-phases", false, R"(Dump list of available phases. Default: false)"};
+if (text.empty()) {
+EPtr<checker::Type> operationType_ {};
+Identifier *imported_;
+#ifndef ES2PANDA_IR_TS_IMPORT_EQUALS_DECLARATION_H
+ir::TypeNode *AllocBrokenType(const lexer::SourcePosition &pos);
+ir::TypeNode *returnTypeAnnotation, bool isAsync);
+Declgen *dg_;
+LocalScope *instanceDeclScope_;
+bool readonly_ {};
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_ETS_SHORT_TYPE_H
+void Initializer(const std::string &absolutePath);
+StringLiteral *source_ {};
+#ifndef ES2PANDA_IR_TS_VOID_KEYWORD_H
+size_t size_;
+friend class SizeOfNodeTest;
+ir::ModifierFlags ParseClassMethodModifierFlag();
+OverloadDeclFlags overloadFlags_;
+AnnotatedExpression::CopyTo(other);
+ArenaMap<util::StringView, GlobalTypeId> builtinNameMappings_;
+static ExpressionParseFlags CarryPatternFlags(ExpressionParseFlags flags);
+SemanticAnalyzer *analyzer_ {};
+std::string baseUrl_ {};
+#ifndef ES2PANDA_IR_TS_ANY_KEYWORD_H
+std::pair<ir::TypeNode *, bool> GetTypeAnnotationFromToken(TypeAnnotationParsingOptions *options);
+for (auto elem : declNode->Body()) {
+bool skipCacheClear_ {false};
+BoundContext *prev_;
+SmartCastMap smartCasts_;
+varbinder::Scope *scope_ {nullptr};
+util::StringView internalName_;
+ir::TypeNode *AllocBrokenType(const lexer::SourceRange &range);
+virtual bool IsExternal() const
+#undef DECLARE_TYPENAMES
+explicit TypedStatement(AstNodeType type) : Typed<Statement>(type) {};
+ir::ModifierFlags memberModifiers, bool isDefault);
+ArenaVector<ir::Statement *> &ParseStatementsArrayFormatPlaceholder() override;
+void SkipInvalidType() const;
+std::array<size_t, util::DiagnosticType::COUNT> diagnosticCheckpoint_;
+bool SubstituteTypeArgs(TypeRelation *relation, std::vector<Type *> &newTypeArgs, const Substitution *substitution);
+std::tuple<ir::Expression *, ir::TSTypeParameterInstantiation *> ParseClassImplementsElement() override;
+friend ArenaAllocator;
+util::DiagnosticEngine &diagnosticEngine);
+ir::AstNode *ParseInnerRest(const ArenaVector<ir::AstNode *> &properties, ir::ClassDefinitionModifiers modifiers,
+explicit AnnotationAllowed(AstNodeType const type, Expression *const key, Expression *const value,
+ArenaSet<ir::ClassDefinition *> classDefinitions_;
+bool isModified_ {true};
+std::unique_ptr<ObfuscationNameCache> nameCache_;
+if (other.annotations_ != nullptr && !other.annotations_->empty()) {
+#ifndef ES2PANDA_COMPILER_GEN_OPCODE_MAP_H
+FileDependenciesMap reverseFileDependencies_;
+bool isTypeOnly_ {false};
+bool hasError {false};
+util::ThrowableDiagnostic error_ {};
+ArenaVector<AnnotationTargets> targets_;
+checker::Signature *signature_ {};
+ir::MemberExpression *ParsePropertyAccess(ir::Expression *primaryExpr, lexer::SourcePosition periodPos,
+EPtr<Expression> left_;
+Expression *qualifier_;
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_TS_UNION_TYPE_H
+util::StringView path_ {};
+#ifndef ES2PANDA_COMPILER_IR_IRNODE_H
+void AddUnionSignature(checker::ETSChecker *checker, checker::Type *memberType, checker::Type *const type,
+memberNameToOrdinal_.insert({membersNames[i]->AsStringLiteral()->Str(), i});
+#undef STRING_FROM_NODE_TYPE
+[[nodiscard]] checker::Type *CheckIteratorMethodForObject(checker::ETSChecker *checker,
+#ifndef ES2PANDA_IR_EXPRESSION_YIELD_EXPRESSION_H
+void ValidateNewClassInstanceIdentifier(ir::Identifier *const ident);
+void ParseNotParsed(util::ImportPathManager::ParseInfo *notParsedElement);
+"declgenV2OutPath";
+T *GetHistoryNodeAs() const
+EPtr<checker::Type> uncheckedType_ {};
+bool CheckAccessorDeclaration(ir::ModifierFlags memberModifiers);
+void CopyPropertyGroup(PropertyType type, MapFn &&mapFn, const Substitution &subst) const;
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_ETS_STRING_TYPE_H
+ir::ETSPackageDeclaration *ParsePackageDeclaration();
+IdentifierFlags flags_ {IdentifierFlags::NONE};
+PandArg<bool> dump_cfg_{"dump-cfg", false, R"(Dump the constructed CFG into a .dot file. Default: false)"};
+de->LogDiagnostic(diagnostic::EMPTY_SOURCE_FILE, util::DiagnosticMessageParams {file});
+bool isExportEquals = false);
+util::FsQueryCache *fsQueryCache) const;
+if (Any(IdFlags(), flags)) {
+#ifndef ES2PANDA_IR_ETS_STRUCT_DECLARATION_H
+PathsMap paths_ {};
+void CheckPredefinedMethods(ir::ScriptFunction const *function, const lexer::SourcePosition &position);
+const ArenaVector<ir::Expression *> &params, ParserStatus newStatus, ParserStatus contextStatus);
+std::unordered_set<T *> &elementStack_;
+kind_ = other.kind_;
+varbinder::LocalVariable *SearchOwnMethod(util::StringView name, PropertySearchFlags flags) const;
+: AnnotationAllowed<Expression>(type, flags, allocator)
+ir::Statement *ParseStatementControlFlowTokenHelper(StatementParsingFlags flags = StatementParsingFlags::NONE);
+ClassDefinition *def_;
+virtual ir::Expression *ParsePrimaryExpressionWithLiterals(ExpressionParseFlags flags);
+#ifndef ES2PANDA_IR_EXPRESSION_AWAIT_EXPRESSION_H
+ir::TypeNode *GetTypeAnnotationOfPrimitiveType(lexer::TokenType tokenType, TypeAnnotationParsingOptions *options);
+void SetLexer(lexer::Lexer *lexer)
+PandArg<std::string> eval_mode_{"eval-mode", R"(none)", R"((js-only) Set 'eval'-mode. Possible values: ["none", "default", "direct", "function"]. Default: "none")"};
+[[nodiscard]] std::unique_ptr<lexer::Lexer> InitFormattedLexer(std::string_view formattedName,
+void EatLeadingAtForAnnotation();
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_ETS_FUNCTION_TYPE_H
+ArenaMap<parser::Program *, ResolvedExportCache *> resolvedExportCaches_;
+TypeNode *indexType_;
+isolateCaches_(isolateCaches)
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_TYPE_MAPPING_H
+internalName_(assemblerName),
+std::string PrimitiveTypeToName(ir::PrimitiveType type) const;
+FunctionSignature irSignature_;
+void InstantiateProperties() const;
+int localIndex_ {};
+std::string ohmUrl_ {};
+std::make_tuple(declNode, ETSObjectFlags::CLASS | flag, relation)),
+Expression *value_ = nullptr;
+#ifndef ES2PANDA_IR_STATEMENT_FUNCTION_DECLARATION_H
+using DirectExternalPrograms = ArenaUnorderedMap<ArenaString, Program *>;
+#ifndef ES2PANDA_IR_STATEMENT_H_DO_WHILE_STATEMENT_H
+ExtensionAccessorMap extensionGetterMaps_;
+virtual void BuildClassDefinition(ir::ClassDefinition *classDef);
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_TS_TYPE_PARAMETER_H
+util::StringView metadataAccessRestrictionAnnotationName_ {};
+ir::Statement *ParseVariableDeclaration(VariableParsingFlags flags = VariableParsingFlags::NO_OPTS);
+ir::Expression *ParsePropertyKey(ExpressionParseFlags flags) override;
+ir::TypeNode *ParseThisType(TypeAnnotationParsingOptions *options);
+#ifndef ES2PANDA_IR_TS_NON_NULL_EXPRESSION_H
+template <size_t... IS>
+bool CheckArrayIndexValue(checker::ETSChecker *checker) const;
+T *AllocNode(Args &&...args)
+#ifndef ES2PANDA_IR_EXPRESSION_THIS_EXPRESSION_H
+TSTypeParameter *typeParam_;
+std::string TryMatchDependencies(std::string_view fixedPath) const;
+ir::Expression *SetupChainExpr(ir::Expression *const top, lexer::SourcePosition startLoc);
+void SubstitutePartialTypes(TypeRelation *relation, Type *other);
+EPtr<TSTypeParameterInstantiation> superTypeParams_ {};
+std::string base_ {};
+bool narrowingBlocked_ = false;
+Variable *AddLocal(ArenaAllocator *allocator, Variable *currentVariable, Decl *newDecl,
+void VisitScriptFunctionWithPotentialTypeParams(ir::ScriptFunction *func);
+bool ResolvedPathIsVirtual() const
+mutable AstNodeFlags astNodeFlags_ {};
+bool isUncheckedCast_ {true};
+void BuildVarDeclaratorId(ir::AstNode *childNode);
+ir::ExportNamedDeclaration *ParseSingleExportForAnonymousConst(ir::ModifierFlags modifiers);
+ir::MethodDefinition *BuildImplicitConstructor(ir::ClassDefinitionModifiers modifiers,
+bool TryEatTypeKeyword();
+void EnsureReExportsInitialized() const
+#ifndef ES2PANDA_IR_ETS_DESTRUCTURING_H
+Expression *expr_;
+bool CheckInit(ir::Identifier *ident, ir::TypeNode *typeAnnotation, ir::Expression *init,
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_TS_STRING_LITERAL_TYPE_H
+ir::MethodDefinition *ParseClassMethodDefinition(ir::Identifier *methodName, ir::ModifierFlags modifiers,
+EPtr<ir::BlockStatement> block {nullptr};
+[[nodiscard]] static bool IsInValidChain(ir::AstNode const *parent) noexcept;
+void CheckWarnings(parser::Program *program, const util::Options &options);
+if (pos == std::string::npos) {
+const void *element_;
+ArenaVector<VariableDeclarator *> declarators_;
+LEXICAL_MANDATORY_PARAM_FUNC, LEXICAL_MANDATORY_PARAM_NEW_TARGET, LEXICAL_MANDATORY_PARAM_THIS};
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_TS_UNDEFINED_TYPE_H
+ir::Statement *ParseWhileStatement();
+return reinterpret_cast<T *>(GetHistoryNode());
+uint32_t fixedLength_ {};
+TypeNode *objectType_;
+GetOrCreateHistoryNode()->AsETSModule()->flag_ |= flag;
+VariableMap bindings_;
+void EmplaceDeclarators(VariableDeclarator *source);
+AstNodeType type_;
+#ifndef ES2PANDA_IR_TYPED_H
+bool CheckDeclarationsPart2(const ir::AstNode *parent, ScriptExtension ext) const;
+void ParseAtomEscape();
+using AstNodeFlagsField = FlagsField::NextField<uint64_t, sizeof(AstNodeFlags) * 8>;
+void ParseNameSpaceSpecifier(ArenaVector<ir::AstNode *> *specifiers, bool isReExport = false);
+bool negative_;
+TSTypeParameterDeclaration *typeParams_;
+bool isolateCaches_ {};
+ir::ClassDefinition *globalClass_ {};
+#ifndef ES2PANDA_COMPILER_CORE_ITERATE_AST_VISITOR_H
+bool IsArrowFunctionExpressionStart();
+: T(type), typeAnnotation_(typeAnnotation)
+MemberExpression(MemberExpression const &other) : MaybeOptionalExpression(other)
+EPtr<TSTypeParameterDeclaration> typeParams_;
+virtual ArrowFunctionDescriptor ConvertToArrowParameter(ir::Expression *expr, bool isAsync);
+void RemoveReverseFileDependency(const ArenaString &dependency, const ArenaString &file);
+bool isGenerated_ {false};
+const lexer::SourcePosition &startLoc);
+#ifdef ARKTSCONFIG_USE_FILESYSTEM
+[[maybe_unused]] ArenaAllocator *const allocator)
+ir::Expression *ParseVariableDeclaratorKey(VariableParsingFlags flags) override;
+ArenaMap<util::StringView, size_t> memberNameToOrdinal_;
+#ifndef ARKTSCONFIG_USE_FILESYSTEM
+auto *ret = util::NodeAllocator::ForceSetParent<T>(
+UType value_ {false};
+#ifndef ES2PANDA_IR_TS_MODULE_DECLARATION_H
+bool isOptional_ = false;
+ArenaAllocator *Allocator() const;
+static constexpr auto COUNT = static_cast<size_t>(Id::COUNT);
+const lexer::SourcePosition &startLoc, ir::ModifierFlags flags);
+ExportClosureResolver *navigationExportClosureResolver_ {nullptr};
+bool forceAllowUnsafeVariance_ {false};
+void ClearTestSmartCasts() noexcept;
+util::StringView ParseSymbolIteratorIdentifier() const noexcept;
+Identifier *local_;
+ir::Expression *propName, lexer::SourcePosition *propEnd);
+ir::Identifier *CreateInvokeIdentifier();
+ArenaVector<TSInterfaceHeritage *> extends_;
+NamedType *next_ {};
+VariableParsingFlags flags) override;
+bool isExternal_;
+EPtr<ScriptFunction> asyncPairFunction_;
+virtual ir::Expression *ParseCatchParam();
+ir::ScriptFunctionFlags funcFlags_;
+void CheckRestrictedBinding(lexer::TokenType keywordType);
+const auto &GetOptions() const
+TypeRelation *relation_;
+void InitializeWarnings();
+#ifndef ES2PANDA_IR_EXPRESSION_LITERAL_NULL_LITERAL_H
+ES2PANDA_ASSERT(alloc != nullptr);
+bool underInference_ = false;
+bool IsDefaultExport();
+#if not defined PANDA_TARGET_MOBILE
+ArenaVector<LocalVariable *> params_;
+util::StringView::Iterator iter_;
+void ParsePropertyEndErrorHendler();
+bool isAstChecked_ {false};
+std::string configPath_;
+const RelationHolder &IdenticalResults() const noexcept;
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_ETS_LONG_TYPE_H
+operationType_ = other.operationType_;
+EPtr<Identifier> ident_;
+ir::Statement *AllocEmptyStatement();
+explicit VariableScope(ArenaAllocator *allocator, Scope *parent) : Scope(allocator, parent) {}
+objType_ = other.objType_;
+varbinder::LocalVariable *SearchInterfacesProperty(util::StringView name, PropertySearchFlags flags) const;
+void CheckPropertyKeyAsyncModifier(ParserStatus *methodStatus);
+virtual ir::Statement *ParseInitModuleStatement();
+bool ParseList(std::optional<lexer::TokenType> termToken, lexer::NextTokenFlags flags,
+MethodDefinitionKind kind_;
+static constexpr const char *DECLGEN_V2_OUT_PATH =
+bool isTypeof_;
+ir::TypeNode *ParseUnionType(ir::TypeNode *firstType);
+using TypeField = AstNodeFlagsField::NextField<uint64_t, sizeof(AstNodeType) * 8>;
+friend class JsdocHelper;
+template <typename RelFN>
+#ifndef ES2PANDA_IR_TS_INDEXED_ACCESS_TYPE_H
+template <bool IS_USAGE>
+ir::Identifier *AllocBrokenExpression(const lexer::SourceRange &range);
+GetOrCreateHistoryNodeAs<Identifier>()->flags_ |= flags;
+return GetHistoryNodeAs<ClassDefinition>()->superClass_;
+isMethod_ = other.isMethod_;
+int32_t indent_ {};
+EPtr<varbinder::Variable> ownerVar_ {};
+ir::Identifier *ExpectIdentifier(bool isReference = false, bool isUserDefinedType = false,
+static constexpr MandatoryParams<MANDATORY_PARAMS_NUMBER> CTOR_ARROW_MANDATORY_PARAMS = {
+std::tuple<ForStatementKind, ir::AstNode *, ir::Expression *, ir::Expression *> ParseIsForInOf(
+template <typename EnumType>
+checker::ETSChecker *checker, checker::ETSObjectType *sourceType,
+std::map<std::string, ExternalModuleData, CompareByLength> &dependenciesMap);
+ir::Identifier *ParseIdentifierFormatPlaceholder(std::optional<NodeFormatType> nodeFormat) override;
+AstNode *GetFromExistingHistory() const;
+ir::Expression *node_ {};
+virtual ir::Expression *ParsePostPrimaryExpression(ir::Expression *primaryExpr, lexer::SourcePosition startLoc,
+ScriptFunction *Construct(ArenaAllocator *allocator) override;
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_TS_INTERFACE_TYPE_H
+void SetETSImportDeclarations(ETSImportDeclaration *etsImportDeclarations);
+EPtr<ir::TSTypeParameterInstantiation> typeParams_ {};
+ArenaUnorderedSet<parser::Program *> compilablePrograms_;
+ArenaVector<ir::ETSImportDeclaration *> dynamicImports_;
+std::vector<std::string> ParseStringArray(const std::unique_ptr<ark::JsonObject> *alias, std::string_view key);
+bool isCreateSyntheticVar_;
+bool IsFieldStartToken(lexer::TokenType t);
+std::tuple<ir::AstNode *, ETSObjectFlags, TypeRelation *> info,
+SpecifiersInfo ParseNamedSpecifiers(const ir::ImportKinds importKind);
+ir::Expression *ParsePostPrimaryExpressionBackTick(ir::Expression *returnExpression,
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_ETS_ENUM_TYPE_H
+#ifndef ES2PANDA_IR_EXPRESSION_OBJECT_EXPRESSION_H
+EtsIntrinsicInfo const *info_;
+bool ProcessArrowParamToken(lexer::TokenType &tokenType, ArrowParamState &state, lexer::NextTokenFlags &flag,
+virtual ir::VariableDeclarator *ParseVariableDeclaratorInitializer(ir::Expression *init, VariableParsingFlags flags,
+#ifndef ES2PANDA_IR_MODULE_EXPORT_DEFAULT_DECLARATION_H
+template <typename MapFn>
+ScriptExtension extension_ {ScriptExtension::INVALID};
+friend class SavedClassPrivateContext;
+bool nullable_ {};
+ArenaVector<T *> declarations_;
+RetentionPolicy Policy() const
+[[nodiscard]] virtual std::unique_ptr<lexer::Lexer> InitLexer();
+#ifndef ES2PANDA_IR_TS_TYPE_PREDICATE_H
+explicit Statement(AstNodeType type, ModifierFlags flags) : AstNode(type, flags) {}
+if (funcVariableScope != nullptr && funcVariableScope->NeedLexEnv()) {
+std::string_view savedFname_;
+#ifndef ES2PANDA_IR_TS_TYPE_OPERATOR_H
+std::optional<std::string> TryResolveWithDependencies(std::string_view path) const;
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_TS_ARRAY_TYPE_H
+PandArg<bool> help_{"help", false, R"(Print this message and exit. Default: false)"};
+ir::TemplateLiteral *ParseTemplateLiteral();
+virtual void ValidateClassSetter(ClassElementDescriptor *desc, const ArenaVector<ir::AstNode *> &properties,
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_TS_BOOLEAN_LITERAL_TYPE_H
+LocalScope *initScope_ {};
+if (!All(ModuleFlags(), flag)) {
+compiler::VReg moduleReg_ {};
+ir::AstNode *node_ {};
+virtual ir::ArrayExpression *ParseArrayExpression(ExpressionParseFlags flags);
+EPtr<TypeNode> typeAnnotation_ {};
+uncheckedType_ = other.uncheckedType_;
+compiler::CFG *cfg_;
+PandArgCompound ast_verifier_{"ast-verifier", R"(Configure AST-verifier. Default: "false")", {&ast_verifier_warnings_, &ast_verifier_errors_, &ast_verifier_phases_, &ast_verifier_full_program_, &ast_verifier_json_, &ast_verifier_json_path_}};
+void BuildCatchClause(ir::CatchClause *catchClauseStmt);
+#ifndef ES2PANDA_IR_PREFIX_ASSERTION_EXPRESSION_H
+std::string DirOrDirWithIndexFile(std::string resolvedPathPrototype) const;
+ArenaVector<SourceProgram *> fractions_;
+ir::ModifierFlags memberModifiers, const lexer::SourcePosition &startLoc,
+void LookupDiskData(ImportInfo *importInfo);
+ir::Expression *ParsePrimaryExpression(ExpressionParseFlags flags = ExpressionParseFlags::NO_OPTS) override;
+bool readonly_;
+std::vector<Type *> &altTypes) noexcept;
+using VariableVisitor = std::function<bool(const Variable *)>;
+ArenaVector<varbinder::FunctionScope *> compilableFunctionScopes_;
+util::StringView cooked_ {};
+return classId_;
+bool DeclarationIsInCache(ImportInfo &importInfo);
+[[nodiscard]] bool InstantiateArgumentsImpl(Scope **scope, Scope *iter, const ir::AstNode *node);
+bool prefix_;
+friend EtsIntrinsicInfo const *GetIntrinsicInfoFor(ETSIntrinsicNode const *node);
+return program_;
+void ParseNameSpaceImport(ArenaVector<ir::AstNode *> *specifiers);
+[[nodiscard]] std::optional<SmartCastTuple> ResolveSmartCastTypes();
+#ifndef ES2PANDA_IR_STATEMENT_WHILE_STATEMENT_H
+void InstantiateArguments();
+#ifndef ES2PANDA_IR_TS_INTERFACE_DECLARATION_H
+friend class ScriptFunction;
+ArenaVector<ir::Expression *> &arguments,
+target->context_ = context_;
+bool InAmbientContext();
+EPtr<Expression> callee_;
+OverloadsT overloads_;
+Expression *update_;
+ETSObjectType *wrapperType_;
+checker::Type *ResolveReturnTypeFromSignature(checker::ETSChecker *checker, bool isSetter,
+ir::Statement *ParseNamespace(ir::ModifierFlags flags) override;
+ir::Statement *ParseDebuggerStatement() override;
+virtual void CopyTo(VarBinder *target)
+EPtr<TSTypeParameterDeclaration> typeParams_ {};
+void SerializeToken(lexer::TokenType token);
+T::CopyTo(other);
+void ReportIfVarDeclaration(VariableParsingFlags flags) override;
+void ParseCatchParamTypeAnnotation([[maybe_unused]] ir::AnnotatedExpression *param) override;
+varbinder::RecordTable *recordTable_ {};
+#ifndef ES2PANDA_IR_TS_MODULE_BLOCK_H
+Type *enumType_ {nullptr};
+ignoreConstAssign_ = other.ignoreConstAssign_;
+void ExpectToken(lexer::TokenType tokenType, bool consumeToken = true);
+GlobalScope *topScope_ {};
+RelationHolder comparableResults_;
+Statement *consequent_;
+ir::Expression *ParseCatchParam() override;
+static constexpr const char *PACKAGE = "package";
+if constexpr (sizeof...(KINDS_TO_VISIT) == 0) {
+bool TryParseAnnotations();
+ir::ETSTypeReferencePart *part_;
+bool CanContinueObjectLiteralArgumentsAcrossNewLine() const;
+TypeNode *typeNode_;
+bool isBrokenStatement_ {false};
+StatementParsingFlags stmFlags = StatementParsingFlags::ALLOW_LEXICAL);
+Type *const normalizedType_;
+const lexer::SourcePosition &startLoc, bool ignoreCallExpression);
+parser::PackageProgram *NewEmptyPackage(const ImportInfo &importInfo);
+ArenaVector<ir::ETSImportDeclaration *> defaultImports_;
+#ifndef ES2PANDA_PARSER_INCLUDE_AST_PROPERTY_H
+ScriptExtension extension_ {};
+ir::YieldExpression *ParseYieldExpression();
+: Annotated<Statement>(static_cast<Annotated<Statement> const &>(other))
+virtual ir::Expression *ParsePotentialAsExpression(ir::Expression *primaryExpression);
+bool isShorthand_ = true;
+ir::SwitchCaseStatement *ParseSwitchCaseStatement(bool *seenDefault);
+std::string cacheDir_ {};
+Lock *lock_;
+bool ParsePropertyModifiers(ExpressionParseFlags flags, ir::PropertyKind *propertyKind, ParserStatus *methodStatus);
+instantiationRecursionMap_(Allocator()->Adapter()),
+#endif
+PandArg<arg_list_t> bco_optimizer_{"bco-optimizer", {}, R"(Bytecode optimizer arguments. Default: [])"};
+#ifndef ES2PANDA_IR_STATEMENT_TRY_STATEMENT_H
+compilableCount_ = 0;
+PandArg<arg_list_t> dump_ets_src_before_phases_{"dump-ets-src-before-phases", {}, R"(Generate program dump as ets source code before running phases in the list. Default: [])", ","};
+MANDATORY_PARAM_FUNC, MANDATORY_PARAM_NEW_TARGET, MANDATORY_PARAM_THIS};
+AnnotatedAstNode(AnnotatedAstNode const &other) : Annotated<AstNode>(static_cast<Annotated<AstNode> const &>(other))
+SpecifiersInfo ParseExportNamedSpecifiers(const ir::ImportKinds exportKind);
+ir::BlockStatement *ParseFunctionBody();
+program_ = program;
+void ParseInterfaceModifiers(ir::ModifierFlags &fieldModifiers, bool &optionalField);
+void VerifyDeclarationModule();
+template <size_t N>
+bool astVerifierBeforePhases_ {};
+bool TryTransformingToStaticInvoke(ir::Identifier *ident, const Type *resolvedType);
+bool ParsePaths(const JsonObject::JsonObjPointer *options, PathsMap &pathsMap, const std::string &baseUrl);
+virtual void BuildClassProperty(const ir::ClassProperty *prop);
+#ifndef ES2PANDA_IR_TS_ARRAY_TYPE_H
+EPtr<checker::SignatureInfo> const signatureInfo_;
+RecordTable *globalRecordTable_;
+ir::ClassDefinition *ParseClassDefinition(ir::ClassDefinitionModifiers modifiers,
+#ifndef ES2PANDA_IR_TYPE_NODE_H
+void NotResolvedError(ir::Identifier *const ident, const varbinder::Variable *classVar,
+virtual ir::AstNode *ParseImportSpecifiers(ArenaVector<ir::AstNode *> *specifiers);
+std::vector<Type *> typeParamTypes_ {};
+#ifndef ES2PANDA_IR_TS_UNDEFINED_KEYWORD_H
+PandArg<arg_list_t> ast_verifier_phases_{"phases", {R"(after)"}, R"(Specify phases to finalize with ASTVerifier. Shortcuts: "before", "each", "after".
+. Default: ["after"])", ":"};
+#ifndef ES2PANDA_IR_TS_TYPE_PARAMETER_INSTANTIATION_H
+#ifndef ES2PANDA_PARSER_INCLUDE_AST_CLASS_ELEMENT_H
+ArenaSet<varbinder::Variable *> capturedVars_;
+static bool IsClassMethodModifier(lexer::TokenType type) noexcept;
+Identifier *exported_;
+void RegisterProgram(parser::Program *program);
+mutable bool propertiesInstantiated_ = false;
+struct Tag {};
+ALWAYS_INLINE void SetHistoryInternal([[maybe_unused]] AstNodeHistory *history)
+ir::ModifierFlags flags = ir::ModifierFlags::NONE) override;
+ETSObjectFlags flags_;
+PandArg<bool> emit_metadata_{"emit-metadata", false, R"((experimental) Emit metadata into abc file, to use it while importing the current module from other modules instead of using sources directly. Default: false)"};
+VariableMap mergedSharedForeign_;
+return recursiveCtx_;
+Property(Property const &other) : Expression(static_cast<Expression const &>(other))
+ALWAYS_INLINE void SetHistoryInternal([[maybe_unused]] AstNodeHistory *history) const {}
+mutable std::unique_ptr<lexer::LineIndex> lineIndex_ {};
+explicit AnnotatedStatement(AstNodeType type) : Annotated<Statement>(type) {}
+Expression *argument_;
+virtual ir::ModifierFlags ParseModifiers();
+varbinder::Scope *scope_;
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_TS_TUPLE_TYPE_H
+void SerializeChar16(char16_t c16);
+std::string_view sourceCode);
+ir::Expression *ParsePotentialAsExpression(ir::Expression *primaryExpr) override;
+void InitializeBasePath(std::string basePath);
+ArenaSet<varbinder::Variable *> localVariableIsNeeded_;
+TypeNode *expr_;
+void ParseCapturingGroup();
+MetadataAccessRestrictionModuleList metadataAccessRestrictionModules_;
+#ifndef ES2PANDA_PARSER_CORE_ETS_PARSER_H
+Program *savedProgram_;
+virtual ir::Identifier *ParseIdentifierFormatPlaceholder(std::optional<NodeFormatType> nodeFormat);
+ETSParser *parser_;
+Expression *test_;
+ALWAYS_INLINE AstNodeHistory *GetHistoryInternal() const
+varbinder::LocalScope *scope_ {};
+void DumpCheckerTypeForDeclGen(ir::SrcDumper *dumper) const;
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_TS_CONSTRUCTOR_TYPE_H
+void ParseTrailingBlock([[maybe_unused]] ir::CallExpression *callExpr) override;
+EPtr<ir::Expression> name_;
+RelationHolder &UncheckedCastableResults() noexcept;
+EPtr<Expression> left_ = nullptr;
+externalPrograms_ = *externalPrograms;
+ir::AstNode *HandleAmbientDeclaration(ir::ModifierFlags &memberModifiers,
+memberNameToOrdinal_(allocator->Adapter())
+bool IsStringEnum();
+void RemoveASTLowered()
+allocator_(allocator),
+util::DiagnosticStorage validUpdatedDiagnostics_;
+parser::Program *GetGlobalProgram() const;
+std::map<std::uint32_t, checker::ETSObjectType *> &numericTypes) const;
+void InitCanonicalAsmTypeCache(ETSChecker *checker);
+class Releaser {
+enum class InsertBindingFlags : uint8_t { NONE = 0, FOREIGN = 1U << 0U, DYNAMIC = 1U << 1U, ASSIGN = 1U << 2U };
+virtual std::tuple<bool, ir::BlockStatement *, lexer::SourcePosition, bool> ParseFunctionBody(
+[[nodiscard]] virtual bool BuildInternalName(ir::ScriptFunction *scriptFunc);
+ScriptFunction *func_;
+bool IsBrokenStatement(ir::Statement *st);
+static bool EachTypeRelatedToSomeType(TypeRelation *relation, UnionType *source, UnionType *target);
+virtual void ReportIfVarDeclaration(VariableParsingFlags flags);
+ALWAYS_INLINE void InitHistory() const {}
+ir::Expression *ParseUnaryOrPrefixUpdateExpression(
+Signature *CreateSignatureForSubstitute(ArenaAllocator *allocator, SignatureInfo *sigInfo, Type *returnType);
+DiagnosticEngine *DE() const;
+}
+flags_(std::get<ETSObjectFlags>(info)),
+ArenaMap<int32_t, varbinder::VarBinder *> varbinders_;
+void InsertExtensionAccessorToMap(util::StringView name, ETSObjectType *type, Signature *sig,
+ir::TypeNode *returnTypeAnnotation);
+bool IsFixedArrayTypeNode(ir::AstNode *node);
+void LookupSourceFile(ImportInfo *importInfo);
+RelationHolder comparableResults_ {Allocator()};
+ir::Statement *ParseTypeAliasStatement() override;
+bool HandleBracketToken(lexer::TokenType tokenType, ArrowParamState &state);
+std::unordered_map<std::string, NodeVariant> unExportNode_ {};
+virtual ir::ClassDefinition *ParseClassDefinition(ir::ClassDefinitionModifiers modifiers,
+std::array<bool, gen::ast_verifier::COUNT> verifierWarnings_ {};
+explicit Typed(AstNodeType const type) : T(type) {}
+return std::hash<std::string> {}(key.path) ^ (std::hash<bool> {}(key.isDynamic) << 1U);
+EPtr<ETSObjectType> superType_ {};
+PandArg<std::string> log_level_{"log-level", R"(error)", R"(Log-level. Possible values: ["debug", "info", "warning", "error", "fatal"]. Default: "error")"};
+lexer::RegExpFlags flags_;
+void SerializeConstant(Property::Constant constant);
+void ParseQuantifier();
+Expression *source_;
+ir::Expression *ParseClassKey(ClassElementDescriptor *desc);
+ir::Expression *ParseMemberExpression(bool ignoreCallExpression = false,
+#ifndef ES2PANDA_IR_EXPRESSION_TAGGED_TEMPLATE_EXPRESSION_H
+void ClearModuleFlag(ModuleFlag flag) noexcept
+const lexer::SourcePosition &startLoc,
+bool &skipNextToken, lexer::Lexer *lexer);
+varbinder::LocalVariable *preOverloadDeclaration_;
+bool CheckDefinitions(const ir::AstNode *parent, ScriptExtension ext) const;
+virtual void ConsumeClassPrivateIdentifier(ClassElementDescriptor *desc, char32_t *nextCp);
+explicit Annotated(AstNodeType const type, TypeNode *const typeAnnotation)
+void SetUpDefaultTypeDependenciesIfNeeded(ir::TSTypeParameter *param, ir::TypeNode *defaultType,
+ArenaAllocator *const allocator_;
+auto &&iter = scope;
+bool isAwait_;
+const ArenaVector<Type *> &GetAssemblerTypes() const
+isTopLevelDeclInit_ = other.isTopLevelDeclInit_;
+size_t requiredParams_;
+ir::Expression *ParseNewExpression() override;
+bool abstract_;
+checker::Type *SetAndAdjustType(checker::ETSChecker *checker, checker::ETSObjectType *objectType);
+virtual void CheckIfStaticConstructor(ir::ModifierFlags flags);
+RelationType type) const;
+MemberExpressionKind kind_;
+ArenaVector<ir::AstNode *> ParseAnnotationProperties(ir::ModifierFlags memberModifiers = ir::ModifierFlags::NONE,
+Expression *param_;
+util::StringView ParseIdent();
+#ifndef ES2PANDA_IR_TS_TYPE_ALIAS_DECLARATION_H
+#ifndef ES2PANDA_IR_STATEMENT_ASSERT_STATEMENT_H
+ir::Expression *propName, ir::ScriptFunction *func);
+bool ParseReadonlyInTypeAnnotation();
+ir::Statement *ParseStatementLiteralIdentHelper(StatementParsingFlags flags = StatementParsingFlags::NONE);
+const std::string &fileName);
+bool IsInOperatorTypeSupported() const override
+#ifndef ES2PANDA_IR_EXPRESSION_ARRAY_EXPRESSION_H
+void SetExternalPrograms(const ExternalPrograms *externalPrograms)
+TypeAnnotationParsingOptions options = TypeAnnotationParsingOptions::REPORT_ERROR);
+return reinterpret_cast<T *>(GetOrCreateHistoryNode());
+bool IsPrimitiveType(const lexer::TokenType &tokenType);
+EPtr<Decl> decl_ {};
+void HandleStarImport(ir::TSQualifiedName *importName, util::StringView fullPath);
+ir::TypeNode *ParseTypeFormatPlaceholder(std::optional<NodeFormatType> nodeFormat = std::nullopt);
+CheckerStatus preStatus_;
+#ifndef ES2PANDA_IR_TS_TUPLE_TYPE_H
+LocalScope *typeAliasScope_;
+#ifndef ES2PANDA_IR_TS_NULL_KEYWORD_H
+return assemblerConstituentTypes_;
+ArenaVector<Type *> const constituentTypes_;
+for (auto it = props.begin(); it != props.end();) {
+#ifndef ES2PANDA_IR_TS_INTERSECTION_TYPE_H
+bool packageDeprecationWarned_;
+ir::Statement *ParseForStatement();
+void CheckLabelledFunction(const ir::Statement *node);
+#ifndef ES2PANDA_IR_EXPRESSION_UPDATE_EXPRESSION_H
+virtual void ParseGlobalImpl();
+bool IsExportedDeclaration(ir::ModifierFlags memberModifiers);
+varbinder::AnnotationParamScope *propertiesScope_ {};
+ir::TSInterfaceDeclaration *ParseInterfaceBody(ir::Identifier *name, bool isStatic);
+returnTypeAnnotation_ = other.returnTypeAnnotation_;
+ir::TSTypeParameter *declNode_ {};
+void ParseAtomEscapeSwitch(char32_t cp);
+#ifndef ES2PANDA_IR_EXPRESSION_UNARY_EXPRESSION_H
+std::ifstream inputStream {file};
+const ArkTsConfig::ExternalModuleData *extModuleData_ {};
+bool FilterForDeclGen() const;
+mutable EPtr<ArenaMap<util::StringView, util::StringView>> reExportAlias_;
+void BuildVarDeclaratorIdFromIdentifier(ir::Identifier *ident);
+ArenaVector<TypeNode *> elementTypes_;
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_TS_ANY_TYPE_H
+explicit AnnotationAllowed(AstNodeType const type, TypeNode *typeAnnotation, ArenaAllocator *const allocator)
+ir::Statement *CreateReExportDeclarationNode(ir::ETSImportDeclaration *reExportDeclaration,
+#ifndef ES2PANDA_IR_TS_BOOLEAN_KEYWORD_H
+std::unordered_map<const void *, Type *> typeStack_;
+typeParams_ = other.typeParams_;
+void SerializeSourcePosition(const lexer::SourcePosition &pos);
+static constexpr const char *CACHE_DIR = "cacheDir";
+varbinder::ExportSurfaceId exportSurface_ {};
+ir::TypeNode *ParsePotentialFunctionalType(TypeAnnotationParsingOptions *options);
+*annotations_ = std::move(annotations);
+[[nodiscard]] Type *CreateWildcardSubstitutedType(Type *testedType) const;
+virtual void ConsumeSemicolon(ir::Statement *statement);
+virtual ir::Statement *ParseDebuggerStatement();
+reExports_(nullptr),
+ir::StringLiteral *ParseStringLiteral();
+PandArg<bool> gen_stdlib_{"gen-stdlib", false, R"(Gen standard library. Default: false)"};
+if (Any(ModuleFlags(), flag)) {
+InitMode initMode_ = InitMode::NONE;
+if (lastEHeapId_ != heapId) {
+bool hasExtensionAccessorSignatures_ {};
+#ifndef ES2PANDA_CHECKER_ETS_CHECKER_H
+bool ParsePotentialGenericFunctionCall(ir::Expression *primaryExpr, ir::Expression **returnExpression,
+auto otherImpl = other->AsETSDestructuring();
+bool CanContinueObjectLiteralCallAcrossNewLine() const;
+transitiveSupertypes_(nullptr),
+hasReceiver_ = other.hasReceiver_;
+typename ResultT, typename ScopeT,
+#ifndef ES2PANDA_IR_STATEMENT_VARIABLE_DECLARATOR_H
+constructSignatures_(allocator->Adapter()),
+RelationHolder uncheckedCastableResults_ {Allocator()};
+#ifndef NDEBUG
+bool> = true,
+#ifndef ES2PANDA_IR_ETS_OPAQUE_TYPE_NODE_H
+#ifndef ES2PANDA_IR_MODULE_EXPORT_ALL_DECLARATION_H
+void ValidateAssignmentTarget(ExpressionParseFlags flags, ir::Expression *node);
+bool CheckTypeReferencePartRecursion(ir::ETSTypeReferencePart *part,
+bool inPattern);
+bool hasWarnings_ {false};
+auto otherImpl = reinterpret_cast<ETSUnionType *>(other);
+template <
+#ifndef ES2PANDA_IR_TS_INFER_TYPE_H
+if (!propertiesInstantiated_) {
+Expression *callee_ = nullptr;
+friend class ETSFunctionType;
+} while (std::holds_alternative<Property::Ignore>((*it).Value()));
+ir::CallExpression *ParseCallExpression(ir::Expression *callee, bool isOptionalChain = false,
+virtual ETSFunctionType *CreateMethodTypeForProp(util::StringView name) const;
+std::unordered_set<const ir::TSTypeAliasDeclaration *> &typeAliases);
+ir::TypeNode *ParsePrimitiveType(TypeAnnotationParsingOptions *options, ir::PrimitiveType type);
+EPtr<Expression> right_ = nullptr;
+#ifdef ES2PANDA_ENABLE_AST_HISTORY
+explicit TypedAstNode(AstNodeType const type, ModifierFlags const flags) : Typed<AstNode>(type, flags) {}
+util::StringView savedLexer_ = "";
+ir::Expression *HandleDeepNesting();
+std::string value_ {};
+ETSObjectType *AsETSObjectType(Type *(GlobalTypesHolder::*typeFunctor)(Args...) const, Args... args) const;
+lexer::SourcePosition periodPos,
+#ifndef ES2PANDA_IR_NAMED_TYPE_H
+static constexpr const char *OUT_DIR = "outDir";
+const util::Options *options_;
+interfaces_ = allocator_->New<ArenaVector<ETSObjectType *>>(allocator_->Adapter());
+varbinder::GlobalScope *savedTopScope_;
+const std::vector<std::string> &filePaths,
+static constexpr MandatoryParams<MANDATORY_PARAMS_NUMBER> ARROW_MANDATORY_PARAMS = {
+lastEHeapId_ = heapId;
+std::optional<std::string> TryResolveWithPaths(std::string_view path, util::FsQueryCache *fsQueryCache) const;
+CapturedVarsMap capturedVars_;
+PandArgCompound ets_warnings_{"ets-warnings", R"(Enable ETS-warnings. Default: "false")", {&ets_warnings_werror_, &ets_warnings_enable_, &ets_warnings_disable_, &ets_warnings_base_path_, &ets_warnings_diagnostic_format_}};
+const std::function<bool(bool &typeKeywordOnSpecifier)> &parseElement,
+std::array<bool, gen::ast_verifier::COUNT> verifierErrors_ {};
+EPtr<Expression> object_ = nullptr;
+#ifndef ES2PANDA_IR_EXPRESSION_LITERAL_CHAR_LITERAL_H
+ir::ClassDefinition *const newClassDef);
+PandArg<arg_list_t> ast_verifier_errors_{"errors", {R"(ArithmeticOperationValid)", R"(CheckAbstractMethod)", R"(CheckStructDeclaration)", R"(EveryChildHasValidParent)", R"(ForLoopCorrectlyInitialized)", R"(GetterSetterValidation)", R"(IdentifierHasVariable)", R"(ModifierAccessValid)", R"(NodeHasParent)", R"(NodeHasType)", R"(NoPrimitiveTypes)", R"(EnumHasCorrectType)", R"(ReferenceTypeAnnotationIsNull)", R"(SequenceExpressionHasLastType)", R"(VariableHasEnclosingScope)", R"(VariableHasScope)", R"(VariableNameIdentifierNameSame)"}, R"(Print errors and aborts compilation if AST tree is incorrect. Possible values: ["Base", "NodeHasParent", "NodeHasSourceRange", "EveryChildHasValidParent", "EveryChildInParentRange", "AfterPluginsAfterParse", "CheckStructDeclaration", "AfterScopesInitPhase", "VariableHasScope", "AfterCheckerPhase", "NodeHasType", "NoPrimitiveTypes", "EnumHasCorrectType", "IdentifierHasVariable", "ReferenceTypeAnnotationIsNull", "ArithmeticOperationValid", "SequenceExpressionHasLastType", "ForLoopCorrectlyInitialized", "VariableHasEnclosingScope", "ModifierAccessValid", "VariableNameIdentifierNameSame", "CheckAbstractMethod", "GetterSetterValidation", "CheckScopeDeclaration", "CheckConstProperties"]. Default: ["ArithmeticOperationValid", "CheckAbstractMethod", "CheckStructDeclaration", "EveryChildHasValidParent", "ForLoopCorrectlyInitialized", "GetterSetterValidation", "IdentifierHasVariable", "ModifierAccessValid", "NodeHasParent", "NodeHasType", "NoPrimitiveTypes", "EnumHasCorrectType", "ReferenceTypeAnnotationIsNull", "SequenceExpressionHasLastType", "VariableHasEnclosingScope", "VariableHasScope", "VariableNameIdentifierNameSame"])", ":"};
+ResolvedPathRes AppendExtensionOrIndexFileIfOmitted(std::string resolvedPathPrototype) const;
+return *context_.config->options;
+bool isParsed_ = false;
+evaluate::ScopedDebugInfoPlugin *debugInfoPlugin_ {nullptr};
+ir::Expression *ParseClassExpression();
+ir::Identifier *thisParam_ {};
+void VisitScriptFunction(ir::ScriptFunction *func);
+bool ValidAnnotationValue(ir::Expression *initializer);
+EPtr<MethodDefinition> functionalReferenceReferencedMethod_ {};
+PandArg<bool> module_{"module", false, R"(Parse the input as module (JS only option). Default: false)"};
+RecursiveContext &TypeRecursiveCtx()
+ArenaString moduleName_ {};
+virtual void BuildSignatureDeclarationBaseParams([[maybe_unused]] ir::AstNode *typeNode) {};
+void SetProgram(Program *program)
+ir::TypeNode *CreateErrorForWrongArrayType(lexer::SourcePosition &startPos);
+lexer_ = lexer;
+TupleSizeType size_ {0};
+bool ParsePotentialNonNullExpression(ir::Expression **expression, lexer::SourcePosition startLoc) override;
+[[nodiscard]] SmartCastTypes CloneTestSmartCasts(bool clearData = true) noexcept;
+const lexer::SourcePosition &startLoc) override;
+PropertySearchFlags flags) const;
+std::vector<const ir::ImportDeclaration *> imports_;
+void ValidateArrowParameterAssignment(ir::AssignmentExpression *expr);
+if (iter->IsVariableScope()) {
+std::enable_if_t<std::is_same_v<ResultT, ConstScopeFindResult> || std::is_same_v<ResultT, ScopeFindResult>,
+ir::ClassProperty *CreateNullishProperty(ir::Identifier *const id, ir::ModifierFlags const flags,
+using WrapperCb = std::function<void()>;
+MappedOption optional_;
+const ir::TSTypeParameterInstantiation *typeParams,
+const ir::ModifierFlags &modifiers,
+annotations_ = allocator_->New<ArenaVector<AnnotationUsage *>>(allocator_->Adapter());
+void ParseAlternatives();
+Span<ir::Expression *> membersNames {};
+std::string msg_;
+ClassProperty *Construct(ArenaAllocator *allocator) override;
+ir::Statement *ParseEnumDeclaration(bool isConst = false, bool isStatic = false) override;
+Expression *consequent_;
+virtual ir::ArrayExpression *ParseArrayExpression(ExpressionParseFlags flags, bool allowOmitted);
+void LookForOptionalMethod(char32_t &nextCp);
+std::unique_ptr<ArkTsConfig> arktsConfig_ {};
+EPtr<varbinder::LocalScope> scope_ {nullptr};
+ArenaMap<checker::Type *, int8_t> instantiationRecursionMap_;
+lexer::SourcePosition packageStartPosition_ {};
+void ReputCheckerDataProgram(ETSChecker *eChecker);
+TypeMapping apparentTypes_;
+bool ParseDependency(size_t keyIdx, const std::unique_ptr<ark::JsonObject> *dependencies,
+PandArg<arg_list_t> ast_verifier_warnings_{"warnings", {}, R"(Print warnings and continue compilation even if AST tree is incorrect. Possible values: ["Base", "NodeHasParent", "NodeHasSourceRange", "EveryChildHasValidParent", "EveryChildInParentRange", "AfterPluginsAfterParse", "CheckStructDeclaration", "AfterScopesInitPhase", "VariableHasScope", "AfterCheckerPhase", "NodeHasType", "NoPrimitiveTypes", "EnumHasCorrectType", "IdentifierHasVariable", "ReferenceTypeAnnotationIsNull", "ArithmeticOperationValid", "SequenceExpressionHasLastType", "ForLoopCorrectlyInitialized", "VariableHasEnclosingScope", "ModifierAccessValid", "VariableNameIdentifierNameSame", "CheckAbstractMethod", "GetterSetterValidation", "CheckScopeDeclaration", "CheckConstProperties"]. Default: [])", ":"};
+#ifndef ES2PANDA_IR_VALIDATION_INFO_H
+static inline size_t lastEHeapId_ = static_cast<size_t>(-1);
+ir::ArrowFunctionExpression *ParseArrowFunctionExpression(ir::Expression *expr,
+ArenaVector<util::StringView> userPaths_;
+Language lang_;
+ir::ArrowFunctionExpression *ParseArrowFunctionExpressionBody(ArrowFunctionContext *arrowFunctionContext,
+ResolvedPathRes ResolveAbsolutePath(std::string_view importPathNode) const;
+RelationHolder &ComparableResults() noexcept;
+return lexer_;
+bool ParseOverloadListElement(ArenaVector<ir::Expression *> &overloads, ir::OverloadDeclaration *overloadDecl);
+#ifndef ES2PANDA_IR_EXPRESSION_CLASS_EXPRESSION_H
+allocator_ = alloc;
+friend class util::SourcePositionHelper;
+virtual ir::AstNode *ParseTypeParametersFormatPlaceholder();
+util::StringView const name_;
+bool InClassMemberContext() const;
+#undef DECLARE_CHECKS_CASTS
+explicit ETSEnumType(ArenaAllocator *allocator, util::StringView name, util::StringView internalName,
+std::string_view const methodName);
+ir::ModifierFlags ParseInterfaceMethodModifiers();
+ir::Statement *CreateStatement(std::string_view sourceCode);
+explicit LexicalScope(T *scope, VarBinder *varbinder)
+ir::ClassProperty *CreateNullishPropertyFromAccessor(ir::MethodDefinition *const accessor,
+class ResolvedSources;
+LogUnexpectedToken(lexer::TokenType::KEYW_ENUM);
+es2panda::parser::ParserImpl *parser_;
+#ifndef ES2PANDA_COMPILER_SCOPES_SCOPE_H
+return {name, iter, level, lexLevel, v};
+void CheckProgram(parser::Program *program, bool runAnalysis = false);
+bool resolvedIsExternalModule {false};
+lexer::Lexer *Lexer() const
+PandArg<bool> emit_declaration_{"emit-declaration", false, R"(Emit declaration to .abc file. Default: false)"};
+bool ParseInputOutput();
+virtual void ReportMultipleDefaultError();
+PropertyKind kind_;
+EPtr<checker::Type> preferredType_ {};
+std::stringstream ss {};
+explicit AnnotatedExpression(AstNodeType const type) : Annotated<Expression>(type) {}
+TypeNode *elementType_;
+ArenaAllocator *allocator_;
+ir::Expression *ParseAnnotationName();
+ETSFunctionType *Construct(ArenaAllocator *allocator) override;
+static_assert(KIND != ModuleKind::METADATA_DECL);
+bool genStdLib_ {false};
+std::variant<ir::ClassDefinition *, ir::TSInterfaceDeclaration *, ir::AnnotationDeclaration *, std::nullptr_t>;
+#ifndef ES2PANDA_IR_TS_IMPORT_TYPE_H
+level++;
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_TS_UNKNOWN_TYPE_H
+RelationHolder identicalResults_;
+ETSFunctionType *classMethodType_ {};
+bool isBuiltSimultaneously_ {false};
+static constexpr const char *USE_EMPTY_PACKAGE = "useEmptyPackage";
+void ImportAllForeignBindings(const parser::Program *importedProgram);
+ArenaVector<Type *> constituentTypes_;
+bool TryCastUnboxable(TypeRelation *const relation, Type *const target);
+void *ApplyAnnotationsToClassElement(ir::AstNode *property, ArenaVector<ir::AnnotationUsage *> &&annotations,
+virtual bool ValidateArrowFunctionRestParameter(ir::SpreadElement *restElement);
+ArenaVector<ir::ExportSpecifier *> *resultExportDefault, bool isTypeOnly = false);
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_SIGNATURE_H
+bool IsSyntaxCharacter(char32_t cp) const;
+ArenaVector<ir::Expression *> dimensions_;
+void SetUpTypeParameterConstraint(ir::TSTypeParameter *param);
+#ifndef ES2PANDA_IR_EXPRESSION_SUPER_EXPRESSION_H
+ir::TypeNode *ParseBaseTypeReference(TypeAnnotationParsingOptions *options);
+ir::AstNode *ParseInnerConstructorDeclaration(ir::ModifierFlags memberModifiers,
+bool FindPropertyInAssignment(const ir::AstNode *it, const std::string &targetName);
+#ifndef ES2PANDA_IR_ETS_TYPE_REFERENCE_PART_H
+#ifndef ES2PANDA_CHECKER_RESOLVE_RESULT_H
+explicit AnnotatedAstNode(AstNodeType const type, TypeNode *const typeAnnotation)
+auto pos = exe_path.find_last_of(preferred_separator);
+PandArg<arg_list_t> ets_warnings_disable_{"disable", {}, R"(Specify warnings to disable. Overrides ':enable=' suboption. Possible values: ["subset_aware", "ets-prohibit-top-level-statements", "ets-boost-equality-statement", "ets-remove-lambda", "ets-implicit-boxing-unboxing", "ets-annotation-unused-generic-alias-warn", "subset_unaware", "ets-suggest-final", "ets-remove-async"]. Default: [])", ":"};
+ir::Statement *ParseStatementFormatPlaceholder() override;
+const lexer::SourcePosition &startLoc, bool ignoreCallExpression) override;
+TSTypeParameterInstantiation *typeParameters_ {};
+#undef DECLARE_IS_CHECKS
+template <typename T>
+ir::Statement *ParseExportDeclaration(StatementParsingFlags flags) override;
+void ResolveReferences(const ir::AstNode *parent);
+AstNode *init_;
+EnumType *CreateEnumTypeFromEnumDeclaration(ir::TSEnumDeclaration const *const enumDecl);
+mutable std::unordered_map<ResolutionCacheKey, std::optional<std::string>, ResolutionCacheKeyHash> arkTsPathCache_;
+EPtr<Expression> value_;
+EPtr<Expression> id_;
+void RaisePackageDeprecatedMessage();
+ir::VariableDeclarator *ParseVariableDeclaratorInitializer(ir::Expression *init, VariableParsingFlags flags,
+void ReportAccessModifierError(const lexer::Token &token);
+void DumpModifiers(ir::SrcDumper *dumper) const;
+virtual ir::VariableDeclarator *ParseVariableDeclarator(ir::Expression *init, lexer::SourcePosition startLoc,
+void LookupEtscacheFile(ImportInfo *importInfo) const;
+virtual ir::ObjectExpression *ParseObjectExpression(ExpressionParseFlags flags = ExpressionParseFlags::NO_OPTS);
+explicit Variable(VariableFlags flags) : flags_(flags) {}
+ResolvedKind kind_ {};
+ir::Expression *ParseFunctionParameterExpression(ir::AnnotatedExpression *paramIdent, bool isOptional);
+void SerializeObject(const ir::AstNode *object);
+#ifndef ES2PANDA_IR_STATEMENT_BLOCK_STATEMENT_H
+#ifndef ES2PANDA_IR_EXPRESSION_LITERAL_BIGINT_LITERAL_H
+void CheckDeclare();
+TrailingLambdaInfo trailingLambdaInfo_ {};
+bool needTypeAnnotation = true);
+: checker_(checker),
+void TryParseAnnotationsParams();
+ScopeFlags flags_ {};
+virtual ir::Statement *ParseAnnotationsInStatement(StatementParsingFlags flags);
+template <typename T, std::enable_if_t<std::is_base_of_v<InvariantMessages, T>, void *> = nullptr>
+bool IsAccessorOfDumpedProperty() const;
+LoopScope *loopScope_ {};
+virtual ir::Expression *ParseFunctionParameter();
+Program *program_ {nullptr};
+ir::Expression *ParseLeftHandSideExpression(ExpressionParseFlags flags = ExpressionParseFlags::NO_OPTS);
+ir::ArrayExpression *membersValues_;
+#ifndef ES2PANDA_IR_TS_UNKNOWN_KEYWORD_H
+ir::Expression *ParseArrayOrDestructuringExpression(const ExpressionParseFlags flags);
+static bool TypeRelatedToSomeType(TypeRelation *relation, Type *source, ETSUnionType *target);
+true>
+RelationHolder uncheckedCastableResults_;
+std::optional<ir::Expression *> GetPostPrimaryExpression(ir::Expression *returnExpression,
+std::string mainFile_ {};
+bool isBlockInNewLine {false};
+virtual ArenaVector<ir::AstNode *> &ParseAstNodesArrayFormatPlaceholder();
+VariableDeclarationKind kind_;
+std::tuple<ForStatementKind, ir::AstNode *, ir::Expression *, ir::Expression *> ParseForInOf(
+#ifndef ES2PANDA_IR_TS_ENUM_MEMBER_H
+bool ParseNamedSpecifiesImport(ArenaVector<ir::ImportSpecifier *> *result,
+util::DiagnosticType diagnosticKind_;
+std::optional<std::unique_ptr<ArkTsConfig>> ParseArktsConfig();
+ObjectType *mergedObjectType_ {};
+#ifndef ES2PANDA_IR_EXPRESSION_BINARY_EXPRESSION_H
+ETSTypeParameter *const tparam_;
+util::StringView exoticName_ {};
+lexer::SourcePosition ParseEnumMember(ArenaVector<ir::AstNode *> &members, ir::TypeNode *typeAnnotation);
+const ParserContext &GetContext() const
+ir::AstNode *ParseClassElement(const ArenaVector<ir::AstNode *> &properties, ir::ClassDefinitionModifiers modifiers,
+#ifndef ES2PANDA_IR_STATEMENT_VARIABLE_DECLARATION_H
+uncheckedCastableResults_(Allocator()),
+bool ParseNumberEnumHelper();
+#ifndef ES2PANDA_IR_STATEMENT_EMPTY_STATEMENT_H
+explicit TypeRelation(Checker *checker, bool isolateCaches)
+void InsertForeignBinding(const util::StringView &name, Variable *var);
+virtual void ConvertThisKeywordToIdentIfNecessary() {}
+#ifndef ES2PANDA_PARSER_INCLUDE_AST_TEMPLATE_ELEMENT_H
+size_t compilableCount_ {};
+void ParseNonCapturingGroup();
+void SetupGlobalProgram(public_lib::Context *ctx);
+util::StringView raw_ {};
+ir::Identifier *recordIdent_ {nullptr};
+void InitializeAbsoluteParentFolder();
+EPtr<AstNode> parent_ {};
+bool permitRelaxedAny_ {false};
+void TryMatchStaticResolvedPath(ResolvedPathRes *result) const;
+emptyAnnotations_ = allocator_->New<ArenaVector<AnnotationUsage *>>(allocator_->Adapter());
+void InitializeFileName();
+checker::Type *AdjustType(checker::ETSChecker *checker, checker::Type *type);
+uint32_t ParseControlEscape();
+ir::Expression *ParseFunctionParameterAnnotations();
+std::string sourceFilePath_ {};
+size_t releasers_ {};
+void ValidateGetterSetter(ir::MethodDefinitionKind methodDefinition, const ir::ScriptFunction *func,
+return nullptr;
+static void InitClass(ArenaAllocator *alloc)
+static constexpr const char *EXTENDS = "extends";
+void SerializePropKey(const char *str);
+checker::Type *annotationType, varbinder::Variable *const bindingVar);
+void BuildVarDeclarator(ir::VariableDeclarator *varDecl);
+[[nodiscard]] checker::Type *CombineTypes(checker::Type *typeOne, checker::Type *typeTwo) const noexcept;
+Expression *trueType_;
+friend class lexer::RegExpParser;
+const char preferred_separator = '/';
+auto membersValues = Span {membersValues_->Elements()};
+void AddIdFlags(IdentifierFlags const flags) noexcept
+#ifndef ES2PANDA_IR_ETS_NON_NULLISH_TYPE_NODE_H
+using ClassBody = std::tuple<ir::MethodDefinition *, ArenaVector<ir::AstNode *>, lexer::SourceRange>;
+void RegisterPackageFraction(parser::PackageProgram *package, ImportInfo *importInfo);
+Expression *argument_ = nullptr;
+{Id::JS, "js", true},
+void InsertOrAssignForeignBinding(const util::StringView &name, Variable *var);
+Holder globalTypes_ {};
+#ifndef ES2PANDA_IR_EXPRESSION_LITERAL_STRING_LITERAL_H
+ir::Statement *CreateForStatement(struct ForStatementNodes &&nodes, ForStatementKind forKind,
+membersValues_ = elem->AsClassProperty()->Value()->AsArrayExpression();
+if (iter->IsFunctionParamScope()) {
+bool isDevirtual_ = false;
+parser::Program *prevProgram_;
+const RelationHolder &UncheckedCastableResults() const noexcept;
+bool astVerifierAfterPhases_ {};
+} else {
+std::set<std::string> skipPhases_ {};
+virtual ir::Statement *ParsePotentialConstEnum(VariableParsingFlags flags);
+explicit TypeNode(AstNodeType const type, ModifierFlags const flags, ArenaAllocator *const allocator)
+ArenaVector<ExportSpecifier *> specifiers_;
+lexer::TokenType operator_;
+bool Eos() const;
+ir::TypeNode *ParseTypeAnnotation(TypeAnnotationParsingOptions *options) override;
+bool isStatic_;
+OperandKind kind_;
+explicit Decl(util::StringView name) : name_(name) {}
+std::string exe_dir_;
+bool wasChecked_ {false};
+reExports_ = allocator_->New<ArenaVector<ETSObjectType *>>(allocator_->Adapter());
+#ifndef ES2PANDA_IR_TS_TYPE_LITERAL_H
+Variable *AddTSBinding(ArenaAllocator *allocator, Variable *currentVariable, Decl *newDecl, VariableFlags flags);
+EPtr<ir::ETSTypeReferencePart> prev_ {};
+ir::Expression *CreateUnaryExpressionFromArgument(ir::Expression *argument, lexer::TokenType operatorType,
+#ifndef ES2PANDA_IR_AST_NODE_FLAGS_H
+varbinder::Variable *containingOverloadDeclaration_ {nullptr};
+void ConsumeSemicolon(ir::Statement *statement) override;
+ir::Expression *ParseImportExpression();
+Statement *alternate_;
+ArenaVector<Expression *> types_;
+if (interfaces_ == nullptr) {
+const ArenaVector<ir::AstNode *> &properties,
+virtual void AddCompilableFunction(ir::ScriptFunction *func, parser::Program *program);
+AstNode *left_;
+ir::Expression *ParsePropertyValue(ir::PropertyKind propertyKind, ParserStatus methodStatus,
+Expression *checkType_;
+virtual void ReportIllegalContinueError();
+bool ParseMockList(const JsonObject::JsonObjPointer *options,
+void CompileStaticFieldInitializers(compiler::PandaGen *pg, compiler::VReg classReg,
+PandArg<int> target_api_version_{"target-api-version", TARGET_API_VERSION_DEFAULT, R"(Target API version for bytecode generation (0 = latest, e.g. 24, 26). Default: 0)"};
+std::string GetNameForTypeNode(const ir::TypeNode *typeAnnotation) const;
+TSTypeParameterInstantiation *typeParams_;
+: Type(TypeFlag::ETS_OBJECT),
+ir::Statement *ParseInterfaceStatement(StatementParsingFlags flags) override;
+std::string path;
+std::set<std::string, std::less<>> mockSources_ {};
+PandArgCompound dump_ast_{"dump-ast", R"(Dump the parsed AST. Default: "false")", {&dump_ast_output_}};
+varbinder::LocalVariable *SearchMethods(util::StringView name, PropertySearchFlags flags) const;
+#ifndef ES2PANDA_IR_OVERLOAD_DEFINITION_H
+MetaPropertyKind kind_;
+bool suppressed_ {false};
+virtual ir::Expression *ParsePrefixAssertionExpression();
+ir::Statement *ParseReturnStatement();
+ArenaVector<Expression *> sequence_;
+Expression *parameterName_;
+[[nodiscard]] checker::Type *CheckIteratorMethod(checker::ETSChecker *checker);
+Expression *typeName_;
+PandArgCompound generate_decl_{"generate-decl", R"(Input static file and generate static declaration files. Default: "false")", {&generate_decl_enabled_, &generate_decl_path_, &generate_decl_nameCachePath_}};
+lexer::SourcePosition startLoc, ir::ImportKinds importKind);
+std::optional<std::string> ResolveImportPath(std::string_view path, const std::string &alias,
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_TS_TYPE_REFERENCE_H
+ir::Expression *propName, ir::TypeNode *typeAnnotation);
+parser::Program *IntroduceProgram(const ImportInfo &importInfo);
+#ifndef ES2PANDA_PARSER_INCLUDE_PROGRAM_H
+const auto *const funcVariableScope = iter->AsFunctionParamScope()->GetFunctionScope();
+ir::ScriptFunction *ParseFunction(ParserStatus newStatus);
+ir::AnnotatedExpression *GetAnnotatedExpressionFromParam();
+void ParseAlternative();
+ClassDeclaration *anonClass_ {nullptr};
+ArenaVector<TSClassImplements *> implements_;
+Type *CreatePartialTypeParameter(ETSTypeParameter *typeToBePartial);
+#ifndef ES2PANDA_IR_TS_PARAMETER_PROPERTY_H
+static bool EachTypeRelatedToSomeType(TypeRelation *relation, ETSUnionType *source, ETSUnionType *target);
+const ETSObjectType *classType);
+return *options_;
+#ifndef ES2PANDA_PARSER_INCLUDE_AST_TS_SIGNATURE_DECLARATION_H
+EPtr<checker::Type> tsType_ {};
+bool isStepToken, bool seenStatic);
+ResolvedPathRes ResolveDynamicRelativePath(parser::Program *importer, std::string_view importPath) const;
+TypedAstNode(TypedAstNode const &other) : Typed<AstNode>(static_cast<Typed<AstNode> const &>(other)) {}
+[[nodiscard]] const Expression *SuperClass() const
+explicit MaybeOptionalExpression(AstNodeType type, bool optional) : Expression(type), optional_(optional) {}
+LocalScope *targetScope_ {};
+GlobalTypesHolder *globalTypes_ {nullptr};
+ArenaString resolvedSource_ {ERROR_LITERAL};
+#ifndef ES2PANDA_IR_ETS_RE_EXPORT_DECLARATION_H
+ObjectFlags objFlag_ {};
+void SetRequiredParams(size_t source);
+propertiesInstantiated_ = true;
+ir::ModifierFlags flags) override;
+for (auto *anno : *annotations_) {
+} else if (elemName == VALUES_ARRAY_NAME) {
+RecordTable *savedRecordTable_;
+bool CheckDependencyFileExists(const std::string &depPath, std::string_view messageParam) const;
+ir::Statement *AllocBrokenStatement(const lexer::SourceRange &range);
+ir::Identifier *ValidateIdentifierAndReportErrors(const lexer::Token &token, bool isUserDefinedType,
+explicit AnnotatedAstNode(AstNodeType const type) : Annotated<AstNode>(type) {}
+#ifndef ES2PANDA_IR_ETS_CLASS_LITERAL_H
+StringLiteral *source_;
+ir::Expression *ParseSuperClassReference() override;
+bool hasExtensionSignatures_ {};
+EPtr<ir::ScriptFunction> const func_ {};
+util::StringView programPath_;
+#ifndef ES2PANDA_IR_EXPRESSION_LITERAL_UNDEFINED_LITERAL_H
+bool SetStaticInvokeValues(ir::Identifier *const ident, ir::Identifier *classId, ir::Identifier *methodId,
+bool hasErrors_ {false};
+#if __has_include(<filesystem>)
+#ifndef ES2PANDA_IR_BASE_CATCH_CLAUSE_H
+Type *type_ {};
+ArenaAllocator *allocator_ {};
+const lexer::SourceRange range_;
+const FormatItem *item_;
+const VariableDeclaratorFlag flag_;
+ETSDestructuring *Construct(ArenaAllocator *allocator) override
+LocalScope *instanceMethodScope_;
+bool CheckOmittedTypeArgsRecursion(const ir::TSTypeAliasDeclaration *typeAliasNode,
+uint32_t id_;
+friend class ImportSpecifierTypeOnly;
+PandArg<bool> ets_strings_concat_{"ets-strings-concat", true, R"((experimental) Use StringBuilder.concat instead of StringBuilder.append. Default: true)"};
+void Serialize(const AstDumper::Property &prop);
+bool cleanup_ {true};
+virtual ir::Expression *ParsePatternElement(ExpressionParseFlags flags = ExpressionParseFlags::NO_OPTS,
+virtual bool IsInOperatorTypeSupported() const
+ArenaVector<Expression *> elements_;
+ir::TypeNode *ParseFunctionReturnType(ParserStatus status) override;
+auto text = std::move(ss).str();
+#ifndef ES2PANDA_IR_TS_TYPE_PARAMETER_H
+Variable *AddVar(ArenaAllocator *allocator, Variable *currentVariable, Decl *newDecl, ScriptExtension extension);
+ir::TypeNode *ParseExtensionFunctionsTypeAnnotation();
+UType value_ {0};
+#ifdef USE_UNIX_SYSCALL
+explicit Expression(AstNodeType const type) : TypedAstNode(type) {}
+ArenaVector<AstNode *> members_;
+bool isOptional = false);
+varbinder::Variable *basePropertyVar_;
+void CheckAndInstantiateProperties() const;
+ObjectInstantiationMap objectInstantiationMap_;
+friend class ArrowFunctionContext;
+virtual ir::Statement *ParseEnumStatement(StatementParsingFlags flags);
+mutable EPtr<ArenaSet<ETSObjectType *>> transitiveSupertypes_;
+EPtr<ScriptFunction> func_;
+CheckAndInstantiateProperties();
+#ifndef ES2PANDA_IR_TS_PARENT_TYPE_H
+auto *const v = iter->FindLocal(name, options);
+ir::Statement *ParseTypeDeclaration(bool allowStatic = false);
+const Scope::VariableMap *GetOrBuildForeignExportMap(const parser::Program *importedProgram);
+ExpressionParseFlags exprFlags,
+friend class SavedParserContext;
+PandArg<bool> ast_verifier_json_{"json", false, R"(Report in json-format instead of stderr dump. More verbose. Default: false)"};
+template <std::size_t N>
+std::vector<ResolveResult *> ValidateAccessor(ir::MemberExpression *const memberExpr,
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_TS_OBJECT_DESCRIPTOR_H
+BlockStatement *finalizer_;
+const lexer::SourcePosition &startLoc, bool isDefault);
+parser::ProgramAdapter<KIND> *IntroduceProgram(const ImportInfo &importInfo);
+uint32_t ParseUnicodeEscape();
+bool const boolean_;
+EPtr<checker::Signature> signature_ {};
+static constexpr auto ID_TABLE = {
+EPtr<Identifier> right_;
+checker::Type *CheckComputed(checker::ETSChecker *checker, checker::Type *baseType);
+template <ModuleKind KIND, bool SHOULD_CACHE = true>
+virtual ir::Expression *CreateParameterThis(ir::TypeNode *typeAnnotation);
+void ValidateParenthesizedExpression(ir::Expression *lhsExpression);
+void InitAstVerifierOptions();
+declNode_(std::get<ir::AstNode *>(info)),
+ArenaVector<ReturnStatement *> returnStatements_;
+GetOrCreateHistoryNodeAs<Identifier>()->flags_ &= ~flags;
+const std::vector<checker::ResolveResult *> &resolveRes) const;
+Val value_;
+std::pair<ir::Expression *, std::string> TypeAnnotationValue(ir::TypeNode *typeAnnotation);
+#ifndef ES2PANDA_IR_TS_NUMBER_KEYWORD_H
+public_lib::Context *context_ {};
+EPtr<AstNode> body_;
+TypeInstantiationCacheMap<ETSFunctionType> functionTypeInstantiationMap_;
+ir::VariableDeclarator *ParseVariableDeclarator(VariableParsingFlags flags);
+uint32_t realRegCount_ = 0;
+ir::TypeNode *ParseLiteralIdent(TypeAnnotationParsingOptions *options);
+ir::Expression *ParseFunctionReceiver();
+void ParseUnicodePropertyEscape();
+CheckPatternIsShorthandArgs *args);
+TypeNode *constraint_;
+reExportAlias_(nullptr),
+Language::Id lang_ {Language::Id::ETS};
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_TS_H
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_TS_VOID_TYPE_H
+Signature *containingSignature_ {nullptr};
+ArenaVector<ir::ETSImportDeclaration *> ParseImportDeclarations();
+MappedOption readonly_;
+template <ModuleKind KIND, typename VarBinderT = void>
+Logger::Level logLevel_ {Logger::Level::ERROR};
+bool TryCastIntegral(TypeRelation *const relation, Type *const target);
+supertypeResults_(Allocator()),
+ir::Expression *ParseOptionalChain(ir::Expression *leftSideExpr);
+virtual ir::Statement *ParseThrowStatement();
+Expression *extendsType_;
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_TS_ENUM_LITERAL_TYPE_H
+InvArray<bool> allowed_ {};
+static bool IsTokenOnDifferentLineThanExpressionEnd(const lexer::Token &token, const ir::Expression *expression);
+util::StringView name_ {};
+void InitializeParentFolder();
+varbinder::LoopScope *scope_ {nullptr};
+SmartCastCondition testCondition_ {};
+explicit AnnotatedExpression(AstNodeType const type, TypeNode *const typeAnnotation)
+uint32_t level = 0;
+#ifdef USE_FTW
+Variable *AddParameter(ArenaAllocator *allocator, Decl *newDecl, VariableFlags flags);
+virtual std::tuple<ir::Expression *, ir::TSTypeParameterInstantiation *> ParseSuperClass();
+} else if ((elemName == STRING_VALUES_ARRAY_NAME) && (membersValues_ == nullptr)) {
+bool IsAnnotationUsageStart(lexer::SourcePosition lastTokenEndIndex);
+#ifndef ES2PANDA_IR_EXPRESSION_OMITTED_EXPRESSION_H
+PandArg<bool> dump_dynamic_ast_{"dump-dynamic-ast", false, R"(Dump AST with synthetic nodes for dynamic languages. Default: false)"};
+ArenaVector<Signature *> callSignatures_;
+PandArg<std::string> ast_verifier_json_path_{"json-path", R"(astverifier_report.json)", R"(Path to json-dump (if enabled). Default: "astverifier_report.json")"};
+virtual bool ParsePotentialGenericFunctionCall(ir::Expression *primaryExpr, ir::Expression **returnExpression,
+PandArgCompound debugger_eval_{"debugger-eval", R"(Compile given file in evaluation mode. Default: "false")", {&debugger_eval_line_, &debugger_eval_source_, &debugger_eval_panda_files_}};
+ir::ArrowFunctionExpression *ParseArrowFunctionExpression();
+: Annotated<AstNode>(type, typeAnnotation)
+bool isComputed_;
+ArenaVector<Expression *> properties_;
+#ifndef ES2PANDA_IR_EXPRESSION_DIRECT_EVAL_H
+: Annotated<Expression>(type, typeAnnotation)
+PropertyProcesser const &func);
+std::size_t extraValue_ = 0U;
+ir::Expression *ParseAssignmentExpressionHelper();
+ir::Statement *ParseIfStatement();
+TSOperatorType operatorType_;
+#ifndef ES2PANDA_IR_EXPRESSION_IMPORT_EXPRESSION_H
+ir::ThisExpression *ParseThisExpression() override;
+EPtr<Identifier> id_ {};
+return allocator->New<ETSUnionType>(std::move(types), allocator);
+ArenaSet<ir::TSInterfaceDeclaration *> interfaceDeclarations_;
+std::mutex mtx_;
+void CopyTo(AstNode *other) const override;
+checker::Type *resolvedSpreadElementType_ {nullptr};
+ImportInfo ResolvePath(parser::Program *importer, std::string_view importPath) const;
+bool recursion_;
+bool isRemovable_ {false};
+#ifndef ES2PANDA_IR_TS_BIGINT_KEYWORD_H
+uint32_t ParseDecimalEscape();
+const lexer::SourcePosition pos_ {};
+return typeRecursiveCtx_;
+TypeNode::CopyTo(other);
+#ifndef ES2PANDA_PARSER_INCLUDE_AST_TS_METHOD_SIGNATURE_H
+#ifndef ES2PANDA_IR_STATEMENT_FOR_IN_STATEMENT_H
+#ifndef ES2PANDA_PARSER_INCLUDE_AST_TS_INDEX_SIGNATURE_H
+scope_ = nullptr;
+util::StringView fileName_ {};
+return GetHistoryNodeAs<AnnotationDeclaration>()->policy_;
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_TS_NON_PRIMITIVE_TYPE_H
+void ValidateMemberIdentifier(ir::Identifier *const ident);
+Type *constraint_ {};
+#ifndef ES2PANDA_IR_AST_NODE_MAPPING_H
+return cachedUtilityTypes_[N];
+PandArg<bool> ast_verifier_full_program_{"full-program", false, R"(Analyze full program, including program AST and it's dependencies. Default: false)"};
+auto elemName = elem->AsClassElement()->Key()->AsIdentifier()->Name();
+GetOrCreateHistoryNodeAs<ClassDefinition>()->modifiers_ |= flags;
+ResolvedSpreadKind resolvedSpreadKind_ {ResolvedSpreadKind::INVALID};
+#ifndef ES2PANDA_PARSER_INCLUDE_AST_CLASS_STATIC_BLOCK_H
+virtual void HandleCustomNodes(ir::AstNode *childNode)
+PandArg<bool> parse_only_{"parse-only", false, R"(Parse the input only. Default: false)"};
+[[maybe_unused]] bool *isChainExpression);
+#ifndef ES2PANDA_UTIL_PATH_H
+struct ResolutionCacheKey {
+std::string outDir_ {};
+#ifdef ASTV_ENABLE_LOGGING
+Variable *AddLocalTypeAliasVariable(ArenaAllocator *allocator, Decl *newDecl);
+std::unique_ptr<FsQueryCache> fsQueryCache_;
+#ifndef ES2PANDA_IR_EXPRESSION_LITERAL_BOOLEAN_LITERAL_H
+template <typename... Args>
+ArenaVector<ir::Statement *> ParseNamespaceBlockStatements();
+[[maybe_unused]] ir::ModifierFlags flags = ir::ModifierFlags::NONE);
+void CheckAmbientNonAmbientMix(const ArenaVector<ir::Statement *> &statements);
+reExportAlias_ = allocator_->New<ArenaMap<util::StringView, util::StringView>>(allocator_->Adapter());
+util::StringView const internalName_;
+EPtr<varbinder::Scope> scope_ {};
+bool LookupMetadata(ImportInfo *importInfo) const;
+ArenaVector<ir::AstNode *> &properties) override;
+ResolvedPathRes ResolveRelativePath(parser::Program *importer, std::string_view curModulePath,
+DirectExternalPrograms direct_;
+bool isConst_ {};
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_TS_NEVER_TYPE_H
+ir::Identifier *ParseNamedExport(lexer::Token *exportedToken);
+ir::Expression *ParseExpressionFormatPlaceholder();
+void ProcessClassProperties(ir::AstNode *node, ir::ClassDefinition *const oldClassDef,
+return exe_path.substr(0, pos);
+ir::TypeNode *ConvertToOptionalUnionType(ir::TypeNode *typeAnno);
+PreservedSmartCastsMap breakSmartCasts_;
+uint32_t &ClassId()
+isASTlowered_ = false;
+AstNode *decl_;
+otherImpl->annotations_->emplace_back(anno->Clone(allocator_, other));
+ir::CallExpression *callExpr);
+#ifndef ES2PANDA_PARSER_PARSER_FLAGS_H
+static bool TypeRelatedToSomeType(TypeRelation *relation, Type *source, UnionType *target);
+explicit Scope(ArenaAllocator *allocator, Scope *parent, ScopeFlags flags)
+parser::Program *program_ {};
+Variable *AddImport(ArenaAllocator *allocator, Variable *currentVariable, Decl *newDecl);
+bool hasReceiver = false) override;
+ResolvedPathRes ResolveEtscacheRelativePath(std::string physicalPathPrototype) const;
+bool CheckTypeNodeRecursion(const ir::TypeNode *typeNode,
+#elif __has_include(<experimental/filesystem>)
+bool optional_ {};
+void ThrowRedeclarationError(const lexer::SourcePosition &pos, const Variable *const var,
+AccessibilityOption accessibility_;
+void InitializeAbsolutePath();
+ClassPrivateContext classPrivateContext_;
+bool isConst_;
+bool ParseCollection(const JsonObject *config, Collection &out, const std::string &target, Function &&constructor);
+std::pair<ir::TypeNode *, ir::TypeNode *> ParseIndexTypeAndReturnType();
+#ifndef ES2PANDA_IR_ETS_PRIMITIVE_TYPE_H
+#ifndef ES2PANDA_IR_ETS_NEW_ARRAY_INSTANCE_EXPRESSION_H
+ArenaSet<ir::AnnotationDeclaration *> annotationDeclarations_;
+void ValidateGroupedExpression(ir::Expression *lhsExpression);
+void ParseNamedExportSpecifiers(ArenaVector<ir::AstNode *> *specifiers, bool defaultExport);
+bool isDefault_ = false;
+explicit Variable(Decl *decl, VariableFlags flags) : decl_(decl), flags_(flags) {}
+VariableFlags flags_ = VariableFlags::NONE;
+varbinder::LocalVariable *const oAcc, varbinder::Variable *const eAcc,
+std::pair<ir::TypeNode *, bool> ParseNonNullableType(TypeAnnotationParsingOptions *options);
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_ETS_NON_NULLISH_TYPE_H
+ArenaVector<Expression *> overloadedList_;
+ir::Identifier *ParseClassIdent(ir::ClassDefinitionModifiers modifiers) override;
+void SetType(AstNodeType const type) noexcept
+uint32_t minLength_ {};
+#ifndef ES2PANDA_IR_TS_STRING_KEYWORD_H
+ArenaVector<ElementFlags> elementFlags_;
+ir::UndefinedLiteral *ParseUndefinedLiteral();
+ir::ModifierFlags ParseMemberAccessModifiers();
+bool IsInitializedProperty(const ir::ClassDefinition *classDefinition, const ir::ClassProperty *prop);
+SavedCheckerContext CreateSavedCheckerContext(varbinder::Variable *const var);
+const ArenaVector<ir::Expression *> &params, ParserStatus newStatus, ParserStatus contextStatus) override;
+explicit Literal(AstNodeType const type) : Expression(type) {}
+public_lib::Context *ctx_;
+bool global_;
+void CheckForConditionalTypeError(TypeAnnotationParsingOptions options, lexer::TokenType tokenType);
+ir::Expression *ParsePropertyDefinition(ExpressionParseFlags flags = ExpressionParseFlags::NO_OPTS) override;
+mutable uint32_t anonymousClassIdx_ {1};
+ir::Expression *ParseBinaryExpression(ir::Expression *left,
+checker::Type **commonPropType);
+Variable *AddLocalInterfaceVariable(ArenaAllocator *allocator, Decl *newDecl);
+#ifndef ES2PANDA_IR_AST_NODE_H
+#ifndef ES2PANDA_DYNAMIC_LANGUAGE_H
+bool hasDefaultExport_ = false;
+void CheckClassGeneratorMethod(ClassElementDescriptor *desc, char32_t *nextCp);
+TypeInstantiationCacheMap<ETSTupleType> tupleInstantiationCacheMap_;
+ModifierFlags flags_ {};
+bool IsExternal() const override
+#ifndef ES2PANDA_IR_ETS_NULLISH_TYPES_H
+return isDynamic == other.isDynamic && path == other.path;
+PandArg<bool> store_declaration_cache_directly_in_memory_{"store-declaration-cache-directly-in-memory", false, R"(If some of the cache-decls are generated, besides generating a file,
+directly emplace them in global memory.
+. Default: false)"};
+EvalMode evalMode_ = {EvalMode::NONE};
+EPtr<Expression> key_;
+bool CheckNotDeclarations(const ir::AstNode *parent, ScriptExtension ext) const;
+virtual ir::Statement *ParseExportDeclaration(StatementParsingFlags flags);
+VariableScope *prevVarScope_ {};
+GlobalArraySignatureMap globalArraySignatures_;
+EPtr<ETSObjectType> baseType_ {};
+ir::ClassDefinition *boxedClass_ {nullptr};
+ExtensionAccessorMap &maps);
+ir::MethodDefinition *ParseClassMethod(ClassElementDescriptor *desc, const ArenaVector<ir::AstNode *> &properties,
+TypeNode *defaultType_;
+#ifndef ES2PANDA_IR_ETS_STRING_TYPE_H
+ArenaMap<parser::Program *, RecordTable *> externalRecordTable_;
+void ParsePatternElementErrorCheck(ExpressionParseFlags flags, bool allowDefault);
+ir::MethodDefinition *ParseInterfaceGetterSetterMethod(const ir::ModifierFlags modifiers);
+ir::Expression *ParsePrimaryExpressionWithLiterals(ExpressionParseFlags flags) override;
+[[maybe_unused]] bool isStatic = false)
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_TS_BIGINT_LITERAL_TYPE_H
+std::tuple<bool, bool, bool> HandleClassElementModifiers(ir::ModifierFlags &memberModifiers);
+std::pair<ir::ModifierFlags, lexer::SourcePosition> ParseMemberModifiers();
+void LoadRhs(compiler::PandaGen *pg) const;
+virtual ParserStatus ValidateArrowParameter(ir::Expression *expr, bool *seenOptional);
+#ifndef ES2PANDA_PARSER_INCLUDE_AST_TS_PROPERTY_SIGNATURE_H
+ArenaVector<ObjectType *> bases_;
+using RecordHolder =
+void InitImplicitThisParam();
+if (properties_[index] == nullptr) {
+std::optional<std::string> ResolvePath(std::string_view path) const;
+ETSUnionType *Construct(ArenaAllocator *allocator) override
+void RegisterSourceFile(const ImportInfo &importInfo);
+std::pair<const ir::Identifier *, ir::TypeNode *> GetTargetIdentifierAndType(ir::Identifier *ident);
+lexer::Number number_;
+bool IsExceptionOrErrorType(checker::Type *type);
+void CheckAssignments(ir::AstNode const *node, ReassignedVariableMap &changedVariables) const noexcept;
+ClassDefinitionModifiers modifiers_;
+#ifndef ES2PANDA_IR_AST_DUMP_H
+TSInterfaceBody *body_;
+auto const heapId = EHeap::DeprecatedId();
+ir::Expression *ParsePostPrimaryExpression(ir::Expression *primaryExpr, lexer::SourcePosition startLoc,
+void SerializeLoc(const lexer::SourceRange &loc);
+ArenaAllocator *const allocator)
+bool IsDefaultImport();
+varbinder::LocalVariable *syntheticVar_ = nullptr;
+#ifndef ES2PANDA_PARSER_INCLUDE_AST_CLASS_DEFINITION_H
+RecordTableFlags flags_ {};
+bool ParseArrayExpressionRightBracketHelper(bool containsRest, const lexer::SourcePosition &startLoc);
+virtual ir::Expression *ParseCoverParenthesizedExpressionAndArrowParameterList(
+ir::AnnotationUsage *ParseAnnotationUsage();
+ir::ModifierFlags ParseClassModifiers();
+void CacheSupertypeTransitive(ETSObjectType *type);
+if (Any(Modifiers(), flags)) {
+ir::Expression *ParseAwaitExpression();
+virtual ir::Statement *ParseInterfaceStatement(StatementParsingFlags flags);
+virtual ir::ThisExpression *ParseThisExpression();
+RecordTable::RecordHolder currentRecord_ {nullptr};
+#ifndef ES2PANDA_IR_MODULE_AST_IMPORT_SPECIFIER_H
+((cb(std::get<ProgramsSubmap<KINDS>>(transitiveExternals_))), ...);
+ir::AstNode *defaultExport_ {};
+void ParseClassMethodModifiers(ir::ModifierFlags &memberModifiers);
+void IdenticalUptoTypeArguments(TypeRelation *relation, Type *other);
+: T(type)
+checker::Type *TraverseUnionMember(checker::ETSChecker *checker, checker::ETSUnionType *unionType);
+bool computed_;
+explicit AnnotatedAstNode(AstNodeType const type, ModifierFlags const flags) : Annotated<AstNode>(type, flags) {}
+ir::CatchClause *ParseCatchClause();
+otherImpl->types_ = types_;
+ir::Property *ParseShorthandProperty(const lexer::LexerPosition *startPos);
+Program(const util::ImportInfo &importInfo, ArenaAllocator *allocator, varbinder::VarBinder *varbinder);
+#ifndef ES2PANDA_IR_ETS_BROKEN_TYPE_NODE_H
+virtual ir::Statement *ParseNamedExportDeclaration(const lexer::SourcePosition &startLoc);
+bool ignoreBox_ {false};
+struct TrailingLambdaInfo {
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_TS_BIGINT_TYPE_H
+std::unordered_map<std::string, checker::ETSStringType *> stringLiteralTypes_;
+#ifndef ES2PANDA_IR_TS_NAMED_TUPLE_MEMBER_TYPE_H
+ir::TypeNode *ParseFunctionType(TypeAnnotationParsingOptions *options);
+std::vector<Pattern> include_ {};
+ArenaVector<Type *> assemblerConstituentTypes_;
+ir::Expression *ResolveArgumentUnaryExpr(ExpressionParseFlags flags);
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_GLOBAL_TYPES_HOLDER_H
+#ifndef PANDA_ES2PANDA_OPTIONS_GEN_H
+ir::ETSModule *ParseImportsAndReExportOnly(lexer::SourcePosition startLoc,
+Allocator(), std::forward<Args>(args)...);
+std::set<std::string> dumpAfterPhases_ {};
+ir::Statement *ParseIdentKeyword();
+explicit AnnotationAllowed(Expression const &other, ArenaAllocator *allocator) : T(other)
+virtual ir::TSTypeParameterDeclaration *ParseFunctionTypeParameters()
+void SetName(Identifier *name);
+Scope *scope_ {};
+std::map<std::string, std::string, std::less<>> mocks_ {};
+bool IsStructKeyword() const;
+PandArg<arg_list_t> plugins_{"plugins", {}, R"(Plugins. Default: [])", ","};
+void ParseGlobalImpl() override;
+#ifndef ES2PANDA_IR_ANNOTATION_ALLOWED_H
+void ParseNamedSpecifiesDefaultImport(ArenaVector<ir::ImportDefaultSpecifier *> *resultDefault,
+std::optional<std::string> ReadConfig(const std::string &path);
+std::pair<checker::Type *, varbinder::LocalVariable *> ResolveObjectMember(checker::ETSChecker *checker) const;
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_ETS_EXTENSION_FUNC_HELPER_TYPE_H
+ArenaUnorderedMap<RelationKey, RelationEntry> cached_;
+bool CheckRequiredCallError(checker::ETSChecker *checker,
+result_(RelationResult::FALSE),
+[[nodiscard]] util::StringView BuildFunctionName(util::StringView name, uint32_t idx);
+ir::Statement *ParseClassStatement(StatementParsingFlags flags, ir::ClassDefinitionModifiers modifiers,
+ArenaVector<ir::ImportDefaultSpecifier *> *resultDefault,
+void VisitSubmaps(SubmapVisitor &cb)
+#if defined PANDA_TARGET_MOBILE
+RelationHolder assignableResults_;
+ArenaVector<CatchClause *> catchClauses_;
+void ThrowOptionalMethodErrorIfNeeded();
+ir::Statement *ParseImportDeclaration(StatementParsingFlags flags) override;
+explicit AnnotatedStatement(AstNodeType type, ModifierFlags flags) : Annotated<Statement>(type, flags) {}
+properties_[index] = allocator_->New<PropertyMap>(allocator_->Adapter());
+ir::MemberExpression *ParsePrivatePropertyAccess(ir::Expression *primaryExpr);
+void AddMandatoryParams();
+ObjectTypeKind kind_;
+RelationResult CacheLookup(const Type *source, const Type *target, const RelationHolder &holder,
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_TYPE_FLAG_H
+LocalVariable *nameVar_ {};
+bool static_;
+std::vector<Pattern> exclude_ {};
+#ifndef ES2PANDA_IR_EXPRESSION_IDENTIFIER_H
+util::StringView multilineString_;
+bool value_;
+bool Parse(std::unordered_set<std::string> &visitedConfigs);
+void ValidateArrowParameterBindings(const ir::Expression *node);
+bool IsIdenticalRelationInProgress(RelationHolder::RelationKey key) const;
+explicit AnnotationAllowed(AstNodeType const type, ArenaVector<AnnotationUsage *> &&annotations,
+RecordTable *recordTable_;
+#ifndef ES2PANDA_COMPILER_CORE_AST_VISITOR_H
+explicit Annotated(AstNodeType const type) : T(type) {}
+void ParseClassFieldDefinition(ir::Identifier *fieldName, ir::ModifierFlags modifiers,
+void WarnPackageDeprecated();
+virtual ir::Statement *ParseEnumDeclaration([[maybe_unused]] bool isConst = false,
+void ParseClassFieldModifiers(ir::ModifierFlags &memberModifiers);
+virtual ir::Expression *ParseExpressionOrTypeAnnotation(lexer::TokenType type, ExpressionParseFlags flags);
+bool isRelative_ {};
+uint32_t ParseHexEscape();
+static bool CallPandArgParser(const std::vector<std::string> &args, T &options,
+void CollectPrecedingMethodsBeforeOverloadDecl(std::vector<Signature *> &signatures, util::StringView name,
+ir::Statement *ParseTopLevelDeclStatement(StatementParsingFlags flags);
+PandArg<bool> version_{"version", false, R"(Print version and exit. Default: false)"};
+bool hasParameterParen_ = false;
+void CheckModuleAsModifier();
+BoundContext *boundCtx_ {};
+std::enable_if_t<std::is_pointer_v<ScopeT> && std::is_base_of_v<Scope, std::remove_pointer_t<ScopeT>>, bool> =
+void LinkFractionInfoToPackage(const parser::PackageProgram &package);
+ir::ETSModule *ParseETSGlobalScript(lexer::SourcePosition startLoc, ArenaVector<ir::Statement *> &statements);
+virtual void ParseCatchParamTypeAnnotation(ir::AnnotatedExpression *param);
+void BuildClassDefinitionImpl(ir::ClassDefinition *classDef);
+return util::Helpers::IsStdLib(GetProgram());
+std::string indent_;
+virtual ir::TypeNode *ParseFunctionReturnType([[maybe_unused]] ParserStatus status)
+EPtr<ir::AstNode> const declNode_;
+ir::ClassProperty *FindClassProperty(const ETSObjectType *objectType, const ETSFunctionType *propType);
+ir::Expression *ParseAssignmentBinaryExpression(lexer::TokenType tokenType, ir::Expression *lhsExpression,
+*this, textSource, std::move(contents)));
+ExportFactStore *exportFactStore_;
+varbinder::Scope *prevScope_;
+checker::Type *CheckIndexAccessMethod(checker::ETSChecker *checker);
+ir::ScriptFunction *ParseFunction(ParserStatus newStatus = ParserStatus::NO_OPTS);
+EPtr<TypeNode> returnTypeAnnotation_;
+void ParseNamedCapturingGroup();
+ir::TypeNode *typeAnnotation_;
+lexer::Lexer *lexer_ {};
+ArenaVector<TSTypeParameter *> params_;
+struct ResolvedPathRes {
+Span<const ValueType> data_;
+const public_lib::Context &context_;
+void SerializeString(const char *str);
+#ifndef ES2PANDA_IR_EXPRESSION_ASSIGNMENT_EXPRESSION_H
+Identifier *ident_;
+#ifndef ES2PANDA_IR_EXPRESSION_NEW_EXPRESSION_H
+ir::SequenceExpression *ParseSequenceExpression(ir::Expression *startExpr, bool acceptRest = false);
+util::StringView parentFolder_ {};
+static constexpr std::string_view ABC_SUFFIX = ".abc";
+#ifndef ES2PANDA_PUBLIC_H
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_TYPE_FACTS_H
+std::tuple<ForStatementKind, ir::Expression *, ir::Expression *> ParseForInOf(ir::AstNode *initNode,
+VariableFlags flags_ {};
+lexer::TokenType operatorType_ = lexer::TokenType::EOS;
+explicit TypedStatement(AstNodeType type, ModifierFlags flags) : Typed<Statement>(type, flags) {};
+ResolvedPathRes ProbeExtensionOrIndexFile(std::string resolvedPathPrototype) const;
+std::string localPrefix_ {};
+#undef DECLARE_AS_CASTS
+history_ = history;
+ScopeType loopType_ {ScopeType::LOCAL};
+T *scope_ {};
+std::vector<ir::AstNode *> insertingNodes_ {};
+if (elemName == NAMES_ARRAY_NAME) {
+ETSReExportDeclaration *Construct(ArenaAllocator *allocator) override;
+#ifndef ES2PANDA_IR_TS_FUNCTION_TYPE_H
+#ifndef ES2PANDA_PARSER_INCLUDE_AST_CLASS_PROPERTY_H
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_ETS_UNION_TYPE_H
+PropertySearchFlags GetSearchFlags(const ir::MemberExpression *memberExpr, const varbinder::Variable *targetRef);
+void ParseDisjunction();
+explicit Expression(AstNodeType const type, ModifierFlags const flags) : TypedAstNode(type, flags) {}
+: T(type, key, value, modifiers, allocator, isComputed)
+MaybeOptionalExpression(MaybeOptionalExpression const &other) : Expression(static_cast<Expression const &>(other))
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_TS_OBJECT_LITERAL_TYPE_H
+explicit AnnotationAllowed(AstNodeType const type, ArenaAllocator *const allocator) : T(type)
+std::unique_ptr<util::ImportPathManager> importPathManager_;
+void LogIfPrivateIdent(ClassElementDescriptor *desc, const diagnostic::DiagnosticKind &diagnostic,
+static void ExtractTypes(TypeRelation *relation, Type *testedType, std::vector<Type *> &consTypes,
+Type *HandleUnionForPartialType(ETSUnionType *typeToBePartial);
+Type *CreatePartialTypeClass(ETSObjectType *typeToBePartial, ir::AstNode *typeDeclNode);
+Type *CreatePartialTypeClassDef(ir::ClassDefinition *partialClassDef, ir::ClassDefinition *classDef,
+void ParseAssertion();
+ir::Expression *ParseGenericLambdaOrTypeAssertion();
+bool CallPandArgParser(const std::vector<std::string> &args);
+virtual ir::ExportDefaultDeclaration *ParseExportDefaultDeclaration(const lexer::SourcePosition &startLoc,
+static constexpr const char *INCLUDE = "include";
+ir::AstNode *ParseAmbientSignature(const lexer::SourcePosition &startPosAmbient);
+#ifndef ES2PANDA_IR_EXPRESSION_SEQUENCE_EXPRESSION_H
+virtual ir::Identifier *ParsePrimaryExpressionIdent(ExpressionParseFlags flags);
+bool useUrl_ = false;
+return true;
+#ifndef ES2PANDA_IR_STATEMENT_LOOP_STATEMENT_H
+FunctionalInterfaceMap functionalInterfaceCache_;
+void InitAssemblerTypeCache(ETSChecker *checker);
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_ETS_BYTE_TYPE_H
+bool isStatic) override;
+#ifndef ES2PANDA_IR_TS_CLASS_IMPLEMENTS_H
+util::StringView ParseIndexName();
+void SetTextFile(const std::string &file, util::DiagnosticEngine *de)
+Set(parser::ImportCache<SelectCacheType<KIND>()>::template StoreContents<KIND, SHOULD_CACHE>(
+parser::PackageProgram *RegisterSourcesForPackageFromGlobbedDirectory(const ImportInfo &importInfo);
+bool HistoryInitialized() const;
+PandArg<bool> permit_relaxed_any_{"permit-relaxed-any", false, R"(Permit experimental 'any' type annotation. Default: false)"};
+bool CheckDeclarationsPart1(const ir::AstNode *parent, ScriptExtension ext) const;
+CheckerContext context_;
+bool GetCanBeForInOf(ir::Expression *leftNode, ir::AstNode *initNode);
+varbinder::RecordTable *recordTable);
+#ifndef ES2PANDA_IR_ETS_KEYOF_TYPE_H
+ArenaMap<const parser::Program *, ArenaVector<ir::ETSReExportDeclaration *>> reExportImports_;
+#ifndef ES2PANDA_IR_TS_OBJECT_KEYWORD_H
+#ifndef ES2PANDA_IR_MODULE_EXPORT_SPECIFIER_H
+ir::Statement *ParseAnnotationsInStatement(StatementParsingFlags flags) override;
+Expression *label_;
+std::set<std::string> dumpEtsSrcBeforePhases_ {};
+ir::TSTypeParameter *ParseTypeParameter(TypeAnnotationParsingOptions *options) override;
+ParseListOptions parseListOptions = ParseListOptions::NO_OPT);
+GetOrCreateHistoryNodeAs<ClassDefinition>()->modifiers_ &= ~flags;
+if (!inputStream) {
+PropertySearchFlags declFlags) const;
+bool folded_ = false;
+ir::TSTypeParameterDeclaration *typeParamDecl,
+Program *GetProgram() const
+ir::TypeNode *ParseInterfaceExtendsElement() override;
+const lexer::SourcePosition &startLoc, bool isAwait);
+ir::ClassDefinition *newClassDefinition);
+#ifndef ES2PANDA_IR_TS_EXTERNAL_MODULE_REFERENCE_H
+ir::Statement *ParseVarStatement();
+Expression *exprName_;
+bool hasReceiver = false);
+ArenaVector<Decl *> decls_;
+GroupedMessages report_;
+uint32_t poisonValue_ {POISON_VALUE};
+ir::ExportNamedDeclaration *CreateExportNamedDeclaration(const SpecifiersInfo &specs,
+static constexpr const char *ROOT_DIR = "rootDir";
+ir::TSTypeParameterDeclaration *ProcessTypeParamAndGenSubstitution(
+ArenaVector<TypeNode *> types_;
+ir::Statement *ParseBreakStatement();
+#ifndef ES2PANDA_IR_TS_THIS_TYPE_H
+bool trailingComma_;
+ModuleFlag flag_;
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_ETS_OBJECT_TYPE_H
+PandArg<std::string> exit_before_phase_{"exit-before-phase", R"()", R"(Exit compilation before running the provided phase. Default: "")"};
+ExportClosureResolver *exportClosureResolver_ {nullptr};
+virtual ir::Statement *ParseClassStatement(StatementParsingFlags flags, ir::ClassDefinitionModifiers modifiers,
+explicit AnnotatedStatement(AstNodeType type, TypeNode *typeAnnotation) : Annotated<Statement>(type, typeAnnotation)
+bool ParsePunctuatorGreaterThan(bool throwError = true);
+explicit TypeNode(AstNodeType const type, ArenaAllocator *const allocator)
+checker::ETSObjectType *sourceType);
+void SerializeString(const util::StringView &str);
+varbinder::Scope *scope_ = {};
+Type *default_ {};
+return history_;
+bool isExport_;
+#ifndef ES2PANDA_PARSER_INCLUDE_AST_METHOD_DEFINITION_H
+EPtr<ImportBindingInfo> importBinding_ {};
+ir::Statement *ParseTopLevelStatement();
+PandArg<std::string> dump_symbol_table_{"dump-symbol-table", R"()", R"(Dump symbol table to the specified file path. Default: "")"};
+PandArg<std::string> arktsconfig_{"arktsconfig", exe_dir_ + R"(/arktsconfig.json)", R"(Path to arkts configuration file. Default: "$ORIGIN/arktsconfig.json")"};
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_ETS_FLOAT_TYPE_H
+ir::MethodDefinition *CreateConstructorDefinition(ir::ModifierFlags modifiers, std::string_view sourceCode);
+#ifndef ES2PANDA_AOT_ARKTSCONFIG_H
+isComputed_ = other.isComputed_;
+if (iter->AsVariableScope()->NeedLexEnv()) {
+uint32_t ParseLegacyOctalEscape();
+bool Unicode() const;
+PropertySearchFlags GetInitialSearchFlags(const ir::Expression *memberExpr);
+virtual ir::Expression *ParsePropertyKey(ExpressionParseFlags flags);
+std::string resolvedPath;
+virtual ir::Statement *ParseStatementFormatPlaceholder();
+public_lib::Context &ctx_;
+bool CheckInNamespaceContextIsExported();
+ArenaVector<TypeNode *> types(allocator->Adapter());
+#ifndef ES2PANDA_IR_TS_TYPE_ASSERTION_H
+mutable ArenaVector<Signature *> constructSignatures_;
+ParserContext &GetContext()
+ES2PANDA_ASSERT(ret != nullptr);
+bool ValidateBreakLabel(util::StringView label) override;
+TypedStatement(TypedStatement const &other) : Typed<Statement>(static_cast<Typed<Statement> const &>(other)) {}
+virtual ir::Statement *ParseImportDeclaration(StatementParsingFlags flags);
+template <class Collection, class Function>
+bool DumpNamespaceForDeclGen(ir::SrcDumper *dumper) const;
+bool export_;
+char32_t ParseClassAtom();
+virtual bool CheckClassElement(ir::AstNode *property, ir::MethodDefinition *&ctor,
+#ifndef ES2PANDA_IR_TS_INTERFACE_BODY_H
+ir::MetaProperty *ParsePotentialNewTarget();
+std::map<std::string_view, std::string_view> sourcePathMap_ {};
+lexer::CompressedSourceRange range_ {};
+T *GetOrCreateHistoryNodeAs() const
+compiler::CompilerImpl *compiler_ {};
+ir::TSTypeParameterDeclaration const *const thisTypeParams,
+size_t constraintCheckScopesCount_ {0};
+lexLevel++;
+ir::MethodDefinitionKind methodKind, ir::ModifierFlags access);
+std::vector<std::string> files_ {};
+#ifndef ES2PANDA_IR_EXPRESSION_CALL_EXPRESSION_H
+virtual ir::Expression *ParseVariableDeclaratorKey(VariableParsingFlags flags);
+optional_ = other.optional_;
+#ifndef ES2PANDA_IR_EXPRESSION_FUNCTION_EXPRESSION_H
+bool CheckElementsCovariant(TypeRelation *relation, const ETSTupleType *source) const;
+ES2PANDA_ASSERT(!resolvedSource_.empty());
+varbinder_->scope_ = scope_;
+ir::TSInterfaceDeclaration *functionalInterface_ {};
+#ifndef ES2PANDA_IR_STATEMENT_FOR_OF_STATEMENT_H
+using NodeFormatType = std::tuple<bool, char, std::size_t>;
+ArenaUnorderedMap<util::StringView, varbinder::Variable *> cachedSyntheticProperties_;
+ir::AnnotationDeclaration *ParseAnnotationDeclaration(
+target_ = other.target_;
+virtual bool ValidateContinueLabel(util::StringView label);
+bool EatArrowFunctionParams(lexer::Lexer *lexer);
+: parent_(parent), decls_(allocator->Adapter()), bindings_(allocator->Adapter())
+std::tuple<ir::ModifierFlags, bool, bool> ParseClassMemberAccessModifiers();
+void UpdateTypeProperty(varbinder::LocalVariable *const prop, PropertyType fieldType,
+ir::Expression *propName, lexer::SourcePosition *propEnd) override;
+std::tuple {Id::AS, "as", false},
+bool CheckClassElement(ir::AstNode *property, ir::MethodDefinition *&ctor,
+#ifndef ES2PANDA_IR_STATEMENT_H_CONTINUE_STATEMENT_H
+std::vector<ETSWarnings> etsWarningCollection_ = {};
+bool CheckModuleAsModifier();
+#ifndef ES2PANDA_PARSER_CORE_PARSER_IMPL_H
+Expression *falseType_;
+lexer::SourcePosition startLoc, bool ignoreCallExpression,
+ir::Expression *name_;
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_TS_ELEMENT_FLAGS_H
+void ValidateAccessor(ExpressionParseFlags flags);
+bool isAwait);
+std::unordered_map<Type *, Type *> constantBuiltinTypesCache_;
+varbinder::LocalVariable *SearchBaseFieldsDecls(util::StringView name, PropertySearchFlags flags) const;
+FunctionScope *functionScope_ {};
+#ifndef ES2PANDA_IR_EXPRESSION_BLOCK_EXPRESSION_H
+void ValidateClassKey(ClassElementDescriptor *desc);
+ModuleEntry<ir::ImportDeclaration *, ImportDeclList> imports_;
+ir::Expression *lhsExpression, lexer::TokenType tokenType);
+Variable *FindInSharedForeign(const util::StringView &name) const;
+void SetExpr(Expression *expr);
+PandArg<bool> ets_module_{"ets-module", false, R"(Compile the input as ets-module. Default: false)"};
+util::StringView exportName_;
+const std::function<ir::AstNode *(ir::Identifier *)> &parseClassMethod);
+util::StringView assemblerTypeCache_;
+std::tuple<bool, ir::BlockStatement *, lexer::SourcePosition, bool> ParseFunctionBody(
+ETSObjectType *typeToBePartial, varbinder::RecordTable *recordTableToUse);
+const RelationHolder &SupertypeResults() const noexcept;
+LogUnexpectedToken(lexer::TokenType::KEYW_INTERFACE);
+ir::ClassDefinitionModifiers modifiers, ir::ModifierFlags flags,
+mutable lexer::SourcePosition srcPos_ {};
+std::pair<std::vector<varbinder::Variable *>, size_t> mergedTypeParams_ {};
+virtual void ReportIllegalBreakError(const lexer::SourcePosition &startLoc);
+Expression(Expression const &other) : TypedAstNode(static_cast<TypedAstNode const &>(other)) {}
+ir::Expression *ParseExpression(ExpressionParseFlags flags = ExpressionParseFlags::NO_OPTS) override;
+[[nodiscard]] bool CheckTestOrSmartCastCondition(SmartCastTuple const &types);
+virtual ir::Statement *ParseStatement(StatementParsingFlags flags = StatementParsingFlags::NONE);
+Checker *parent_;
+void ValidateOverloadDeclarationModifiers(ir::ModifierFlags modifiers);
+static constexpr const char *EXCLUDE = "exclude";
+virtual ir::Statement *ParsePotentialExpressionStatement(StatementParsingFlags flags);
+std::optional<ir::Expression *> ParseQuestionDotPostPrimary(ir::Expression *returnExpression,
+ir::StringLiteral *ParseFromClause(bool requireFrom = true);
+return ".";
+using FlagsField = BitField<uint64_t, 0, sizeof(ModifierFlags) * 8>;
+Identifier *id_;
+virtual void ReportIfBodyEmptyError(ir::Statement *consequent);
+std::unordered_map<std::string, std::unique_ptr<panda_file::MetadataAccessor>> processedAbcFiles_;
+Statement *body_;
+void CanonicalizedAssemblerType(ETSChecker *checker);
+#ifndef ES2PANDA_IR_MODULE_IMPORT_DEFAULT_SPECIFIER_H
+bool CheckDefaultTypeParameter(const ir::TSTypeParameter *param, TypeSet &typeParameterDecls);
+AstNode *decl_ {};
+void ParseDirectivePrologue(ArenaVector<ir::Statement *> *statements);
+#ifndef ES2PANDA_PARSER_INCLUDE_AST_SCRIPT_FUNCTION_H
+util::StringView importName_;
+void RelationTarget(TypeRelation *relation, Type *source, RelFN const &relFn);
+template <util::ModuleKind... KINDS_TO_VISIT, typename SubmapVisitor>
+ClassDeclaration *Construct(ArenaAllocator *allocator) override;
+void IsGenericSupertypeOf(TypeRelation *relation, ETSObjectType *source);
+void AddMandatoryParams(const MandatoryParams<N> &params);
+bool ParseBracedQuantifier();
+ir::Expression *dimension_;
+Val value_ {};
+virtual bool IsNamedFunctionExpression();
+ir::VariableDeclaratorFlag GetFlag(VariableParsingFlags flags);
+ETSFunctionType *ResolveAccessorTypeByFlag(ir::MemberExpression *const memberExpr, ETSFunctionType *propType,
+bool ParseCompilerOptions(std::string &arktsConfigDir, const JsonObject *arktsConfig);
+Identifier *name_;
+parser::Program *LookupProgramCaches(const ImportInfo &importInfo);
+ir::ExpressionStatement *ParseFileHeaderFlag();
+NO_COPY_SEMANTIC(LexicalScope);
+varbinder::EnumVariable *enumVar_;
+std::string parserInputContents_;
+virtual void ReportPossibleOutOfBoundaryJumpError(bool allowBreak);
+ES2PANDA_ASSERT(Data().Kind() == ModuleKind::UNKNOWN);
+#ifndef ES2PANDA_IR_STATEMENT_ANNOTATION_DECLARATION_H
+friend class InnerSourceParser;
+ir::EmptyStatement *ParseEmptyStatement();
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_TS_NULL_TYPE_H
+std::string package_ {};
+PrimitiveType type_;
+explicit ClassDeclaration(AstNodeType type, ClassDefinition *const def,
+ArenaVector<Statement *> statements_;
+Variable *AddLexical(ArenaAllocator *allocator, Variable *currentVariable, Decl *newDecl);
+ES2PANDA_ASSERT(allocator_ != nullptr);
+ss << inputStream.rdbuf();
+virtual ir::Statement *ParseTryStatement();
+std::string declgenV2OutPath_ {};
+ir::Expression *ParsePotentialExpressionSequence(ir::Expression *expr, ExpressionParseFlags flags) override;
+EPtr<SpreadElement> spread_ = nullptr;
+checker::Signature *defaultConstructorSignature_ {};
+lexer::SourcePosition *endLoc = nullptr);
+char32_t ParseClassAtomHelper(char32_t cp);
+uint64_t bitFields_ {0};
+Lock postDumpIndirectDepsPhaseLock_;
+virtual ir::Expression *ParseSuperClassReference();
+#ifndef ES2PANDA_PARSER_INCLUDE_AST_DECORATOR_H
+Type *const tsType, ir::ClassDefinition *const newClassDefinition);
+PandArg<bool> cold_reload_{"cold-reload", false, R"(Enable Cold Reload mode for incremental compilation. Default: false)"};
+return false;
+bool ParseTriplePeriod(bool spreadTypePresent);
+static constexpr MandatoryParams<MANDATORY_PARAMS_NUMBER> FUNCTION_MANDATORY_PARAMS = {
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_ETS_BOOLEAN_TYPE_H
+#ifndef ES2PANDA_IR_STATEMENT_THROW_STATEMENT_H
+void ReportGapAfterAtIfAny(lexer::SourcePosition atExclusiveEnd);
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_ETS_BIGINT_TYPE_H
+Type *const underlying_;
+virtual bool ValidateForInStatement()
+bool ValidateLabeledStatement(lexer::TokenType type) override;
+lexer::LexerPosition savedPos);
+EPtr<varbinder::FunctionScope> scope_ {nullptr};
+ir::ArrayExpression *ParseArrayExpression(ExpressionParseFlags flags) override;
+Expression *moduleReference_;
+#ifndef ES2PANDA_IR_TS_CONDITIONAL_TYPE_H
+util::DiagnosticEngine &diagnosticEngine_;
+ResolveReferences(childNode);
+SmartCastTestMap testSmartCasts_;
+friend class ETSNolintParser;
+: T(allocator, std::move(statementList))
+T *element_;
+void ParseSource(parser::Program *program);
+bool ProcessEtsSpecificOptions();
+#ifndef ES2PANDA_IR_ETS_NEW_MULTI_DIM_ARRAY_INSTANCE_EXPRESSION_H
+ir::TypeNode *ParseInterfaceTypeAnnotation(ir::Identifier *name);
+std::vector<ConstraintCheckRecord> pendingConstraintCheckRecords_ {};
+ALWAYS_INLINE AstNodeHistory *GetHistoryInternal()
+void CopyTo(AstNode *other) const override
+bool ParseDirective(ArenaVector<ir::Statement *> *statements);
+ir::BlockStatement *ast_ {};
+const std::map<std::string, std::string, std::less<>> &mocks,
+ETSImportDeclaration *etsImportDeclarations_;
+ETSNolintsCollectionMap etsnolintCollection_;
+#ifndef ES2PANDA_COMPILER_CORE_SCRIPT_FUNCTION_SIGNATURE_H
+varbinder::CatchScope *scope_ {nullptr};
+AstNode &operator=(const AstNode &) = default;
+EPtr<Expression> init_ {};
+TSTypeParameter *typeParameter_;
+Expression *expression_;
+template <bool ATTACH_TO_GLOBAL_EXTERNAL_SOURCES = true>
+ir::FunctionDeclaration *ParseTopLevelAccessor(ir::ModifierFlags modifiers);
+NamespaceBody ParseNamespaceBody(ir::ClassDefinitionModifiers modifiers, ir::ModifierFlags flags);
+PandArg<std::string> ets_warnings_diagnostic_format_{"diagnostic-format", R"(default)", R"(Diagnostic output format. Possible values: ["default", "build-system"]. Default: "default")"};
+friend class LoopScope;
+TypeFlag constituentFlags_ {TypeFlag::NONE};
+#ifndef ES2PANDA_IR_TS_CONSTRUCTOR_TYPE_H
+bool ValidateBinaryExpressionIdentifier(ir::Identifier *const ident, Type *const type);
+ClassDefinition *Construct(ArenaAllocator *allocator) override;
+bool finallyCanCompleteNormally_ {};
+void ParseUserSources(std::vector<std::string> userParths);
+std::optional<std::string> ResolveMockPath(std::string_view curFile, std::string_view importFile,
+PandArg<bool> unused_vars_analyzer_{"unused-vars-analyzer", false, R"(Enable detection of unused declarations. Default: false)"};
+es2panda::Language lang_;
+ir::TypeNode *typeReference_;
+ir::Expression *typeReference_;
+: Statement(type), def_(def)
+virtual ir::Statement *ParseConstStatement(StatementParsingFlags flags);
+void ClearClassModifiers(ClassDefinitionModifiers const flags) noexcept
+virtual ir::AstNode *ParseImportDefaultSpecifier(ArenaVector<ir::AstNode *> *specifiers);
+#ifndef ES2PANDA_IR_EXPRESSION_ETS_GENERIC_INSTANTIATED_NODE_H
+bool TryCastByte(TypeRelation *const relation, Type *const target);
+void EnsureContainingPackageIsRegistered(ir::ETSPackageDeclaration *packageDecl);
+std::unique_ptr<parser::JsdocHelper> jsdocGetter_ {};
+#ifndef ES2PANDA_IR_MODULE_EXPORT_DECLARATION_H
+std::unordered_set<util::StringView> backReferences_;
+[[maybe_unused]] ScriptExtension extension);
+checker::Type *resolvedSpreadSourceType_ {nullptr};
+ExpressionParseFlags flags = ExpressionParseFlags::NO_OPTS) override;
+char32_t Peek() const;
+bool allowUnsafeVariance_ = false;
+parser::Program *savedProgram_ {};
+PropertySearchFlags searchFlag);
+PandArg<std::string> output_{"output", R"()", R"(Compiler binary output (.abc). Default: "")"};
+#ifndef ES2PANDA_IR_STATEMENT_IF_STATEMENT_H
+void SetValueDeclarators(VariableDeclarator *source, size_t index);
+FunctionSignature signature_;
+#ifndef ES2PANDA_IR_STATEMENT_H_DEBUGGER_STATEMENT_H
+ParserStatus newStatus = ParserStatus::NO_OPTS);
+const ArenaVector<Type *> typeList_;
+RelationHolder supertypeResults_;
+return context_;
+lexer::SourcePosition sourcePos);
+ir::ExportNamedDeclaration *ParseSingleExport(ir::ModifierFlags modifiers);
+bool hasTrailingComma {false};
+#ifndef ES2PANDA_IR_TS_TYPE_QUERY_H
+virtual ir::Identifier *ParseClassIdent(ir::ClassDefinitionModifiers modifiers);
+virtual void ValidateClassGetter(ClassElementDescriptor *desc, const ArenaVector<ir::AstNode *> &properties,
+void BuildTypeAliasDeclaration(ir::TSTypeAliasDeclaration *const typeAliasDecl);
+RelationHolder &IdenticalResults() noexcept;
+bool asserts_;
+bool isRecursive_;
+ir::Statement *ParsePotentialConstEnum(VariableParsingFlags flags) override;
+bool isDynamic;
+ir::CharLiteral *ParseCharLiteral();
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_ETS_H
+#ifndef ES2PANDA_COMPILER_CORE_ASTVERIFIER_H
+explicit MaybeOptionalExpression(AstNodeType type, ModifierFlags flags, bool optional)
+static_assert(N < static_cast<std::size_t>(UtilityType::TOTAL), "Invalid array index.");
+mutable EPtr<ArenaVector<ETSObjectType *>> interfaces_;
+#ifndef ES2PANDA_IR_SRCDUMP_H
+PandArg<arg_list_t> dump_ets_src_after_phases_{"dump-ets-src-after-phases", {}, R"(Generate program dump as ets source code after running phases in the list. Default: [])", ","};
+GetOrCreateHistoryNode()->type_ = type;
+bool isSrcEmpty_ = false;
+ArenaVector<checker::Signature *> &signatures,
+void ValidateAccessorIdentifier(ir::Identifier *ident);
+TSSignatureDeclarationKind kind_;
+bool ShouldStopPostPrimaryForNewLineCall(ir::Expression *returnExpression);
+#undef DECLARE_AST_NODE_CHECK_METHOD
+otherImpl->elements_ = elements_;
+void ParseArrayExpressionErrorCheck(ir::ArrayExpression *arrayExpressionNode, ExpressionParseFlags flags,
+Variable *AddLocalVar(ArenaAllocator *allocator, Decl *newDecl);
+bool ignoreConstAssign_ = false;
+Type *type_;
+LocalScope *instanceFieldScope_;
+bool handleEval = true);
+#ifndef ES2PANDA_IR_ETS_TYPE_REFERENCE_H
+util::StringView value_ {};
+ExtensionAccessorMap extensionSetterMaps_;
+#ifndef ES2PANDA_IR_ETS_IMPORT_DECLARATION_H
+[[nodiscard]] checker::Type *GetAssignableBuiltinType(
+ir::Identifier *AllocBrokenExpression(const lexer::SourcePosition &pos);
+ArenaVector<ir::Statement *> ParseTopLevelStatements();
+std::optional<const ir::AstNode *> target_ {};
+#ifndef ES2PANDA_IR_ETS_MODULE_H
+bool IsDepAnalyzerMode() const;
+ir::Statement *ParseInterfaceDeclaration(bool isStatic) override;
+#ifndef ES2PANDA_IR_MODULE_IMPORT_NAMESPACE_SPECIFIER_H
+TypeNode *typeAnnotation_;
+PandArg<std::string> generate_decl_path_{"path", R"()", R"(Output path for generated static declaration files. Default: "")"};
+ir::VariableDeclarator *ParseVariableDeclarator(ir::Expression *init, lexer::SourcePosition startLoc,
+TypeInstantiationCacheMap<Type> unionInstantiationCacheMap_;
+LocalScope *staticMethodScope_;
+#ifndef ES2PANDA_IR_TS_UNION_TYPE_H
+ir::ModifierFlags memberModifiers = ir::ModifierFlags::NONE,
+Expression *literal_;
+static inline ArenaVector<AnnotationUsage *> *emptyAnnotations_ = nullptr;
+EPtr<Expression> initializer_ = nullptr;
+ArenaVector<std::pair<compiler::LabelPair, const Statement *>> finalizerInsertions_;
+ETSFunctionType *extensionFunctionType_ {};
+virtual void ReportIllegalNewLineErrorAfterThrow();
+if (v != nullptr) {
+ir::Expression *ParsePunctuators(ExpressionParseFlags flags);
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_ETS_NULLISH_TYPE_H
+ir::ExportAllDeclaration *ParseExportAllDeclaration(const lexer::SourcePosition &startLoc);
+std::optional<ComponentTypeMemberAccessors> componentTypeMemberAccessors_ {};
+target->genStdLib_ = genStdLib_;
+params_ = other.params_;
+ir::ModifierFlags modFlags = ir::ModifierFlags::NONE);
+ir::ModifierFlags GetAccessability(ir::ModifierFlags modifiers);
+lexer::SourcePosition *sourceEnd = nullptr,
+RecordTable::RecordHolder savedRecord_ {nullptr};
+Expression *init_;
+bool IsAllowedTypeAliasRecursion(const ir::TSTypeAliasDeclaration *typeAliasNode,
+ir::ClassElement *ParseClassProperty(ClassElementDescriptor *desc, const ArenaVector<ir::AstNode *> &properties,
+EPtr<ETSObjectType> ownerObj_ {};
+virtual ir::Expression *ParsePrimaryExpression(ExpressionParseFlags flags = ExpressionParseFlags::NO_OPTS);
+RelationResult result_ {};
+EPtr<varbinder::Variable> target_ {};
+return allocator->New<ETSPrimitiveType>(PrimitiveType::VOID, allocator);
+uint32_t slotIndex_ {};
+std::pair<ir::TypeNode *, bool> GetTypeAnnotationFromParentheses(TypeAnnotationParsingOptions *options);
+virtual ir::Statement *ParseModuleDeclaration(StatementParsingFlags flags = StatementParsingFlags::NONE)
+ArenaVector<TypeNode *> params_;
+bool acquired_ {false};
+annotations_->emplace_back(anno->Clone(allocator_, this));
+explicit Scope(ArenaAllocator *allocator, Scope *parent)
+AnnotationAllowed(AnnotationAllowed const &other) : T(static_cast<T const &>(other))
+std::string rootDir_ {};
+void CreateAmendedBinaryExpression(ir::Expression *left, ir::Expression *right, lexer::TokenType operatorType);
+VariableParsingFlags flags);
+LocalScope *staticFieldScope_;
+explicit ParamScope(ArenaAllocator *allocator, Scope *parent)
+#ifndef ES2PANDA_VARBINDER_VARBINDER_H
+virtual bool IsModifierKind(const lexer::Token &token);
+compilablePrograms_.clear();
+lexer::SourcePosition startLoc, bool ignoreCallExpression);
+virtual void CleanUp()
+ast_ = nullptr;
+#undef DECLARE_OBJECT_TYPENAMES
+ir::ArrowFunctionExpression *containingLambda_ {nullptr};
+ir::Expression *ParsePostPrimaryExpressionDot(ir::Expression *returnExpression, lexer::TokenType tokenType,
+ark::PandArg<std::string> inputFile_ {"input", "", "input file"};
+std::string_view pathDelimiter_ {ark::os::file::File::GetPathDelim()};
+ir::OverloadDeclaration *ParseOverloadDeclaration(ir::ModifierFlags modifiers);
+const std::set<std::string, std::less<>> &mockSources) const;
+RelationHolder assignableResults_ {Allocator()};
+ir::ClassDefinitionModifiers modifiers);
+double value_;
+#ifndef ES2PANDA_IR_STATEMENT_BREAK_STATEMENT_H
+Type *GetTypeOfSetterGetter([[maybe_unused]] varbinder::Variable *var);
+#ifndef ES2PANDA_IR_EXPRESSION_LITERAL_REGEXP_LITERAL_H
+typeArguments_(allocator->Adapter()),
+void CreateTransformedCallee(ir::Identifier *ident, ir::Identifier *classId, ir::Identifier *methodId,
+CheckerStatus status_;
+util::StringView fileExtension_ {};
+friend class Lexer;
+virtual ir::Statement *ParseStructStatement(StatementParsingFlags flags, ir::ClassDefinitionModifiers modifiers,
+InitElementsShortcuts(declNode->AsClassDefinition());
+ir::Expression *constantExpression_ = nullptr;
+EPtr<AstNode> originalNode_ = nullptr;
+explicit Statement(AstNodeType type) : AstNode(type) {}
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_ETS_WILDCARD_TYPE_H
+otherImpl->annotations_->clear();
+std::string path_ {};
+std::unordered_set<util::StringView> groupNames_;
+TSTypeParameterInstantiation *typeParams_ {};
+const util::Options &Options() const
+std::map<std::string, ExternalModuleData, CompareByLength> dependencies_ {};
+virtual void ValidateGetterSetter(ir::MethodDefinitionKind methodDefinition, const ir::ScriptFunction *func,
+BlockStatement *block_;
+#ifndef ES2PANDA_IR_EXPRESSION_TYPEOF_EXPRESSION_H
+ETSBinder *varBinder_;
+ClassBody ParseClassBody(ir::ClassDefinitionModifiers modifiers, ir::ModifierFlags flags = ir::ModifierFlags::NONE);
+friend Program;
+uint32_t lexLevel = 0;
+ArrowFunctionDescriptor *desc,
+InitHistory();
+std::tuple<ir::Expression *, ir::TSTypeParameterInstantiation *> ParseTypeReferencePart(
+ir::Expression *ParseExpressionOrTypeAnnotation(lexer::TokenType type, ExpressionParseFlags flags) override;
+bool DetermineExtension();
+varbinder::Variable *variable_ {};
+bool optional_ {false};
+void CreateImplicitConstructor(ir::MethodDefinition *&ctor, ArenaVector<ir::AstNode *> &properties,
+bool isRange_ = false;
+std::tuple<Scope *, bool> IterateShadowedVariables(const util::StringView &name, const VariableVisitor &visitor);
+const std::vector<compiler::VReg> &staticComputedFieldKeys) const;
+void InitializeFileExtension();
+Scope *parent_ {};
+std::vector<util::Plugin> const plugins_ {};
+void ParseIndexSignature();
+ExpressionParseFlags flags = ExpressionParseFlags::NO_OPTS);
+#ifndef ES2PANDA_PARSER_INCLUDE_TOKEN_TYPE_H
+#ifndef ES2PANDA_VARBINDER_RECORDTABLE_H
+virtual AstNode *Construct([[maybe_unused]] ArenaAllocator *allocator);
+void DumpBody(ir::SrcDumper *dumper) const;
+static std::atomic<int> classCounter_;
+bool optional_;
+ArenaUnorderedMap<AstNode *, BlockStatement *> trailingBlocks_;
+checker::Type *HandleInternalTypes(checker::ETSChecker *checker);
+ir::ClassDefinitionModifiers modifiers, ir::ModifierFlags flags);
+ArenaVector<RelationHolder::RelationKey> identicalRelationStack_;
+bool IsValidTokenTypeOfArrowFunctionStart(lexer::TokenType tokenType);
+ir::Statement *ParseLetStatement(StatementParsingFlags flags);
+checker::Type *CheckUnionMember(checker::ETSChecker *checker, checker::Type *baseType);
+parser::Program *Program() const;
+virtual ir::MethodDefinition *ParseClassMethod(ClassElementDescriptor *desc,
+explicit TypedAstNode(AstNodeType const type) : Typed<AstNode>(type) {}
+#ifndef ES2PANDA_IR_ETS_PACKAGE_DECLARATION_H
+void LookUpMandatoryReferences(const FunctionScope *funcScope, bool needLexicalFuncObj);
+Expression *parameter_;
+PandArg<std::string> ets_warnings_base_path_{"base-path", R"()", R"(Base directory for relative paths of filenames in warnings;. Default: "")"};
+util::StringView fileNameWithExtension_ {};
+if (reExports_ == nullptr) {
+ir::Statement *ParseSwitchStatement();
+ir::AstNode *ParseTypeParametersFormatPlaceholder() override;
+ArrayMap arrayTypes_;
+#ifndef ES2PANDA_IR_ETS_INTRINSIC_NODE_H
+void CheckFunctionDeclaration(StatementParsingFlags flags);
+util::ImportInfo importInfo_;
+void ParseCharacterClass();
+void CheckSmartCastEqualityCondition(ir::BinaryExpression *binaryExpression) noexcept;
+void ParseNamedImportSpecifiers(ArenaVector<ir::AstNode *> *specifiers);
+SetData<KIND, SHOULD_CACHE>(file, std::move(text));
+static ExpressionParseFlags CarryExpressionParserFlag(ExpressionParseFlags origin, ExpressionParseFlags carry);
+void ValidateOverloadList(ArenaVector<ir::Expression *> const &overloadList);
+ArenaVector<ir::AstNode *> *declarations, bool isDefault);
+util::StringView str_;
+compiler::VReg vreg_ {};
+UType value_ {0.0};
+void CopyFrom(const FunctionSignature &other)
+ir::Expression *ParseCoverParenthesizedExpressionAndArrowParameterList(
+PandArg<std::string> exit_after_phase_{"exit-after-phase", R"()", R"(Exit compilation after running the provided phase. Default: "")"};
+virtual ir::Expression *ParseUnaryOrPrefixUpdateExpression(
+BlockStatement *body_;
+std::set<std::string> astVerifierPhases_ {};
+ir::AstNode *ParseInnerTypeDeclaration(ir::ModifierFlags memberModifiers, lexer::LexerPosition savedPos,
+void CollectInheritedOverloadDecls(std::vector<varbinder::LocalVariable *> &overloadVars, util::StringView name,
+EPtr<checker::ETSFunctionType> extensionAccessorType_ {};
+struct ResolutionCacheKeyHash {
+void EnsurePropertiesInstantiated() const
+void Inherit(const ArkTsConfig &base);
+void ParseClassAccessor(ClassElementDescriptor *desc, char32_t *nextCp);
+PandArg<int> thread_{"thread", THREAD_DEFAULT, R"(Number of worker threads. Default: 0)"};
+EPtr<checker::Type> returnType_ {};
+EPtr<varbinder::Variable> variable_ {};
+EPtr<Expression> expression_;
+PandArg<bool> ets_warnings_werror_{"werror", false, R"(Treat all enabled warnings as errors. Default: false)"};
+util::StringView basePath_ {};
+ir::ETSImportDeclaration *ParseImportPathBuildImport(ArenaVector<ir::AstNode *> &&specifiers, bool requireFrom,
+using NamespaceBody = std::tuple<ir::MethodDefinition *, ArenaVector<ir::AstNode *>, lexer::SourceRange>;
+template <typename VarBinderT, Language::Id LANG_ID>
+PandArg<arg_list_t> dump_before_phases_{"dump-before-phases", {}, R"(Generate program dump before running phases in the list. Default: [])", ","};
+virtual std::tuple<bool, bool, bool> ParseComputedClassFieldOrIndexSignature(ir::Expression **propName);
+std::unordered_set<varbinder::LocalVariable *> resolvingImportBindings_;
+void CheckRestrictedBinding();
+util::StringView name_;
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_TYPE_H
+ir::MemberExpression *ParseElementAccess(ir::Expression *primaryExpr, bool isOptional = false);
+void BuildForUpdateLoop(ir::ForUpdateStatement *forUpdateStmt);
+void InvalidateExportImportCacheForProgram(parser::Program *program);
+#ifndef ES2PANDA_UTIL_OPTIONS_H
+#ifndef ES2PANDA_IR_EXPRESSION_MEMBER_EXPRESSION_H
+util::StringView absoluteParentFolder_ {};
+#ifndef ES2PANDA_COMPILER_CHECKER_TYPES_ETS_INT_TYPE_H
+: T(type, typeAnnotation)
+PandArg<uint64_t> debugger_eval_line_{"line", LINE_DEFAULT, R"(Line in the source file code where evaluate occurs. Default: 0)"};
+void CreateConstructorForPartialType(ir::ClassDefinition *partialClassDef, checker::ETSObjectType *partialType,
+ir::Identifier *HandleEmptyTokenNameError(const lexer::Token &token, lexer::TokenType tokenType,
+EPtr<ir::Identifier> exprName_ {};
+#undef REGISTER_MAPPING
+#ifndef ES2PANDA_IR_STATEMENT_EXPRESSION_STATEMENT_H
+public_lib::Context *ctx_ {nullptr};
+if (Type() != type) {
+membersNames = Span(elem->AsClassProperty()->Value()->AsArrayExpression()->Elements());
+void ParseArgumentsNewExpression(ArenaVector<ir::Expression *> &arguments, ir::TypeNode *typeReference);
+checker::Type *originalType_ = nullptr;
+PandArg<std::string> debugger_eval_source_{"source", R"()", R"(Path to evaluation mode source file. Default: "")"};
+varScope_ = nullptr;
+ir::Statement *ParseStructDeclaration(ir::ClassDefinitionModifiers modifiers,
+ir::AstNode *ParseAnnotationProperty(ir::Identifier *fieldName,
+bool isExternalAmbient_;
+const util::DiagnosticMessageParams &diagnosticParams = {});
+TypeFlag typeFlags_;
+ir::MethodDefinition *ParseInterfaceMethod(ir::ModifierFlags flags, ir::MethodDefinitionKind methodKind);
+ir::Statement *ParseInitModuleStatement() override;
+const lexer::LineIndex index_;
+EPtr<checker::ETSObjectType> objType_ {};
+ResolvedSources &resolvedSources_;
+explicit LoopStatement(AstNodeType type) : Statement(type) {}
+void Wrap(const WrapperCb &cb, char delimStart = '{', char delimEnd = '}');
+ArenaVector<Type *> typeArguments_;
+bool ParsePatternCharacter();
+bool ValidateContinueLabel(util::StringView label) override;
+varbinder::VarBinder *varbinder_ {};
+TypeAnnotationParsingOptions options);
+: ETSObjectType(allocator, name, internalName,
+void SetCopiedTypeProperties(TypeRelation *const relation, ETSObjectType *const copiedType,
+ArenaVector<ir::Expression *> ParseCallExpressionArguments(bool &trailingComma, lexer::SourcePosition &endLoc);
+ir::Statement *ParseLabelledStatement(const lexer::LexerPosition &pos);

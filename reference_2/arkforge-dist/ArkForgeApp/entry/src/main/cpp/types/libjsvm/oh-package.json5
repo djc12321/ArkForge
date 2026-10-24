@@ -1,0 +1,5 @@
+{
+  "name": "libarkforge_script.so",
+  "version": "1.0.0",
+  "types": "./Index.d.ts"
+}

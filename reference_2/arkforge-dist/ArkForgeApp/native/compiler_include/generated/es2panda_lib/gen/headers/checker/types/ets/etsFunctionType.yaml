@@ -1,0 +1,445 @@
+checker:
+  class_definitions:
+  - extends: public Type
+    name: ETSFunctionType
+    private: {}
+    public:
+      constructors:
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            ptr_depth: 1
+        - name: signature
+          type:
+            name: Signature
+            ptr_depth: 1
+        name: ETSFunctionType
+        raw_declaration: explicit ETSFunctionType(ETSChecker *checker, Signature *signature)
+        return_type:
+          prefix: explicit
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            ptr_depth: 1
+        - name: name
+          type:
+            name: StringView
+            namespace: util
+        - name: signatures
+          type:
+            name: ArenaVector
+            ref_depth: 2
+            template_args:
+            - type:
+                name: Signature
+                ptr_depth: 1
+        name: ETSFunctionType
+        raw_declaration: explicit ETSFunctionType(ETSChecker *checker, util::StringView
+          name, ArenaVector<Signature *> &&signatures)
+        return_type:
+          prefix: explicit
+      methods:
+      - args: []
+        name: CallSignatures
+        raw_declaration: '[[nodiscard]] ArenaVector<Signature *> &CallSignatures()'
+        return_type:
+          name: ArenaVector
+          prefix: '[[nodiscard]]'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: Signature
+              ptr_depth: 1
+      - args: []
+        name: CallSignatures
+        postfix: const
+        raw_declaration: '[[nodiscard]] const ArenaVector<Signature *> &CallSignatures()
+          const'
+        return_type:
+          name: ArenaVector
+          prefix: '[[nodiscard]] const'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: Signature
+              ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: CallSignaturesOfMethodOrArrow
+        raw_declaration: '[[nodiscard]] ArenaVector<Signature *> &CallSignaturesOfMethodOrArrow()'
+        return_type:
+          name: ArenaVector
+          prefix: '[[nodiscard]]'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: Signature
+              ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: CallSignaturesOfMethodOrArrow
+        postfix: const
+        raw_declaration: '[[nodiscard]] const ArenaVector<Signature *> &CallSignaturesOfMethodOrArrow()
+          const'
+        return_type:
+          name: ArenaVector
+          prefix: '[[nodiscard]] const'
+          ref_depth: 1
+          template_args:
+          - type:
+              name: Signature
+              ptr_depth: 1
+      - args: []
+        name: Name
+        postfix: const
+        raw_declaration: '[[nodiscard]] util::StringView Name() const'
+        return_type:
+          name: StringView
+          namespace: util
+          prefix: '[[nodiscard]]'
+      - additional_attributes: set
+        args:
+        - name: signature
+          type:
+            name: Signature
+            ptr_depth: 1
+        name: AddCallSignature
+        raw_declaration: void AddCallSignature(Signature *signature)
+        return_type:
+          name: void
+      - args:
+        - name: predicate
+          type:
+            name: UnaryPredicate
+        name: FindSpecificSignature
+        postfix: const noexcept
+        raw_declaration: Signature *FindSpecificSignature(UnaryPredicate predicate)
+          const noexcept
+        return_type:
+          name: Signature
+          ptr_depth: 1
+        template: class UnaryPredicate
+      - additional_attributes: get
+        args:
+        - name: func
+          type:
+            name: ScriptFunction
+            namespace: ir
+            prefix: const
+            ptr_depth: 1
+        name: FindSignature
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] Signature *FindSignature(const ir::ScriptFunction
+          *func) const noexcept'
+        return_type:
+          name: Signature
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: FindGetter
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] Signature *FindGetter() const noexcept'
+        return_type:
+          name: Signature
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: FindSetter
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] Signature *FindSetter() const noexcept'
+        return_type:
+          name: Signature
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        name: CollectExtensionAccessorSigs
+        raw_declaration: '[[nodiscard]] ArenaVector<Signature *> CollectExtensionAccessorSigs(ArenaAllocator
+          *allocator)'
+        return_type:
+          name: ArenaVector
+          prefix: '[[nodiscard]]'
+          template_args:
+          - type:
+              name: Signature
+              ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: FirstAbstractSignature
+        postfix: const noexcept
+        raw_declaration: '[[nodiscard]] Signature *FirstAbstractSignature() const
+          noexcept'
+        return_type:
+          name: Signature
+          prefix: '[[nodiscard]]'
+          ptr_depth: 1
+      - args: []
+        name: ArrowSignature
+        postfix: const
+        raw_declaration: Signature *ArrowSignature() const
+        return_type:
+          name: Signature
+          ptr_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            ptr_depth: 1
+        name: MethodToArrow
+        raw_declaration: ETSFunctionType *MethodToArrow(ETSChecker *checker)
+        return_type:
+          name: ETSFunctionType
+          ptr_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            ptr_depth: 1
+        name: ArrowToFunctionalInterface
+        raw_declaration: ETSObjectType *ArrowToFunctionalInterface(ETSChecker *checker)
+        return_type:
+          name: ETSObjectType
+          ptr_depth: 1
+      - args:
+        - name: checker
+          type:
+            name: ETSChecker
+            ptr_depth: 1
+        - name: arity
+          type:
+            name: size_t
+        name: ArrowToFunctionalInterfaceDesiredArity
+        raw_declaration: ETSObjectType *ArrowToFunctionalInterfaceDesiredArity(ETSChecker
+          *checker, size_t arity)
+        return_type:
+          name: ETSObjectType
+          ptr_depth: 1
+      - additional_attributes: get
+        args: []
+        name: IsExtensionFunctionType
+        postfix: const
+        raw_declaration: '[[nodiscard]] bool IsExtensionFunctionType() const'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - additional_attributes: get
+        args: []
+        name: IsExtensionAccessorType
+        postfix: const
+        raw_declaration: '[[nodiscard]] bool IsExtensionAccessorType() const'
+        return_type:
+          name: bool
+          prefix: '[[nodiscard]]'
+      - args:
+        - name: ss
+          type:
+            name: stringstream
+            namespace: std
+            ref_depth: 1
+        name: ToAssemblerType
+        postfix: const override
+        raw_declaration: void ToAssemblerType(std::stringstream &ss) const override
+        return_type:
+          name: void
+      - args:
+        - name: ss
+          type:
+            name: stringstream
+            namespace: std
+            ref_depth: 1
+        name: ToDebugInfoType
+        postfix: const override
+        raw_declaration: void ToDebugInfoType(std::stringstream &ss) const override
+        return_type:
+          name: void
+      - args:
+        - name: func
+          type:
+            name: TypeTraverser
+            prefix: const
+            ref_depth: 1
+        name: Iterate
+        postfix: const override
+        raw_declaration: void Iterate(const TypeTraverser &func) const override
+        return_type:
+          name: void
+      - args:
+        - name: ss
+          type:
+            name: stringstream
+            namespace: std
+            ref_depth: 1
+        - name: precise
+          type:
+            name: bool
+        name: ToString
+        postfix: const override
+        raw_declaration: void ToString(std::stringstream &ss, bool precise) const
+          override
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: other
+          type:
+            name: Type
+            ptr_depth: 1
+        name: Identical
+        postfix: override
+        raw_declaration: void Identical(TypeRelation *relation, Type *other) override
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: source
+          type:
+            name: Type
+            ptr_depth: 1
+        name: AssignmentTarget
+        postfix: override
+        raw_declaration: void AssignmentTarget(TypeRelation *relation, Type *source)
+          override
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: target
+          type:
+            name: Type
+            ptr_depth: 1
+        name: AssignmentSource
+        postfix: override
+        raw_declaration: bool AssignmentSource(TypeRelation *relation, Type *target)
+          override
+        return_type:
+          name: bool
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: source
+          type:
+            name: Type
+            ptr_depth: 1
+        name: IsSupertypeOf
+        postfix: override
+        raw_declaration: void IsSupertypeOf(TypeRelation *relation, Type *source)
+          override
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: target
+          type:
+            name: Type
+            ptr_depth: 1
+        name: IsSubtypeOf
+        postfix: override
+        raw_declaration: void IsSubtypeOf(TypeRelation *relation, Type *target) override
+        return_type:
+          name: void
+      - args:
+        - name: allocator
+          type:
+            name: ArenaAllocator
+            ptr_depth: 1
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: globalTypes
+          type:
+            name: GlobalTypesHolder
+            ptr_depth: 1
+        name: Instantiate
+        postfix: override
+        raw_declaration: Type *Instantiate(ArenaAllocator *allocator, TypeRelation
+          *relation, GlobalTypesHolder *globalTypes) override
+        return_type:
+          name: Type
+          ptr_depth: 1
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: substitution
+          type:
+            name: Substitution
+            prefix: const
+            ptr_depth: 1
+        name: Substitute
+        postfix: override
+        raw_declaration: ETSFunctionType *Substitute(TypeRelation *relation, const
+          Substitution *substitution) override
+        return_type:
+          name: ETSFunctionType
+          ptr_depth: 1
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: varianceFlag
+          type:
+            name: VarianceFlag
+        name: CheckVarianceRecursively
+        postfix: override
+        raw_declaration: void CheckVarianceRecursively(TypeRelation *relation, VarianceFlag
+          varianceFlag) override
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: target
+          type:
+            name: Type
+            ptr_depth: 1
+        name: Cast
+        postfix: override
+        raw_declaration: void Cast(TypeRelation *relation, Type *target) override
+        return_type:
+          name: void
+      - args:
+        - name: relation
+          type:
+            name: TypeRelation
+            ptr_depth: 1
+        - name: source
+          type:
+            name: Type
+            ptr_depth: 1
+        name: CastTarget
+        postfix: override
+        raw_declaration: void CastTarget(TypeRelation *relation, Type *source) override
+        return_type:
+          name: void
+include:
+- '"checker/types/type.h"'
+- '"checker/types/signature.h"'
+- '"ir/base/scriptFunction.h"'
+macros:
+- name: ES2PANDA_COMPILER_CHECKER_TYPES_ETS_FUNCTION_TYPE_H

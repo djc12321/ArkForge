@@ -1,0 +1,5 @@
+{
+  "architecture": "AArch64",
+  "sha256": "576071c9c3d3ffac583cd7166245eac9d58d9472ae46348fbe37f9b2137accc9",
+  "purpose": "Native signing and verification; contains no private key."
+}

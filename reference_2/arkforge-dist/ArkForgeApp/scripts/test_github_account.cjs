@@ -1,0 +1,45 @@
+'use strict';
+const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
+const ts=require('C:/Program Files/Huawei/DevEco Studio/sdk/default/openharmony/ets/build-tools/ets-loader/node_modules/typescript');
+let time=1000,secret,queue=[],requests=[];
+const store={Tag:{ALIAS:1,SECRET:2,RETURN_TYPE:3,CONFLICT_RESOLUTION:4},ReturnType:{ALL:1},ConflictResolution:{OVERWRITE:1},
+  async query(){if(!secret)throw {code:24000002};return [new Map([[2,secret]])];},
+  async add(attributes){secret=attributes.get(2);},async remove(){secret=undefined;}};
+const http={RequestMethod:{POST:'POST',GET:'GET'},HttpDataType:{STRING:1},createHttp:()=>({async request(url,options){requests.push({url,options});assert(queue.length,'unexpected HTTP request');const result=queue.shift();return {responseCode:result.status||200,result:JSON.stringify(result.body||result)};},destroy(){}})};
+const source=fs.readFileSync('entry/src/main/ets/services/GitHubAccount.ets','utf8');
+const util={TextEncoder:class {encodeInto(text){return new TextEncoder().encode(text);}},TextDecoder:class {decodeToString(bytes){return new TextDecoder().decode(bytes);}}};
+const sandbox={exports:{},require:name=>name.includes('AssetStore')?{asset:store}:name.includes('ArkTS')?{util}:name.includes('Network')?{http}:{},Date:{now:()=>time},Map,JSON,encodeURIComponent};
+vm.runInNewContext(ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020}}).outputText,sandbox);
+const account=sandbox.exports.GitHubAccount,call=async(method,args={})=>JSON.parse(await account.execute(method,JSON.stringify(args)));
+const start=async()=>{queue.push({device_code:'private-device-code',user_code:'ABCD-EFGH',verification_uri:'https://github.com/login/device',expires_in:900,interval:5});return call('start');};
+(async()=>{
+  assert.equal((await call('status')).signedIn,false);
+  let flow=await start();assert.equal(flow.code,'ABCD-EFGH');assert(!JSON.stringify(flow).includes('private-device-code'));
+  assert.equal((await call('poll',{id:flow.id})).state,'authorization_pending');assert.equal(requests.length,1);
+  time+=5000;queue.push({error:'slow_down'});assert.equal((await call('poll',{id:flow.id})).interval,10);
+  time+=5000;assert.equal((await call('poll',{id:flow.id})).interval,5);assert.equal(requests.length,2);
+  time+=5000;queue.push({access_token:'private-token',scope:'repo,read:user'},{login:'Tester',id:42,avatar_url:'https://avatars.githubusercontent.com/u/42?v=4'});
+  const result=await call('poll',{id:flow.id});assert.equal(result.state,'authenticated');assert.equal(result.login,'Tester');
+  assert(!JSON.stringify(result).includes('private-token'));assert.equal((await call('status')).signedIn,true);
+  assert.equal((await call('status')).transportReady,true);
+  assert.equal((await call('status')).avatar,'https://avatars.githubusercontent.com/u/42?v=4');
+  assert.equal(requests.at(-1).url,'https://api.github.com/user');assert.equal(requests.at(-1).options.header.Authorization,'Bearer private-token');
+  await call('logout');assert.equal(secret,undefined);
+  flow=await start();await call('cancel',{id:flow.id});assert.equal((await call('poll',{id:flow.id})).state,'cancelled');
+  flow=await start();time+=901000;assert.equal((await call('poll',{id:flow.id})).state,'expired_token');
+  flow=await start();time+=5000;queue.push({error:'access_denied'});await assert.rejects(call('poll',{id:flow.id}),/access_denied/);assert.equal(secret,undefined);
+  flow=await start();time+=5000;queue.push({access_token:'short',refresh_token:'refresh',expires_in:28800},{login:'ShortUser',id:44});
+  assert.equal((await call('poll',{id:flow.id})).login,'ShortUser');
+  time+=28800000;queue.push({access_token:'rotated',refresh_token:'rotated-refresh',expires_in:28800},{login:'Renamed',id:44});
+  assert.equal((await call('verify')).login,'Renamed');
+  assert.equal(requests.at(-2).options.extraData.includes('grant_type=refresh_token'),true);
+  assert.equal(JSON.parse(new TextDecoder().decode(secret)).refresh,'rotated-refresh');
+  queue.push({access_token:'saved-before-network-failure',refresh_token:'latest-refresh',expires_in:28800},{status:503});
+  await assert.rejects(call('refresh'),/503/);assert.equal(JSON.parse(new TextDecoder().decode(secret)).refresh,'latest-refresh');
+  await call('logout');
+  queue.push({status:401});await assert.rejects(call('token',{token:'invalid'}),/401/);assert.equal(secret,undefined);
+  queue.push({login:'PATUser',id:43});assert.equal((await call('token',{token:'pat-value'})).login,'PATUser');
+  let opened='';await account.open({openLink:async url=>{opened=url;}},'github');assert.equal(opened,'https://github.com/login/device');
+  await assert.rejects(account.open({},'https://evil.invalid'),/未知/);
+  assert.equal(queue.length,0);console.log('GitHub device flow: identity verification, AssetStore, polling, slow_down, cancellation, expiry, rejection, PAT and URL allowlist passed.');
+})().catch(error=>{console.error(error);process.exitCode=1;});

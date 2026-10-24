@@ -1,0 +1,11 @@
+{
+  "modelVersion": "6.1.0",
+  "name": "harmonyplayground",
+  "version": "1.0.0",
+  "description": "Harmony Playground - 平板上本机运行的脚本解释器与实时预览",
+  "main": "",
+  "author": "",
+  "license": "Apache-2.0",
+  "dependencies": {},
+  "devDependencies": {}
+}
