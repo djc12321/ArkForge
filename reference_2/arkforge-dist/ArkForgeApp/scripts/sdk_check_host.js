@@ -24,4 +24,34 @@ function __sha256(bytes) {
  var a=h[0],b=h[1],c=h[2],d=h[3],e=h[4],f=h[5],g=h[6],j=h[7];for(var i=0;i<64;i++){var t1=(j+(r(e,6)^r(e,11)^r(e,25))+(e&f^~e&g)+k[i]+w[i])|0,t2=((r(a,2)^r(a,13)^r(a,22))+(a&b^a&c^b&c))|0;j=g;g=f;f=e;e=d+t1|0;d=c;c=b;b=a;a=t1+t2|0;}[a,b,c,d,e,f,g,j].forEach(function(v,i){h[i]=h[i]+v|0;});}
  return h.map(function(v){return (v>>>0).toString(16).padStart(8,'0');}).join('');
 }
-__builtins.crypto.createHash=function(algorithm){if(algorithm!=='sha256')throw new Error('Unsupported SDK hash '+algorithm);var chunks=[];return {update:function(value){chunks.push(typeof value==='string'?new Uint8Array(__bytes(value)):value);return this;},digest:function(format){if(format!=='hex')throw new Error('Unsupported SDK digest encoding');var n=chunks.reduce(function(n,c){return n+c.length;},0),bytes=new Uint8Array(n),offset=0;chunks.forEach(function(c){bytes.set(c,offset);offset+=c.length;});return __sha256(bytes);}};};
+// Immutable SDK assets are captured with their standard SHA-256 at bundle time.
+// Map keys are the actual complete contents; changed text always falls back to hashing.
+var __sdkKnownHashes = new Map();
+var __sdkHashMetrics = { hits: 0, misses: 0 };
+function __initializeSdkHashCache(files, hashes) {
+  var originalTexts=Object.create(null);
+  for (var name of Object.keys(hashes)) originalTexts[name]=files[name];
+  var read=__fs.readFileSync;
+  __fs.readFileSync=function(name,encoding){
+    var normalized=__path.normalize(name),text=files[normalized];
+    if(typeof text==='string' && text===originalTexts[normalized] && hashes[normalized]!==undefined)
+      __sdkKnownHashes.set(text,hashes[normalized]);
+    return read.apply(this,arguments);
+  };
+}
+__builtins.crypto.createHash=function(algorithm){
+ if(algorithm!=='sha256')throw new Error('Unsupported SDK hash '+algorithm);
+ var chunks=[];
+ return {update:function(value){chunks.push(value);return this;},digest:function(format){
+  if(format!=='hex')throw new Error('Unsupported SDK digest encoding');
+  if(chunks.length===1 && typeof chunks[0]==='string') {
+    var known=__sdkKnownHashes.get(chunks[0]);
+    if(known!==undefined){__sdkHashMetrics.hits++;return known;}
+  }
+  __sdkHashMetrics.misses++;
+  var encoded=chunks.map(function(value){return typeof value==='string'?
+    (typeof TextEncoder!=='undefined'?new TextEncoder().encode(value):new Uint8Array(__bytes(value))):value;});
+  var n=encoded.reduce(function(n,c){return n+c.length;},0),bytes=new Uint8Array(n),offset=0;
+  encoded.forEach(function(c){bytes.set(c,offset);offset+=c.length;});return __sha256(bytes);
+ }};
+};

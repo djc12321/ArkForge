@@ -1,5 +1,7 @@
 {
   "architecture": "AArch64",
-  "sha256": "576071c9c3d3ffac583cd7166245eac9d58d9472ae46348fbe37f9b2137accc9",
-  "purpose": "Native signing and verification; contains no private key."
+  "sha256": "c0b7cfbf7f1898ad28f8a29f4b02535d5ac09710dd35a537d45ba119341479a9",
+  "purpose": "Native signing and verification; contains no private key.",
+  "crypto": "OpenSSL 3.0.23-dev, upstream linux-aarch64 assembly with runtime CPU feature detection",
+  "buildScript": "native/build_fast_signer.sh"
 }

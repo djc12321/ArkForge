@@ -140,7 +140,8 @@ export class OfflineProjectBuilder {
       sha256: await hash.hash(sourceRoot + '/' + path, 'sha256') });
     const compilerSha256 = await hash.hash(bundle, 'sha256');
     const checkerBundle = await SDKProjectChecker.stage(context);
-    const checkInput = JSON.stringify(SDKProjectChecker.input(project, moduleName, bundleName, files));
+    const checkInputData = SDKProjectChecker.input(project, moduleName, bundleName, files);
+    const checkInput = JSON.stringify(checkInputData);
     OfflineProjectBuilder.write(root + '/sdk-input.json', checkInput);
     const sdkInputKey = await hash.hash(checkerBundle, 'sha256') + ':' + await hash.hash(root + '/sdk-input.json', 'sha256');
     OfflineProjectBuilder.write(root + '/resource-manifest.json', manifestText + '\n' + resourceInputs + '\n' + resourceCompilerSha);
@@ -166,6 +167,8 @@ export class OfflineProjectBuilder {
     }
     const list: string[] = [];
     const thread = new worker.ThreadWorker('entry/ets/workers/DynamicCompilerWorker.ets');
+    let transformCanceled = false;
+    let parallelTransform: Promise<WorkerReply> | undefined = undefined;
     try {
       let nativeArchive = '';
       if (manifest.cacheSha256 && fileIo.accessSync(project + '/.arkforge/resources.zip')) {
@@ -179,6 +182,26 @@ export class OfflineProjectBuilder {
       report('> ArkForge :resources ' + (reusableResources ? 'UP-TO-DATE' : 'FINISHED') + ' after ' + (Date.now() - resourceStarted) + ' ms');
       manifest.resources = builtResources.symbols;
       const resourceArchive = builtResources.archive;
+      if (!cached && independent) {
+        const transformProject = async (): Promise<WorkerReply> => {
+          const virtualFiles: Record<string, string> = {};
+          for (const path of files) {
+            const name = '/project/' + moduleName + '/src/main/ets/' + path;
+            virtualFiles[name] = checkInputData.files[name];
+          }
+          const options: ProjectOptions = {moduleName:moduleName,bundleName:bundleName,
+            normalized:true,resources:manifest.resources || {},files:virtualFiles};
+          const transformStarted = Date.now();
+          const webBundle = await ArkUIWebRuntime.stage(context, bundle, compilerSha256);
+          if (transformCanceled) return {ok:false,error:'Compiler task canceled'};
+          report('> ArkUI batch transform ' + files.length + ' files (official SDK · parallel ArkWeb)');
+          const result = JSON.parse(await SDKWebRuntime.transform(webBundle, JSON.stringify(options),
+            files.map((path: string) => '/project/' + moduleName + '/src/main/ets/' + path), report)) as WorkerReply;
+          report('> ArkForge :transformArkUI FINISHED after ' + (Date.now() - transformStarted) + ' ms');
+          return result;
+        };
+        parallelTransform = transformProject().catch((error: Error): WorkerReply => { return {ok:false,error:String(error)}; });
+      }
       if (cached) report('> ArkForge :checkArkTS UP-TO-DATE (官方 SDK、源码、声明和构建配置哈希一致)');
       else {
         const startedCheck = Date.now();
@@ -188,6 +211,8 @@ export class OfflineProjectBuilder {
         OfflineProjectBuilder.write(context.filesDir + '/latest-sdk-diagnostics.json', JSON.stringify({ project: project, diagnostics: checked.diagnostics || [] }));
         // Text is emitted by the unchanged official SDK logger; metadata travels separately.
         if (checked.output) report(checked.output);
+        if (checked.timing) report('> SDK phases: service ' + checked.timing.serviceMs + ' ms, diagnostic metadata ' + checked.timing.diagnosticsMs + ' ms');
+        if (checked.hashCache) report('> SDK SHA-256 cache: ' + checked.hashCache.hits + ' hits, ' + checked.hashCache.misses + ' computed');
         if (!checked.ok) throw new Error('官方 SDK 检查失败，已停止构建；不会打包、签名或安装。' + (checked.error || ''));
         report('> ArkForge :checkArkTS PASSED after ' + (Date.now() - startedCheck) + ' ms');
       }
@@ -201,16 +226,7 @@ export class OfflineProjectBuilder {
       const maps: SourceMapEntry[] = [];
       fileIo.mkdirSync(root + '/maps', true);
       if (independent) {
-        const virtualFiles: Record<string, string> = {};
-        for (const path of files) virtualFiles['/project/' + moduleName + '/src/main/ets/' + path] = fileIo.readTextSync(sourceRoot + '/' + path);
-        const options: ProjectOptions = { moduleName: moduleName, bundleName: bundleName,
-          normalized: true, resources: manifest.resources || {}, files: virtualFiles };
-        const transformStarted = Date.now();
-        const webBundle = await ArkUIWebRuntime.stage(context, bundle, compilerSha256);
-        report('> ArkUI batch transform ' + files.length + ' files (official SDK · ArkWeb)');
-        const batch = JSON.parse(await SDKWebRuntime.transform(webBundle, JSON.stringify(options),
-          files.map((path: string) => '/project/' + moduleName + '/src/main/ets/' + path), report)) as WorkerReply;
-        report('> ArkForge :transformArkUI FINISHED after ' + (Date.now() - transformStarted) + ' ms');
+        const batch: WorkerReply = parallelTransform ? await parallelTransform : {ok:false,error:'ArkUI task was not created'};
         if (!batch.ok || !batch.outputs || batch.outputs.length !== files.length) {
           for (const diagnostic of batch.errors || []) report((batch.error || moduleName) + ':' + diagnostic.line + ':' + diagnostic.column + ': error: ' + diagnostic.message);
           throw new Error('批量 ArkUI 转换失败：' + (batch.error || JSON.stringify(batch.errors)));
@@ -313,7 +329,7 @@ export class OfflineProjectBuilder {
         await LocalDevice.installSignedDemo(context, report);
       if (independent) OfflineProjectBuilder.write(parent + '/latest.json', result);
       return installed;
-    } finally { thread.terminate(); }
+    } finally { transformCanceled = true; SDKWebRuntime.cancelTransform(); thread.terminate(); }
   }
 }
 

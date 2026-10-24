@@ -2,10 +2,13 @@
 import hashlib
 import json
 import shutil
+import os
 from pathlib import Path
 
 project = Path(__file__).resolve().parent.parent
-source = Path(r'\\wsl.localhost\Ubuntu\home\djc\.cache\arkforge\signer-ohos-ndk\libsigntool.so')
+fast = Path(r'\\wsl.localhost\Ubuntu\home\djc\.cache\arkforge\signer-ohos-arm64-fast\libsigntool.so')
+legacy = Path(r'\\wsl.localhost\Ubuntu\home\djc\.cache\arkforge\signer-ohos-ndk\libsigntool.so')
+source = Path(os.environ.get('ARKFORGE_SIGNER_LIBRARY', str(fast if fast.exists() else legacy)))
 data = source.read_bytes()
 if data[:4] != b'\x7fELF' or int.from_bytes(data[18:20], 'little') != 183:
     raise RuntimeError('Signer must be an AArch64 ELF')

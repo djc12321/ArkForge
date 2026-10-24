@@ -1,0 +1,15 @@
+const fs=require('node:fs'),vm=require('node:vm'),crypto=require('node:crypto'),assert=require('node:assert/strict');
+const context={TextEncoder,console};vm.runInNewContext(fs.readFileSync('scripts/ui_transform_shims.js','utf8')+'\n'+fs.readFileSync('scripts/sdk_check_host.js','utf8'),context);
+const hash=text=>crypto.createHash('sha256').update(text).digest('hex');
+const known='declare const officialValue: number;';context.__sdkFiles={'/sdk/api.d.ts':known};context.__sdkDirectories={};context.__initializeSdkHashCache({'/sdk/api.d.ts':known},{'/sdk/api.d.ts':hash(known)});
+context.__fs.readFileSync('/sdk/api.d.ts','utf8');
+const create=context.__builtins.crypto.createHash;
+assert.equal(create('sha256').update(known).digest('hex'),hash(known));assert.equal(context.__sdkHashMetrics.hits,1);
+assert.equal(create('sha256').update(known+'changed').digest('hex'),hash(known+'changed'));assert.equal(context.__sdkHashMetrics.misses,1);
+for(const text of ['', 'abc', '中文😀', 'x'.repeat(100000), 'a'.repeat(55),'b'.repeat(56),'c'.repeat(64)])assert.equal(create('sha256').update(text).digest('hex'),hash(text));
+assert.equal(create('sha256').update('first').update('中文').digest('hex'),hash('first中文'));
+const bytes=Uint8Array.from([0,1,127,255]);assert.equal(create('sha256').update(bytes).digest('hex'),hash(bytes));
+context.__sdkFiles['/sdk/api.d.ts']=known+' edited';context.__fs.readFileSync('/sdk/api.d.ts','utf8');
+assert.equal(create('sha256').update(known+' edited').digest('hex'),hash(known+' edited'),'changed SDK text must never inherit the original digest');
+assert.throws(()=>create('md5'));assert.throws(()=>create('sha256').update('x').digest('base64'));
+console.log('PASS: immutable SDK hash hits, changed input misses, UTF-8, empty/block boundary/multipart/binary SHA-256 match Node crypto.');

@@ -9,7 +9,9 @@ interface CheckerManifest { sha256: string; sdkVersion: string; }
 interface WebCheckerManifest { source: string; sha256: string; wrapper: number; }
 export interface SDKInput { moduleName: string; bundleName: string; files: Record<string, string>; operation?: string; }
 export interface SDKDiagnostic { fileName: string; line: number; column: number; code: number; category: number; message: string; }
-export interface SDKResult { ok: boolean; diagnostics?: SDKDiagnostic[]; output?: string; error?: string; sdkVersion?: string; sourceFiles?: number; }
+export interface SDKTiming { serviceMs: number; diagnosticsMs: number; }
+export interface SDKHashCache { hits: number; misses: number; }
+export interface SDKResult { timing?: SDKTiming; hashCache?: SDKHashCache; ok: boolean; diagnostics?: SDKDiagnostic[]; output?: string; error?: string; sdkVersion?: string; sourceFiles?: number; }
 
 export class SDKProjectChecker {
   static async verify(context: common.UIAbilityContext, report: BuildProgress): Promise<string> {

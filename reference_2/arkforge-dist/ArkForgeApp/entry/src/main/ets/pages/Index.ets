@@ -1476,6 +1476,11 @@ struct Index {
         .javaScriptProxy({ object: SDKWebRuntime.bridge, name: 'SdkBridge', methodList: ['complete'], controller: SDKWebRuntime.controller })
         .onConsole((event) => { if (event) SDKWebRuntime.log(event.message.getMessage()); return true; })
         .width(1).height(1).opacity(0)
+      Web({ src: 'about:blank', controller: SDKWebRuntime.transformController })
+        .javaScriptAccess(true).fileAccess(true)
+        .javaScriptProxy({ object: SDKWebRuntime.transformBridge, name: 'SdkBridge', methodList: ['complete'], controller: SDKWebRuntime.transformController })
+        .onConsole((event) => { if (event) SDKWebRuntime.transformLog(event.message.getMessage()); return true; })
+        .width(1).height(1).opacity(0)
       CodeOSSWorkbench({buildEvent:this.workbenchBuildEvent,
         onTool:(method: string,payload: string) => this.workbenchTool(method,payload)})
     }.width('100%').height('100%')

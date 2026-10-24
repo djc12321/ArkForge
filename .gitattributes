@@ -8,3 +8,6 @@
 *.png binary
 *.jpg binary
 *.jpeg binary
+
+# SDK bundles retain the exact bytes pinned in their SHA-256 manifests.
+**/src/main/resources/rawfile/compiler/*.bundle.js binary

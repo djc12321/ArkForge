@@ -43,6 +43,8 @@ WEB-W00 平板、同一 WireToWave 工程 174 个源码文件，资源输入保�
 | 源码变更构建（含 SDK 检查、转换、ABC、打包、签名验签） | 127.8 秒 | 50.6 秒 |
 | 源码未变再次构建 | 11.8 秒 | 3.3 秒 |
 
+第二轮优化实测：源码变更构建进一步降至 **34.1 秒**，相比 50.6 秒再缩短约 33%。使用上游 ARM64 OpenSSL 汇编及 CPU 特性检测加快签名/验签，官方 SDK 检查与 ArkUI 转换分配到独立 ArkWeb 渲染进程并行执行；ABC 打包和签名等待两项均成功。SDK 标准 SHA-256 的固定文件结果按完整内容缓存，使用 SDK 性能模式保留检查器至诊断编号提取结束。
+
 官方 ArkUI 转换代码改由 ArkWeb 执行，转换阶段约 87 秒降至 11.4 秒；174 个生成的 JS 文件逐字节一致。资源缓存按独立输入哈希复用；成功签名后保存完整检查点，重复构建可复用已验签 HAP。日志按批持久化，保留逐行官方输出。类型错误实测在打包前停止；源码恢复后安装并启动通过。耗时为同一台设备的实测，其他工程和设备以实际结果为准。
 
 ## 当前实现范围
@@ -60,3 +62,6 @@ WEB-W00 平板、同一 WireToWave 工程 174 个源码文件，资源输入保�
 ## 第三方组件
 
 许可说明见工程内 `THIRD_PARTY_NOTICES.md`、`licenses`、`third-party` 和各上游源码目录。Git、BusyBox、curl 的对应官方源代码归档保存在 `_vendor`，平台适配和构建脚本位于 `native`。工作台 ZIP 内保留 Code-OSS 的 MIT 许可和第三方声明。
+
+
+ARM64 签名库构建脚本：`native/build_fast_signer.sh`。它在独立 WSL 缓存目录编译 OpenSSL 的 `linux-aarch64` 静态库，并链接已有的 OHOS 签名工具适配源码；支持通过 `ARKFORGE_OPENSSL_SOURCE`、`ARKFORGE_SIGNER_SOURCE`、`ARKFORGE_NATIVE_CACHE` 指定本机源码与交叉工具链路径。应用常规构建直接使用随工程保存的 ARM64 工具库。

@@ -15,6 +15,8 @@ try {
   if ($LASTEXITCODE -ne 0) { throw 'Resource compiler fingerprint failed' }
   & "$DevEcoHome/tools/node/node.exe" "$PSScriptRoot/git_tool_fingerprint.cjs"
   if ($LASTEXITCODE -ne 0) { throw 'Git compiler fingerprint failed' }
+  & "$DevEcoHome/tools/node/node.exe" "$PSScriptRoot/verify_runtime_assets.cjs"
+  if ($LASTEXITCODE -ne 0) { throw 'Runtime asset verification failed' }
   if ($SigningProfileFrom) {
     $sourceProfile = Get-Content -Raw -LiteralPath $SigningProfileFrom | ConvertFrom-Json
     if (-not $sourceProfile.app.signingConfigs) { throw 'Source project has no signing config' }

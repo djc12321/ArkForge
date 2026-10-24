@@ -2,64 +2,83 @@ import { webview } from '@kit.ArkWeb';
 import { fileIo } from '@kit.CoreFileKit';
 
 class SDKResultBridge {
-  complete(id: string, text: string): void { SDKWebRuntime.complete(id, text); }
+  private session: SDKWebSession;
+  constructor(session: SDKWebSession) { this.session = session; }
+  complete(id: string, text: string): void { this.session.complete(id, text); }
 }
 
-// The renderer runs the unchanged official SDK against an offline virtual filesystem.
-// A fresh document releases the entire checker graph between builds.
-export class SDKWebRuntime {
-  static controller: webview.WebviewController = new webview.WebviewController();
-  static bridge: SDKResultBridge = new SDKResultBridge();
-  private static pending: ((text: string) => void) | undefined = undefined;
-  private static timer: number = -1;
-  private static active: string = '';
-  private static sequence: number = 0;
-  private static reporter: ((text: string) => void) | undefined = undefined;
+/** Each compiler task owns its renderer, input files, bridge and lifetime. */
+class SDKWebSession {
+  controller: webview.WebviewController = new webview.WebviewController();
+  bridge: SDKResultBridge = new SDKResultBridge(this);
+  private pending: ((text: string) => void) | undefined = undefined;
+  private timer: number = -1;
+  private active: string = '';
+  private sequence: number = 0;
+  private reporter: ((text: string) => void) | undefined = undefined;
 
-  static log(text: string): void {
-    if (SDKWebRuntime.reporter) SDKWebRuntime.reporter(text);
-  }
+  log(text: string): void { if (this.reporter) this.reporter(text); }
 
-  static complete(id: string, text: string): void {
-    if (!SDKWebRuntime.pending || id !== SDKWebRuntime.active) return;
-    clearTimeout(SDKWebRuntime.timer);
-    const resolve = SDKWebRuntime.pending;
-    SDKWebRuntime.pending = undefined;
-    SDKWebRuntime.reporter = undefined;
+  complete(id: string, text: string): void {
+    if (!this.pending || id !== this.active) return;
+    clearTimeout(this.timer);
+    const resolve = this.pending;
+    this.pending = undefined;
+    this.reporter = undefined;
     resolve(text);
-    SDKWebRuntime.controller.loadUrl('about:blank');
+    this.controller.loadUrl('about:blank');
   }
 
-  private static write(path: string, text: string): void {
+  cancel(): void { this.complete(this.active, JSON.stringify({ok:false,error:'Compiler task canceled'})); }
+
+  private write(path: string, text: string): void {
     const file = fileIo.openSync(path, fileIo.OpenMode.CREATE | fileIo.OpenMode.WRITE_ONLY | fileIo.OpenMode.TRUNC);
     try { fileIo.writeSync(file.fd, text); } finally { fileIo.closeSync(file); }
   }
 
-  static check(bundle: string, input: string, report: (text: string) => void): Promise<string> {
-    return SDKWebRuntime.run(bundle, 'var __arkforgeOptions=' + input + ';', 'sdk-check.web.js', '__arkforgeCheckResult', report);
-  }
-
-  static transform(bundle: string, options: string, names: string[], report: (text: string) => void): Promise<string> {
-    return SDKWebRuntime.run(bundle, 'var __arkforgeOptions=' + options + ';var __arkforgeBatchFileNames=' + JSON.stringify(names) + ';',
-      'ui-transform.web.js', '__arkforgeTransformResult', report);
-  }
-
-  private static run(bundle: string, inputScript: string, entryScript: string, resultName: string, report: (text: string) => void): Promise<string> {
-    if (SDKWebRuntime.pending) return Promise.reject(new Error('SDK runtime is already running'));
+  run(bundle: string, inputScript: string, entryScript: string, resultName: string, report: (text: string) => void): Promise<string> {
+    if (this.pending) return Promise.reject(new Error('SDK runtime is already running'));
     const directory = bundle.substring(0, bundle.lastIndexOf('/'));
-    const id = String(++SDKWebRuntime.sequence);
-    SDKWebRuntime.write(directory + '/input.js', inputScript);
-    SDKWebRuntime.write(directory + '/check.html', '<!doctype html><meta charset="utf-8">' +
+    const id = String(++this.sequence);
+    this.write(directory + '/input.js', inputScript);
+    this.write(directory + '/check.html', '<!doctype html><meta charset="utf-8">' +
       '<meta http-equiv="Content-Security-Policy" content="default-src \'none\'; script-src \'self\' \'unsafe-inline\' \'unsafe-eval\'; connect-src \'none\'">' +
       '<script>window.onerror=function(message){SdkBridge.complete("' + id + '",JSON.stringify({ok:false,error:String(message)}));};</script>' +
       '<script src="input.js"></script><script src="' + entryScript + '"></script>' +
       '<script>SdkBridge.complete("' + id + '",globalThis.' + resultName + ' || JSON.stringify({ok:false,error:"Missing SDK result"}));</script>');
     return new Promise<string>((resolve) => {
-      SDKWebRuntime.pending = resolve;
-      SDKWebRuntime.active = id;
-      SDKWebRuntime.reporter = report;
-      SDKWebRuntime.timer = setTimeout(() => SDKWebRuntime.complete(id, JSON.stringify({ok:false,error:'Official SDK check timed out'})), 300000);
-      SDKWebRuntime.controller.loadUrl('file://' + directory + '/check.html?run=' + Date.now());
+      this.pending = resolve;
+      this.active = id;
+      this.reporter = report;
+      this.timer = setTimeout(() => this.complete(id, JSON.stringify({ok:false,error:'Official SDK check timed out'})), 300000);
+      try { this.controller.loadUrl('file://' + directory + '/check.html?run=' + Date.now()); }
+      catch (error) { this.complete(id, JSON.stringify({ok:false,error:String(error)})); }
     });
+  }
+}
+
+export class SDKWebRuntime {
+  private static createSession(): SDKWebSession {
+    webview.WebviewController.setRenderProcessMode(webview.RenderProcessMode.MULTIPLE);
+    return new SDKWebSession();
+  }
+  private static checker: SDKWebSession = SDKWebRuntime.createSession();
+  private static transformer: SDKWebSession = SDKWebRuntime.createSession();
+  static controller: webview.WebviewController = SDKWebRuntime.checker.controller;
+  static bridge: SDKResultBridge = SDKWebRuntime.checker.bridge;
+  static transformController: webview.WebviewController = SDKWebRuntime.transformer.controller;
+  static transformBridge: SDKResultBridge = SDKWebRuntime.transformer.bridge;
+  static log(text: string): void { SDKWebRuntime.checker.log(text); }
+  static transformLog(text: string): void { SDKWebRuntime.transformer.log(text); }
+  static complete(id: string, text: string): void { SDKWebRuntime.checker.complete(id, text); }
+  static cancelTransform(): void { SDKWebRuntime.transformer.cancel(); }
+
+  static check(bundle: string, input: string, report: (text: string) => void): Promise<string> {
+    return SDKWebRuntime.checker.run(bundle, 'var __arkforgeOptions=' + input + ';', 'sdk-check.web.js', '__arkforgeCheckResult', report);
+  }
+
+  static transform(bundle: string, options: string, names: string[], report: (text: string) => void): Promise<string> {
+    return SDKWebRuntime.transformer.run(bundle, 'var __arkforgeOptions=' + options + ';var __arkforgeBatchFileNames=' + JSON.stringify(names) + ';',
+      'ui-transform.web.js', '__arkforgeTransformResult', report);
   }
 }

@@ -15,11 +15,14 @@ foreach(header ${ALL_HEADERS})
 endforeach()
 list(REMOVE_DUPLICATES SIGNER_INCLUDES)
 file(GLOB SECUREC_FILES "${SECUREC_ROOT}/src/securec/*.c")
+if(NOT SECUREC_FILES)
+    file(GLOB SECUREC_FILES "${SECUREC_ROOT}/src/*.c")
+endif()
 add_library(securec STATIC ${SECUREC_FILES})
 target_include_directories(securec PUBLIC "${SECUREC_ROOT}/include")
 add_library(cjson STATIC "${VENDOR}/cJSON/cJSON.c")
 target_include_directories(cjson PUBLIC "${VENDOR}/cJSON")
-set(ZLIB_SOURCE "${SECUREC_ROOT}/../../zlib")
+set(ZLIB_SOURCE "${VENDOR}/zlib")
 add_library(minizip STATIC
     "${ZLIB_SOURCE}/contrib/minizip/unzip.c"
     "${ZLIB_SOURCE}/contrib/minizip/zip.c"

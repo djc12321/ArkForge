@@ -110,9 +110,15 @@ exports.check = function(options) {
   const logger = {trace(text){capture(undefined,text);},debug(text){capture(undefined,text);},info(text){capture(undefined,text);},error(text){capture(1,text);},warn(text){capture(0,text);}};
   // This executes DevEco's official property collection, ArkTS rules,
   // semantic checks and diagnostic filtering, not an approximation of them.
+  // The official performance mode retains the checker until diagnostic-code extraction finishes.
+  // The enclosing ArkWeb document is still discarded after this request.
+  main.projectConfig.executionMode = 'performance';
+  const started = Date.now();
   checker.serviceChecker(roots, logger, [moduleRoot+'/oh_modules',root+'/oh_modules'], undefined, {projectConfig:main.projectConfig});
+  const serviceFinished = Date.now();
   const builder = main.globalProgram.builderProgram;
   raw.push(...builder.getSyntacticDiagnostics(),...builder.getSemanticDiagnostics());
+  const diagnosticsFinished = Date.now();
   const mapped = emitted.map(entry => {
     const text = entry.text.replace(/\x1b\[[0-9;]*m/g,'');
     const match = /File: (.*?):(\d+):(\d+)\s*\n\s*([\s\S]*)/.exec(text);
@@ -123,5 +129,5 @@ exports.check = function(options) {
     return {fileName,line,column,code:original?original.code:0,category:entry.category,message};
   });
   return {ok:!mapped.some(d => d.category === 1), diagnostics:mapped, output:output.join('\n'),
-    sdkVersion:'26.0.0.851', sourceFiles:roots.length};
+    sdkVersion:'26.0.0.851', sourceFiles:roots.length, timing:{serviceMs:serviceFinished-started,diagnosticsMs:diagnosticsFinished-serviceFinished}, hashCache:typeof __sdkHashMetrics==='undefined'?undefined:__sdkHashMetrics};
 };

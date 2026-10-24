@@ -68,6 +68,7 @@ for(const filename of Object.keys(require.cache)) {
 for(const key of Object.keys(modules)) if(key.endsWith('.js')) delete assets[key];
 const prelude = read.call(fs,path.join(__dirname,'ui_transform_shims.js'),'utf8')+'\n'+read.call(fs,path.join(__dirname,'sdk_check_host.js'),'utf8');
 const bundle = prelude+'\nvar __moduleBodies={'+Object.entries(modules).map(([key,body])=>JSON.stringify(key)+':function(require,module,exports,__filename,__dirname){\n'+body+'\n}').join(',\n')+'};\nvar __moduleMap='+JSON.stringify(mapping)+';\nvar __sdkFiles='+JSON.stringify(assets)+';\nvar __sdkDirectories='+JSON.stringify(directories)+';\n'+
+ 'var __sdkContentHashes='+JSON.stringify(Object.fromEntries(Object.entries(assets).map(([name,text])=>[name,require('crypto').createHash('sha256').update(text).digest('hex')])))+';__initializeSdkHashCache(__sdkFiles,__sdkContentHashes);\n'+
  'globalThis.__arkforgeSdk='+JSON.stringify(virtualSdk)+';process.env.externalApiPaths="/hms";JSON.stringify(__load("/checker.cjs").check(__arkforgeOptions));';
 const output = path.join(__dirname,'../entry/src/main/resources/rawfile/compiler/sdk-check.bundle.js');
 fs.writeFileSync(output,bundle);
