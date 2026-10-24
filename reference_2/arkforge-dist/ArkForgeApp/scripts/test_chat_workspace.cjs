@@ -12,7 +12,7 @@ const native=async(method,args)=>{
   if(method==='chat'){captured=JSON.parse(args.body).messages;return JSON.stringify({choices:[{message:{content:'done'}}]});}
   throw new Error(method);
 };
-const sandbox={exports:{},TextEncoder,require:name=>name==='vscode'?vscode:[]};
+const sandbox={exports:{},TextEncoder,require:name=>name==='vscode'?vscode:name==='./agentContext'?require('../workbench/extension/agentContext'):name==='./agentLoop'?require('../workbench/extension/agentLoop'):[]};
 vm.runInNewContext(fs.readFileSync('workbench/extension/nativeChat.js','utf8'),sandbox);
 sandbox.exports.registerNativeChat({subscriptions:[]},native,async()=>{if(readFailure)throw new Error('read failed');return 'file';},{info(){},error(){}});
 const stream={progress(){},markdown(){},reference(){}},token={isCancellationRequested:false,onCancellationRequested:()=>({dispose(){}})};

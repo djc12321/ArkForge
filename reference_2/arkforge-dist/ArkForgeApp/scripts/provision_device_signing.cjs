@@ -35,7 +35,7 @@ const credentials = {
   keyPassword: DecipherUtil.decryptPwd(path.dirname(store), material.keyPassword, 'keyPassword')
 };
 const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'arkforge-provision-'));
-const bundle = 'com.example.harmonyplayground';
+const bundle = 'com.djc.arkforge';
 const targetBundle = process.argv[3] || '';
 if (targetBundle && !/^[A-Za-z0-9_.]+$/.test(targetBundle)) throw new Error('Invalid target bundle');
 const remote = '/data/storage/el2/base/haps/entry/files/native-toolchain/signing/' + (targetBundle ? targetBundle + '/' : '');

@@ -25,7 +25,7 @@ export class LocalDevice {
     if (!started.includes('start ability successfully')) throw new Error('调试启动失败：' + started);
     // Attach to the running application after restoring the editor. A startup
     // wait (-D) prevents that return on devices that serialize ability starts.
-    await LocalDevice.run(context, 'hdc -t 127.0.0.1:8710 shell aa start -b com.example.harmonyplayground -a EntryAbility');
+    await LocalDevice.run(context, 'hdc -t 127.0.0.1:8710 shell aa start -b com.djc.arkforge -a EntryAbility');
     const attached = await LocalDevice.run(context, 'hdc -t 127.0.0.1:8710 shell aa attach -b ' + bundle);
     if (!attached.includes('success')) throw new Error('调试附加失败：' + attached);
     // The embedded HDC output can also contain host stdout. Match our explicit

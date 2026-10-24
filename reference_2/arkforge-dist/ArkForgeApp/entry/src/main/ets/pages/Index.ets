@@ -71,7 +71,7 @@ interface GitRequest { path: string; args: string[]; }
 interface TerminalRequest { id: number; data: string; cols: number; rows: number; }
 interface DeveloperRequest { page: string; name: string; email: string; }
 interface CloudSigningRequest { teamId: string; udid: string; }
-interface SDKReport { project: string; diagnostics: SDKDiagnostic[]; }
+interface SDKReport { project: string; status?: string; diagnostics: SDKDiagnostic[]; }
 interface BuiltApplication { bundleName: string; moduleName: string; abilityName: string; }
 interface BuildLogManifest { output: string; }
 interface EditorWindow { start: number; version: number; text: string; }
@@ -935,7 +935,7 @@ struct Index {
     try {
       const context = this.getUIContext().getHostContext() as common.UIAbilityContext;
       await context.startAbility({
-        bundleName: 'com.example.harmonyplayground',
+        bundleName: 'com.djc.arkforge',
         moduleName: 'harmony_demo',
         abilityName: 'HarmonyDemoAbility'
       });
@@ -1006,7 +1006,7 @@ struct Index {
       fileIo.closeSync(f.fd);
       const ctx = getContext(this) as common.UIAbilityContext;
       ctx.startAbility({
-        bundleName: 'com.example.harmonyplayground',
+        bundleName: 'com.djc.arkforge',
         abilityName: 'StandaloneAbility'
       }).then(() => {
         promptAction.showToast({ message: '已打开脚本预览窗口' });
@@ -1279,7 +1279,8 @@ struct Index {
       const path = context.filesDir + '/latest-sdk-diagnostics.json';
       if (!fileIo.accessSync(path)) return '[]';
       const result = JSON.parse(fileIo.readTextSync(path)) as SDKReport;
-      return JSON.stringify(result.project === this.workspaceDir ? result.diagnostics : []);
+      if (result.project !== this.workspaceDir || result.status !== 'checked') throw new Error('请先完成当前工程的 SDK 检查，再读取诊断');
+      return JSON.stringify(result.diagnostics);
     }
     if (method.startsWith('github.')) return await GitHubAccount.execute(method.slice(7), payload);
     if (method.startsWith('huawei.')) {
@@ -1301,7 +1302,7 @@ struct Index {
       if (this.nativeTaskBusy) throw new Error('请等待当前本机任务完成后查看签名');
       const context = this.getUIContext().getHostContext() as common.UIAbilityContext;
       const plan = await ResourceCompiler.plan(context, this.workspaceDir, (text: string) => {});
-      const logical = context.filesDir + '/native-toolchain/signing' + (plan.bundleName === 'com.example.harmonyplayground' ? '' : '/' + plan.bundleName);
+      const logical = context.filesDir + '/native-toolchain/signing' + (plan.bundleName === 'com.djc.arkforge' ? '' : '/' + plan.bundleName);
       try { return JSON.stringify({bundleName:plan.bundleName,valid:true,expires:await SigningMaterials.validate(logical, plan.bundleName)}); }
       catch (cause) { return JSON.stringify({bundleName:plan.bundleName,valid:false,reason:String(cause)}); }
     }

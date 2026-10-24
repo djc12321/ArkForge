@@ -1,3 +1,4 @@
+import { SDKDiagnosticCache } from './SDKDiagnosticCache';
 import { ResourceCompiler, BuiltResources } from './ResourceCompiler';
 import { AtomicFiles } from './AtomicFiles';
 import { SourceMapEntry, SourceMapFile } from './SourceMaps';
@@ -30,7 +31,7 @@ interface CachedBuild {
   project: string; root: string; sources: SourceEvidence[]; abcSha256: string;
   compilerSha256?: string; resourceManifestSha256?: string;
   signingFingerprint?: string; signedHap?: string; signedHapSha256?: string; hapSha256?: string;
-  sdkInputKey?: string; sdkChecked?: boolean;
+  sdkInputKey?: string; sdkChecked?: boolean; sdkDiagnosticsSha256?: string;
   resourceArchive?: string; resourceArchiveSha256?: string; resourceSymbols?: Record<string, Record<string, Record<string, number>>>;
 }
 
@@ -82,7 +83,7 @@ export class OfflineProjectBuilder {
         throw new Error('待安装 HAP 已变化，请重新编译；未安装其他构建产物');
       }
       report('> ArkForge :installPreparedHap ' + id);
-      const independent = built.bundleName !== 'com.example.harmonyplayground';
+      const independent = built.bundleName !== 'com.djc.arkforge';
       if (!independent) OfflineProjectBuilder.write(parent + '/pending-install.json', text);
       const installed = independent ? await LocalDevice.installSignedHap(context, built.signedHap, report) :
         await LocalDevice.installSignedDemo(context, report);
@@ -94,14 +95,14 @@ export class OfflineProjectBuilder {
     const id = String(Date.now());
     const parent = context.filesDir + '/offline-build';
     const root = parent + '/' + id;
-    OfflineProjectBuilder.write(context.filesDir + '/latest-sdk-diagnostics.json', JSON.stringify({ project: project, diagnostics: [] }));
+    OfflineProjectBuilder.write(context.filesDir + '/latest-sdk-diagnostics.json', JSON.stringify({ project: project, status: 'checking', diagnostics: [] }));
     fileIo.mkdirSync(root + '/js', true);
     report('> ArkForge :validateHarmonyProject');
     if (!fileIo.accessSync(project + '/build-profile.json5')) throw new Error('缺少 HarmonyOS 工程 build-profile.json5');
     const plan = await ResourceCompiler.plan(context, project, report);
     report('> ArkForge :validateSigning');
     const signingFingerprint = await NativeToolchain.signingFingerprint(context, plan.bundleName);
-    const independent = plan.bundleName !== 'com.example.harmonyplayground';
+    const independent = plan.bundleName !== 'com.djc.arkforge';
     let manifestText: string;
     if (fileIo.accessSync(project + '/.arkforge/offline.json')) manifestText = fileIo.readTextSync(project + '/.arkforge/offline.json');
     else manifestText = JSON.stringify({module:plan.moduleName,bundleName:plan.bundleName,abilityName:plan.abilityName,files:[]} as ResourceCache);
@@ -147,6 +148,7 @@ export class OfflineProjectBuilder {
     OfflineProjectBuilder.write(root + '/resource-manifest.json', manifestText + '\n' + resourceInputs + '\n' + resourceCompilerSha);
     const resourceManifestSha256 = await hash.hash(root + '/resource-manifest.json', 'sha256');
     let cached: CachedBuild | undefined = undefined;
+    let cachedDiagnostics: SDKResult | undefined = undefined;
     let resourceCached: CachedBuild | undefined = undefined;
     for (const checkpoint of [parent + '/compiled.json', parent + '/latest.json']) {
     try {
@@ -162,7 +164,10 @@ export class OfflineProjectBuilder {
         previous.sources.every((item: SourceEvidence, index: number) => item.path === sources[index].path && item.sha256 === sources[index].sha256) &&
         fileIo.accessSync(previous.root + '/modules.abc') &&
         await hash.hash(previous.root + '/modules.abc', 'sha256') === previous.abcSha256 && previous.resourceArchive !== undefined &&
-        fileIo.accessSync(previous.resourceArchive) && await hash.hash(previous.resourceArchive, 'sha256') === previous.resourceArchiveSha256) { cached = previous; break; }
+        fileIo.accessSync(previous.resourceArchive) && await hash.hash(previous.resourceArchive, 'sha256') === previous.resourceArchiveSha256) {
+          const diagnostics = await SDKDiagnosticCache.load(previous.root, previous.sdkDiagnosticsSha256);
+          if (diagnostics) { cached = previous; cachedDiagnostics = diagnostics; break; }
+        }
     } catch (_) { /* Missing or invalid previous output requires real compilation. */ }
     }
     const list: string[] = [];
@@ -202,13 +207,16 @@ export class OfflineProjectBuilder {
         };
         parallelTransform = transformProject().catch((error: Error): WorkerReply => { return {ok:false,error:String(error)}; });
       }
-      if (cached) report('> ArkForge :checkArkTS UP-TO-DATE (官方 SDK、源码、声明和构建配置哈希一致)');
+      if (cached && cachedDiagnostics) {
+        SDKDiagnosticCache.publish(context.filesDir, project, root, cachedDiagnostics);
+        report('> ArkForge :checkArkTS UP-TO-DATE (官方 SDK、源码、声明、诊断及构建配置哈希一致)');
+        if (cachedDiagnostics.output) report(cachedDiagnostics.output);
+      }
       else {
         const startedCheck = Date.now();
         report('> ArkForge :checkArkTS (official SDK 26.0.0.851 serviceChecker)');
         const checked = JSON.parse(await SDKWebRuntime.check(checkerBundle, checkInput, report)) as SDKResult;
-        OfflineProjectBuilder.write(root + '/sdk-check-result.json', JSON.stringify(checked));
-        OfflineProjectBuilder.write(context.filesDir + '/latest-sdk-diagnostics.json', JSON.stringify({ project: project, diagnostics: checked.diagnostics || [] }));
+        SDKDiagnosticCache.publish(context.filesDir, project, root, checked);
         // Text is emitted by the unchanged official SDK logger; metadata travels separately.
         if (checked.output) report(checked.output);
         if (checked.timing) report('> SDK phases: service ' + checked.timing.serviceMs + ' ms, diagnostic metadata ' + checked.timing.diagnosticsMs + ' ms');
@@ -286,7 +294,7 @@ export class OfflineProjectBuilder {
       if (await ResourceCompiler.fingerprint(project, moduleName) !== resourceInputs) throw new Error('构建期间资源、配置或原生依赖发生变化，本次不会安装');
       const compiledCheckpoint: CachedBuild = {project:project,root:root,sources:sources,
         abcSha256:await hash.hash(abc,'sha256'),compilerSha256:compilerSha256,resourceManifestSha256:resourceManifestSha256,
-        sdkInputKey:sdkInputKey,sdkChecked:true,resourceArchive:resourceArchive,
+        sdkInputKey:sdkInputKey,sdkChecked:true,sdkDiagnosticsSha256:await hash.hash(root + '/sdk-check-result.json','sha256'),resourceArchive:resourceArchive,
         resourceArchiveSha256:await hash.hash(resourceArchive,'sha256'),resourceSymbols:builtResources.symbols};
       // A signing/install failure may reuse validated compilation, without promoting an installed result.
       OfflineProjectBuilder.write(parent + '/compiled.json', JSON.stringify(compiledCheckpoint));
@@ -308,7 +316,7 @@ export class OfflineProjectBuilder {
       const result = JSON.stringify({ id: id, project: project, root: root, sources: sources,
         compilerSha256: compilerSha256, resourceManifestSha256: resourceManifestSha256, reusedAbc: cached !== undefined,
         signingFingerprint: signingFingerprint, reusedSignedHap: reuseSigned,
-        sdkChecked: true, sdkInputKey: sdkInputKey,
+        sdkChecked: true, sdkInputKey: sdkInputKey, sdkDiagnosticsSha256: await hash.hash(root + '/sdk-check-result.json', 'sha256'),
         resourceArchive: resourceArchive, resourceArchiveSha256: await hash.hash(resourceArchive, 'sha256'), resourceSymbols: builtResources.symbols,
         mode: 'offline-incremental', bundleName: bundleName, moduleName: moduleName,
         abilityName: plan.abilityName || 'EntryAbility', signedHap: signedHap,

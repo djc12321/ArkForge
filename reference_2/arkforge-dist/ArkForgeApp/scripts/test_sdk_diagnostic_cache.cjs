@@ -1,0 +1,21 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),crypto=require('node:crypto');
+const ts=require('C:/Program Files/Huawei/DevEco Studio/sdk/default/openharmony/ets/build-tools/ets-loader/node_modules/typescript');
+const files=new Map(),digest=text=>crypto.createHash('sha256').update(text).digest('hex');
+const sandbox={exports:{},require:name=>name.includes('CoreFileKit')?{fileIo:{accessSync:p=>files.has(p),readTextSync:p=>files.get(p)},hash:{hash:async p=>digest(files.get(p))}}:{AtomicFiles:{write:(p,text)=>files.set(p,text)}}};
+vm.runInNewContext(ts.transpileModule(fs.readFileSync('entry/src/main/ets/services/SDKDiagnosticCache.ets','utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020}}).outputText,sandbox);
+(async()=>{
+  const api=sandbox.exports.SDKDiagnosticCache;
+  const warning={category:0,code:123,fileName:'/project/a.ets',line:1,column:1,message:'official warning'};
+  const checked={ok:true,diagnostics:[warning],output:'ArkTS:WARN official warning'};
+  api.publish('/app','/project','/build/1',checked);
+  const sha=digest(files.get('/build/1/sdk-check-result.json'));
+  const reused=await api.load('/build/1',sha);assert(reused);api.publish('/app','/project','/build/2',reused);
+  assert.equal(JSON.parse(files.get('/app/latest-sdk-diagnostics.json')).diagnostics.length,1,'incremental builds retain real warnings');
+  assert.equal(JSON.parse(files.get('/app/latest-sdk-diagnostics.json')).status,'checked');
+  assert.equal(await api.load('/build/1',undefined),undefined,'legacy checkpoints require a fresh SDK check');
+  files.set('/build/1/sdk-check-result.json','{}');assert.equal(await api.load('/build/1',sha),undefined,'tampered diagnostics cannot be reused');
+  const failed=JSON.stringify({ok:false,diagnostics:[{...warning,category:1}]});files.set('/build/bad/sdk-check-result.json',failed);
+  assert.equal(await api.load('/build/bad',digest(failed)),undefined);
+  assert.throws(()=>api.publish('/app','/project','/build/3',{ok:true}));
+  console.log('PASS: warnings survive cached builds, legacy/tampered/failed reports force checking, incomplete reports cannot publish clean diagnostics.');
+})().catch(error=>{console.error(error);process.exitCode=1;});

@@ -3,6 +3,7 @@
 <title>ArkForge</title>
 <style>html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#1f1f1f;color:#ccc}#boot{padding:24px;font:14px sans-serif}</style>
 <link rel="stylesheet" href="./out/vs/workbench/workbench.web.main.internal.css">
+<link rel="stylesheet" href="./phone.css">
 </head><body><div id="boot">正在启动 ArkForge 工作台…</div>
 <script>
 globalThis._VSCODE_FILE_ROOT = new URL('./out/',location.href).href;
@@ -29,6 +30,8 @@ addEventListener('error',e=>{console.error('[ArkForgeWorkbench]',e.message);});
 addEventListener('unhandledrejection',e=>console.error('[ArkForgeWorkbench]',e.reason?.stack||String(e.reason))); 
 </script>
 <script type="module">
+import { installPhoneLayout } from './phoneLayout.js';
+let phoneLayout;
 try {
   await import('./out/nls.messages.js');
   const code = await import('./out/vs/workbench/workbench.web.main.internal.js');
@@ -54,11 +57,21 @@ try {
       'terminal.integrated.defaultProfile.osx':'ArkForge 终端',
       'files.associations':{'*.ets':'typescript','*.json5':'jsonc'},
       'files.exclude':{'**/.arkforge':true,'**/.hvigor':true,'**/.cxx':true},
-      'extensions.autoCheckUpdates':false,'extensions.autoUpdate':false
+      'extensions.autoCheckUpdates':false,'extensions.autoUpdate':false,
+      ...(matchMedia('(max-width: 600px)').matches ? {
+        'window.menuBarVisibility':'compact','workbench.layoutControl.enabled':false,
+        'editor.stickyScroll.enabled':false,'editor.wordWrap':'on',
+        'editor.glyphMargin':false,'editor.lineNumbersMinChars':3,
+        'workbench.editor.tabSizing':'shrink','workbench.editor.wrapTabs':false
+      } : {})
     },
-    commands:[{id:'arkforge.native',handler:(method,args)=>window.nativeCall(method,{...args,workspaceRoot:project.root})}]
+    commands:[
+      {id:'arkforge.native',handler:(method,args)=>window.nativeCall(method,{...args,workspaceRoot:project.root})},
+      {id:'arkforge.phone.revealEditor',handler:()=>phoneLayout?.revealEditor()}
+    ]
   });
   document.getElementById('boot')?.remove();
+  phoneLayout = installPhoneLayout(code);
   window.arkforgeBuildEvent = text => code.commands.executeCommand('arkforge.appendBuildLog',text);
 } catch(e) {
   document.getElementById('boot').textContent='工作台启动失败：'+e.message;

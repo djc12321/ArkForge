@@ -1,9 +1,9 @@
 {
   "app": {
-    "bundleName": "com.example.harmonyplayground",
+    "bundleName": "com.djc.arkforge",
     "vendor": "example",
-    "versionCode": 1000000,
-    "versionName": "1.0.0",
+    "versionCode": 1000001,
+    "versionName": "1.0.1",
     "label": "$string:app_name",
     "icon": "$media:app_icon"
   }

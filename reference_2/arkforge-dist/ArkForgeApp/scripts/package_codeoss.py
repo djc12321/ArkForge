@@ -44,6 +44,8 @@ for directory in sorted((upstream / 'extensions').iterdir()):
 add_tree(app / 'workbench/extension', 'extensions/arkforge-device')
 files['extensions/arkforge-device/extension.js'] = app / '.workbench-build/extension.js'
 files['index.html'] = app / 'workbench/index.html'
+files['phone.css'] = app / 'workbench/phone.css'
+files['phoneLayout.js'] = app / 'workbench/phoneLayout.js'
 files['LICENSE.txt'] = upstream / 'LICENSE.txt'
 files['arkforge-patches/accounts-context.patch'] = app / 'workbench/patches/accounts-context.patch'
 files['arkforge-patches/terminal-default-profile.patch'] = app / 'workbench/patches/terminal-default-profile.patch'

@@ -31,7 +31,7 @@ const service=sandbox.exports.LocalDevice,context={tempDir:'/tmp/test',applicati
  commands=[];targets=['127.0.0.1:8710'];
  assert.equal(await service.prepareDebugger(context,'com.test.target','EntryAbility'),'1234');
  assert(!commands.some(x=>x.includes('aa start -D')),'must not block target startup before returning to editor');
- assert(commands.findIndex(x=>x.includes('aa start -b com.example.harmonyplayground'))<commands.findIndex(x=>x.includes('aa attach -b')));
+ assert(commands.findIndex(x=>x.includes('aa start -b com.djc.arkforge'))<commands.findIndex(x=>x.includes('aa attach -b')));
  commands=[];waits=[];targets=[];
  await assert.rejects(()=>service.connect(context),/尚未授权/);
  assert.equal(commands.filter(x=>x==='hdc list targets').length,11);

@@ -23,7 +23,7 @@ struct Index {
       Button('返回 ArkForge 工程').height(48).backgroundColor('#475569')
         .onClick(() => {
           const context = this.getUIContext().getHostContext() as common.UIAbilityContext;
-          context.startAbility({ bundleName: 'com.example.harmonyplayground', abilityName: 'EntryAbility' })
+          context.startAbility({ bundleName: 'com.djc.arkforge', abilityName: 'EntryAbility' })
             .catch((error: Error) => {
               hilog.error(0, 'ArkForgeHarmonyDemo', 'Return failed: %{public}s', error.message);
             });

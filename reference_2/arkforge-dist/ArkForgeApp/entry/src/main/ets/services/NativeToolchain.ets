@@ -10,7 +10,7 @@ import { BuildProgress } from './BuildConsole';
 export class NativeToolchain {
   static async signingFingerprint(context: common.UIAbilityContext, bundleName: string): Promise<string> {
     const logical = context.filesDir + '/native-toolchain/signing' +
-      (bundleName === 'com.example.harmonyplayground' ? '' : '/' + bundleName);
+      (bundleName === 'com.djc.arkforge' ? '' : '/' + bundleName);
     await SigningMaterials.validate(logical, bundleName);
     const directory = SigningMaterials.directory(logical);
     const credentials = await SigningMaterials.load(logical);
@@ -22,12 +22,12 @@ export class NativeToolchain {
     return fingerprints.join(':') + ':' + credentials.keyAlias + ':' + credentials.signAlg;
   }
   static signedPath(context: common.UIAbilityContext, bundleName: string): string {
-    return context.filesDir + '/native-toolchain/' + (bundleName === 'com.example.harmonyplayground' ? 'device-signed-demo' : bundleName) + '.hap';
+    return context.filesDir + '/native-toolchain/' + (bundleName === 'com.djc.arkforge' ? 'device-signed-demo' : bundleName) + '.hap';
   }
   static async signDemo(context: common.UIAbilityContext, report?: BuildProgress, builtInput?: string,
-    bundleName: string = 'com.example.harmonyplayground'): Promise<string> {
+    bundleName: string = 'com.djc.arkforge'): Promise<string> {
     const root = context.filesDir + '/native-toolchain';
-    const logical = root + '/signing' + (bundleName === 'com.example.harmonyplayground' ? '' : '/' + bundleName);
+    const logical = root + '/signing' + (bundleName === 'com.djc.arkforge' ? '' : '/' + bundleName);
     if (!fileIo.accessSync(logical)) fileIo.mkdirSync(logical, true);
     const directory = SigningMaterials.directory(logical);
     report?.('> ArkForge :loadSigningMaterials');

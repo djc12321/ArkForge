@@ -117,7 +117,7 @@ export class DeviceDebugger {
     AtomicFiles.write(context.filesDir + '/debugger/latest.txt', this.auditFile);
     const built = JSON.parse(fileIo.readTextSync(context.filesDir + '/offline-build/latest.json')) as InstalledBuild;
     if (built.project !== project) throw new Error('最近安装的应用属于其他工程，请先构建并安装当前工程');
-    if (built.bundleName === 'com.example.harmonyplayground') throw new Error('请选择独立应用作为调试目标');
+    if (built.bundleName === 'com.djc.arkforge') throw new Error('请选择独立应用作为调试目标');
     this.project = built.project; this.maps = new SourceMaps(built.root);
     if (!fileIo.accessSync(built.root + '/source-maps.json')) throw new Error('最近安装的应用没有源码映射，请先重新构建');
     const saved = this.project + '/.arkforge/breakpoints.json';
@@ -161,7 +161,7 @@ export class DeviceDebugger {
     await this.command('Runtime.runIfWaitingForDebugger');
     // Bring the editor back only after releasing the target's startup wait.
     // Starting another ability earlier can block on the same startup queue.
-    await context.startAbility({bundleName:'com.example.harmonyplayground',abilityName:'EntryAbility'});
+    await context.startAbility({bundleName:'com.djc.arkforge',abilityName:'EntryAbility'});
     } catch (error) { await this.stop(); throw new Error(String(error)); }
   }
   async inspectFrame(frame: DebugFrame): Promise<void> {

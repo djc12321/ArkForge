@@ -33,7 +33,7 @@ export class SigningMaterials {
 
   static async importFiles(context: common.UIAbilityContext, uris: string[], credentials: SigningCredentials, bundle: string): Promise<void> {
     if (!/^[A-Za-z0-9_.]+$/.test(bundle) || uris.length !== 3) throw new Error('签名文件或应用标识无效');
-    const logical = context.filesDir + '/native-toolchain/signing' + (bundle==='com.example.harmonyplayground' ? '' : '/' + bundle);
+    const logical = context.filesDir + '/native-toolchain/signing' + (bundle==='com.djc.arkforge' ? '' : '/' + bundle);
     const set = String(Date.now()), directory = logical + '/.sets/' + set;
     fileIo.mkdirSync(directory, true);
     const names: string[] = ['key.p12','app.cer','profile.p7b'];
@@ -130,7 +130,7 @@ export class SigningMaterials {
   }
   static async importPackage(context: common.UIAbilityContext, uri: string, bundle: string): Promise<string> {
     if (!/^[A-Za-z0-9_.]+$/.test(bundle)) throw new Error('无效应用标识');
-    const logical = context.filesDir + '/native-toolchain/signing' + (bundle==='com.example.harmonyplayground' ? '' : '/' + bundle);
+    const logical = context.filesDir + '/native-toolchain/signing' + (bundle==='com.djc.arkforge' ? '' : '/' + bundle);
     const set = String(Date.now()), directory = logical + '/.sets/' + set;
     fileIo.mkdirSync(directory, true);
     const archive = directory + '/input.zip';

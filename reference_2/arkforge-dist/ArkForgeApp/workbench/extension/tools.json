@@ -2,7 +2,7 @@
   {
     "name": "read_file",
     "label": "读取工程文件",
-    "description": "按行读取源码并返回文件版本；默认前 200 行。",
+    "description": "读取源码及版本；默认一次读取前 600 行，可指定范围，单次最多 1200 行。小文件可一次读完；多文件优先 read_files。",
     "properties": {
       "path": {
         "type": "string"
@@ -19,9 +19,41 @@
     ]
   },
   {
+    "name": "read_files",
+    "label": "批量读取工程源码",
+    "description": "一次读取 1 至 6 个相关源码文件及各自版本。每个文件默认 600 行，最多 1200 行；优先按诊断涉及的文件批量读取，减少工具往返。",
+    "properties": {
+      "files": {
+        "type": "array",
+        "minItems": 1,
+        "maxItems": 6,
+        "items": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "start_line": {
+              "type": "integer"
+            },
+            "end_line": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "path"
+          ]
+        }
+      }
+    },
+    "required": [
+      "files"
+    ]
+  },
+  {
     "name": "write_file",
     "label": "保存工程文件",
-    "description": "保存源码。必须先读取文件版本；新文件 expected_version 为 0。",
+    "description": "保存完整源码。已有文件必须先完整读取当前版本及全部行；局部修改优先 replace_text。新文件 expected_version 为 0。",
     "properties": {
       "path": {
         "type": "string"
@@ -135,5 +167,87 @@
     "description": "读取实际调试连接状态、调用栈和变量。",
     "properties": {},
     "required": []
+  },
+  {
+    "name": "get_diagnostics",
+    "label": "读取全项目官方 SDK 诊断",
+    "description": "默认一次读取全部诊断精简总览：按文件、原因分组，保留每一处行列位置，无需逐页读取。优先 mode=summary；需要某条完整原始记录时使用 mode=details，并可筛选 path/category。修复后重新 compile_project 更新诊断。",
+    "properties": {
+      "path": {
+        "type": "string"
+      },
+      "category": {
+        "type": "string",
+        "enum": [
+          "warning",
+          "error"
+        ]
+      },
+      "offset": {
+        "type": "integer"
+      },
+      "limit": {
+        "type": "integer"
+      },
+      "mode": {
+        "type": "string",
+        "enum": [
+          "summary",
+          "details"
+        ]
+      }
+    },
+    "required": []
+  },
+  {
+    "name": "create_directory",
+    "label": "创建工程目录",
+    "description": "在当前工程中创建目录和父目录。",
+    "properties": {
+      "path": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "path"
+    ]
+  },
+  {
+    "name": "rename_file",
+    "label": "重命名或移动工程文件",
+    "description": "先读取文件版本，再在当前工程内移动或重命名文件。保留已有目标文件，并保存源文件历史。",
+    "properties": {
+      "path": {
+        "type": "string"
+      },
+      "new_path": {
+        "type": "string"
+      },
+      "expected_version": {
+        "type": "integer"
+      }
+    },
+    "required": [
+      "path",
+      "new_path",
+      "expected_version"
+    ]
+  },
+  {
+    "name": "delete_file",
+    "label": "删除工程文件",
+    "description": "先读取文件版本，经用户确认后删除一个普通文件；源文件会保留本地历史。",
+    "properties": {
+      "path": {
+        "type": "string"
+      },
+      "expected_version": {
+        "type": "integer"
+      }
+    },
+    "required": [
+      "path",
+      "expected_version"
+    ]
   }
 ]

@@ -23,6 +23,8 @@ const native=async(method,args)=>{
   if(method==='fs.read'){if(!files.has(args.path))throw new Error('No such file or directory');return Buffer.from(files.get(args.path)).toString('base64');}
   if(method==='fs.write'){if(files.has(args.path)&&args.overwrite===false)throw new Error('File exists');files.set(args.path,Buffer.from(args.data,'base64').toString());return '{}';}
   if(method==='fs.mkdir')return '{}';
+  if(method==='fs.rename'){if(files.has(args.target))throw new Error('File exists');files.set(args.target,files.get(args.path));files.delete(args.path);return '{}';}
+  if(method==='fs.delete'){files.delete(args.path);return '{}';}
   if(method==='git_run')return JSON.stringify({output:'git version 2.55.0\n',code:0});
   if(method==='sdk_diagnostics')return JSON.stringify([{fileName:'/project/entry/main.ets',line:1,column:2,code:2322,category:1,message:'Official SDK message'}]);
   throw new Error('Unexpected native request: '+method);
@@ -40,7 +42,7 @@ const vscode={Uri:URI,Disposable,EventEmitter,Range,WorkspaceEdit,Diagnostic,Fil
   commands:{executeCommand:async(id,...args)=>{if(!commands.has(id))throw new Error('Unknown command '+id);return commands.get(id)(...args);},registerCommand:(id,fn)=>{commands.set(id,fn);return new Disposable();}},
   workspace:{workspaceFolders:[{uri:URI.parse('arkforge://p-test/workspace')}],registerFileSystemProvider:(scheme,value)=>{provider=value;return new Disposable();},
     registerFileSearchProvider:()=>new Disposable(),registerTextSearchProvider:()=>new Disposable(),
-    fs:{stat:async uri=>provider.stat(uri),readFile:async uri=>uri.path.endsWith('agent.html')?new TextEncoder().encode('<script></script>'):provider.readFile(uri),createDirectory:async uri=>provider.createDirectory(uri)},
+    fs:{stat:async uri=>provider.stat(uri),readFile:async uri=>uri.path.endsWith('agent.html')?new TextEncoder().encode('<script></script>'):provider.readFile(uri),createDirectory:async uri=>provider.createDirectory(uri),rename:async(from,to,options)=>provider.rename(from,to,options),delete:async(uri,options)=>provider.delete(uri,options)},
     openTextDocument:async uri=>{
       if(documents.has(uri.path))return documents.get(uri.path);
       await provider.stat(uri);let text=new TextDecoder().decode(await provider.readFile(uri));
@@ -50,7 +52,7 @@ const vscode={Uri:URI,Disposable,EventEmitter,Range,WorkspaceEdit,Diagnostic,Fil
       documents.set(uri.path,document);return document;
     },
     applyEdit:async edit=>{const item=edit.edit;documents.get(item.uri.path).apply(item.range,item.text);return true;},saveAll:async()=>true},
-  window:{createStatusBarItem:()=>({show(){},dispose(){}}),createOutputChannel:()=>({appendLine(text){outputLines.push(text);},info(){},warn(){},error(){},show(){},dispose(){}}),showTextDocument:async()=>{},showErrorMessage(){},
+  window:{onDidChangeActiveTextEditor:()=>new Disposable(),createStatusBarItem:()=>({show(){},dispose(){}}),createOutputChannel:()=>({appendLine(text){outputLines.push(text);},info(){},warn(){},error(){},show(){},dispose(){}}),showTextDocument:async()=>{},showErrorMessage(){},
     registerTerminalProfileProvider:()=>new Disposable(),
     createTerminal:options=>{terminalOptions=options;return {show(){},dispose(){}};},
     registerWebviewViewProvider:(id,value)=>{viewProvider=value;return new Disposable();}}
@@ -66,6 +68,12 @@ sandbox.exports.activate({subscriptions:[],extensionUri:URI.parse('arkforge:/ext
   const compileStart=nativeCalls.length;assert.match((await call('compile_project',{})).result,/BUILD SUCCESSFUL/);assert.deepEqual(nativeCalls.slice(compileStart),['compile_project']);
   const read=JSON.parse((await call('read_file',{path:'entry/main.ets'})).result);
   assert.deepEqual(read,{path:'entry/main.ets',version:1,start_line:1,end_line:3,total_lines:3,content:'Text("before")\nText("other")\n',truncated:false});
+  const batch=JSON.parse((await call('read_files',{files:[{path:'entry/main.ets'},{path:'../outside'}]})).result);
+  assert.equal(batch.files[0].version,1);assert.match(batch.files[1].error,/相对/);
+  const overview=JSON.parse((await call('get_diagnostics',{})).result);
+  assert.equal(overview.complete,true);assert.equal(overview.groups[0].path,'entry/main.ets');assert.deepEqual(overview.groups[0].locations,[[1,2]]);
+  const details=JSON.parse((await call('get_diagnostics',{mode:'details',limit:200})).result);
+  assert.equal(details.diagnostics.length,1);assert.equal(details.has_more,false);
   assert.equal((await call('replace_text',{path:'entry/main.ets',old_text:'before',new_text:'after',expected_version:1})).error,'');
   assert.equal(files.get('/workspace/entry/main.ets'),'Text("after")\nText("other")\n');
   assert.match((await call('write_file',{path:'entry/main.ets',content:'stale',expected_version:1})).error,/版本/);
@@ -76,6 +84,13 @@ sandbox.exports.activate({subscriptions:[],extensionUri:URI.parse('arkforge:/ext
   assert.match((await call('write_file',{path:'entry/new.ets',content:'overwrite',expected_version:0})).error,/版本/);
   await assert.rejects(()=>provider.rename(URI.parse('arkforge://p-test/workspace/entry/main.ets'),URI.parse('arkforge://other-project/workspace/entry/moved.ets'),{overwrite:false}),/其他工程/);assert(files.has('/workspace/entry/main.ets'));
   await assert.rejects(()=>provider.stat(URI.parse('arkforge://other-project/workspace/entry/main.ets')),/其他工程/);
+  assert.equal((await call('create_directory',{path:'entry/new-folder'})).error,'');
+  assert.match((await call('rename_file',{path:'entry/new.ets',new_path:'../escape.ets',expected_version:1})).error,/相对/);
+  assert.match((await call('rename_file',{path:'entry/new.ets',new_path:'entry/moved.ets',expected_version:0})).error,/版本/);
+  assert.equal((await call('rename_file',{path:'entry/new.ets',new_path:'entry/moved.ets',expected_version:1})).error,'');
+  assert.equal(files.get('/workspace/entry/moved.ets'),'new file');
+  assert.equal((await call('delete_file',{path:'entry/moved.ets',expected_version:1})).error,'');
+  assert(!files.has('/workspace/entry/moved.ets'));
   commands.get('arkforge.openGitTerminal')();
   const terminalOutput=[];terminalOptions.pty.onDidWrite(text=>terminalOutput.push(text));terminalOptions.pty.open();
   terminalOptions.pty.handleInput('git --version');terminalOptions.pty.handleInput('\r');
@@ -84,6 +99,11 @@ sandbox.exports.activate({subscriptions:[],extensionUri:URI.parse('arkforge:/ext
   terminalOptions.pty.handleInput('bogus');terminalOptions.pty.handleInput('\r');
   await new Promise(resolve=>setImmediate(resolve));assert.match(terminalOutput.join(''),/\x1b\[31m\[ArkForge\]/);
   terminalOptions.pty.close();
+  files.set('/workspace/entry/coverage.ets',Array.from({length:30},(_,i)=>'line '+i).join('\n'));
+  await call('read_file',{path:'entry/coverage.ets',start_line:1,end_line:5});
+  assert.match((await call('write_file',{path:'entry/coverage.ets',content:'partial',expected_version:1})).error,/完整读取/);
+  await call('read_files',{files:[{path:'entry/coverage.ets',start_line:6,end_line:30}]});
+  assert.equal((await call('write_file',{path:'entry/coverage.ets',content:'complete replacement',expected_version:1})).error,'');
   const original="ArkTS:ERROR File: /project/entry/main.ets:1:2\n Official SDK message";
   await commands.get('arkforge.appendBuildLog')(original+'\nBUILD FAILED');
   assert.equal(outputLines.slice(-3).join('\n'),original+'\nBUILD FAILED');

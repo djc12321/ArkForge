@@ -100,10 +100,12 @@ export class WorkbenchFiles {
     if (operation === 'rename') {
       const destination = WorkbenchFiles.path(root,input.target || '',false);
       if (fileIo.accessSync(destination) && !input.overwrite) throw new Error('目标文件已存在');
+      if (fileIo.statSync(path).isFile()) WorkspaceRecovery.checkpoint(root,path.slice(root.length + 1));
       fileIo.renameSync(path,destination); return '{}';
     }
     if (operation === 'delete') {
-      if (fileIo.statSync(path).isDirectory()) fileIo.rmdirSync(path); else fileIo.unlinkSync(path);
+      if (fileIo.statSync(path).isDirectory()) fileIo.rmdirSync(path);
+      else { WorkspaceRecovery.checkpoint(root,path.slice(root.length + 1)); fileIo.unlinkSync(path); }
       return '{}';
     }
     throw new Error('不支持的文件操作');

@@ -1,0 +1,32 @@
+/* Narrow-screen adjustments to upstream controls, fonts, colors and icons remain native. */
+html.arkforge-phone, .arkforge-phone body { height: var(--arkforge-viewport-height, 100%); }
+@media (max-width: 600px) {
+  .monaco-workbench .part.titlebar .action-label.codicon-arrow-left,
+  .monaco-workbench .part.titlebar .action-label.codicon-arrow-right { display: none; }
+  .monaco-workbench .part.titlebar .titlebar-left { flex: 0 0 auto !important; width: auto !important; }
+  .monaco-workbench .part.titlebar .titlebar-center { flex: 1 1 auto !important; min-width: 0; width: auto !important; }
+  .monaco-workbench .part.titlebar .titlebar-right { flex: 0 0 auto !important; width: auto !important; }
+  .monaco-workbench .part.titlebar .window-title,
+  .monaco-workbench .part.titlebar .command-center { min-width: 0 !important; width: 100% !important; }
+  .monaco-workbench .part.titlebar .command-center-center { min-width: 0 !important; }
+  .monaco-workbench .part.titlebar .action-label { min-width: 28px; min-height: 28px; box-sizing: border-box; }
+  .monaco-workbench .quick-input-widget { width: calc(100% - 16px) !important; max-width: 600px; left: 8px !important; margin-left: 0 !important; }
+  .monaco-dialog-box { width: calc(100vw - 32px) !important; min-width: 0 !important; max-width: 460px; max-height: calc(var(--arkforge-viewport-height, 100dvh) - 32px); overflow-y: auto; box-sizing: border-box; }
+  .monaco-dialog-box .dialog-message-container { min-width: 0; overflow-wrap: anywhere; }
+  .monaco-dialog-box .dialog-buttons-row { flex-wrap: wrap; gap: 8px; }
+  .monaco-workbench .notifications-toasts { max-width: calc(100% - 16px) !important; right: 8px !important; }
+  .monaco-workbench .notification-toast { width: 100% !important; max-width: 100%; }
+  .monaco-menu-container .monaco-menu { max-width: calc(100vw - 16px); }
+  .monaco-workbench .part.editor .gettingStartedContainer .gettingStartedSlideDetails .gettingStartedDetailsContent { max-width: 100%; padding: 0 12px; }
+  .monaco-workbench .part.editor .gettingStartedContainer .gettingStartedSlideDetails .getting-started-detail-columns { padding: 16px 12px 0; max-height: calc(100% - 16px); }
+  .monaco-workbench .part.editor .gettingStartedContainer .gettingStartedSlideDetails .getting-started-detail-left { min-width: 0; width: 100%; max-width: 100%; }
+  .monaco-workbench .part.editor .gettingStartedContainer h1 { font-size: 24px; overflow-wrap: anywhere; }
+  .monaco-workbench .part.editor .gettingStartedContainer h2 { font-size: 18px; }
+  .monaco-workbench .part.editor .gettingStartedContainer .getting-started-category { white-space: normal; }
+  .monaco-workbench .part.editor .gettingStartedContainer .getting-started-step .description { overflow-wrap: anywhere; }
+  .monaco-workbench .part.auxiliarybar .interactive-session .interactive-input-part { padding-left: 8px; padding-right: 8px; }
+  .monaco-workbench .part.statusbar .statusbar-item.remote-kind { max-width: 88px; overflow: hidden; }
+  .monaco-workbench .part.statusbar .statusbar-item.editor-status-selection,
+  .monaco-workbench .part.statusbar .statusbar-item.status\.editor\.mode,
+  .monaco-workbench .part.statusbar .statusbar-item.status\.keyboardLayout { display: none; }
+}
