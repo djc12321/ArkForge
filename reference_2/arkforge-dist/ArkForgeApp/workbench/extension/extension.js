@@ -185,6 +185,10 @@ exports.activate = function(context) {
       else await vscode.workspace.fs.delete(uri,{recursive:false});
       return JSON.stringify({ok:true,path:args.path,...(method==='rename_file'?{new_path:args.new_path}:{})});
     }
+    if(method==='test_app_flow')return await native('test_app_flow',args);
+    if(method==='lookup_sdk_api')return await native('sdk_lookup',args);
+    if(method==='get_runtime_diagnostics')return await native('runtime_diagnostics',args);
+    if(method==='launch_app')return await native('run_app',args);
     if(method==='get_diagnostics') {
       const all=JSON.parse(await native('sdk_diagnostics'));
       const selected=all.filter(item=>(!args.path||item.fileName.replace(/^\/project\//,'')===args.path)&&(!args.category||item.category===(args.category==='warning'?0:1)));

@@ -29,7 +29,7 @@ exports.registerNativeChat=function(context,native,agentTool,output) {
     modelEvents.fire();vscode.window.showInformationMessage('模型配置已保存。文件、构建、签名、安装和日志工具在平板本机执行。');
   }));
 
-  async function query(messages,token,options={}) {
+  async function query(messages,token,options={},forceFast=false) {
     if(token.isCancellationRequested)throw new vscode.CancellationError();
     const settings=await config();
     if(token.isCancellationRequested)throw new vscode.CancellationError();
@@ -41,8 +41,12 @@ exports.registerNativeChat=function(context,native,agentTool,output) {
       for(let attempt=0;attempt<4;attempt++) {
         if(token.isCancellationRequested)throw new vscode.CancellationError();
         try {
-          const body={model:settings.model,stream:false,max_tokens:maxTokens,messages,...options};
-          if(settings.base.includes('api.deepseek.com'))body.thinking={type:'disabled'};
+          const deepseek=/^https:\/\/api\.deepseek\.com(?:\/|$)/i.test(settings.base);
+          const thinking=!forceFast&&(contextSettings.reasoningMode==='thinking'||contextSettings.reasoningMode==='auto'&&deepseek&&/^deepseek-(?:flash|v4-pro|v4-flash|reasoner)$/.test(settings.model));
+          const history=thinking?messages.map(message=>message.role==='assistant'?{...message,reasoning_content:message.reasoning_content??''}:message):messages;
+          const body={model:settings.model,stream:false,max_tokens:maxTokens,messages:history,...options};
+          if(thinking){body.thinking={type:'enabled'};body.reasoning_effort='high';}
+          else if(deepseek)body.thinking={type:'disabled'};
           const response=JSON.parse(await native('chat',{base:settings.base,body:JSON.stringify(body)}));
           const choice=response.choices?.[0];
           if(!choice?.message)throw new Error('模型未返回有效消息');
@@ -76,7 +80,7 @@ exports.registerNativeChat=function(context,native,agentTool,output) {
         for(const result of results)converted.push({role:'tool',tool_call_id:result.callId,content:result.content.filter(part=>part instanceof vscode.LanguageModelTextPart).map(part=>part.value).join('\n')});
       }
       const definitions=(options.tools||[]).map(tool=>({type:'function',function:{name:tool.name,description:tool.description,parameters:tool.inputSchema}}));
-      const response=await query(converted,token,definitions.length?{tools:definitions}:{});
+      const response=await query(converted,token,definitions.length?{tools:definitions}:{},true);
       if(response.content)progress.report(new vscode.LanguageModelTextPart(response.content));
       for(const call of response.tool_calls||[])progress.report(new vscode.LanguageModelToolCallPart(call.id,call.function.name,JSON.parse(call.function.arguments||'{}')));
     }
@@ -129,7 +133,7 @@ exports.registerNativeChat=function(context,native,agentTool,output) {
       const definitions=tools.map(tool=>({type:'function',function:{name:tool.name,description:tool.description,parameters:schema(tool)}}));
       const goal=resume?(prior?.taskState?.goal||prior?.messages?.find(message=>message.role==='user'&&!/^(?:继续|接着|恢复|continue|resume)/i.test(message.content))?.content||request.prompt):request.prompt;
       return await runAgentTask({messages,workspace,goal,context:agentContext.settings(vscode),state:resume?prior?.taskState:undefined,token,stream,
-        system:'你是 ArkForge 当前设备上的 HarmonyOS 开发助手。所有工具在本机执行。先读取源码和版本再精确修改。修改已有文件优先精确替换，保留公开方法、测试入口和调用方约定；保存整个文件前先完整读取当前版本。持续完成用户目标，可跨越多轮读取、搜索、修改和复查。先用 get_diagnostics(mode=summary) 一次取得全项目诊断，按文件和原因分组规划；使用 read_files 批量读取相关源码，小文件一次读完。避免重复翻页和反复读取相同内容。每批修改后编译并重新汇总诊断。清理所有 warnings 时按规则和文件分组逐项修复，保持检查规则和原有行为；先修复 ERROR。以当前源码重新构建的真实结果为完成依据。用户只要求检查时使用 compile_project，明确要求安装才使用 build_project。工具错误先调整参数或读取最新版本继续。若确需用户提供信息，明确给出进度和所需信息。',
+        system:require('./agentPolicy').systemPrompt,
         query:(messages,token)=>query(messages,token,{tools:definitions}),
         diagnostics:async()=>JSON.parse(await native('sdk_diagnostics')),
         checkpoint:context.globalState?data=>context.globalState.update(key,data):undefined,

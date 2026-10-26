@@ -2,6 +2,7 @@
 const fs = require('fs'), path = require('path');
 const sdk = globalThis.__arkforgeSdk;
 exports.check = function(options) {
+  if(options.operation==='lookupAPI')return lookupAPI(options,typeof __sdkFiles==='undefined'?{}:__sdkFiles);
   const root = options.projectRoot || '/project';
   const files = options.files || {};
   const json5 = require(path.join(sdk, 'node_modules/json5'));
@@ -131,3 +132,32 @@ exports.check = function(options) {
   return {ok:!mapped.some(d => d.category === 1), diagnostics:mapped, output:output.join('\n'),
     sdkVersion:'26.0.0.851', sourceFiles:roots.length, timing:{serviceMs:serviceFinished-started,diagnosticsMs:diagnosticsFinished-serviceFinished}, hashCache:typeof __sdkHashMetrics==='undefined'?undefined:__sdkHashMetrics};
 };
+
+// Read the same unmodified SDK declarations used by the official checker.
+// Project inputs and desktop dependency typings are excluded from this tool.
+function lookupAPI(options, assets) {
+  const query=String(options.query||'').trim().slice(0,160),needle=query.toLowerCase();
+  const allowed=name=>/^\/(?:sdk\/ets\/(?:api|kits|arkts|build-tools\/ets-loader\/declarations)\/|hms\/)/.test(name)&&/\.d\.(?:ts|ets)$/.test(name)&&!name.includes('/node_modules/');
+  const provenance={source:'Official SDK declaration files bundled with ArkForge',sdkVersion:'26.0.0.851'};
+  if(options.sdk_path) {
+    const name=String(options.sdk_path);
+    if(!allowed(name)||!Object.hasOwn(assets,name))return {...provenance,results:[],error:'请使用查询结果中的 SDK 文件路径'};
+    const lines=assets[name].split('\n'),start=Math.max(1,Math.floor(Number(options.start_line)||1)),end=Math.min(lines.length,start+199,Math.max(start,Number(options.end_line)||start+99));
+    return {...provenance,results:[{sdk_path:name,start_line:start,end_line:end,total_lines:lines.length,content:lines.slice(start-1,end).join('\n')}]};
+  }
+  if(!needle)return {...provenance,results:[],error:'请输入准确的 API、类型或模块名称'};
+  const normalized=needle.replace(/[^a-z0-9]/g,''),names=Object.keys(assets).filter(allowed).filter(name=>name.toLowerCase().includes(needle)||assets[name].toLowerCase().includes(needle));
+  names.sort((a,b)=>Number(!a.toLowerCase().replace(/[^a-z0-9]/g,'').includes(normalized))-Number(!b.toLowerCase().replace(/[^a-z0-9]/g,'').includes(normalized))||a.localeCompare(b));
+  const results=[];
+  for(const name of names.slice(0,5)) {
+    const lines=assets[name].split('\n'),matches=[];
+    for(let i=0;i<lines.length;i++)if(lines[i].toLowerCase().includes(needle))matches.push(i);
+    const relevant=matches.filter(i=>!/^\s*(?:\*|\/\/)/.test(lines[i]));
+    const at=(relevant.length?relevant:matches).slice(0,2);
+    if(!at.length)at.push(0);
+    const excerpts=at.map(i=>{const start=Math.max(0,i-16),end=Math.min(lines.length,i+45);return {start_line:start+1,end_line:end,content:lines.slice(start,end).join('\n').slice(0,2000)};});
+    results.push({sdk_path:name,total_lines:lines.length,excerpts});
+  }
+  return {...provenance,query,matched_files:names.length,results,instruction:'按原始声明和 JSDoc 核对参数、@since、@syscap 与设备 API。可传 sdk_path 读取完整相关范围；保持原工程功能，依据真实运行证据判断兼容性。'};
+}
+exports.lookupAPI=lookupAPI;

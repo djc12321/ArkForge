@@ -48,7 +48,8 @@ exports.transform = function(source, fileName = '/project/harmony_demo/src/main/
       minAPIVersion: 12, compileSdkVersion: 23, compatibleSdkVersion: 12, sdkInfo: '23',
       buildMode: 'debug', processTs: false, cachePath: '/cache',
       moduleJsonPath: '/project/' + moduleName + '/src/main/module.json5' },
-    partialUpdateConfig: { partialUpdateMode: true }
+    // Match the official SDK default: theme scope setup uses observeComponentCreation2.
+    partialUpdateConfig: { partialUpdateMode: true, optimizeComponent: true }
   };
   if (require.cache[mainPath]) {
     Object.assign(require.cache[mainPath].exports, main);

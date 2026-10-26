@@ -1274,6 +1274,27 @@ struct Index {
       const plan = await ResourceCompiler.plan(context,this.workspaceDir,(message: string) => { WorkbenchRuntime.append(message); });
       return JSON.stringify({bundleName:plan.bundleName,moduleName:plan.moduleName});
     }
+    if (method === 'test_app_flow') {
+      const context = this.getUIContext().getHostContext() as common.UIAbilityContext;
+      if (this.nativeTaskBusy) throw new Error('请等待当前构建完成后验证应用界面');
+      this.nativeTaskBusy = true;
+      try { return await LocalDevice.testUIFlow(context,this.workspaceDir,payload); }
+      finally { this.nativeTaskBusy = false; }
+    }
+    if (method === 'runtime_diagnostics') {
+      const context = this.getUIContext().getHostContext() as common.UIAbilityContext;
+      if (this.nativeTaskBusy) throw new Error('请等待当前构建完成后读取运行诊断');
+      this.nativeTaskBusy = true;
+      try { return await LocalDevice.runtimeDiagnostics(context,this.workspaceDir); }
+      finally { this.nativeTaskBusy = false; }
+    }
+    if (method === 'sdk_lookup') {
+      const context = this.getUIContext().getHostContext() as common.UIAbilityContext;
+      if (this.nativeTaskBusy) throw new Error('请等待当前构建完成后查询 SDK');
+      this.nativeTaskBusy = true;
+      try { return await SDKProjectChecker.lookup(context, payload); }
+      finally { this.nativeTaskBusy = false; }
+    }
     if (method === 'sdk_diagnostics') {
       const context = this.getUIContext().getHostContext() as common.UIAbilityContext;
       const path = context.filesDir + '/latest-sdk-diagnostics.json';
@@ -1438,7 +1459,7 @@ struct Index {
       if (this.dirty && !this.saveActive()) throw new Error('请先处理编辑器保存冲突');
       await this.runNativeTask(method, (context: common.UIAbilityContext, report: BuildProgress) =>
         method === 'install_prepared' ? OfflineProjectBuilder.installPrepared(context,this.workspaceDir,args.path || '',report) :
-        method === 'read_logs' ? LocalDevice.readRuntimeLog(context,report) :
+        method === 'read_logs' ? LocalDevice.readRuntimeLog(context,report,this.workspaceDir) :
         OfflineProjectBuilder.build(context,this.workspaceDir,report,method !== 'compile_project'));
       return this.buildEntries.map((entry: BuildLogEntry) => entry.text).join('\n');
     }

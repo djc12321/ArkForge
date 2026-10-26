@@ -249,5 +249,70 @@
       "path",
       "expected_version"
     ]
+  },
+  {
+    "name": "get_runtime_diagnostics",
+    "label": "读取官方运行故障与源码位置",
+    "description": "排查闪退、崩溃、卡死时首先调用。读取已安装当前工程的官方 FaultLog（进程退出后仍可读取）、运行 PID、设备 API，并用构建 source map 还原源码，提供生成代码片段及源码是否匹配安装构建。历史故障需按文件、PID 和构建核对。",
+    "properties": {},
+    "required": []
+  },
+  {
+    "name": "lookup_sdk_api",
+    "label": "查阅本机官方鸿蒙 SDK",
+    "description": "查询与本机编译器同源的官方 SDK 声明和 JSDoc。用准确的 API/组件/类型/模块名查询，核对参数、@since、@syscap；再传 sdk_path 与行范围读取相关原文。",
+    "properties": {
+      "query": {
+        "type": "string"
+      },
+      "sdk_path": {
+        "type": "string"
+      },
+      "start_line": {
+        "type": "integer"
+      },
+      "end_line": {
+        "type": "integer"
+      }
+    },
+    "required": []
+  },
+  {
+    "name": "test_app_flow",
+    "label": "验证真实应用点击路径",
+    "description": "使用官方 uitest 验证当前工程已安装应用的真实点击路径，完成后自动返回 ArkForge。每次调用通过 aa start 启动目标，应用可能恢复启动页；把恢复弹窗、选择文档、目标交互和返回动作组成一次完整路径（最多 12 步）。actions=[] 用于观察入口控件；后续调用重新包含必要的入口步骤。已知 ID 可直接验证，无需重复读取源码。用 expected_id 断言结束页面，返回进程状态与新增 FaultLog。",
+    "properties": {
+      "actions": {
+        "type": "array",
+        "maxItems": 12,
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "text": {
+              "type": "string"
+            },
+            "optional": {
+              "type": "boolean"
+            }
+          }
+        }
+      },
+      "expected_id": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "actions"
+    ]
+  },
+  {
+    "name": "launch_app",
+    "label": "启动已安装的当前工程",
+    "description": "启动当前工程最近安装的应用，进入实际运行界面。排查交互问题优先使用 test_app_flow 观察并验证具体路径。",
+    "properties": {},
+    "required": []
   }
 ]

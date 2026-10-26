@@ -2,8 +2,8 @@
   "app": {
     "bundleName": "com.djc.arkforge",
     "vendor": "example",
-    "versionCode": 1000001,
-    "versionName": "1.0.1",
+    "versionCode": 1000002,
+    "versionName": "1.0.2",
     "label": "$string:app_name",
     "icon": "$media:app_icon"
   }

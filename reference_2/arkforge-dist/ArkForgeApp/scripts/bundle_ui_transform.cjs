@@ -80,6 +80,7 @@ const bundle = prelude + '\nvar __moduleBodies={' + Object.entries(modules).map(
   'return JSON.stringify(api.transform(__arkforgeSource,__arkforgeFileName,options));})()';
 const output = path.join(__dirname,'../entry/src/main/resources/rawfile/compiler/ui-transform.bundle.js');
 fs.writeFileSync(output,bundle);
+fs.writeFileSync(path.join(path.dirname(output),'ui-transform.json'),JSON.stringify({sdkVersion:'26.0.0.851',sha256:require('crypto').createHash('sha256').update(bundle).digest('hex'),partialUpdateConfig:{partialUpdateMode:true,optimizeComponent:true}}));
 console.log(JSON.stringify({modules:Object.keys(modules).length,assets:Object.keys(assets).length,bytes:bundle.length,builtins:[...builtins]}));
 // The bundle check has no Node require/fs/process available to the compiler.
 const vm = require('vm');

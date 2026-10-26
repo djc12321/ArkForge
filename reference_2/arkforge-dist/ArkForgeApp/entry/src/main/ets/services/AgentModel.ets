@@ -4,6 +4,8 @@ import { common } from '@kit.AbilityKit';
 import { fileIo } from '@kit.CoreFileKit';
 import { AtomicFiles } from './AtomicFiles';
 import { http } from '@kit.NetworkKit';
+interface ModelError { message?: string; code?: string; type?: string; }
+interface ModelErrorResponse { error?: ModelError; }
 interface ChatRequest { base: string; key?: string; body: string; }
 interface ModelConfiguration { base: string; model: string; key?: string; }
 export class AgentModel {
@@ -56,7 +58,11 @@ export class AgentModel {
       });
       if (response.responseCode !== 200) {
         const hints: Record<string,string> = {'401':'API Key 无效或未授权','402':'账户余额不足','404':'请检查 API 地址和模型名称','429':'请求频率达到限制，请稍后重试','503':'模型服务暂时不可用'};
-        throw new Error('模型请求失败 HTTP ' + response.responseCode + '：' + (hints[String(response.responseCode)] || '请检查模型服务状态'));
+        let detail = '';
+        try { detail = (JSON.parse(response.result as string) as ModelErrorResponse).error?.message || ''; } catch (_) {}
+        detail = detail.split(key).join('[API_KEY]').replace(/sk-[A-Za-z0-9_-]{20,}/g,'[API_KEY]').slice(0,800);
+        throw new Error('模型请求失败 HTTP ' + response.responseCode + '：' +
+          (hints[String(response.responseCode)] || '模型服务返回错误') + (detail ? ' · ' + detail : ''));
       }
       return response.result as string;
     } finally { if (AgentModel.active === client) AgentModel.active = undefined; client.destroy(); }

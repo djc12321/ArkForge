@@ -33,6 +33,8 @@ function compactHistory(messages, state, limit = HISTORY_LIMIT) {
     goal: state.goal,
     revision: state.revision,
     lastBuild: state.lastBuild,
+    runtimeEvidence:state.runtimeEvidence,
+    lastFlow:state.lastFlow,
     diagnosticProgress: Object.fromEntries(Object.entries(state.diagnosticProgress || {}).map(([key,p])=>[key,{matched:p.matched,nextOffset:p.nextOffset,complete:p.complete,files:p.files.slice(0,12)}])),
     recentOperations: (state.operations || []).slice(-12).reverse(),
     instruction: '继续原任务。历史源码仅作记录，修改前重新读取当前文件及版本。使用 get_diagnostics(mode=summary) 一次查看剩余诊断，再 read_files 批量读取相关源码，最终重新编译验证。'
@@ -41,6 +43,7 @@ function compactHistory(messages, state, limit = HISTORY_LIMIT) {
 }
 
 function needsVerification(state) {
+  if(state.runtimeRepair && !(state.lastFlow?.status==='passed'&&state.lastFlow.revision===state.revision))return '请读取 get_runtime_diagnostics 的真实故障证据，并用 test_app_flow 复测原点击路径和 expected_id；编译通过后继续运行验证。';
   if (!state.verifyBuild) return '';
   const build = state.lastBuild;
   if (!build || build.revision !== state.revision) return '请调用 compile_project 验证当前修改，再核对 get_diagnostics，完成后汇报实际结果。';
@@ -55,9 +58,13 @@ async function runAgentTask(options) {
   const { token, stream, query, invoke, diagnostics, workspace, checkpoint, system } = options;
   let messages = options.messages.slice();
   const state = options.state ? {...options.state,operations:[...(options.state.operations || [])]} : { goal: options.goal, revision: 0, operations: [],
-    verifyBuild: /编译|构建|warnings?|警告|compile|build/i.test(options.goal),
+    runtimeRepair:/闪退|崩溃|crash|运行.*(?:异常|报错)/i.test(options.goal),
+    verifyBuild: /编译|构建|警告|闪退|崩溃|\b(?:warnings?|compile|build|compile_project|build_project|crash)\b/i.test(options.goal),
     warningFree: /(?:所有|全部|清理|消除|修复|解决|all|zero|remove|fix).{0,30}(?:warnings?|警告)|(?:warnings?|警告).{0,30}(?:全部|清零|清理|all|zero)/i.test(options.goal) };
-  const allowInstall = /安装|install/i.test(state.goal) && !/(?:不要|不|无需|禁止).{0,4}安装|do not install|without install/i.test(state.goal);
+  const noCompile = /(?:不要|不|无需|禁止|不用)(?:再|重新|进行|执行)?(?:编译|构建)|\b(?:do not|don't|without)\s+(?:re)?(?:compile|build)\b/i.test(state.goal);
+  if(noCompile)state.verifyBuild=false;
+  const allowInstall = (/安装|\binstall\b/i.test(state.goal) || state.runtimeRepair && /修复|解决|\b(?:fix|repair)\b/i.test(state.goal)) &&
+    !/(?:不要|不|无需|禁止).{0,4}安装|do not install|without install/i.test(state.goal);
   state.operations ||= [];
   let noTools = 0, repeated = 0, fingerprint = '', rounds = 0;
   let visits = new Map();
@@ -106,8 +113,8 @@ async function runAgentTask(options) {
       if (response.__usage) { state.usage = response.__usage; state.usageSerial = (state.usageSerial || 0) + 1; }
       if (token.isCancellationRequested) break;
       const calls = response.tool_calls || [];
-      messages.push({ role: 'assistant', content: response.content || '', ...(calls.length ? { tool_calls: calls } : {}) });
-      if (response.content) stream.markdown(response.content);
+      messages.push({ role: 'assistant', content: response.content || '', ...(typeof response.reasoning_content==='string'?{reasoning_content:response.reasoning_content}:{}), ...(calls.length ? { tool_calls: calls } : {}) });
+      if (response.content && (calls.length || !needsVerification(state))) stream.markdown(response.content);
       if (!calls.length) {
         const pending = needsVerification(state);
         if (!pending) return await save('completed');
@@ -123,12 +130,15 @@ async function runAgentTask(options) {
       const outcomes = [];
       const guidance = [];
       let cycling = false;
+      let interruption = '';
       for (const call of calls) {
         let result, input = {};
         if (token.isCancellationRequested) result = '用户已停止本轮任务，此工具尚未执行。';
+        else if (interruption) result = '本轮进度已保存，系统额度恢复后继续此步骤。';
         else {
           try {
             input = JSON.parse(call.function.arguments || '{}');
+            if (noCompile && BUILDS.has(call.function.name)) throw new Error('本轮按用户要求执行运行验收，请使用运行诊断与界面测试工具。');
             if (call.function.name === 'build_project' && !allowInstall) throw new Error('本轮使用 compile_project 完成编译检查。需要安装时由用户发起安装操作。');
             if (MUTATIONS.has(call.function.name)) state.revision++;
             if (BUILDS.has(call.function.name)) { state.lastBuild = { ok: false, revision: state.revision, diagnosticsKnown: false }; state.diagnosticProgress = {}; }
@@ -142,6 +152,17 @@ async function runAgentTask(options) {
                 warnings: items?.filter(d => d.category === 0).length,
                 errors: items?.filter(d => d.category === 1).length };
               result += '\n当前构建诊断汇总：' + JSON.stringify(state.lastBuild);
+            }
+            if(call.function.name==='get_runtime_diagnostics') {
+              const runtime=JSON.parse(result);
+              state.runtimeEvidence={revision:state.revision,bundleName:runtime.bundleName,buildId:runtime.lastArkForgeBuild,runningPid:runtime.runningPid,deviceApi:runtime.deviceApi,
+                compiler:runtime.compiler,installedCompilerMatches:runtime.installedCompilerMatches,faultCollectionOk:runtime.faultCollectionOk,
+                faults:(runtime.faults||[]).map(fault=>({file:fault.file,reason:fault.reason,predatesBuild:fault.predatesBuild,report:typeof fault.report==='string'?fault.report.slice(0,800):undefined,frames:fault.frames}))};
+            }
+            if(call.function.name==='test_app_flow') {
+              const flow=JSON.parse(result);
+              state.lastFlow={revision:state.revision,status:flow.status,buildId:flow.buildId,expected_id:input.expected_id,actions:input.actions,steps:flow.steps,newFaultFiles:flow.newFaultFiles,runningPid:flow.runningPid,errorCode:flow.errorCode,error:flow.error};
+              if(flow.status==='blocked')interruption=flow.error||'系统条件恢复后继续界面验证。';
             }
             if (call.function.name === 'get_diagnostics') {
               const page = JSON.parse(result), key = (input.category || 'all') + ':' + (input.path || '*');
@@ -183,6 +204,11 @@ async function runAgentTask(options) {
       messages.push(...guidance);
       // Persist only complete tool groups so a resumed request has a valid protocol.
       await save(token.isCancellationRequested ? 'cancelled' : 'running');
+      if(interruption) {
+        stream.markdown('\n'+interruption+' 已保留当前构建与完整点击路径。');
+        stream.button?.({command:'arkforge.resumeAgent',title:'从已保存路径继续验证'});
+        return await save('paused');
+      }
       if (cycling) {
         stream.markdown('\n已保存修改和诊断进度。当前工具结果多次重复，请补充处理方向后继续。');
         stream.button?.({command:'arkforge.resumeAgent',title:'继续当前任务'});

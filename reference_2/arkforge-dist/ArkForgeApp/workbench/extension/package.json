@@ -1,7 +1,7 @@
 {
   "name": "arkforge-device",
   "publisher": "arkforge",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "displayName": "ArkForge 平板开发工具",
   "engines": {
     "vscode": "^1.100.0"
@@ -625,6 +625,83 @@
             "expected_version"
           ]
         }
+      },
+      {
+        "name": "arkforge_get_runtime_diagnostics",
+        "displayName": "读取官方运行故障与源码位置",
+        "modelDescription": "排查闪退、崩溃、卡死时首先调用。读取已安装当前工程的官方 FaultLog（进程退出后仍可读取）、运行 PID、设备 API，并用构建 source map 还原源码，提供生成代码片段及源码是否匹配安装构建。历史故障需按文件、PID 和构建核对。",
+        "inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        }
+      },
+      {
+        "name": "arkforge_lookup_sdk_api",
+        "displayName": "查阅本机官方鸿蒙 SDK",
+        "modelDescription": "查询与本机编译器同源的官方 SDK 声明和 JSDoc。用准确的 API/组件/类型/模块名查询，核对参数、@since、@syscap；再传 sdk_path 与行范围读取相关原文。",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string"
+            },
+            "sdk_path": {
+              "type": "string"
+            },
+            "start_line": {
+              "type": "integer"
+            },
+            "end_line": {
+              "type": "integer"
+            }
+          },
+          "required": []
+        }
+      },
+      {
+        "name": "arkforge_test_app_flow",
+        "displayName": "验证真实应用点击路径",
+        "modelDescription": "使用官方 uitest 验证当前工程已安装应用的真实点击路径，完成后自动返回 ArkForge。每次调用通过 aa start 启动目标，应用可能恢复启动页；把恢复弹窗、选择文档、目标交互和返回动作组成一次完整路径（最多 12 步）。actions=[] 用于观察入口控件；后续调用重新包含必要的入口步骤。已知 ID 可直接验证，无需重复读取源码。用 expected_id 断言结束页面，返回进程状态与新增 FaultLog。",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "actions": {
+              "type": "array",
+              "maxItems": 12,
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "text": {
+                    "type": "string"
+                  },
+                  "optional": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            },
+            "expected_id": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "actions"
+          ]
+        }
+      },
+      {
+        "name": "arkforge_launch_app",
+        "displayName": "启动已安装的当前工程",
+        "modelDescription": "启动当前工程最近安装的应用，进入实际运行界面。排查交互问题优先使用 test_app_flow 观察并验证具体路径。",
+        "inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        }
       }
     ],
     "walkthroughs": [
@@ -684,7 +761,7 @@
           {
             "id": "api",
             "title": "4. 配置 DeepSeek 与模型 API",
-            "description": "1. 点击下方配置按钮，依次填写 API 地址、模型名称和 API Key，每一步按回车确认。\n2. DeepSeek 的 API 地址填写 https://api.deepseek.com。\n3. 模型名称填写模型服务提供的准确模型 ID，可参考输入框中的当前配置。\n4. API Key 粘贴服务商提供的密钥，输入框以密码形式显示。\n5. 出现“模型配置已保存”后，打开聊天气泡即可使用 Agent。\n6. 密钥保存在鸿蒙系统加密资产库；以后修改模型时，密钥留空会沿用已保存的值。\n7. 聊天输入 /setup 并发送，也可再次打开配置。\n\n[配置 DeepSeek / 模型 API](command:arkforge.configureAgent)\n\n长任务设置：在命令面板运行“ArkForge: 配置 Agent 上下文与自动压缩”，按模型额度设置 contextWindow、输出额度和压缩阈值。默认阈值为 75%，自动保留目标、近期修改和诊断进度。任务中断后点击“从当前进度继续”或输入“继续上次任务”。Agent 可在工程内创建目录、移动和重命名文件；删除文件时使用原生确认提示。\n\n批量诊断与源码：Agent 默认一次读取全项目诊断，按文件、原因合并并保留每个位置；一次可读取最多 6 个相关源码文件。普通文件默认读取 600 行，大文件可指定最多 1200 行的范围。",
+            "description": "1. 点击下方配置按钮，依次填写 API 地址、模型名称和 API Key，每一步按回车确认。\n2. DeepSeek 的 API 地址填写 https://api.deepseek.com。\n3. 模型名称填写模型服务提供的准确模型 ID，可参考输入框中的当前配置。\n4. API Key 粘贴服务商提供的密钥，输入框以密码形式显示。\n5. 出现“模型配置已保存”后，打开聊天气泡即可使用 Agent。\n6. 密钥保存在鸿蒙系统加密资产库；以后修改模型时，密钥留空会沿用已保存的值。\n7. 聊天输入 /setup 并发送，也可再次打开配置。\n\n[配置 DeepSeek / 模型 API](command:arkforge.configureAgent)\n\n长任务设置：在命令面板运行“ArkForge: 配置 Agent 上下文与自动压缩”，按模型额度设置 contextWindow、输出额度和压缩阈值。默认阈值为 75%，自动保留目标、近期修改和诊断进度。任务中断后点击“从当前进度继续”或输入“继续上次任务”。Agent 可在工程内创建目录、移动和重命名文件；删除文件时使用原生确认提示。\n\n批量诊断与源码：Agent 默认一次读取全项目诊断，按文件、原因合并并保留每个位置；一次可读取最多 6 个相关源码文件。普通文件默认读取 600 行，大文件可指定最多 1200 行的范围。\n\n运行问题排查：描述触发页面和点击步骤，并说明是否需要构建安装验证。Agent 可读取系统 FaultLog、查阅本机官方 SDK 声明，按控件 ID 复测点击路径，完成后自动返回 ArkForge。推理模式在同一设置页选择 auto、thinking 或 fast。",
             "media": {
               "image": "guide/workflow.svg",
               "altText": "ArkForge 开发流程：打开工程、编辑保存、构建安装、运行调试"
@@ -886,7 +963,7 @@
       "properties": {
         "arkforge.agent.contextWindow": {
           "type": "integer",
-          "default": 64000,
+          "default": 128000,
           "minimum": 16384,
           "maximum": 1048576,
           "description": "模型上下文窗口（token），按所选模型服务的额度填写。"
@@ -904,6 +981,21 @@
           "minimum": 0.5,
           "maximum": 0.9,
           "description": "达到此比例前自动压缩历史，保留任务目标、修改记录与最新诊断。默认 0.75 表示 75%。"
+        },
+        "arkforge.agent.reasoningMode": {
+          "type": "string",
+          "default": "auto",
+          "enum": [
+            "auto",
+            "thinking",
+            "fast"
+          ],
+          "enumDescriptions": [
+            "DeepSeek 受支持模型使用深度推理，其他服务沿用其默认协议。",
+            "使用 DeepSeek 兼容的深度推理及高推理强度。",
+            "使用快速非思考模式。"
+          ],
+          "description": "Agent 推理模式。复杂的鸿蒙问题建议选择 auto 或 thinking；推理内容按官方协议在工具调用间保留。"
         }
       }
     }

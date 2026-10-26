@@ -1,3 +1,5 @@
+import { RuntimeUIFlow } from './RuntimeUIFlow';
+import { RuntimeDiagnostics, RuntimeReport } from './RuntimeDiagnostics';
 import { AtomicFiles } from './AtomicFiles';
 import hdc from 'libhdc_z.so';
 import native from 'libarkforge_script.so';
@@ -105,14 +107,18 @@ export class LocalDevice {
     }
   }
 
-  static async readRuntimeLog(context: common.UIAbilityContext, report?: BuildProgress): Promise<string> {
-    const built = JSON.parse(fileIo.readTextSync(context.filesDir + '/offline-build/latest.json')) as InstalledBuild;
-    if (!/^[A-Za-z0-9_.]+$/.test(built.bundleName)) throw new Error('构建应用标识无效');
+  static async testUIFlow(context: common.UIAbilityContext, project: string, payload: string): Promise<string> {
+    await LocalDevice.connect(context);
+    return await RuntimeUIFlow.run(context,project,payload,(command: string): Promise<string> => LocalDevice.run(context,command));
+  }
+  static async runtimeDiagnostics(context: common.UIAbilityContext, project: string = '', report?: BuildProgress): Promise<string> {
     await LocalDevice.connect(context, report);
-    const output = await LocalDevice.run(context, 'hdc -t 127.0.0.1:8710 shell echo ARKFORGE_PID=$(pidof ' + built.bundleName + ')', report);
-    const pid = /ARKFORGE_PID=([1-9]\d*)/.exec(output)?.[1];
-    return await LocalDevice.run(context, 'hdc -t 127.0.0.1:8710 shell hilog -z 1000 ' +
-      (pid ? '-P ' + pid : '-e ' + built.bundleName), report);
+    return JSON.stringify(await RuntimeDiagnostics.collect(context, (command: string): Promise<string> => LocalDevice.run(context, command), project));
+  }
+  static async readRuntimeLog(context: common.UIAbilityContext, report?: BuildProgress, project: string = ''): Promise<string> {
+    const collected = JSON.parse(await LocalDevice.runtimeDiagnostics(context,project,report)) as RuntimeReport;
+    return collected.processLog + '\n' + collected.faults.map(fault => '\n=== Official FaultLog: ' + fault.file + ' ===\n' +
+      fault.report + '\nSource map: ' + JSON.stringify(fault.frames)).join('\n') + '\n' + collected.collectionNotes.join('\n');
   }
 
   static async installSignedHap(context: common.UIAbilityContext, path: string, report?: BuildProgress): Promise<string> {

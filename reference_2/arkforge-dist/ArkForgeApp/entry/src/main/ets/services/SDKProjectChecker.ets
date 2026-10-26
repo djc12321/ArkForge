@@ -5,6 +5,7 @@ import { util } from '@kit.ArkTS';
 import { BuildProgress } from './BuildConsole';
 import { AtomicFiles } from './AtomicFiles';
 
+interface SDKReferenceRequest { operation?: string; query?: string; sdk_path?: string; start_line?: number; end_line?: number; }
 interface CheckerManifest { sha256: string; sdkVersion: string; }
 interface WebCheckerManifest { source: string; sha256: string; wrapper: number; }
 export interface SDKInput { moduleName: string; bundleName: string; files: Record<string, string>; operation?: string; }
@@ -14,6 +15,14 @@ export interface SDKHashCache { hits: number; misses: number; }
 export interface SDKResult { timing?: SDKTiming; hashCache?: SDKHashCache; ok: boolean; diagnostics?: SDKDiagnostic[]; output?: string; error?: string; sdkVersion?: string; sourceFiles?: number; }
 
 export class SDKProjectChecker {
+  static async lookup(context: common.UIAbilityContext, payload: string): Promise<string> {
+    const input = JSON.parse(payload) as SDKReferenceRequest;
+    if ((input.query || '').length > 160 || (input.sdk_path || '').length > 512) throw new Error('请使用准确的 API 名称或 SDK 文件路径');
+    input.operation = 'lookupAPI';
+    const bundle = await SDKProjectChecker.stage(context);
+    return await SDKWebRuntime.check(bundle, JSON.stringify(input), () => {});
+  }
+
   static async verify(context: common.UIAbilityContext, report: BuildProgress): Promise<string> {
     const bundle = await SDKProjectChecker.stage(context);
     const results: SDKResult[] = [];

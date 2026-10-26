@@ -2,7 +2,7 @@ const assert = require('node:assert/strict');
 const { runAgentTask, compactHistory } = require('../workbench/extension/agentLoop');
 const {settings,historyLimit}=require('../workbench/extension/agentContext');
 const limits=settings({workspace:{getConfiguration:()=>({get:(name,fallback)=>({contextWindow:100,maxOutputTokens:999999,compressionThreshold:0.99})[name]??fallback})}});
-assert.deepEqual(limits,{contextWindow:16384,maxOutputTokens:4096,compressionThreshold:0.9});
+assert.deepEqual(limits,{contextWindow:16384,maxOutputTokens:4096,compressionThreshold:0.9,reasoningMode:'auto'});
 assert(historyLimit(limits)>=6000);
 const manifest = require('../workbench/extension/package.json');
 for (const tool of require('../workbench/extension/tools.json')) {
@@ -84,6 +84,31 @@ function validProtocol(messages) {
   result=await runAgentTask(options({query:async()=>({tool_calls:[call(++rounds%2?'replace_text':'read_file',{path:'a'})]}),invoke:async name=>{if(name==='replace_text')throw new Error('unchanged failure');return 'same content';}}));
   assert.equal(result.metadata.taskState.status,'paused');assert(rounds<=16);validProtocol(result.metadata.messages);
 
+  rounds=0;
+  result=await runAgentTask(options({query:async messages=>{if(rounds++) {assert.equal(messages.find(m=>m.role==='assistant').reasoning_content,'retained provider reasoning');return {content:'done',reasoning_content:'final reasoning'};}return {reasoning_content:'retained provider reasoning',tool_calls:[call('read_file',{path:'a'})]};},invoke:async()=> 'source'}));
+  assert.equal(result.metadata.messages.find(m=>m.content==='done').reasoning_content,'final reasoning');
+  rounds=0;let flowCalls=0;
+  result=await runAgentTask(options({goal:'修复进入页面的闪退并验证编译',query:async()=>++rounds===1?{tool_calls:[call('compile_project')]}:rounds===2?{content:'premature success'}:rounds===3?{tool_calls:[call('test_app_flow',{actions:[{id:'enter'}],expected_id:'workspace'})]}:{content:'verified runtime'},invoke:async name=>name==='compile_project'?'BUILD SUCCESSFUL':(flowCalls++,JSON.stringify({status:'passed',steps:[{id:'enter',status:'clicked'}],buildId:'build',runningPid:'123',newFaultFiles:[]}))}));
+  assert.equal(flowCalls,1);assert.equal(result.metadata.taskState.lastFlow.status,'passed');assert.equal(result.metadata.taskState.status,'completed');
+
+  rounds=0;
+  result=await runAgentTask(options({query:async()=>++rounds===1?{tool_calls:[call('get_runtime_diagnostics')]}:{content:'evidence retained'},invoke:async()=>JSON.stringify({compiler:{partialUpdateConfig:{optimizeComponent:true}},installedCompilerMatches:true,faultCollectionOk:true,faults:[{file:'old.log',reason:'TypeError',predatesBuild:true,report:'official stack',frames:[]}]})}));
+  assert.equal(result.metadata.taskState.runtimeEvidence.faults[0].predatesBuild,true);
+  assert.equal(result.metadata.taskState.runtimeEvidence.compiler.partialUpdateConfig.optimizeComponent,true);
+  assert.equal(result.metadata.taskState.runtimeEvidence.installedCompilerMatches,true);
+  assert(compactHistory([...result.metadata.messages,{role:'user',content:'x'.repeat(50000)}],result.metadata.taskState)[0].content.includes('predatesBuild'));
+
+  rounds=0;
+  result=await runAgentTask(options({goal:'验收已安装版本，报告 buildId 和 PID',query:async()=>{rounds++;return {content:'observed installed build'};}}));
+  assert.equal(rounds,1);assert.equal(result.metadata.taskState.status,'completed');assert.equal(result.metadata.taskState.verifyBuild,false);
+  rounds=0;let runtimeInstalls=0;
+  result=await runAgentTask(options({goal:'修复进入页面的闪退',query:async()=>++rounds===1?{tool_calls:[call('build_project')]}:rounds===2?{tool_calls:[call('test_app_flow',{actions:[{id:'enter'}],expected_id:'page'})]}:{content:'fixed'},invoke:async name=>name==='build_project'?(runtimeInstalls++,'BUILD SUCCESSFUL'):JSON.stringify({status:'passed',steps:[],buildId:'new',runningPid:'123',newFaultFiles:[]})}));
+  assert.equal(runtimeInstalls,1);assert.equal(result.metadata.taskState.status,'completed');
+  rounds=0;let quotaInvocations=0;
+  result=await runAgentTask(options({goal:'修复页面闪退',query:async()=>{rounds++;return {tool_calls:[call('test_app_flow',{actions:[{id:'entry'}],expected_id:'page'},'quota'),call('read_file',{path:'a'},'later')]};},invoke:async()=>{quotaInvocations++;return JSON.stringify({status:'blocked',errorCode:9900002,error:'waiting for system quota',steps:[],newFaultFiles:[],runningPid:'123'});}}));
+  assert.equal(rounds,1);assert.equal(quotaInvocations,1);assert.equal(result.metadata.taskState.status,'paused');
+  assert.equal(result.metadata.taskState.lastFlow.actions[0].id,'entry');assert.equal(result.metadata.taskState.lastFlow.errorCode,9900002);validProtocol(result.metadata.messages);
+
   const cancelled={isCancellationRequested:false};rounds=0;executed=0;
   result=await runAgentTask(options({token:cancelled,query:async()=>({tool_calls:[call('read_file',{},'a'),call('write_file',{},'b')]}),invoke:async()=>{executed++;cancelled.isCancellationRequested=true;return 'read';}}));
   assert.equal(executed,1);assert.equal(result.metadata.taskState.status,'cancelled');validProtocol(result.metadata.messages);
@@ -96,5 +121,11 @@ function validProtocol(messages) {
   result=await runAgentTask(options({goal:'只编译检查，不安装',query:async()=>++rounds===1?{tool_calls:[call('build_project')]}:{content:'needs input'},invoke:async()=>{executed++;return 'installed';}}));
   assert.equal(executed,0,'compile-only requests must never invoke installing tool');
   assert.notEqual(result.metadata.taskState.status,'completed');
+  rounds=0;
+  result=await runAgentTask(options({goal:'验收已安装应用，不重新编译，也不构建',query:async()=>{rounds++;return {content:'本次运行验收完成'};}}));
+  assert.equal(rounds,1);assert.equal(result.metadata.taskState.verifyBuild,false);
+  let unwantedBuilds=0;rounds=0;
+  result=await runAgentTask(options({goal:'测试已安装应用，不重新编译',query:async()=>++rounds===1?{tool_calls:[call('compile_project')]}:{content:'按要求执行运行验收'},invoke:async()=>{unwantedBuilds++;return 'BUILD SUCCESSFUL';}}));
+  assert.equal(unwantedBuilds,0,'explicit no-compile requests preserve the user scope');
   console.log('PASS: 30 tool rounds, protocol-safe compaction, warning-free verification, rebuild after edits, cancellation, saved progress on error, compile-only install gate.');
 })().catch(error=>{console.error(error);process.exitCode=1;});

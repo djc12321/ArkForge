@@ -10,7 +10,7 @@ extension.exports.registerDeviceDebug({subscriptions:[]},async(method,args)=>{ca
 const run=()=>commands.get('arkforge.debug')();
 (async()=>{
  await run();assert.equal(calls.at(-2).method,'debug_action');assert.equal(calls.at(-2).args.action,'start');
- saved=false;calls.length=0;await run();assert(!calls.some(x=>x.method==='debug_action'));assert(lines.some(x=>x.includes('保存失败')));
+ saved=false;calls.length=0;await run();assert(!calls.some(x=>x.method==='debug_action'));assert(lines.some(x=>x.includes('文件保存')));
  saved=true;current={...current,connected:true};chosen='Debugger.pause';await run();assert.equal(calls.at(-2).args.action,'Debugger.pause');
  current={...current,paused:true,frames:[{functionName:'onCreate',source:{path:'entry/Main.ets',line:12,column:3}}],variables:[{name:'count',value:'42'}]};chosen='state';await run();
  assert(lines.some(x=>x.includes('entry/Main.ets:12:3')));assert(lines.some(x=>x.includes('count = 42')));
